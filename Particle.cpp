@@ -1,7 +1,7 @@
 #include "Particle.h"
 #include "ImGuiManager.h"
 
-void Particle::Initialize(Model *model, ParticleMember &particle, int life) {
+void Particle::Initialize(Model *model, ParticleMember &particle) {
 
 	object_ = std::make_unique<Object3d>();
 	object_->Initialize();
@@ -13,7 +13,7 @@ void Particle::Initialize(Model *model, ParticleMember &particle, int life) {
 	particle_->accel_ = particle.accel_;
 	particle_->s_scale_ = particle.s_scale_;
 	particle_->e_scale_ = particle.e_scale_;
-	particle_->num_frame_ = life;
+	particle_->life_ = particle.life_;
 	particle_->is_dead_ = false;
 }
 
@@ -22,7 +22,7 @@ void Particle::Finalize() {
 
 void Particle::Update() {
 
-	if (particle_->frame_ >= particle_->num_frame_) {
+	if (particle_->frame_ >= particle_->life_) {
 
 		particle_->is_dead_ = true;
 	}
@@ -31,7 +31,7 @@ void Particle::Update() {
 	particle_->frame_++;
 
 	// is“x‚ð0`1‚Ì”ÍˆÍ‚ÉŠ·ŽZ
-	float f = (float)particle_->num_frame_ / particle_->frame_;
+	float f = (float)particle_->life_ / particle_->frame_;
 
 	// ‘¬“x‚É‰Á‘¬“x‚ð‰ÁŽZ
 	particle_->velocity_ = particle_->velocity_ + particle_->accel_;

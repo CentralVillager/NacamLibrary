@@ -182,7 +182,7 @@
     <ClCompile Include="KeyboardInput.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleDemoScene.cpp" />
-    <ClCompile Include="ParticleMgr.cpp" />
+    <ClCompile Include="Emitter.cpp" />
     <ClCompile Include="PostEffect.cpp" />
     <ClCompile Include="PostEffectDemoScene.cpp" />
     <ClCompile Include="RepulsionDemoScene.cpp" />
@@ -244,7 +244,7 @@
     <ClInclude Include="KeyboardInput.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleDemoScene.h" />
-    <ClInclude Include="ParticleMgr.h" />
+    <ClInclude Include="Emitter.h" />
     <ClInclude Include="PostEffect.h" />
     <ClInclude Include="PostEffectDemoScene.h" />
     <ClInclude Include="RepulsionDemoScene.h" />

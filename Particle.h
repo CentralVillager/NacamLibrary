@@ -7,6 +7,7 @@
 struct ParticleMember {
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 
+
 	// 座標
 	XMFLOAT3 position_ = {};
 
@@ -16,24 +17,23 @@ struct ParticleMember {
 	// 加速度
 	XMFLOAT3 accel_ = {};
 
-	// スケール
-	float scale_;
-
 	// 開始時スケール
 	float s_scale_;
 
 	// 終了時スケール
-	float e_scale_;
+	float e_scale_ = 0.0f;
 
-	// 現在フレーム
-	int frame_ = 0;
+	// スケール
+	float scale_;
 
 	// 終了フレーム
-	int num_frame_ = 0;
+	int life_ = 0;
 
 	// 死亡フラグ
 	bool is_dead_ = false;
 
+	// 現在フレーム
+	int frame_ = 0;
 };
 
 class Particle {
@@ -47,7 +47,7 @@ private:
 
 public:
 
-	void Initialize(Model *model, ParticleMember &particle, int life);
+	void Initialize(Model *model, ParticleMember &particle);
 	void Finalize();
 	void Update();
 	void Draw();

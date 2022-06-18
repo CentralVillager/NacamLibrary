@@ -186,7 +186,7 @@ bool Sprite::StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList *c
 	// 射影行列計算
 	matProjection = XMMatrixOrthographicOffCenterLH(
 		0.0f,
-		static_cast<float>(Window::GetWindowWidth()), Window::GetWindowHeight(),
+		float(Window::GetWindowWidth()), float(Window::GetWindowHeight()),
 		0.0f, 0.0f, 1.0f);
 
 	// デスクリプタヒープを生成	

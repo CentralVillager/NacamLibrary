@@ -28,12 +28,12 @@ void GameSequence::MainGameLoop() {
 		/*-- •`‰æ --*/
 		nacam_lib_->NacamLib_Draw();
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 
 		/*-- ƒfƒoƒbƒO•`‰æ --*/
 		nacam_lib_->NacamLib_DebugDraw();
 
-//#endif
+#endif
 
 		/*-- •`‰æŒãˆ— --*/
 		nacam_lib_->NacamLib_PostDraw();

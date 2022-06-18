@@ -50,8 +50,8 @@ void DrawProc::PreDraw(DirectXBase *dx_base) {
 		&CD3DX12_VIEWPORT(
 			0.0f,
 			0.0f,
-			Window::GetWindowWidth(),
-			Window::GetWindowHeight()
+			float(Window::GetWindowWidth()),
+			float(Window::GetWindowHeight())
 		)
 	);
 
@@ -59,8 +59,8 @@ void DrawProc::PreDraw(DirectXBase *dx_base) {
 	dx_base->GetCmdList()->RSSetScissorRects(
 		1,
 		&CD3DX12_RECT(
-			0.0f,
-			0.0f,
+			long(0.0f),
+			long(0.0f),
 			Window::GetWindowWidth(),
 			Window::GetWindowHeight()
 		)

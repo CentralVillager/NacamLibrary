@@ -326,7 +326,7 @@
     <ClCompile Include="ParticleDemoScene.cpp">
       <Filter>Application\Scene\ParticleDemo</Filter>
     </ClCompile>
-    <ClCompile Include="ParticleMgr.cpp">
+    <ClCompile Include="Emitter.cpp">
       <Filter>Application\Particle</Filter>
     </ClCompile>
     <ClCompile Include="Particle.cpp">
@@ -508,7 +508,7 @@
     <ClInclude Include="Particle.h">
       <Filter>Application\Particle</Filter>
     </ClInclude>
-    <ClInclude Include="ParticleMgr.h">
+    <ClInclude Include="Emitter.h">
       <Filter>Application\Particle</Filter>
     </ClInclude>
   </ItemGroup>

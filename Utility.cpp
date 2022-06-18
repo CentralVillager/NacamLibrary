@@ -12,12 +12,12 @@ XMFLOAT3 NacamUtility::GenerateRandom(XMFLOAT3 min, XMFLOAT3 max) {
 	std::mt19937 engine(seed());
 
 	// 指定範囲内で離散一様分布
-	std::uniform_int_distribution<> random_x(min.x, max.x);
-	std::uniform_int_distribution<> random_y(min.y, max.y);
-	std::uniform_int_distribution<> random_z(min.z, max.z);
+	std::uniform_real_distribution<float> random_x(min.x, max.x);
+	std::uniform_real_distribution<float> random_y(min.y, max.y);
+	std::uniform_real_distribution<float> random_z(min.z, max.z);
 
 	// 生成結果をXMFLOAT3で返す
-	return { static_cast<float>(random_x(engine)), static_cast<float>(random_y(engine)),  static_cast<float>(random_z(engine)) };
+	return { float(random_x(engine)), float(random_y(engine)),  float(random_z(engine)) };
 }
 
 int NacamUtility::GenerateRandom(int min, int max) {
@@ -29,7 +29,7 @@ int NacamUtility::GenerateRandom(int min, int max) {
 	std::mt19937 engine(seed());
 
 	// 指定範囲内で離散一様分布
-	std::uniform_int_distribution<> random(min, max);
+	std::uniform_int_distribution<int> random(min, max);
 
 	// 生成結果をintで返す
 	return random(engine);
@@ -44,8 +44,8 @@ float NacamUtility::GenerateRandom(float min, float max) {
 	std::mt19937 engine(seed());
 
 	// 指定範囲内で離散一様分布
-	std::uniform_int_distribution<> random(min, max);
+	std::uniform_real_distribution<float> random(min, max);
 
 	// 生成結果をfloatで返す
-	return random(engine);
+	return float(random(engine));
 }

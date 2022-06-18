@@ -76,7 +76,7 @@ const Vector3 Vector3::easeIn(const Vector3 &start, const Vector3 &end, const fl
 }
 
 const Vector3 Vector3::easeOut(const Vector3 &start, const Vector3 &end, const float t) {
-	return start * (1.0f - t * (2.0 - t)) + end * t * (2.0 - t);
+	return start * (1.0f - t * float(2.0 - t)) + end * t * float(2.0 - t);
 }
 
 const Vector3 Vector3::easeInOut(const Vector3 &start, const Vector3 &end, const float t) {
