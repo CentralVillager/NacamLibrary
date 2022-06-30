@@ -82,7 +82,7 @@ void KeyboardInput::SetInputDataType() {
 void KeyboardInput::SetExclusiveControlLevel() {
 
 	HRESULT result;
-	result = dev_keyboard_->SetCooperativeLevel(Window::GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE/* | DISCL_NOWINKEY*/);
+	result = dev_keyboard_->SetCooperativeLevel(Win32App::GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE/* | DISCL_NOWINKEY*/);
 }
 
 // キーボード情報の取得開始

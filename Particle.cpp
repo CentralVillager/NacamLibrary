@@ -4,8 +4,9 @@
 void Particle::Initialize(Model *model, ParticleMember &particle) {
 
 	object_ = std::make_unique<Object3d>();
-	object_->Initialize();
+	//object_ = std::make_unique<IndirectObject3d>();
 	object_->SetModel(model);
+	object_->Initialize();
 
 	particle_ = std::make_shared<ParticleMember>();
 	particle_->position_ = particle.position_;
@@ -52,14 +53,11 @@ void Particle::Draw() {
 
 	// •`‰æ
 	Object3d::PreDraw();
+	//IndirectObject3d::PreDraw();
 	object_->Draw();
 }
 
 void Particle::DebugDraw() {
-
-	/*ImGui::Text("pos_x : %f", particle_->position_.x);
-	ImGui::Text("pos_y : %f", particle_->position_.y);
-	ImGui::Text("pos_z : %f", particle_->position_.z);*/
 }
 
 const DirectX::XMFLOAT3 operator+(const DirectX::XMFLOAT3 &lhs, const DirectX::XMFLOAT3 &rhs) {

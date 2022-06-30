@@ -26,8 +26,8 @@ void ResultScene::Initialize() {
 	float center_y = game_over_->GetTexSize().y / 2;
 
 	// 画面の中央に配置
-	game_over_->SetPosition({ Window::window_center_x_ - center_x,
-					   Window::window_center_y_ - center_y });
+	game_over_->SetPosition({ Win32App::window_center_x_ - center_x,
+					   Win32App::window_center_y_ - center_y });
 
 	// ボードの初期化
 	BackBoardManager::GetInstance()->Initialize();

@@ -9,6 +9,7 @@
 #include "PrimitiveObject.h"
 #include "FbxLoader.h"
 #include "FbxObject3d.h"
+#include "IndirectObject3d.h"
 #include "ImGuiManager.h"
 #include "SceneManager.h"
 #include "DrawProc.h"
@@ -32,14 +33,14 @@ NacamLib::~NacamLib() {
 	KeyboardInput::Finalize();
 }
 
-void NacamLib::NacamLib_Initialize() {
+void NacamLib::NacamLib_Initialize(Scene initial_scene_name) {
 
-	WindowInitialize();
+	Win32AppInitialize();
 	DirectXInitialize();
 	InputInitialize();
 	GameObjectInitialize();
 	ImGuiInitialize();
-	SceneInitialize();
+	SceneInitialize(initial_scene_name);
 
 	post_effect_scene_ = std::make_unique<PostEffect>();
 	post_effect_scene_->Initialize();
@@ -49,10 +50,16 @@ void NacamLib::NacamLib_Finalize() {
 
 	FbxLoader::GetInstance()->Finalize();
 
-	UnregisterClass(Window::GetW().lpszClassName, Window::GetW().hInstance);
+	UnregisterClass(Win32App::GetW().lpszClassName, Win32App::GetW().hInstance);
+
+	// メモリリークを検知して出力してくれるはず
+	_CrtDumpMemoryLeaks();
 }
 
-void NacamLib::NacamLib_Update() {
+void NacamLib::NacamLib_Update(int fps) {
+
+	/*-- fps制御 --*/
+	FpsManager::RegulateFps(fps);
 
 	/*-- キーボード入力更新処理 --*/
 	KeyboardInput::Update();
@@ -76,6 +83,26 @@ void NacamLib::NacamLib_Draw() {
 
 	/*-- 描画 --*/
 	post_effect_scene_->Draw();
+
+	// デバッグ時描画
+#ifdef _DEBUG
+
+	/*-- タイトルバーに現fps数を描画 --*/
+	FpsManager::ObserveFps();
+
+	/*-- ImGuiの描画前処理 --*/
+	ImGuiManager::PreDraw();
+
+	/*-- デバッグ描画 --*/
+	SceneManager::GetSceneStack().top()->DebugDraw();
+
+	/*-- ImGuiの描画 --*/
+	ImGuiManager::Draw(cmd_list_.Get());
+
+#endif
+
+	/*-- 描画後処理 --*/
+	DrawProc::PostDraw(dx_base_);
 }
 
 void NacamLib::NacamLib_PostDraw() {
@@ -99,9 +126,9 @@ void NacamLib::NacamLib_DebugDraw() {
 	ImGuiManager::Draw(cmd_list_.Get());
 }
 
-void NacamLib::WindowInitialize() {
+void NacamLib::Win32AppInitialize() {
 
-	Window::StaticInitialize();
+	Win32App::StaticInitialize();
 }
 
 void NacamLib::DirectXInitialize() {
@@ -125,9 +152,10 @@ void NacamLib::GameObjectInitialize() {
 	// Model, Object3d, Sprite, AudioMgr自体の初期化
 	Object3d::StaticInitialize(device_.Get(), cmd_list_.Get());
 	Model::StaticInitialize();
-	Sprite::StaticInitialize(device_.Get(), cmd_list_.Get(), Window::GetWindowWidth(), Window::GetWindowHeight());
+	Sprite::StaticInitialize(device_.Get(), cmd_list_.Get(), Win32App::GetWindowWidth(), Win32App::GetWindowHeight());
 	AudioManager::StaticInitialize();
 	PrimitiveObject::StaticInitialize(device_.Get(), cmd_list_.Get());
+	IndirectObject3d::StaticInitialize(device_.Get(), cmd_list_.Get());
 
 	// FBXLoader初期化
 	FbxLoader::GetInstance()->Initialize(device_.Get());
@@ -144,16 +172,19 @@ void NacamLib::ImGuiInitialize() {
 	ImGuiManager::Initialize(device_.Get());
 }
 
-void NacamLib::SceneInitialize() {
+void NacamLib::SceneInitialize(Scene initial_scene_name) {
 
 	// シーン初期化
 	SceneManager::ClearSceneStack();
+
+	// シーンを生成
+	SceneManager::SetScene(initial_scene_name);
 }
 
 bool NacamLib::CatchQuitSignal() {
 
 	// 終了命令がきたら || ESCを押したら
-	if (!Window::ProcessMessage() || KeyboardInput::TriggerKey(DIK_ESCAPE)) {
+	if (!Win32App::ProcessMessage() || KeyboardInput::TriggerKey(DIK_ESCAPE)) {
 
 		return true;
 	}

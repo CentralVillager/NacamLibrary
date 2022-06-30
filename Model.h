@@ -100,7 +100,7 @@ public:
 	ComPtr<ID3D12Resource> &GetIB() { return index_buffer_; }
 	D3D12_VERTEX_BUFFER_VIEW GetVBView() { return vertex_buffer_view_; }
 	D3D12_INDEX_BUFFER_VIEW GetIBView() { return index_buffer_view_; }
-	vector<VertexData> GetVertices() { return vertices_; }
+	const vector<VertexData> &GetVertices() { return vertices_; }
 	vector<unsigned short> GetIndices() { return indices_; }
 	size_t GetNumIndices() { size_t num = indices_.size(); return num; }
 	ComPtr<ID3D12DescriptorHeap> GetDescriptorHeap() { return descriptor_heap_; }

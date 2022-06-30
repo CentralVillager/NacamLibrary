@@ -12,7 +12,7 @@ void InputManager::MakeDirectInput() {
 	HRESULT result;
 
 	result = DirectInput8Create(
-		Window::GetW().hInstance,
+		Win32App::GetW().hInstance,
 		DIRECTINPUT_VERSION,
 		IID_IDirectInput8,
 		(void **)&dinput_,

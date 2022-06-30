@@ -162,12 +162,14 @@
     <ClCompile Include="DemoScene.cpp" />
     <ClCompile Include="DirectXBase.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="ExecuteIndirectDemoScene.cpp" />
     <ClCompile Include="FbxLoader.cpp" />
     <ClCompile Include="FbxModel.cpp" />
     <ClCompile Include="FbxObject3d.cpp" />
     <ClCompile Include="DrawProc.cpp" />
     <ClCompile Include="FPSManager.cpp" />
     <ClCompile Include="FrictionDemoScene.cpp" />
+    <ClCompile Include="IndirectObject3d.cpp" />
     <ClCompile Include="NacamLib.cpp" />
     <ClCompile Include="GravityDemoScene.cpp" />
     <ClCompile Include="ImGuiManager.cpp" />
@@ -196,7 +198,6 @@
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Object3d.cpp" />
     <ClCompile Include="PipelineManager.cpp" />
-    <ClCompile Include="GameSequence.cpp" />
     <ClCompile Include="MainScene.cpp" />
     <ClCompile Include="ResultScene.cpp" />
     <ClCompile Include="TemporaryScene.cpp" />
@@ -205,7 +206,7 @@
     <ClCompile Include="Ui.cpp" />
     <ClCompile Include="Utility.cpp" />
     <ClCompile Include="Vector3.cpp" />
-    <ClCompile Include="Window.cpp" />
+    <ClCompile Include="Win32App.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractScene.h" />
@@ -223,12 +224,14 @@
     <ClInclude Include="DemoScene.h" />
     <ClInclude Include="DirectXBase.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="ExecuteIndirectDemoScene.h" />
     <ClInclude Include="FbxLoader.h" />
     <ClInclude Include="FbxModel.h" />
     <ClInclude Include="FbxObject3d.h" />
     <ClInclude Include="DrawProc.h" />
     <ClInclude Include="FPSManager.h" />
     <ClInclude Include="FrictionDemoScene.h" />
+    <ClInclude Include="IndirectObject3d.h" />
     <ClInclude Include="NacamLib.h" />
     <ClInclude Include="GravityDemoScene.h" />
     <ClInclude Include="ImGuiManager.h" />
@@ -258,7 +261,6 @@
     <ClInclude Include="Object3d.h" />
     <ClInclude Include="PipelineManager.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="GameSequence.h" />
     <ClInclude Include="MainScene.h" />
     <ClInclude Include="ResultScene.h" />
     <ClInclude Include="Singleton.h" />
@@ -268,7 +270,7 @@
     <ClInclude Include="Ui.h" />
     <ClInclude Include="Utility.h" />
     <ClInclude Include="Vector3.h" />
-    <ClInclude Include="Window.h" />
+    <ClInclude Include="Win32App.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli" />
@@ -279,6 +281,16 @@
     <None Include="Resources\Shaders\Sprite.hlsli" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="ParticleCS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="Resources\Shaders\BasicPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>

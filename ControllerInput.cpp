@@ -184,7 +184,7 @@ void ControllerInput::SetProperty() {
 void ControllerInput::SetExclusiveControlLevel() {
 	HRESULT result;
 
-	result = dev_controller_->SetCooperativeLevel(Window::GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
+	result = dev_controller_->SetCooperativeLevel(Win32App::GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
 }
 
 void ControllerInput::DebugDraw() {

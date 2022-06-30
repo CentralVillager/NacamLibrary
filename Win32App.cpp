@@ -1,12 +1,12 @@
-#include "Window.h"
+#include "Win32App.h"
 
-WNDCLASSEX Window::w{};
-HWND Window::hwnd;
-RECT Window::wrc;
+WNDCLASSEX Win32App::w{};
+HWND Win32App::hwnd;
+RECT Win32App::wrc;
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND, UINT, WPARAM, LPARAM);
 
-void Window::StaticInitialize() {
+void Win32App::StaticInitialize() {
 	// ウィンドウクラスの設定
 	w.cbSize = sizeof(WNDCLASSEX);
 	w.lpfnWndProc = static_cast<WNDPROC>(WindowProc);	// ウィンドウプロシージャを指定
@@ -38,7 +38,7 @@ void Window::StaticInitialize() {
 	ShowWindow(hwnd, SW_SHOW);
 }
 
-bool Window::ProcessMessage() {
+bool Win32App::ProcessMessage() {
 	MSG msg{};
 
 	if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
@@ -53,7 +53,7 @@ bool Window::ProcessMessage() {
 	return true;
 }
 
-LRESULT Window::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
+LRESULT Win32App::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 	switch (msg) {
 		case WM_DESTROY:
 			PostQuitMessage(0);

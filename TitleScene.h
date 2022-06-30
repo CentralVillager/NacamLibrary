@@ -3,7 +3,6 @@
 #include "AbstractScene.h"
 #include "DirectXBase.h"
 #include "Sprite.h"
-#include "GameSequence.h"
 #include "InputManager.h"
 #include "Object3d.h"
 #include "FbxObject3d.h"

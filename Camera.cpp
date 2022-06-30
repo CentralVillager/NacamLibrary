@@ -1,5 +1,5 @@
 #include "Camera.h"
-#include "Window.h"
+#include "Win32App.h"
 
 using namespace DirectX;
 
@@ -34,7 +34,7 @@ void Camera::UpdateViewMatrix() {
 void Camera::UpdateViewProjection() {
 	mat_projection_ = XMMatrixPerspectiveFovLH(
 		XMConvertToRadians(60.0f),
-		static_cast<float>(Window::GetWindowWidth()) / Window::GetWindowHeight(),
+		static_cast<float>(Win32App::GetWindowWidth()) / Win32App::GetWindowHeight(),
 		0.1f, 1000.0f
 	);
 }

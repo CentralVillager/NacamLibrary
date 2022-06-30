@@ -16,14 +16,9 @@ private:
 	std::unique_ptr<Camera> camera_;
 
 	// テストパーティクル
+	std::unique_ptr<Emitter> contrail_1_;
+	std::unique_ptr<Emitter> contrail_2_;
 	std::unique_ptr<Emitter> emitter_1_;
-	std::unique_ptr<Emitter> emitter_2_;
-
-	// ImGui用受け箱
-	ParticleMember p_;
-	ParticleMember p_2_;
-	XMFLOAT3 range_;
-	int generate_num_;
 
 public:
 

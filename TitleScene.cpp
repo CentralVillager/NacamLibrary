@@ -1,7 +1,9 @@
 #include "TitleScene.h"
-#include "Window.h"
+#include "Win32App.h"
 #include "SceneManager.h"
 #include "BackBoardManager.h"
+#include "KeyboardInput.h"
+#include "ControllerInput.h"
 
 TitleScene::TitleScene() {
 
@@ -38,8 +40,8 @@ void TitleScene::Initialize() {
 	float center_y = quantum_drive_->GetTexSize().y / 2;
 
 	// ‰æ–Ê‚Ì’†S‚É”z’u
-	quantum_drive_->SetPosition({ Window::window_center_x_ - center_x,
-					   Window::window_center_y_ - center_y });
+	quantum_drive_->SetPosition({ Win32App::window_center_x_ - center_x,
+					   Win32App::window_center_y_ - center_y });
 
 	// ‰¹º‚ÌÄ¶
 	//main_->PlayWave(0.1f, AudioManager::LOOP, false);

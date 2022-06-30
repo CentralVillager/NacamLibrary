@@ -8,8 +8,9 @@ ParticleDemoScene::ParticleDemoScene() {
 	camera_ = make_unique<Camera>();
 
 	// パーティクルデータの生成
+	contrail_1_ = make_unique<Emitter>();
+	contrail_2_ = make_unique<Emitter>();
 	emitter_1_ = make_unique<Emitter>();
-	emitter_2_ = make_unique<Emitter>();
 }
 
 ParticleDemoScene::~ParticleDemoScene() {
@@ -26,19 +27,21 @@ void ParticleDemoScene::Initialize() {
 	Emitter::StaticInitialize();
 
 	// パーティクルの初期化
-	p_.position_ = { 10.0f, 0.0f, -50.0f };
-	p_.velocity_ = { 0.0f, 0.f, -1.0f };
-	p_.accel_ = { 0, 0.001f, 0 };
-	p_.life_ = 100;
-	p_.s_scale_ = 1.0f;
-	range_ = { 0.0f, 0.0f, 0.0f };
-	generate_num_ = 1;
+	contrail_1_->particle_args_.member_.position_ = { 10.0f, 0.0f, -50.0f };
+	contrail_1_->particle_args_.member_.velocity_ = { 0.0f, 0.f, -1.0f };
+	contrail_1_->particle_args_.member_.accel_ = { 0, 0.001f, 0 };
+	contrail_1_->particle_args_.member_.life_ = 100;
+	contrail_1_->particle_args_.member_.s_scale_ = 1.0f;
+	contrail_1_->particle_args_.pos_rand_ = { 0.0f, 0.0f, 0.0f };
+	contrail_1_->particle_args_.gene_num_ = 1;
 
-	p_2_.position_ = { -10.0f, 0.0f, -50.0f };
-	p_2_.velocity_ = { 0.0f, 0.f, -1.0f };
-	p_2_.accel_ = { 0, 0.001f, 0 };
-	p_2_.life_ = 100;
-	p_2_.s_scale_ = 1.0f;
+	contrail_2_->particle_args_.member_.position_ = { -10.0f, 0.0f, -50.0f };
+	contrail_2_->particle_args_.member_.velocity_ = { 0.0f, 0.f, -1.0f };
+	contrail_2_->particle_args_.member_.accel_ = { 0, 0.001f, 0 };
+	contrail_2_->particle_args_.member_.life_ = 100;
+	contrail_2_->particle_args_.member_.s_scale_ = 1.0f;
+	contrail_2_->particle_args_.pos_rand_ = { 0.0f, 0.0f, 0.0f };
+	contrail_2_->particle_args_.gene_num_ = 1;
 }
 
 void ParticleDemoScene::Finalize() {
@@ -57,69 +60,38 @@ void ParticleDemoScene::Update() {
 
 	camera_->Update();
 
+	if (KeyboardInput::PushKey(DIK_SPACE)) {
+
+		contrail_1_->particle_args_.member_.position_ = { 10.0f, 0.0f, -50.0f };
+		contrail_2_->particle_args_.member_.position_ = { -10.0f, 0.0f, -50.0f };
+	}
+
 	// パーティクルを生成
-	p_.position_.z += 1.0f;
-	p_2_.position_.z += 1.0f;
-	emitter_1_->GenerateParticle(p_, range_, generate_num_);
-	emitter_2_->GenerateParticle(p_2_, range_, generate_num_);
+	contrail_1_->particle_args_.member_.position_.z += 1.0f;
+	contrail_2_->particle_args_.member_.position_.z += 1.0f;
+
+	contrail_1_->GenerateParticle();
+	contrail_2_->GenerateParticle();
 }
 
 void ParticleDemoScene::Draw() {
 
 	// 描画
-	emitter_1_->Draw();
-	emitter_2_->Draw();
+	contrail_1_->Draw();
+	contrail_2_->Draw();
 }
 
 void ParticleDemoScene::DebugDraw() {
 
-	float pos[3] = {
+	/*Emitter::ParticleArgs *ptr = &contrail_1_->particle_args_;
+	ImGuiManager::SliderFloat3Helper("pos", ptr->member_.position_, -10.0f, 10.0f);
+	ImGuiManager::SliderFloat3Helper("range", ptr->pos_rand_, -5.0f, 5.0f);
+	ImGuiManager::SliderFloat3Helper("velocity", ptr->member_.velocity_, -5.0f, 5.0f);
+	ImGuiManager::SliderFloat3Helper("accel", ptr->member_.accel_, -5.0f, 5.0f);
+	ImGui::SliderFloat("scale", &ptr->member_.scale_, 0.1f, 10.0f);
+	ImGui::InputInt("life", &ptr->member_.life_, 1, 10000);
+	ImGuiManager::SliderUINTHelper("num", ptr->gene_num_, 0, 50);*/
 
-		p_.position_.x,
-		p_.position_.y,
-		p_.position_.z,
-	};
-	ImGui::SliderFloat3("pos", pos, -5.0f, 5.0f);
-	p_.position_.x = pos[0];
-	p_.position_.y = pos[1];
-	p_.position_.z = pos[2];
-
-	float range[3] = {
-
-		range_.x,
-		range_.y,
-		range_.z,
-	};
-	ImGui::SliderFloat3("range", range, -5.0f, 5.0f);
-	range_.x = range[0];
-	range_.y = range[1];
-	range_.z = range[2];
-
-	float vel[3] = {
-
-		p_.velocity_.x,
-		p_.velocity_.y,
-		p_.velocity_.z,
-	};
-	ImGui::SliderFloat3("velocity", vel, -1.0f, 1.0f);
-	p_.velocity_.x = vel[0];
-	p_.velocity_.y = vel[1];
-	p_.velocity_.z = vel[2];
-
-	float acc[3] = {
-
-		p_.accel_.x,
-		p_.accel_.y,
-		p_.accel_.z,
-	};
-	ImGui::SliderFloat3("accel", acc, -1.0f, 1.0f);
-	p_.accel_.x = acc[0];
-	p_.accel_.y = acc[1];
-	p_.accel_.z = acc[2];
-
-	ImGui::SliderFloat("scale", &p_.s_scale_, 0.1f, 10.0f);
-	ImGui::InputInt("life", &p_.life_, 1, 10000);
-	ImGui::SliderInt("num", &generate_num_, 0, 50);
-
-	emitter_1_->DebugDraw();
+	contrail_1_->DebugDraw("1");
+	contrail_2_->DebugDraw("2");
 }

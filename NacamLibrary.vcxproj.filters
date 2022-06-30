@@ -45,17 +45,11 @@
     <Filter Include="Application\Ui">
       <UniqueIdentifier>{370b9c51-dffa-45fb-8f60-e60501966e0b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\GameSequence">
-      <UniqueIdentifier>{b2af6edf-3eb0-40e7-ac80-ffb2ff142535}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Library\Model">
       <UniqueIdentifier>{5480a6d3-20a9-46ef-b4c0-86323d6b2f10}</UniqueIdentifier>
     </Filter>
     <Filter Include="NotUse">
       <UniqueIdentifier>{7e06c4f2-375b-40b0-baa0-9dcfcebcae9e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Library\WinAPI">
-      <UniqueIdentifier>{0968b96d-de9b-4276-be81-af931f62bf12}</UniqueIdentifier>
     </Filter>
     <Filter Include="Application\Utility">
       <UniqueIdentifier>{946c89b9-c8f2-4503-a4a8-26b7a7a49119}</UniqueIdentifier>
@@ -159,6 +153,12 @@
     <Filter Include="Library\DrawProc">
       <UniqueIdentifier>{da5d3ac7-42e0-4ee9-974a-f1245c2c5c07}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\Scene\ExecuteIndirectDemo">
+      <UniqueIdentifier>{0d11723b-fab3-488c-a8b9-6482732831eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\Win32App">
+      <UniqueIdentifier>{0968b96d-de9b-4276-be81-af931f62bf12}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -182,11 +182,8 @@
     <ClCompile Include="Ui.cpp">
       <Filter>Application\Ui</Filter>
     </ClCompile>
-    <ClCompile Include="GameSequence.cpp">
-      <Filter>Application\GameSequence</Filter>
-    </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>Library\WinAPI</Filter>
+    <ClCompile Include="Win32App.cpp">
+      <Filter>Library\Win32App</Filter>
     </ClCompile>
     <ClCompile Include="Utility.cpp">
       <Filter>Application\Utility</Filter>
@@ -332,6 +329,12 @@
     <ClCompile Include="Particle.cpp">
       <Filter>Application\Particle</Filter>
     </ClCompile>
+    <ClCompile Include="IndirectObject3d.cpp">
+      <Filter>Library\Object3d</Filter>
+    </ClCompile>
+    <ClCompile Include="ExecuteIndirectDemoScene.cpp">
+      <Filter>Application\Scene\ExecuteIndirectDemo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractScene.h">
@@ -355,11 +358,8 @@
     <ClInclude Include="Ui.h">
       <Filter>Application\Ui</Filter>
     </ClInclude>
-    <ClInclude Include="GameSequence.h">
-      <Filter>Application\GameSequence</Filter>
-    </ClInclude>
-    <ClInclude Include="Window.h">
-      <Filter>Library\WinAPI</Filter>
+    <ClInclude Include="Win32App.h">
+      <Filter>Library\Win32App</Filter>
     </ClInclude>
     <ClInclude Include="Utility.h">
       <Filter>Application\Utility</Filter>
@@ -511,6 +511,12 @@
     <ClInclude Include="Emitter.h">
       <Filter>Application\Particle</Filter>
     </ClInclude>
+    <ClInclude Include="IndirectObject3d.h">
+      <Filter>Library\Object3d</Filter>
+    </ClInclude>
+    <ClInclude Include="ExecuteIndirectDemoScene.h">
+      <Filter>Application\Scene\ExecuteIndirectDemo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">
@@ -570,6 +576,9 @@
       <Filter>シェーダファイル</Filter>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\PostEffectVS.hlsl">
+      <Filter>シェーダファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="ParticleCS.hlsl">
       <Filter>シェーダファイル</Filter>
     </FxCompile>
   </ItemGroup>

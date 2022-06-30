@@ -3,7 +3,7 @@
 #include <dxgi1_6.h>
 #include <vector>
 #include <wrl.h>
-#include "Window.h"
+#include "Win32App.h"
 #include "Singleton.h"
 
 using namespace std;

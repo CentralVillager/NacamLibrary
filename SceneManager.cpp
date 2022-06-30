@@ -10,6 +10,7 @@
 #include "PostEffectDemoScene.h"
 #include "ParticleDemoScene.h"
 #include "RepulsionDemoScene.h"
+#include "ExecuteIndirectDemoScene.h"
 #include "ImGuiManager.h"
 
 stack<shared_ptr<AbstractScene>> SceneManager::scene_stack_;
@@ -62,6 +63,10 @@ void SceneManager::SetScene(Scene scene_name) {
 	} else if (scene_name == Scene::REPULSION_DEMO) {
 
 		scene_stack_.push(make_shared<RepulsionDemoScene>());
+
+	} else if (scene_name == Scene::EXECUTE_INDIRECT_DEMO) {
+
+		scene_stack_.push(make_shared<ExecuteIndirectDemoScene>());
 	}
 
 	// í«â¡ÇµÇΩÉVÅ[ÉìÇÃèâä˙âª

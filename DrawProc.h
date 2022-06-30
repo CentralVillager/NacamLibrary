@@ -6,7 +6,7 @@
 #include "DirectXBase.h"
 
 class DirectXBase;
-class Window;
+class Win32App;
 
 class DrawProc : public Singleton<DrawProc> {
 	friend Singleton<DrawProc>;

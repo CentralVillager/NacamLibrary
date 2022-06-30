@@ -17,8 +17,8 @@ void SplashScene::Initialize() {
 	float center_x = logo_->GetTexSize().x / 2;
 	float center_y = logo_->GetTexSize().y / 2;
 
-	logo_->SetPosition({ Window::window_center_x_ - center_x,
-					   Window::window_center_y_ - center_y });
+	logo_->SetPosition({ Win32App::window_center_x_ - center_x,
+					   Win32App::window_center_y_ - center_y });
 
 	display_time_ = 100;
 }

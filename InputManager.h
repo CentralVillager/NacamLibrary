@@ -2,7 +2,7 @@
 #define DIRECTINPUT_VERSION 0x0800
 
 #include <dinput.h>
-#include "Window.h"
+#include "Win32App.h"
 #include <wrl.h>
 #include "Singleton.h"
 

@@ -22,60 +22,16 @@ void Emitter::Draw() {
 	}
 }
 
-void Emitter::DebugDraw() {
+void Emitter::DebugDraw(const string &name) {
 
-	/*float pos[3] = {
-
-		p_.position_.x,
-		p_.position_.y,
-		p_.position_.z,
-	};
-	ImGui::SliderFloat3("pos", pos, -5.0f, 5.0f);
-	p_.position_.x = pos[0];
-	p_.position_.y = pos[1];
-	p_.position_.z = pos[2];
-
-	float range[3] = {
-
-		range_.x,
-		range_.y,
-		range_.z,
-	};
-	ImGui::SliderFloat3("range", range, -5.0f, 5.0f);
-	range_.x = range[0];
-	range_.y = range[1];
-	range_.z = range[2];
-
-	float vel[3] = {
-
-		p_.velocity_.x,
-		p_.velocity_.y,
-		p_.velocity_.z,
-	};
-	ImGui::SliderFloat3("velocity", vel, -1.0f, 1.0f);
-	p_.velocity_.x = vel[0];
-	p_.velocity_.y = vel[1];
-	p_.velocity_.z = vel[2];
-
-	float acc[3] = {
-
-		p_.accel_.x,
-		p_.accel_.y,
-		p_.accel_.z,
-	};
-	ImGui::SliderFloat3("accel", acc, -1.0f, 1.0f);
-	p_.accel_.x = acc[0];
-	p_.accel_.y = acc[1];
-	p_.accel_.z = acc[2];
-
-	ImGui::SliderFloat("scale", &p_.s_scale_, 0.1f, 10.0f);
-	ImGui::InputInt("life", &p_.life_, 1, 10000);
-	ImGui::SliderInt("GenerateIntervel", &interval_, 0, 100);*/
-
-	for (auto &i : particles_) {
-
-		i.DebugDraw();
-	}
+	ImGuiManager::SliderFloat3Helper("pos", particle_args_.member_.position_, -10.0f, 10.0f);
+	ImGuiManager::SliderFloat3Helper("range", particle_args_.pos_rand_, -5.0f, 5.0f);
+	ImGuiManager::SliderFloat3Helper("velocity", particle_args_.member_.velocity_, -5.0f, 5.0f);
+	ImGuiManager::SliderFloat3Helper("accel", particle_args_.member_.accel_, -5.0f, 5.0f);
+	ImGui::SliderFloat("scale", &particle_args_.member_.scale_, 0.1f, 10.0f);
+	ImGui::InputInt("life", &particle_args_.member_.life_, 1, 10000);
+	ImGuiManager::SliderUINTHelper("num", particle_args_.gene_num_, 0, 50);
+	ImGui::Text("");
 }
 
 ParticleMember Emitter::GenerateValue(ParticleMember p, XMFLOAT3 rand_range) {
@@ -117,9 +73,15 @@ void Emitter::Add(ParticleMember p) {
 void Emitter::GenerateParticle(ParticleMember p, XMFLOAT3 rand_range, int num_per_frame) {
 
 	// 1フレーム中に指定された数を生成する
-	for (num_per_frame; num_per_frame > 0; num_per_frame--) {
+	/*for (num_per_frame; num_per_frame > 0; num_per_frame--) {
 
 		Add(GenerateValue(p, rand_range));
+	}*/
+
+	// 1フレーム中に指定された数を生成する
+	for (UINT count = particle_args_.gene_num_; count > 0; count--) {
+
+		Add(GenerateValue(particle_args_.member_, particle_args_.pos_rand_));
 	}
 
 	// 寿命が尽きた粒をコンテナから削除
@@ -127,6 +89,27 @@ void Emitter::GenerateParticle(ParticleMember p, XMFLOAT3 rand_range, int num_pe
 		return x.GetIsDead(); }
 	);
 
+	// 全てのパーティクルを更新
+	for (auto &i : particles_) {
+
+		i.Update();
+	}
+}
+
+void Emitter::GenerateParticle() {
+
+	// 1フレーム中に指定された数を生成する
+	for (UINT count = particle_args_.gene_num_; count > 0; count--) {
+
+		Add(GenerateValue(particle_args_.member_, particle_args_.pos_rand_));
+	}
+
+	// 寿命が尽きた粒をコンテナから削除
+	particles_.remove_if([](Particle &x) {
+		return x.GetIsDead(); }
+	);
+
+	// 全てのパーティクルを更新
 	for (auto &i : particles_) {
 
 		i.Update();

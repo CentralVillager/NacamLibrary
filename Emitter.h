@@ -16,6 +16,22 @@ class Emitter {
 
 public:
 
+	// パーティクル生成に必要な要素
+	struct ParticleArgs {
+
+		// パーティクルの構成要素
+		ParticleMember member_;
+
+		// 生成位置の乱数の振れ幅
+		XMFLOAT3 pos_rand_;
+
+		// 生成する個数
+		UINT gene_num_;
+
+	}particle_args_;
+
+public:
+
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -28,6 +44,7 @@ public:
 	/// <param name="rand_range">位置のランダム幅</param>
 	/// <param name="num_per_frame">生成する数 / f</param>
 	void GenerateParticle(ParticleMember p, XMFLOAT3 rand_range, int num_per_frame);
+	void GenerateParticle();
 
 	/// <summary>
 	/// 描画
@@ -37,7 +54,7 @@ public:
 	/// <summary>
 	/// デバッグ用描画
 	/// </summary>
-	void DebugDraw();
+	void DebugDraw(const string &name);
 
 private:
 

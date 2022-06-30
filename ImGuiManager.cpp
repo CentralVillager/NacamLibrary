@@ -1,5 +1,5 @@
 #include "ImGuiManager.h"
-#include "Window.h"
+#include "Win32App.h"
 
 template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
@@ -14,7 +14,7 @@ void ImGuiManager::Initialize(ID3D12Device *device) {
 	}
 
 	// ImGui‚ÌWindows—p‚Ì‰Šú‰»
-	bool bln_result = ImGui_ImplWin32_Init(Window::GetHwnd());
+	bool bln_result = ImGui_ImplWin32_Init(Win32App::GetHwnd());
 	if (!bln_result) {
 		assert(0);
 	}
@@ -68,4 +68,24 @@ ComPtr<ID3D12DescriptorHeap> ImGuiManager::CreateDescriptorHeapForImgui(ID3D12De
 
 ComPtr<ID3D12DescriptorHeap> ImGuiManager::GetHeapForImgui() {
 	return heap_for_imgui_;
+}
+
+void ImGuiManager::SliderUINTHelper(const char *label, UINT &args, float min, float max) {
+
+	int temp = args;
+
+	if (temp < 0) { temp = 0; }
+
+	ImGui::SliderInt(label, &temp, min, max);
+}
+
+void ImGuiManager::SliderFloat3Helper(const char *label, DirectX::XMFLOAT3 &args, float min, float max) {
+
+	float temp[3] = { args.x, args.y, args.z, };
+
+	ImGui::SliderFloat3(label, temp, min, max);
+
+	args.x = temp[0];
+	args.y = temp[1];
+	args.z = temp[2];
 }

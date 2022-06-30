@@ -1,6 +1,6 @@
 #include "DrawProc.h"
 #include "DirectXBase.h"
-#include "Window.h"
+#include "Win32App.h"
 
 UINT DrawProc::back_buffer_index_;
 float DrawProc::clear_color_[4] = { 0.1f, 0.1f, 0.1f, 0.0f };
@@ -50,8 +50,8 @@ void DrawProc::PreDraw(DirectXBase *dx_base) {
 		&CD3DX12_VIEWPORT(
 			0.0f,
 			0.0f,
-			float(Window::GetWindowWidth()),
-			float(Window::GetWindowHeight())
+			float(Win32App::GetWindowWidth()),
+			float(Win32App::GetWindowHeight())
 		)
 	);
 
@@ -61,8 +61,8 @@ void DrawProc::PreDraw(DirectXBase *dx_base) {
 		&CD3DX12_RECT(
 			long(0.0f),
 			long(0.0f),
-			Window::GetWindowWidth(),
-			Window::GetWindowHeight()
+			Win32App::GetWindowWidth(),
+			Win32App::GetWindowHeight()
 		)
 	);
 

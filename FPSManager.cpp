@@ -1,7 +1,7 @@
 #include "FPSManager.h"
 #include <thread>
 #include <chrono>
-#include "Window.h"
+#include "Win32App.h"
 
 #pragma comment(lib, "winmm.lib")
 
@@ -69,7 +69,7 @@ void FpsManager::ObserveFps() {
 		_itow_s(frame_count, fps, 10);
 		wchar_t moji[] = L"FPS";
 		wcscat_s(fps, moji);
-		SetWindowText(Window::GetHwnd(), fps);
+		SetWindowText(Win32App::GetHwnd(), fps);
 
 		prev_time = now_time;
 		frame_count = 0;

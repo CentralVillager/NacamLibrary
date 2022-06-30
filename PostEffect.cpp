@@ -1,5 +1,5 @@
 #include "PostEffect.h"
-#include "Window.h"
+#include "Win32App.h"
 #include <d3dcompiler.h>
 #include "KeyboardInput.h"
 
@@ -232,8 +232,8 @@ void PostEffect::Initialize() {
 	// テクスチャリソース生成
 	CD3DX12_RESOURCE_DESC tex_res_desc = CD3DX12_RESOURCE_DESC::Tex2D(
 		DXGI_FORMAT_R8G8B8A8_UNORM,
-		Window::window_width_,
-		static_cast<UINT>(Window::window_height_),
+		Win32App::window_width_,
+		static_cast<UINT>(Win32App::window_height_),
 		1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET
 	);
 
@@ -255,13 +255,13 @@ void PostEffect::Initialize() {
 	// テクスチャを赤クリア
 	//{
 	//	// 画素数(1280 x 720 = 9216000 pix)
-	//	const UINT pixel_count = Window::window_width_ * Window::window_height_;
+	//	const UINT pixel_count = Win32App::window_width_ * Win32App::window_height_;
 
 	//	// 画像1行分のデータサイズ
-	//	const UINT row_pitch = sizeof(UINT) * Window::window_width_;
+	//	const UINT row_pitch = sizeof(UINT) * Win32App::window_width_;
 
 	//	// 画像全体のデータサイズ
-	//	const UINT depth_pitch = row_pitch * Window::window_height_;
+	//	const UINT depth_pitch = row_pitch * Win32App::window_height_;
 
 	//	// 画像イメージ
 	//	UINT *img = new UINT[pixel_count];
@@ -327,8 +327,8 @@ void PostEffect::Initialize() {
 	// デプスバッファリソース設定
 	CD3DX12_RESOURCE_DESC depth_res_desc = CD3DX12_RESOURCE_DESC::Tex2D(
 		DXGI_FORMAT_D32_FLOAT,
-		Window::window_width_,
-		Window::window_height_,
+		Win32App::window_width_,
+		Win32App::window_height_,
 		1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL
 	);
 
@@ -450,8 +450,8 @@ void PostEffect::PreDrawScene() {
 
 	for (int i = 0; i < 2; i++) {
 
-		viewports[i] = CD3DX12_VIEWPORT(0.0f, 0.0f, Window::window_width_, Window::window_height_);
-		scissor_rects[i] = CD3DX12_RECT(0, 0, Window::window_width_, Window::window_height_);
+		viewports[i] = CD3DX12_VIEWPORT(0.0f, 0.0f, Win32App::window_width_, Win32App::window_height_);
+		scissor_rects[i] = CD3DX12_RECT(0, 0, Win32App::window_width_, Win32App::window_height_);
 	}
 
 	// ビューポートの設定

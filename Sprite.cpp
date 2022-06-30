@@ -3,7 +3,7 @@
 #include <d3dx12.h>
 #include <d3dcompiler.h>
 #include <DirectXTex.h>
-#include "Window.h"
+#include "Win32App.h"
 
 #pragma comment(lib, "d3dcompiler.lib")
 
@@ -186,7 +186,7 @@ bool Sprite::StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList *c
 	// 射影行列計算
 	matProjection = XMMatrixOrthographicOffCenterLH(
 		0.0f,
-		float(Window::GetWindowWidth()), float(Window::GetWindowHeight()),
+		float(Win32App::GetWindowWidth()), float(Win32App::GetWindowHeight()),
 		0.0f, 0.0f, 1.0f);
 
 	// デスクリプタヒープを生成	

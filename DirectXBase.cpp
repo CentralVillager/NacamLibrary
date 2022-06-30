@@ -1,5 +1,5 @@
 #include "DirectXBase.h"
-#include "Window.h"
+#include "Win32App.h"
 #include <dxgi.h>
 #include <string>
 
@@ -130,7 +130,7 @@ void DirectXBase::GenerateSwapChain() {
 	// スワップチェインの作成
 	dxgiFactory->CreateSwapChainForHwnd(
 		cmdQueue.Get(),
-		Window::GetHwnd(),
+		Win32App::GetHwnd(),
 		&swapchainDesc,
 		nullptr,
 		nullptr,
@@ -172,8 +172,8 @@ void DirectXBase::GenerateDepthBuffer() {
 	// 深度バッファリソース設定
 	CD3DX12_RESOURCE_DESC depthResDesc = CD3DX12_RESOURCE_DESC::Tex2D(
 		DXGI_FORMAT_D32_FLOAT,
-		Window::GetWindowWidth(),
-		Window::GetWindowHeight(),
+		Win32App::GetWindowWidth(),
+		Win32App::GetWindowHeight(),
 		1,
 		0,
 		1,

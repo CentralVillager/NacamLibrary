@@ -2,8 +2,8 @@
 #include <Windows.h>
 #include "Singleton.h"
 
-class Window final : public Singleton<Window> {
-	friend Singleton<Window>;
+class Win32App final : public Singleton<Win32App> {
+	friend Singleton<Win32App>;
 
 	// ウィンドウクラス
 	static WNDCLASSEX w;

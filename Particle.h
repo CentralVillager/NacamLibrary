@@ -1,12 +1,12 @@
 #pragma once
 #include <DirectXMath.h>
 #include "Object3d.h"
+#include "IndirectObject3d.h"
 #include "Model.h"
 
 // パーティクル一粒の構成要素
 struct ParticleMember {
 	using XMFLOAT3 = DirectX::XMFLOAT3;
-
 
 	// 座標
 	XMFLOAT3 position_ = {};
@@ -40,6 +40,7 @@ class Particle {
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 
 	std::unique_ptr<Object3d> object_;
+	//std::unique_ptr<IndirectObject3d> object_;
 
 private:
 

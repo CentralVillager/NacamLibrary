@@ -29,18 +29,18 @@ void main(
     for (uint i = 0; i < vnum; i++)
     {
         //float4 offset = mul(mat_billboard, offset_array[i]);
-        float4 offset;
+  //      float4 offset;
         
-        // 中心からのオフセットをスケーリング
-        offset = offset_array[i] * input[0].scale;
-        // 中心からのオフセットをビルボード回転(モデル座標)
-        offset = mul(mat_billboard, offset);
+  //      // 中心からのオフセットをスケーリング
+  //      offset = offset_array[i] * input[0].scale;
+  //      // 中心からのオフセットをビルボード回転(モデル座標)
+  //      offset = mul(mat_billboard, offset);
         
-        element.svpos = input[0].pos + offset;
+  //      element.svpos = input[0].pos + offset;
 
-        element.svpos = mul(mat, element.svpos);
-		//element.uv = float2(0.5f, 0.5f);
-        element.uv = uv_array[i];
-        output.Append(element);
+  //      element.svpos = mul(mat, element.svpos);
+		////element.uv = float2(0.5f, 0.5f);
+  //      element.uv = uv_array[i];
+  //      output.Append(element);
     }
 }

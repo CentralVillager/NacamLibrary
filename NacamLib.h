@@ -2,6 +2,7 @@
 #include "DirectXBase.h"
 #include "Singleton.h"
 #include <memory>
+#include "SceneManager.h"
 
 #include "PostEffect.h"
 
@@ -28,21 +29,41 @@ public:
 
 	/* 絶対に必要な関数 */
 
-	void NacamLib_Initialize();
+	/// <summary>
+	/// 初期化処理
+	/// </summary>
+	void NacamLib_Initialize(Scene initial_scene_name);
+
+	/// <summary>
+	/// 終了処理
+	/// </summary>
 	void NacamLib_Finalize();
-	void NacamLib_Update();
+
+	/// <summary>
+	/// 更新処理
+	/// </summary>
+	/// <param name="fps">fps制限</param>
+	void NacamLib_Update(int fps);
+
+	/// <summary>
+	/// 描画処理
+	/// </summary>
 	void NacamLib_Draw();
+
+	/// <summary>
+	/// 描画後処理
+	/// </summary>
 	void NacamLib_PostDraw();
 	void NacamLib_DebugDraw();
 
 private:
 
-	void WindowInitialize();
+	void Win32AppInitialize();
 	void DirectXInitialize();
 	void InputInitialize();
 	void GameObjectInitialize();
 	void ImGuiInitialize();
-	void SceneInitialize();
+	void SceneInitialize(Scene initial_scene_name);
 
 public:
 

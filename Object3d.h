@@ -62,7 +62,7 @@ public: // 静的メンバ関数
 	/// <returns></returns>
 	static Object3d *Create();
 
-private: // 静的メンバ変数
+public: // 静的メンバ変数
 	// デバイス
 	static ComPtr<ID3D12Device> device;
 	// デスクリプタサイズ
@@ -181,6 +181,10 @@ private: // メンバ変数
 	static Camera *cam_ptr_;
 
 public:
+
+	const ComPtr<ID3D12Resource> &GetMaterialConstBuffer() { return material_const_buffer_; }
+	const ComPtr<ID3D12Resource> &GetMatrixConstBuffer() { return matrix_const_buffer_; }
+
 	/// <summary>
 	/// モデルデータと3Dオブジェクトの紐づけ
 	/// </summary>
