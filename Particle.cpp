@@ -68,3 +68,21 @@ const DirectX::XMFLOAT3 operator+(const DirectX::XMFLOAT3 &lhs, const DirectX::X
 	result.z = lhs.z + rhs.z;
 	return result;
 }
+
+const DirectX::XMFLOAT3 operator-(const DirectX::XMFLOAT3 &lhs, const DirectX::XMFLOAT3 &rhs) {
+	
+	DirectX::XMFLOAT3 result;
+	result.x = lhs.x - rhs.x;
+	result.y = lhs.y - rhs.y;
+	result.z = lhs.z - rhs.z;
+	return result;
+}
+
+const DirectX::XMFLOAT3 operator/(const DirectX::XMFLOAT3 &lhs, const int &rhs) {
+	
+	DirectX::XMFLOAT3 result;
+	result.x = lhs.x / rhs;
+	result.y = lhs.y / rhs;
+	result.z = lhs.z / rhs;
+	return result;
+}

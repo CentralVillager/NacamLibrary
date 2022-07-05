@@ -365,7 +365,7 @@ void PostEffect::Initialize() {
 
 void PostEffect::Draw() {
 
-	if (KeyboardInput::TriggerKey(DIK_1)) {
+	/*if (KeyboardInput::TriggerKey(DIK_1)) {
 
 		static int tex = 0;
 
@@ -380,7 +380,7 @@ void PostEffect::Draw() {
 			&srv_desc,
 			desc_heap_SRV_->GetCPUDescriptorHandleForHeapStart()
 		);
-	}
+	}*/
 
 	// 定数バッファにデータ転送
 	ConstBufferData *constMap = nullptr;

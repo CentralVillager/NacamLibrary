@@ -438,7 +438,11 @@ void ExecuteIndirectDemoScene::CreateCommandBuffer() {
 	D3D12_GPU_VIRTUAL_ADDRESS matrix_gpu_address = matrix_const_buffer_->GetGPUVirtualAddress();
 	D3D12_GPU_VIRTUAL_ADDRESS material_gpu_address = material_const_buffer_->GetGPUVirtualAddress();
 	UINT command_index = 0;
-	UINT vertex_count = model_->GetVertices().size();
+	UINT vertex_count = (UINT)(model_->GetVertices().size());
+
+	/*IndirectCommand *command_map = nullptr;
+	command_buffer_->Map(0, nullptr, reinterpret_cast<void **>(&commands));*/
+	//command_buffer_->Map(0, nullptr, reinterpret_cast<void **>(command_map));
 
 	for (UINT frame = 0; frame < frame_count_; frame++) {
 		for (UINT n = 0; n < all_particle_num_; n++) {
@@ -460,6 +464,7 @@ void ExecuteIndirectDemoScene::CreateCommandBuffer() {
 			material_gpu_address += sizeof(Model::MaterialConstBufferData);
 		}
 	}
+	//command_buffer_->Unmap(0, nullptr);
 
 	// データを中間アップロードヒープにコピーし、その後、アップロードヒープからコマンドバッファへのコピーをスケジュールします。
 	// アップロードヒープからコマンドバッファにコピーする。
@@ -469,7 +474,7 @@ void ExecuteIndirectDemoScene::CreateCommandBuffer() {
 	command_data.SlicePitch = command_data.RowPitch;
 
 	UpdateSubresources<1>(command_list_.Get(), command_buffer_.Get(), command_buffer_upload.Get(), 0, 0, 1, &command_data);
-	command_list_->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(command_buffer_.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));
+	//command_list_->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(command_buffer_.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));
 
 	// コマンドバッファ用のSRVを生成
 	D3D12_SHADER_RESOURCE_VIEW_DESC srv_desc = {};

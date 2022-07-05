@@ -20,7 +20,7 @@ void AudioManager::StaticInitialize() {
 	result = x_audio2_->CreateMasteringVoice(&master_voice_);
 }
 
-void AudioManager::LoadWaveFile(const std::string &directory, const const std::string &file_name) {
+void AudioManager::LoadWaveFile(const std::string &directory, const std::string &file_name) {
 	HRESULT result;
 
 	std::string &full_path = directory + file_name + ".wav";

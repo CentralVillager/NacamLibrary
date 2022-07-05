@@ -6,6 +6,7 @@ template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 ComPtr<ID3D12DescriptorHeap> ImGuiManager::heap_for_imgui_;
 
 void ImGuiManager::Initialize(ID3D12Device *device) {
+
 	// ImGuiの初期化
 	heap_for_imgui_ = CreateDescriptorHeapForImgui(device);
 
@@ -30,6 +31,7 @@ void ImGuiManager::Initialize(ID3D12Device *device) {
 }
 
 void ImGuiManager::PreDraw() {
+
 	// ImGui描画前処理
 	ImGui_ImplDX12_NewFrame();
 	ImGui_ImplWin32_NewFrame();
@@ -41,6 +43,7 @@ void ImGuiManager::PreDraw() {
 }
 
 void ImGuiManager::Draw(ID3D12GraphicsCommandList *cmd_list) {
+
 	ImGui::End();
 
 	// ImGuiウィンドウの描画
@@ -52,6 +55,7 @@ void ImGuiManager::Draw(ID3D12GraphicsCommandList *cmd_list) {
 }
 
 ComPtr<ID3D12DescriptorHeap> ImGuiManager::CreateDescriptorHeapForImgui(ID3D12Device *device) {
+
 	ComPtr<ID3D12DescriptorHeap> ret;
 
 	D3D12_DESCRIPTOR_HEAP_DESC desc = {};
@@ -67,25 +71,7 @@ ComPtr<ID3D12DescriptorHeap> ImGuiManager::CreateDescriptorHeapForImgui(ID3D12De
 }
 
 ComPtr<ID3D12DescriptorHeap> ImGuiManager::GetHeapForImgui() {
+
 	return heap_for_imgui_;
 }
 
-void ImGuiManager::SliderUINTHelper(const char *label, UINT &args, float min, float max) {
-
-	int temp = args;
-
-	if (temp < 0) { temp = 0; }
-
-	ImGui::SliderInt(label, &temp, min, max);
-}
-
-void ImGuiManager::SliderFloat3Helper(const char *label, DirectX::XMFLOAT3 &args, float min, float max) {
-
-	float temp[3] = { args.x, args.y, args.z, };
-
-	ImGui::SliderFloat3(label, temp, min, max);
-
-	args.x = temp[0];
-	args.y = temp[1];
-	args.z = temp[2];
-}

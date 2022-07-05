@@ -1,59 +1,53 @@
 #include "Emitter.h"
 #include "Utility.h"
 #include "ImGuiManager.h"
+#include <cmath>
 
 using namespace DirectX;
 
 std::unique_ptr<Model> Emitter::model_ = nullptr;
 
-void Emitter::StaticInitialize() {
-
-	// モデルデータの読み込みと生成
-	model_ = make_unique<Model>();
-	model_->LoadObjModel("Resources/Ball/", "smooth_ball.obj", "smooth_ball.mtl");
-}
-
-void Emitter::Draw() {
-
-	// 全てのパーティクルを描画
-	for (auto &i : particles_) {
-
-		i.Draw();
-	}
-}
-
-void Emitter::DebugDraw(const string &name) {
-
-	ImGuiManager::SliderFloat3Helper("pos", particle_args_.member_.position_, -10.0f, 10.0f);
-	ImGuiManager::SliderFloat3Helper("range", particle_args_.pos_rand_, -5.0f, 5.0f);
-	ImGuiManager::SliderFloat3Helper("velocity", particle_args_.member_.velocity_, -5.0f, 5.0f);
-	ImGuiManager::SliderFloat3Helper("accel", particle_args_.member_.accel_, -5.0f, 5.0f);
-	ImGui::SliderFloat("scale", &particle_args_.member_.scale_, 0.1f, 10.0f);
-	ImGui::InputInt("life", &particle_args_.member_.life_, 1, 10000);
-	ImGuiManager::SliderUINTHelper("num", particle_args_.gene_num_, 0, 50);
-	ImGui::Text("");
-}
-
-ParticleMember Emitter::GenerateValue(ParticleMember p, XMFLOAT3 rand_range) {
+ParticleMember Emitter::GenerateValue(EmitterArgs emitter) {
 
 	using namespace NacamUtility;
 
-	XMFLOAT3 pos = GenerateRandom({ p.position_.x - rand_range.x, p.position_.y - rand_range.y, p.position_.z - rand_range.z }, { p.position_.x + rand_range.x, p.position_.y + rand_range.y, p.position_.z + rand_range.z });
+	{
+		// マイナス防止
+		emitter.pos_rand_.x = fabs(emitter.pos_rand_.x);
+		emitter.pos_rand_.y = fabs(emitter.pos_rand_.y);
+		emitter.pos_rand_.z = fabs(emitter.pos_rand_.z);
 
-	float range = 0.1f;
-	XMFLOAT3 vel = GenerateRandom({ p.velocity_.x - range, p.velocity_.y - range, p.velocity_.z - range }, { p.velocity_.x + range, p.velocity_.y + range, p.velocity_.z + range });
+		// 位置のランダム値を取得
+		XMFLOAT3 pos_rand = GenerateRandom((emitter.pos_rand_ / 2) - emitter.pos_rand_, emitter.pos_rand_ / 2);
+
+		// ランダム値を位置に加算
+		emitter.particle.position_ = emitter.particle.position_ + pos_rand;
+	}
+
+	{
+		// マイナス防止
+		emitter.vel_rand_.x = fabs(emitter.vel_rand_.x);
+		emitter.vel_rand_.y = fabs(emitter.vel_rand_.y);
+		emitter.vel_rand_.z = fabs(emitter.vel_rand_.z);
+
+		// 速度のランダム値を取得
+		XMFLOAT3 vel_rand = GenerateRandom((emitter.vel_rand_ / 2) - emitter.vel_rand_, emitter.vel_rand_ / 2);
+
+		// ランダム値を速度に加算
+		emitter.particle.velocity_ = emitter.particle.velocity_ + vel_rand;
+	}
 
 	XMFLOAT3 acc{};
 	acc.y = 0.001f;
 
+	// 設定された値で要素を作成
 	ParticleMember _p{};
-	_p.position_ = pos;
-	_p.velocity_ = vel;
+	_p.position_ = emitter.particle.position_;
+	_p.velocity_ = emitter.particle.velocity_;
 	_p.accel_ = acc;
-	_p.scale_ = p.s_scale_;
-	_p.s_scale_ = p.s_scale_;
+	_p.scale_ = _p.s_scale_ = emitter.particle.s_scale_;
 	_p.e_scale_ = 0.0f;
-	_p.life_ = p.life_;
+	_p.life_ = emitter.particle.life_;
 
 	return _p;
 }
@@ -70,24 +64,34 @@ void Emitter::Add(ParticleMember p) {
 	p_.Initialize(model_.get(), p);
 }
 
-void Emitter::GenerateParticle(ParticleMember p, XMFLOAT3 rand_range, int num_per_frame) {
+void Emitter::StaticInitialize() {
 
-	// 1フレーム中に指定された数を生成する
-	/*for (num_per_frame; num_per_frame > 0; num_per_frame--) {
+	// モデルデータの読み込みと生成
+	model_ = make_unique<Model>();
+	model_->LoadObjModel("Resources/Ball/", "smooth_ball.obj", "smooth_ball.mtl");
+}
 
-		Add(GenerateValue(p, rand_range));
-	}*/
+void Emitter::GenerateParticle() {
 
-	// 1フレーム中に指定された数を生成する
-	for (UINT count = particle_args_.gene_num_; count > 0; count--) {
+	// 寿命を使用する設定なら
+	if (emitter_args_.use_life_ && emitter_args_.life_ > 0) {
 
-		Add(GenerateValue(particle_args_.member_, particle_args_.pos_rand_));
+		// 寿命を削る
+		emitter_args_.life_--;
+	}
+
+	// 寿命を迎えていなければ && 終了命令が来ていなければ
+	if (emitter_args_.life_ > 0 && !emitter_args_.is_dead_) {
+
+		// 1フレーム中に指定された数を生成する
+		for (UINT count = emitter_args_.gene_num_; count > 0; count--) {
+
+			Add(GenerateValue(emitter_args_));
+		}
 	}
 
 	// 寿命が尽きた粒をコンテナから削除
-	particles_.remove_if([](Particle &x) {
-		return x.GetIsDead(); }
-	);
+	particles_.remove_if([](Particle &x) { return x.GetIsDead(); });
 
 	// 全てのパーティクルを更新
 	for (auto &i : particles_) {
@@ -96,22 +100,58 @@ void Emitter::GenerateParticle(ParticleMember p, XMFLOAT3 rand_range, int num_pe
 	}
 }
 
-void Emitter::GenerateParticle() {
+void Emitter::PrepareTerminate() {
 
-	// 1フレーム中に指定された数を生成する
-	for (UINT count = particle_args_.gene_num_; count > 0; count--) {
+	// 終了フラグが立っていなかったら
+	if (!emitter_args_.is_dead_) {
 
-		Add(GenerateValue(particle_args_.member_, particle_args_.pos_rand_));
+		// 終了フラグを立たせる
+		emitter_args_.is_dead_ = true;
+	}
+}
+
+bool Emitter::NoticeCanTerminate() {
+
+	// パーティクルコンテナが空になったら
+	if (particles_.empty()) {
+
+		// 終了準備が出来たと知らせる
+		return true;
 	}
 
-	// 寿命が尽きた粒をコンテナから削除
-	particles_.remove_if([](Particle &x) {
-		return x.GetIsDead(); }
-	);
+	return false;
+}
 
-	// 全てのパーティクルを更新
+void Emitter::Draw() {
+
+	// 全てのパーティクルを描画
 	for (auto &i : particles_) {
 
-		i.Update();
+		i.Draw();
 	}
+}
+
+void Emitter::DebugDraw(const string &name) {
+
+	ImGuiManager::DragFloat3("pos", emitter_args_.particle.position_, 1.0f, -10.0f, 1000.0f);
+	ImGuiManager::SliderFloat3("range", emitter_args_.pos_rand_, 0.0f, 100.0f);
+	ImGuiManager::DragFloat3("velocity", emitter_args_.particle.velocity_, 0.1f, -5.0f, 5.0f);
+	ImGui::DragFloat("scale", &emitter_args_.particle.s_scale_, 0.1f, 0.1f, 50.0f);
+	ImGui::DragInt("life", &emitter_args_.particle.life_, 1.0f, 0, 1000);
+	ImGuiManager::SliderUINT("num", emitter_args_.gene_num_, 0, 50);
+	ImGui::Text("%d", emitter_args_.life_);
+	ImGui::Text("");	// 改行
+}
+
+void Emitter::DebugDraw() {
+
+	ImGuiManager::DragFloat3("pos", emitter_args_.particle.position_, 1.0f, -10.0f, 1000.0f);
+	ImGuiManager::SliderFloat3("range", emitter_args_.pos_rand_, 0.0f, 100.0f);
+	ImGuiManager::DragFloat3("velocity", emitter_args_.particle.velocity_, 0.1f, -5.0f, 5.0f);
+	ImGuiManager::SliderFloat3("vel_range", emitter_args_.vel_rand_, 0.0f, 1.0f);
+	ImGui::DragFloat("scale", &emitter_args_.particle.s_scale_, 0.1f, 0.1f, 50.0f);
+	ImGui::DragInt("life", &emitter_args_.particle.life_, 1.0f, 0, 1000);
+	ImGuiManager::SliderUINT("num", emitter_args_.gene_num_, 0, 50);
+	ImGui::Text("%d", emitter_args_.life_);
+	ImGui::Text("");	// 改行
 }

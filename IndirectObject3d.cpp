@@ -305,7 +305,7 @@ void IndirectObject3d::CreateCommandBuffer() {
 			commands[command_index].draw_arguments_.InstanceCount = 1;
 			commands[command_index].draw_arguments_.StartInstanceLocation = 0;
 			commands[command_index].draw_arguments_.StartVertexLocation = 0;
-			commands[command_index].draw_arguments_.VertexCountPerInstance = model_ptr_->GetVertices().size();
+			commands[command_index].draw_arguments_.VertexCountPerInstance = (UINT)(model_ptr_->GetVertices().size());
 
 			command_index++;
 			gpu_address += sizeof(ConstBufferData);

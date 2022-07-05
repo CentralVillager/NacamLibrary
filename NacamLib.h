@@ -50,12 +50,6 @@ public:
 	/// </summary>
 	void NacamLib_Draw();
 
-	/// <summary>
-	/// •`‰æŒãˆ—
-	/// </summary>
-	void NacamLib_PostDraw();
-	void NacamLib_DebugDraw();
-
 private:
 
 	void Win32AppInitialize();

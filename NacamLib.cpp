@@ -85,7 +85,7 @@ void NacamLib::NacamLib_Draw() {
 	post_effect_scene_->Draw();
 
 	// ƒfƒoƒbƒOŽž•`‰æ
-#ifdef _DEBUG
+//#ifdef _DEBUG
 
 	/*-- ƒ^ƒCƒgƒ‹ƒo[‚ÉŒ»fps”‚ð•`‰æ --*/
 	FpsManager::ObserveFps();
@@ -99,31 +99,10 @@ void NacamLib::NacamLib_Draw() {
 	/*-- ImGui‚Ì•`‰æ --*/
 	ImGuiManager::Draw(cmd_list_.Get());
 
-#endif
+//#endif
 
 	/*-- •`‰æŒãˆ— --*/
 	DrawProc::PostDraw(dx_base_);
-}
-
-void NacamLib::NacamLib_PostDraw() {
-
-	/*-- •`‰æŒãˆ— --*/
-	DrawProc::PostDraw(dx_base_);
-}
-
-void NacamLib::NacamLib_DebugDraw() {
-
-	/*-- ƒ^ƒCƒgƒ‹ƒo[‚ÉŒ»fps”‚ð•`‰æ --*/
-	FpsManager::ObserveFps();
-
-	/*-- ImGui‚Ì•`‰æ‘Oˆ— --*/
-	ImGuiManager::PreDraw();
-
-	/*-- ƒfƒoƒbƒO•`‰æ --*/
-	SceneManager::GetSceneStack().top()->DebugDraw();
-
-	/*-- ImGui‚Ì•`‰æ --*/
-	ImGuiManager::Draw(cmd_list_.Get());
 }
 
 void NacamLib::Win32AppInitialize() {

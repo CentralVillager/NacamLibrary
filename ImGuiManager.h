@@ -26,6 +26,33 @@ public:
 
 public:
 
-	static void SliderUINTHelper(const char *label, UINT &args, float min, float max);
-	static void SliderFloat3Helper(const char *label, DirectX::XMFLOAT3 &args, float min, float max);
+	inline static void SliderUINT(const char *label, UINT &args, int min, int max) {
+
+		int temp = args;
+		if (temp < 0) { temp = 0; }
+		ImGui::SliderInt(label, &temp, min, max);
+		args = temp;
+	}
+
+	inline static void SliderFloat3(const char *label, DirectX::XMFLOAT3 &args, float min, float max) {
+
+		float temp[3] = { args.x, args.y, args.z, };
+
+		ImGui::SliderFloat3(label, temp, min, max);
+
+		args.x = temp[0];
+		args.y = temp[1];
+		args.z = temp[2];
+	}
+
+	inline static void DragFloat3(const char *label, DirectX::XMFLOAT3 &args, float v_speed, float min, float max) {
+
+		float temp[3] = { args.x, args.y, args.z, };
+
+		ImGui::DragFloat3(label, temp, v_speed, min, max);
+
+		args.x = temp[0];
+		args.y = temp[1];
+		args.z = temp[2];
+	}
 };
