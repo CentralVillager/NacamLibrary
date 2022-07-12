@@ -131,27 +131,16 @@ void Emitter::Draw() {
 	}
 }
 
-void Emitter::DebugDraw(const string &name) {
-
-	ImGuiManager::DragFloat3("pos", emitter_args_.particle.position_, 1.0f, -10.0f, 1000.0f);
-	ImGuiManager::SliderFloat3("range", emitter_args_.pos_rand_, 0.0f, 100.0f);
-	ImGuiManager::DragFloat3("velocity", emitter_args_.particle.velocity_, 0.1f, -5.0f, 5.0f);
-	ImGui::DragFloat("scale", &emitter_args_.particle.s_scale_, 0.1f, 0.1f, 50.0f);
-	ImGui::DragInt("life", &emitter_args_.particle.life_, 1.0f, 0, 1000);
-	ImGuiManager::SliderUINT("num", emitter_args_.gene_num_, 0, 50);
-	ImGui::Text("%d", emitter_args_.life_);
-	ImGui::Text("");	// â¸çs
-}
-
 void Emitter::DebugDraw() {
 
-	ImGuiManager::DragFloat3("pos", emitter_args_.particle.position_, 1.0f, -10.0f, 1000.0f);
+	ImGuiManager::DragFloat3("pos", emitter_args_.particle.position_, 1.0f, -100.0f, 100.0f);
 	ImGuiManager::SliderFloat3("range", emitter_args_.pos_rand_, 0.0f, 100.0f);
 	ImGuiManager::DragFloat3("velocity", emitter_args_.particle.velocity_, 0.1f, -5.0f, 5.0f);
 	ImGuiManager::SliderFloat3("vel_range", emitter_args_.vel_rand_, 0.0f, 1.0f);
 	ImGui::DragFloat("scale", &emitter_args_.particle.s_scale_, 0.1f, 0.1f, 50.0f);
 	ImGui::DragInt("life", &emitter_args_.particle.life_, 1.0f, 0, 1000);
 	ImGuiManager::SliderUINT("num", emitter_args_.gene_num_, 0, 50);
-	ImGui::Text("%d", emitter_args_.life_);
-	ImGui::Text("");	// â¸çs
+	ImGui::Text("life : %d", emitter_args_.life_);
+	ImGui::Spacing();
+	ImGui::Spacing();
 }

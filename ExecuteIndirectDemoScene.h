@@ -14,6 +14,7 @@
 class ExecuteIndirectDemoScene : public AbstractScene {
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
+	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMMATRIX = DirectX::XMMATRIX;
 
 private:
@@ -23,6 +24,13 @@ private:
 	//static const UINT all_particle_num_ = 256;
 	static const UINT resource_count_ = all_particle_num_ * frame_count_;
 	static const UINT command_size_per_frame_;
+
+	struct Vertex {
+
+		XMFLOAT3 position;
+		XMFLOAT3 normal;
+		XMFLOAT2 uv;
+	};
 
 	struct ConstBufferData {
 
@@ -45,7 +53,8 @@ private:
 		//D3D12_GPU_VIRTUAL_ADDRESS cbv_;
 		D3D12_GPU_VIRTUAL_ADDRESS matrix_cbv_;
 		D3D12_GPU_VIRTUAL_ADDRESS material_cbv_;
-		D3D12_DRAW_INDEXED_ARGUMENTS draw_arguments_;	// DrawIndexedInstancedの場合は使う型が違う
+		D3D12_DRAW_ARGUMENTS draw_arguments_;	// DrawIndexedInstancedの場合は使う型が違う
+		//D3D12_DRAW_INDEXED_ARGUMENTS draw_arguments_;	// DrawIndexedInstancedの場合は使う型が違う
 	};
 
 	std::vector<ConstBufferData> const_buffer_data_;
@@ -58,7 +67,7 @@ private:
 	UINT descriptor_heap_size_;
 	ComPtr<ID3D12CommandSignature> command_signature_;
 	ComPtr<ID3D12RootSignature> root_signature_;
-	UINT frame_index_;
+	UINT frame_index_ = 0;
 
 	// アセットオブジェクト
 	ComPtr<ID3D12PipelineState> pipeline_state_;
@@ -67,6 +76,10 @@ private:
 	ComPtr<ID3D12Resource> matrix_const_buffer_;
 	ComPtr<ID3D12Resource> material_const_buffer_;
 	ComPtr<ID3D12Resource> command_buffer_;
+	ComPtr<ID3D12Resource> command_buffer_upload_;
+	ComPtr<ID3D12Resource> vertex_buffer_;
+	ComPtr<ID3D12Resource> vertex_buffer_upload_;
+	D3D12_VERTEX_BUFFER_VIEW vb_view_;
 
 private:
 
@@ -77,8 +90,8 @@ private:
 	std::unique_ptr<Model> model_;
 
 	// オブジェクト
-	std::unique_ptr<Object3d> object_;
-	//std::unique_ptr<IndirectObject3d> object_;
+	//std::unique_ptr<Object3d> object_;
+	std::unique_ptr<IndirectObject3d> indirect_;
 
 	// テストパーティクル
 	std::unique_ptr<Emitter> emitter_1_;
@@ -96,6 +109,7 @@ public:
 
 private:
 
+	void CreateVertexBuffer();
 	void CreateDescriptorHeap();
 	void CreateRootSignature();
 	void CreatePipelineState();

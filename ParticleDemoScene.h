@@ -25,7 +25,10 @@ private:
 	// カメラ
 	std::unique_ptr<Camera> camera_;
 
+	// 天球
 	std::unique_ptr<Object3d> sky_dome_;
+
+	// 天球モデル
 	std::unique_ptr<Model> model_sky_dome_;
 
 	// テストパーティクル
@@ -33,11 +36,20 @@ private:
 	std::unique_ptr<Emitter> contrail_2_;
 	std::unique_ptr<Emitter> emitter_1_;
 
+	// エミッターコンテナ
 	std::forward_list<Emitter> contrails_1_;
 
+	// モード格納
 	MODE mode_;
 
+	// エミッターの寿命
 	int emitter_life_;
+
+	// リセットするか
+	bool notice_reset_ = false;
+
+	// エミッターを生成するか
+	bool notice_generate_ = false;
 
 public:
 
@@ -52,6 +64,7 @@ public:
 
 public:
 
+	void ResetParam();
 	void ResetPos();
 	void MoveZ();
 };

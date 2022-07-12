@@ -111,6 +111,7 @@ void DirectXBase::GenerateCommandList() {
 		cmdAllocator.Get(),
 		nullptr,
 		IID_PPV_ARGS(&cmdList));
+	cmdList->SetName(L"CommandList");
 }
 
 void DirectXBase::GenerateCommandQueue() {
@@ -212,4 +213,5 @@ void DirectXBase::GenerateDepthStencilView() {
 void DirectXBase::GenerateFence() {
 	HRESULT result;
 	result = device_->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
+	fence->SetName(L"");
 }

@@ -1,15 +1,12 @@
 ﻿#pragma once
-#include <Windows.h>
+#include "AbstractScene.h"
+#include "Camera.h"
+#include <memory>
 #include <wrl.h>
-#include <d3d12.h>
 #include <DirectXMath.h>
 #include <d3dx12.h>
-#include <fstream>
-#include <sstream>
-#include <string>
-#include <vector>
 #include "Model.h"
-#include "Camera.h"
+#include <vector>
 
 class IndirectObject3d {
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
@@ -17,92 +14,21 @@ class IndirectObject3d {
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
-	using XMFLOAT4X4 = DirectX::XMFLOAT4X4;
 
-public:
+private:
 
-	// 行列用定数バッファ
-	struct MatrixConstBufferData {
-		XMMATRIX mat;
-	};
-
-public:
-
-	/// <summary>
-	/// 静的初期化
-	/// </summary>
-	/// <param name="device">デバイス</param>
-	/// <returns>成否</returns>
-	static bool StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList *cmdList);
-
-	/// <summary>
-	/// 描画前処理
-	/// </summary>
-	static void PreDraw();
-
-public: // 静的メンバ変数
-
-	// デバイス
-	static ComPtr<ID3D12Device> device_;
-	// デスクリプタサイズ
-	static UINT descriptor_handle_increment_size_;
-	// コマンドリスト
-	static ComPtr<ID3D12GraphicsCommandList> cmd_list_;
-	// ルートシグネチャ
-	static ComPtr<ID3D12RootSignature> rootsignature_;
-	// パイプラインステートオブジェクト
-	static ComPtr<ID3D12PipelineState> pipelinestate_;
-	// デスクリプタヒープ
-	static ComPtr<ID3D12DescriptorHeap> desc_heap_;
-
-	static const UINT frame_count_ = 3;				// なにこれ
-	static const UINT all_particle_num_ = 256;
+	static const UINT frame_count_ = 1;				// なにこれ
+	static const UINT all_particle_num_ = 1;
+	//static const UINT all_particle_num_ = 256;
 	static const UINT resource_count_ = all_particle_num_ * frame_count_;
 	static const UINT command_size_per_frame_;
 
-private:
+	struct Vertex {
 
-	/// <summary>
-	/// デスクリプタヒープの初期化
-	/// </summary>
-	/// <returns></returns>
-	static bool InitializeDescriptorHeap();
-
-	/// <summary>
-	/// グラフィックパイプライン生成
-	/// </summary>
-	/// <returns>成否</returns>
-	static bool InitializeGraphicsPipeline();
-
-private:
-
-	// コマンドシグネチャ
-	ComPtr<ID3D12CommandSignature> command_signature_;
-
-	// コマンドバッファ
-	ComPtr<ID3D12Resource> command_buffer_;
-
-	UINT frame_index_;
-
-public:
-
-	void CreateCommandSignature();
-	void CreateCommandBuffer();
-
-	void Initialize();
-	void Update();
-	void Draw();
-
-	const XMFLOAT3 &GetPosition() { return position_; }
-	const XMFLOAT3 &GetRotation() { return rotation_; }
-	const XMFLOAT3 &GetScale() { return scale_; }
-	void SetPosition(XMFLOAT3 position) { position_ = position; }
-	void SetRotation(XMFLOAT3 rotation) { rotation_ = rotation; }
-	void SetScale(XMFLOAT3 scale) { scale_ = scale; };
-	void SetScale(float scale) { scale_.x = scale_.y = scale_.z = scale; };
-	static void SetCamera(Camera *camera_) { cam_ptr_ = camera_; }
-
-private:
+		XMFLOAT3 position;
+		XMFLOAT3 normal;
+		XMFLOAT2 uv;
+	};
 
 	struct ConstBufferData {
 
@@ -112,49 +38,96 @@ private:
 		float pad2_;
 		XMFLOAT3 color_;	// 色
 		float pad3_;
-		XMFLOAT4X4 matrix_;	// 行列
+		//XMMATRIX matrix_;	// 行列
+	};
+
+	struct MatrixConstBufferData {
+		XMMATRIX mat;		// ３Ｄ変換行列
 	};
 
 	// ExecuteIndirect に使用するコマンドシグネチャと一致させるためのデータ構造
 	struct IndirectCommand {
 
-		D3D12_GPU_VIRTUAL_ADDRESS cbv_;
-		D3D12_DRAW_ARGUMENTS draw_arguments_;
+		//D3D12_GPU_VIRTUAL_ADDRESS cbv_;
+		D3D12_GPU_VIRTUAL_ADDRESS matrix_cbv_;
+		D3D12_GPU_VIRTUAL_ADDRESS material_cbv_;
+		//D3D12_DRAW_ARGUMENTS draw_arguments_;	// DrawIndexedInstancedの場合は使う型が違う
+		D3D12_DRAW_INDEXED_ARGUMENTS draw_arguments_;	// DrawIndexedInstancedの場合は使う型が違う
 	};
+
+	std::vector<ConstBufferData> const_buffer_data_;
+	std::vector<MatrixConstBufferData> matrix_const_buffer_data_;
+	std::vector<Model::MaterialConstBufferData> material_const_buffer_data_;
+
+	// パイプラインオブジェクト
+	ComPtr<ID3D12Device> device_;
+	ComPtr<ID3D12DescriptorHeap> descriptor_heap_;
+	UINT descriptor_heap_size_;
+	ComPtr<ID3D12CommandSignature> command_signature_;
+	static ComPtr<ID3D12RootSignature> root_signature_;
+	UINT frame_index_ = 0;
+
+	// アセットオブジェクト
+	static ComPtr<ID3D12PipelineState> pipeline_state_;
+	static ComPtr<ID3D12GraphicsCommandList> command_list_;
+	ComPtr<ID3D12Resource> const_buffer_;
+	ComPtr<ID3D12Resource> matrix_const_buffer_;
+	ComPtr<ID3D12Resource> material_const_buffer_;
+	ComPtr<ID3D12Resource> command_buffer_;
+	ComPtr<ID3D12Resource> command_buffer_upload_;
+	ComPtr<ID3D12Resource> vertex_buffer_;
+	ComPtr<ID3D12Resource> vertex_buffer_upload_;
+	D3D12_VERTEX_BUFFER_VIEW vb_view_;
+
+	XMFLOAT4 color_ = { 1, 1, 1, 1 };
+	XMFLOAT3 scale_ = { 1, 1, 1 };
+	XMFLOAT3 rotation_ = { 0, 0, 0 };
+	XMFLOAT3 position_ = { 0, 0, 0 };
+	XMMATRIX mat_world_;
+	static Camera *camera_;
 
 private:
 
-	// 定数バッファ
-	static ComPtr<ID3D12Resource> material_const_buffer_;
-	static ComPtr<ID3D12Resource> matrix_const_buffer_;
-	static ComPtr<ID3D12Resource> const_buffer_;
-	// 色
-	XMFLOAT4 color_ = { 1,1,1,1 };
-	// ローカルスケール
-	XMFLOAT3 scale_ = { 1,1,1 };
-	// X,Y,Z軸回りのローカル回転角
-	XMFLOAT3 rotation_ = { 0,0,0 };
-	// ローカル座標
-	XMFLOAT3 position_ = { 0,0,0 };
-	// ローカルワールド変換行列
-	XMMATRIX mat_world_;
-	// 親オブジェクト
-	IndirectObject3d *parent_ = nullptr;
-	// モデルのポインタ
-	Model *model_ptr_ = nullptr;
-	// カメラのポインタ
-	static Camera *cam_ptr_;
+	// モデル
+	std::unique_ptr<Model> model_;
 
 public:
 
-	const ComPtr<ID3D12Resource> &GetMaterialConstBuffer() { return material_const_buffer_; }
-	const ComPtr<ID3D12Resource> &GetMatrixConstBuffer() { return matrix_const_buffer_; }
+	IndirectObject3d();
+	~IndirectObject3d();
 
-	/// <summary>
-	/// モデルデータと3Dオブジェクトの紐づけ
-	/// </summary>
-	/// <param name="model"></param>
-	void SetModel(Model *model) { model_ptr_ = model; }
+private:
 
-	const IndirectObject3d operator=(const IndirectObject3d &rhs);
+	void CreateVertexBuffer();
+	void CreateDescriptorHeap();
+	void CreateRootSignature();
+	void CreatePipelineState();
+	void CreateGraphicsPipeline();
+	void CreateConstantBuffer();
+	void CreateCommandSignature();
+	void CreateCommandBuffer();
+
+	void TransferConstantBafferData();
+
+public:
+
+	static void StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList *cmdList);
+
+	static void PreDraw();
+
+	static void SetCamera(Camera *camera) { camera_ = camera; }
+
+	void Initialize();
+	void Finalize();
+	void Update();
+	void Draw();
+	void DebugDraw();
+
+	inline void SetPosition(const XMFLOAT3 &position) { position_ = position; }
+	inline void SetScale(const float &scale) {
+
+		scale_.x = scale;
+		scale_.y = scale;
+		scale_.z = scale;
+	}
 };

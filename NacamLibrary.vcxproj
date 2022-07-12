@@ -174,10 +174,10 @@
     <ClCompile Include="DrawProc.cpp" />
     <ClCompile Include="FPSManager.cpp" />
     <ClCompile Include="FrictionDemoScene.cpp" />
+    <ClCompile Include="ImGuiManager.cpp" />
     <ClCompile Include="IndirectObject3d.cpp" />
     <ClCompile Include="NacamLib.cpp" />
     <ClCompile Include="GravityDemoScene.cpp" />
-    <ClCompile Include="ImGuiManager.cpp" />
     <ClCompile Include="imgui\backends\imgui_impl_dx12.cpp" />
     <ClCompile Include="imgui\backends\imgui_impl_win32.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
@@ -236,10 +236,10 @@
     <ClInclude Include="DrawProc.h" />
     <ClInclude Include="FPSManager.h" />
     <ClInclude Include="FrictionDemoScene.h" />
+    <ClInclude Include="ImGuiManager.h" />
     <ClInclude Include="IndirectObject3d.h" />
     <ClInclude Include="NacamLib.h" />
     <ClInclude Include="GravityDemoScene.h" />
-    <ClInclude Include="ImGuiManager.h" />
     <ClInclude Include="imgui\backends\imgui_impl_dx12.h" />
     <ClInclude Include="imgui\backends\imgui_impl_win32.h" />
     <ClInclude Include="imgui\imconfig.h" />
@@ -286,16 +286,6 @@
     <None Include="Resources\Shaders\Sprite.hlsli" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="ParticleCS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compute</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compute</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
-    </FxCompile>
     <FxCompile Include="Resources\Shaders\BasicPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>

@@ -209,17 +209,8 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Library\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="DebugText.cpp">
-      <Filter>Application\Debug\DebugText</Filter>
-    </ClCompile>
-    <ClCompile Include="Collision.cpp">
-      <Filter>Application\Collision</Filter>
-    </ClCompile>
     <ClCompile Include="FPSManager.cpp">
       <Filter>Application\FpsManager</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGuiManager.cpp">
-      <Filter>Application\Debug\ImGui\ImGuiManager</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui.cpp">
       <Filter>Application\Debug\ImGui\Include</Filter>
@@ -244,9 +235,6 @@
     </ClCompile>
     <ClCompile Include="MainScene.cpp">
       <Filter>Application\Scene\Main</Filter>
-    </ClCompile>
-    <ClCompile Include="CollisionPrimitive.cpp">
-      <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="KeyboardInput.cpp">
       <Filter>Library\Input</Filter>
@@ -335,6 +323,18 @@
     <ClCompile Include="ExecuteIndirectDemoScene.cpp">
       <Filter>Application\Scene\ExecuteIndirectDemo</Filter>
     </ClCompile>
+    <ClCompile Include="DebugText.cpp">
+      <Filter>Application\Debug\DebugText</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuiManager.cpp">
+      <Filter>Application\Debug\ImGui\ImGuiManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>Application\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionPrimitive.cpp">
+      <Filter>Application\Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractScene.h">
@@ -370,9 +370,6 @@
     <ClInclude Include="resource.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionPrimitive.h">
-      <Filter>Application\Collision</Filter>
-    </ClInclude>
     <ClInclude Include="AudioManager.h">
       <Filter>Library\Audio</Filter>
     </ClInclude>
@@ -391,17 +388,8 @@
     <ClInclude Include="Camera.h">
       <Filter>Library\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="DebugText.h">
-      <Filter>Application\Debug\DebugText</Filter>
-    </ClInclude>
-    <ClInclude Include="Collision.h">
-      <Filter>Application\Collision</Filter>
-    </ClInclude>
     <ClInclude Include="FPSManager.h">
       <Filter>Application\FpsManager</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGuiManager.h">
-      <Filter>Application\Debug\ImGui\ImGuiManager</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imconfig.h">
       <Filter>Application\Debug\ImGui\Include</Filter>
@@ -517,6 +505,18 @@
     <ClInclude Include="ExecuteIndirectDemoScene.h">
       <Filter>Application\Scene\ExecuteIndirectDemo</Filter>
     </ClInclude>
+    <ClInclude Include="DebugText.h">
+      <Filter>Application\Debug\DebugText</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuiManager.h">
+      <Filter>Application\Debug\ImGui\ImGuiManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>Application\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionPrimitive.h">
+      <Filter>Application\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">
@@ -576,9 +576,6 @@
       <Filter>シェーダファイル</Filter>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\PostEffectVS.hlsl">
-      <Filter>シェーダファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="ParticleCS.hlsl">
       <Filter>シェーダファイル</Filter>
     </FxCompile>
   </ItemGroup>

@@ -28,7 +28,6 @@ void ParticleDemoScene::Initialize() {
 	// カメラの初期化
 	camera_->Initialize();
 	camera_->SetDistance(20.0f);
-	camera_->MoveCameraTrack({ 0, 0, 0 });
 	Object3d::SetCamera(camera_.get());
 
 	sky_dome_->Initialize();
@@ -95,17 +94,38 @@ void ParticleDemoScene::Update() {
 		if (KeyboardInput::PushKey(DIK_R)) { camera_->MoveCameraTrack({ 0.0f, 0.0f, +1.0f }); } else if (KeyboardInput::PushKey(DIK_F)) { camera_->MoveCameraTrack({ 0.0f, 0.0f, -1.0f }); }
 	}
 
-	camera_->Update();
+	if (KeyboardInput::PushKey(DIK_UP)) { camera_->MoveEye({ 0.0f, -1.0f, 0.0f }); }
+	if (KeyboardInput::PushKey(DIK_DOWN)) { camera_->MoveEye({ 0.0f, +1.0f, 0.0f }); }
+	if (KeyboardInput::PushKey(DIK_LEFT)) { camera_->MoveEye({ +1.0f, 0.0f, 0.0f }); }
+	if (KeyboardInput::PushKey(DIK_RIGHT)) { camera_->MoveEye({ -1.0f, 0.0f, 0.0f }); }
+
 	sky_dome_->Update();
 
-	if (mode_ == MODE::MONO) {
+	// カメラ位置をリセット
+	if (notice_reset_) {
+
+		camera_->SetEye({ 0.0f, 0.0f, -camera_->GetDistance() });
+		camera_->SetTarget({ 0.0f, 0.0f, 0.0f });
+	}
+	camera_->Update();
+
+	switch (mode_) {
+
+	case MODE::MONO:
+
+		// 全パラメータをリセット
+		if (notice_reset_) {
+
+			ResetParam();
+		}
 
 		emitter_1_->GenerateParticle();
+		break;
 
-	} else if (mode_ == MODE::MISSILE) {
+	case MODE::MISSILE:
 
 		// 位置をリセット
-		if (KeyboardInput::TriggerKey(DIK_SPACE)) {
+		if (notice_reset_) {
 
 			ResetPos();
 		}
@@ -116,11 +136,12 @@ void ParticleDemoScene::Update() {
 		// パーティクルを生成
 		contrail_1_->GenerateParticle();
 		contrail_2_->GenerateParticle();
+		break;
 
-	} else if (mode_ == MODE::MISSILE_CONTAINER) {
+	case MODE::MISSILE_CONTAINER:
 
 		// パーティクルを生成
-		if (KeyboardInput::TriggerKey(DIK_SPACE)) {
+		if (notice_generate_) {
 
 			contrails_1_.emplace_front();
 			Emitter *emitter = &contrails_1_.front();
@@ -164,7 +185,14 @@ void ParticleDemoScene::Update() {
 		}
 
 		contrails_1_.remove_if([](Emitter &x) { return x.NoticeCanTerminate(); });
+		break;
+
+	default:
+		break;
 	}
+
+	notice_reset_ = false;
+	notice_generate_ = false;
 }
 
 void ParticleDemoScene::Draw() {
@@ -172,50 +200,112 @@ void ParticleDemoScene::Draw() {
 	Object3d::PreDraw();
 	sky_dome_->Draw();
 
-	// 描画
-	if (mode_ == MODE::MONO) {
+	// モード毎にメニュー切り替え
+	switch (mode_) {
+
+	case MODE::MONO:
 
 		emitter_1_->Draw();
+		break;
 
-	} else if (mode_ == MODE::MISSILE) {
+	case MODE::MISSILE:
 
 		contrail_1_->Draw();
 		contrail_2_->Draw();
+		break;
 
-	} else if (mode_ == MODE::MISSILE_CONTAINER) {
+	case MODE::MISSILE_CONTAINER:
 
 		for (auto &i : contrails_1_) {
 
 			i.Draw();
 		}
+		break;
+
+	default:
+		break;
 	}
 }
 
 void ParticleDemoScene::DebugDraw() {
 
+	// モード選択
 	int mode = static_cast<int>(mode_);
 	ImGui::SliderInt("mode", &mode, 0, 2);
 	mode_ = static_cast<MODE>(mode);
 
-	if (mode_ == MODE::MONO) {
+	// リセット
+	if (ImGui::Button("RESET") && !notice_reset_) {
 
+		notice_reset_ = true;
+	}
+
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Separator();
+
+	// モード毎にメニュー切り替え
+	switch (mode_) {
+
+	case MODE::MONO:
+
+		ImGui::Text("Normal Particle Demo");
+		ImGui::Separator();
+		ImGui::Spacing();
+		ImGui::Spacing();
 		emitter_1_->DebugDraw();
 
-	} else if (mode_ == MODE::MISSILE) {
+		break;
 
+	case MODE::MISSILE:
+
+		ImGui::Text("Missile");
+		ImGui::Separator();
+		ImGui::Spacing();
+		ImGui::Spacing();
 		contrail_1_->DebugDraw();
 		contrail_2_->DebugDraw();
 
-	} else if (mode_ == MODE::MISSILE_CONTAINER) {
+		break;
 
+	case MODE::MISSILE_CONTAINER:
+
+		ImGui::Text("Many Missiles");
+		ImGui::Separator();
+		ImGui::Spacing();
+		ImGui::Spacing();
 		ImGui::SliderInt("EmitterLife", &emitter_life_, 0, 500);
-		ImGui::Text(""); // 改行
+
+		if (ImGui::Button("GENERATE") && !notice_generate_) {
+
+			notice_generate_ = true;
+		}
 
 		for (auto &i : contrails_1_) {
 
 			i.DebugDraw();
 		}
+
+		break;
+
+	default:
+		break;
 	}
+}
+
+void ParticleDemoScene::ResetParam() {
+
+	Emitter::EmitterArgs p;
+	p.particle.position_ = { 0.0f, 0.0f, 10.0f };
+	p.particle.velocity_ = { 0.0f, 0.0f, 0.0f };
+	p.particle.accel_ = { 0, 0.001f, 0 };
+	p.particle.life_ = 100;
+	p.particle.s_scale_ = 1.0f;
+	p.pos_rand_ = { 0.0f, 0.0f, 0.0f };
+	p.vel_rand_ = { 0.1f, 0.1f, 0.1f };
+	p.gene_num_ = 1;
+	p.use_life_ = false;
+	emitter_1_->SetEmitterArgs(p);
 }
 
 void ParticleDemoScene::ResetPos() {

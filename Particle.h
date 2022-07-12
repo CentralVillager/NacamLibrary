@@ -40,7 +40,6 @@ class Particle {
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 
 	std::unique_ptr<Object3d> object_;
-	//std::unique_ptr<IndirectObject3d> object_;
 
 private:
 

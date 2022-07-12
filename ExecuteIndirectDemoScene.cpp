@@ -22,17 +22,53 @@ ExecuteIndirectDemoScene::ExecuteIndirectDemoScene() {
 	model_ = make_unique<Model>();
 	model_->LoadObjModel("Resources/Ball/", "smooth_ball.obj", "smooth_ball.mtl");
 
-	object_ = std::make_unique<Object3d>();
-	object_->SetModel(model_.get());
-	object_->Initialize();
-	//IndirectObject3D::SetCamera(camera_.get());
-
-	// パーティクルデータの生成
-	emitter_1_ = make_unique<Emitter>();
-	emitter_2_ = make_unique<Emitter>();
+	indirect_ = make_unique<IndirectObject3d>();
 }
 
 ExecuteIndirectDemoScene::~ExecuteIndirectDemoScene() {
+}
+
+void ExecuteIndirectDemoScene::CreateVertexBuffer() {
+
+	Vertex triangle_vertices[] = {
+
+		{{0.0f, -0.5f, 0.0f}, {0, 0, 0}, {0, 0}},
+		{{0.5f, 0.5f, 0.0f}, {0, 0, 0}, {0, 0}},
+		{{-0.5f, 0.5f, 0.0f}, {0, 0, 0}, {0, 0}},
+	};
+
+	const UINT vertex_buffer_size = sizeof(triangle_vertices);
+
+	// 頂点バッファの生成
+	device_->CreateCommittedResource(
+		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
+		D3D12_HEAP_FLAG_NONE,
+		&CD3DX12_RESOURCE_DESC::Buffer(vertex_buffer_size),
+		D3D12_RESOURCE_STATE_COPY_DEST,
+		nullptr,
+		IID_PPV_ARGS(&vertex_buffer_));
+	vertex_buffer_->SetName(L"VertexBuffer");
+
+	device_->CreateCommittedResource(
+		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
+		D3D12_HEAP_FLAG_NONE,
+		&CD3DX12_RESOURCE_DESC::Buffer(vertex_buffer_size),
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&vertex_buffer_upload_));
+	vertex_buffer_upload_->SetName(L"VertexBufferUpload");
+
+	D3D12_SUBRESOURCE_DATA vertex_data = {};
+	vertex_data.pData = reinterpret_cast<UINT8 *>(triangle_vertices);
+	vertex_data.RowPitch = vertex_buffer_size;
+	vertex_data.SlicePitch = vertex_data.RowPitch;
+
+	UpdateSubresources<1>(command_list_.Get(), vertex_buffer_.Get(), vertex_buffer_upload_.Get(), 0, 0, 1, &vertex_data);
+
+	// 頂点バッファビューの生成
+	vb_view_.BufferLocation = vertex_buffer_->GetGPUVirtualAddress();
+	vb_view_.StrideInBytes = sizeof(Vertex);
+	vb_view_.SizeInBytes = sizeof(triangle_vertices);
 }
 
 void ExecuteIndirectDemoScene::CreateDescriptorHeap() {
@@ -45,11 +81,28 @@ void ExecuteIndirectDemoScene::CreateDescriptorHeap() {
 	desc_heap_desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	desc_heap_desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 	device_->CreateDescriptorHeap(&desc_heap_desc, IID_PPV_ARGS(&descriptor_heap_));
+	descriptor_heap_->SetName(L"DescriptorHeap");
 
 	assert(SUCCEEDED(result));
 
 	// デスクリプタサイズを取得
 	descriptor_heap_size_ = device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+
+	D3D12_SHADER_RESOURCE_VIEW_DESC srv_desc = {};
+	srv_desc.Format = DXGI_FORMAT_UNKNOWN;
+	srv_desc.ViewDimension = D3D12_SRV_DIMENSION_BUFFER;
+	srv_desc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	srv_desc.Buffer.NumElements = all_particle_num_;
+	srv_desc.Buffer.StructureByteStride = sizeof(MatrixConstBufferData) + sizeof(Model::MaterialConstBufferData);
+	srv_desc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;
+
+	CD3DX12_CPU_DESCRIPTOR_HANDLE cbv_srv_handle(descriptor_heap_->GetCPUDescriptorHandleForHeapStart(), 0, descriptor_heap_size_);
+	for (UINT frame = 0; frame < frame_count_; frame++) {
+
+		srv_desc.Buffer.FirstElement = frame * all_particle_num_;
+		device_->CreateShaderResourceView(material_const_buffer_.Get(), &srv_desc, cbv_srv_handle);
+		cbv_srv_handle.Offset(3, descriptor_heap_size_);
+	}
 }
 
 void ExecuteIndirectDemoScene::CreateRootSignature() {
@@ -92,6 +145,7 @@ void ExecuteIndirectDemoScene::CreateRootSignature() {
 		root_signature_blob->GetBufferPointer(),
 		root_signature_blob->GetBufferSize(),
 		IID_PPV_ARGS(&root_signature_));
+	root_signature_->SetName(L"RootSignature");
 
 	// 以下でコンピュートルートシグネチャを生成する必要あり
 }
@@ -337,6 +391,7 @@ void ExecuteIndirectDemoScene::CreateConstantBuffer() {
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&matrix_const_buffer_));
+	matrix_const_buffer_->SetName(L"MatrixConstBuffer");
 
 	result = device_->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), 	// アップロード可能
@@ -345,6 +400,7 @@ void ExecuteIndirectDemoScene::CreateConstantBuffer() {
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&material_const_buffer_));
+	matrix_const_buffer_->SetName(L"MaterialConstBuffer");
 
 	for (UINT i = 0; i < all_particle_num_; i++) {
 
@@ -424,6 +480,7 @@ void ExecuteIndirectDemoScene::CreateCommandBuffer() {
 		nullptr,
 		IID_PPV_ARGS(&command_buffer_)
 	);
+	command_buffer_->SetName(L"CommandBuffer");
 
 	result = device_->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
@@ -431,8 +488,9 @@ void ExecuteIndirectDemoScene::CreateCommandBuffer() {
 		&CD3DX12_RESOURCE_DESC::Buffer(command_buffer_size),
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&command_buffer_upload)
+		IID_PPV_ARGS(&command_buffer_upload_)
 	);
+	command_buffer_upload_->SetName(L"CommandBufferUpload");
 
 	//D3D12_GPU_VIRTUAL_ADDRESS gpu_address = const_buffer_->GetGPUVirtualAddress();
 	D3D12_GPU_VIRTUAL_ADDRESS matrix_gpu_address = matrix_const_buffer_->GetGPUVirtualAddress();
@@ -452,10 +510,16 @@ void ExecuteIndirectDemoScene::CreateCommandBuffer() {
 			commands[command_index].material_cbv_ = material_gpu_address;
 
 			// これらはDrawIndexedInstancedの引数と全く同じ
-			commands[command_index].draw_arguments_.IndexCountPerInstance = vertex_count;
+			/*commands[command_index].draw_arguments_.IndexCountPerInstance = vertex_count;
 			commands[command_index].draw_arguments_.InstanceCount = 1;
 			commands[command_index].draw_arguments_.StartIndexLocation = 0;
 			commands[command_index].draw_arguments_.BaseVertexLocation = 0;
+			commands[command_index].draw_arguments_.StartInstanceLocation = 0;*/
+
+			// DrawInstanced
+			commands[command_index].draw_arguments_.VertexCountPerInstance = 3;
+			commands[command_index].draw_arguments_.InstanceCount = 1;
+			commands[command_index].draw_arguments_.StartVertexLocation = 0;
 			commands[command_index].draw_arguments_.StartInstanceLocation = 0;
 
 			command_index++;
@@ -473,7 +537,7 @@ void ExecuteIndirectDemoScene::CreateCommandBuffer() {
 	command_data.RowPitch = command_buffer_size;
 	command_data.SlicePitch = command_data.RowPitch;
 
-	UpdateSubresources<1>(command_list_.Get(), command_buffer_.Get(), command_buffer_upload.Get(), 0, 0, 1, &command_data);
+	UpdateSubresources<1>(command_list_.Get(), command_buffer_.Get(), command_buffer_upload_.Get(), 0, 0, 1, &command_data);
 	//command_list_->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(command_buffer_.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));
 
 	// コマンドバッファ用のSRVを生成
@@ -498,39 +562,39 @@ void ExecuteIndirectDemoScene::CreateCommandBuffer() {
 
 void ExecuteIndirectDemoScene::TransferConstantBafferData() {
 
-	HRESULT result;
-	XMMATRIX mat_scale, mat_rot, mat_trans, mat_world;
+	//HRESULT result;
+	//XMMATRIX mat_scale, mat_rot, mat_trans, mat_world;
 
-	// スケール、回転、平行移動行列の計算
-	mat_scale = XMMatrixScaling(object_->GetScale().x, object_->GetScale().y, object_->GetScale().z);
-	mat_rot = XMMatrixIdentity();
-	mat_rot *= XMMatrixRotationZ(XMConvertToRadians(object_->GetRotation().z));
-	mat_rot *= XMMatrixRotationX(XMConvertToRadians(object_->GetRotation().x));
-	mat_rot *= XMMatrixRotationY(XMConvertToRadians(object_->GetRotation().y));
-	mat_trans = XMMatrixTranslation(object_->GetPosition().x, object_->GetPosition().y, object_->GetPosition().z);
+	//// スケール、回転、平行移動行列の計算
+	//mat_scale = XMMatrixScaling(object_->GetScale().x, object_->GetScale().y, object_->GetScale().z);
+	//mat_rot = XMMatrixIdentity();
+	//mat_rot *= XMMatrixRotationZ(XMConvertToRadians(object_->GetRotation().z));
+	//mat_rot *= XMMatrixRotationX(XMConvertToRadians(object_->GetRotation().x));
+	//mat_rot *= XMMatrixRotationY(XMConvertToRadians(object_->GetRotation().y));
+	//mat_trans = XMMatrixTranslation(object_->GetPosition().x, object_->GetPosition().y, object_->GetPosition().z);
 
-	// ワールド行列の合成
-	mat_world = XMMatrixIdentity();		// 変形をリセット
-	mat_world *= mat_scale;				// ワールド行列にスケーリングを反映
-	mat_world *= mat_rot;				// ワールド行列に回転を反映
-	mat_world *= mat_trans;				// ワールド行列に平行移動を反映
+	//// ワールド行列の合成
+	//mat_world = XMMatrixIdentity();		// 変形をリセット
+	//mat_world *= mat_scale;				// ワールド行列にスケーリングを反映
+	//mat_world *= mat_rot;				// ワールド行列に回転を反映
+	//mat_world *= mat_trans;				// ワールド行列に平行移動を反映
 
-	// 定数バッファへデータ転送
-	Model::MaterialConstBufferData *material_const_map = nullptr;
-	result = material_const_buffer_->Map(0, nullptr, reinterpret_cast<void **>(&material_const_map));
-	material_const_map->ambient = model_->GetMaterialData().ambient;
-	material_const_map->diffuse = model_->GetMaterialData().diffuse;
-	material_const_map->specular = model_->GetMaterialData().specular;
-	material_const_map->alpha = model_->GetMaterialData().alpha;
-	material_const_buffer_->Unmap(0, nullptr);
+	//// 定数バッファへデータ転送
+	//Model::MaterialConstBufferData *material_const_map = nullptr;
+	//result = material_const_buffer_->Map(0, nullptr, reinterpret_cast<void **>(&material_const_map));
+	//material_const_map->ambient = model_->GetMaterialData().ambient;
+	//material_const_map->diffuse = model_->GetMaterialData().diffuse;
+	//material_const_map->specular = model_->GetMaterialData().specular;
+	//material_const_map->alpha = model_->GetMaterialData().alpha;
+	//material_const_buffer_->Unmap(0, nullptr);
 
-	const XMMATRIX &mat_view_ = camera_->GetMatView();
-	const XMMATRIX &mat_projection = camera_->GetMatProjection();
+	//const XMMATRIX &mat_view_ = camera_->GetMatView();
+	//const XMMATRIX &mat_projection = camera_->GetMatProjection();
 
-	MatrixConstBufferData *matrix_const_map = nullptr;
-	result = matrix_const_buffer_->Map(0, nullptr, reinterpret_cast<void **>(&matrix_const_map));
-	matrix_const_map->mat = mat_world * mat_view_ * mat_projection;	// 行列の合成
-	matrix_const_buffer_->Unmap(0, nullptr);
+	//MatrixConstBufferData *matrix_const_map = nullptr;
+	//result = matrix_const_buffer_->Map(0, nullptr, reinterpret_cast<void **>(&matrix_const_map));
+	//matrix_const_map->mat = mat_world * mat_view_ * mat_projection;	// 行列の合成
+	//matrix_const_buffer_->Unmap(0, nullptr);
 }
 
 void ExecuteIndirectDemoScene::Initialize() {
@@ -539,39 +603,22 @@ void ExecuteIndirectDemoScene::Initialize() {
 	camera_->Initialize();
 	camera_->SetDistance(20.0f);
 	camera_->MoveCameraTrack({ 0, 0, 0 });
-	Object3d::SetCamera(camera_.get());
-	//IndirectObject3d::SetCamera(camera_.get());
+	IndirectObject3d::SetCamera(camera_.get());
 
 	device_ = DirectXBase::GetInstance()->GetDevice().Get();
 	command_list_ = DirectXBase::GetInstance()->GetCmdList().Get();
 
-	//object_->Initialize();
+	indirect_->Initialize();
 
-	CreateDescriptorHeap();
-	//CreateRootSignature();
-	CreatePipelineState();
-	CreateConstantBuffer();
-	CreateCommandSignature();
-	CreateCommandBuffer();
+	//CreateVertexBuffer();
+	//CreateDescriptorHeap();
+	////CreateRootSignature();
+	//CreatePipelineState();
+	//CreateConstantBuffer();
+	//CreateCommandSignature();
+	//CreateCommandBuffer();
 
 	Emitter::StaticInitialize();
-
-	// パーティクルの初期化
-	p_.position_ = { 10.0f, 0.0f, -50.0f };
-	p_.velocity_ = { 0.0f, 0.f, -1.0f };
-	p_.accel_ = { 0, 0.001f, 0 };
-	p_.life_ = 100;
-	p_.s_scale_ = 1.0f;
-	range_ = { 0.0f, 0.0f, 0.0f };
-	generate_num_ = 1;
-
-	p_2_.position_ = { -10.0f, 0.0f, -50.0f };
-	p_2_.velocity_ = { 0.0f, 0.f, -1.0f };
-	p_2_.accel_ = { 0, 0.001f, 0 };
-	p_2_.life_ = 100;
-	p_2_.s_scale_ = 1.0f;
-
-	TransferConstantBafferData();
 }
 
 void ExecuteIndirectDemoScene::Finalize() {
@@ -598,6 +645,8 @@ void ExecuteIndirectDemoScene::Update() {
 
 	//TransferConstantBafferData();
 
+	indirect_->Update();
+
 	// パーティクルを生成
 	/*p_.position_.z += 1.0f;
 	p_2_.position_.z += 1.0f;
@@ -607,18 +656,60 @@ void ExecuteIndirectDemoScene::Update() {
 
 void ExecuteIndirectDemoScene::Draw() {
 
-	// コマンドシグネチャに登録した情報でcount_回描画する？
-	command_list_->ExecuteIndirect(
-		command_signature_.Get(),
-		all_particle_num_,
-		command_buffer_.Get(),
-		static_cast<UINT64>(command_size_per_frame_) * frame_index_,
-		nullptr,
-		0);
+	//Object3d::PreDraw();
+
+	//// 頂点バッファの設定
+	//command_list_->IASetVertexBuffers(0, 1, &model_->GetVBView());
+	////command_list_->IASetVertexBuffers(0, 1, &vb_view_);
+	//// インデックスバッファの設定
+	//command_list_->IASetIndexBuffer(&model_->GetIBView());
+
+	//// デスクリプタヒープの配列
+	////ID3D12DescriptorHeap *ppHeaps[] = { descriptor_heap_.Get() };
+	//ID3D12DescriptorHeap *ppHeaps[] = { model_->GetDescriptorHeap().Get() };
+	//command_list_->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+
+	//// 定数バッファビューをセット
+	//command_list_->SetGraphicsRootConstantBufferView(0, matrix_const_buffer_->GetGPUVirtualAddress());
+	//command_list_->SetGraphicsRootConstantBufferView(1, material_const_buffer_->GetGPUVirtualAddress());
+	//// シェーダリソースビューをセット
+	//command_list_->SetGraphicsRootDescriptorTable(2, model_->GetGpuDescHandleSRV()); 
+	//// 描画コマンド
+	////command_list_->DrawIndexedInstanced(static_cast<UINT>(model_->GetIndices().size()), 1, 0, 0, 0);
+	////command_list_->DrawInstanced((UINT)(3), 1, 0, 0);
+
+	//D3D12_RESOURCE_BARRIER barrier[] = {
+
+	//	CD3DX12_RESOURCE_BARRIER::Transition(
+	//		command_buffer_.Get(),
+	//		D3D12_RESOURCE_STATE_COPY_DEST,
+	//		D3D12_RESOURCE_STATE_INDIRECT_ARGUMENT),
+	//};
+
+	//// リソースバリアを変更
+	//command_list_->ResourceBarrier(_countof(barrier), barrier);
+
+	//// コマンドシグネチャに登録した情報でcount_回描画する？
+	//command_list_->ExecuteIndirect(
+	//	command_signature_.Get(),
+	//	all_particle_num_,
+	//	command_buffer_.Get(),
+	//	static_cast<UINT64>(command_size_per_frame_) * frame_index_,
+	//	nullptr,
+	//	0);
+
+	//barrier[0].Transition.StateBefore = D3D12_RESOURCE_STATE_INDIRECT_ARGUMENT;
+	//barrier[0].Transition.StateAfter = D3D12_RESOURCE_STATE_COPY_DEST;
+
+	//// リソースバリアを変更
+	//command_list_->ResourceBarrier(_countof(barrier), barrier);
 
 	// 描画
 	/*emitter_1_->Draw();
 	emitter_2_->Draw();*/
+
+	IndirectObject3d::PreDraw();
+	indirect_->Draw();
 }
 
 void ExecuteIndirectDemoScene::DebugDraw() {

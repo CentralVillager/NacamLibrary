@@ -4,7 +4,6 @@
 void Particle::Initialize(Model *model, ParticleMember &particle) {
 
 	object_ = std::make_unique<Object3d>();
-	//object_ = std::make_unique<IndirectObject3d>();
 	object_->SetModel(model);
 	object_->Initialize();
 
@@ -23,8 +22,10 @@ void Particle::Finalize() {
 
 void Particle::Update() {
 
+	// Žõ–½‚ðŒ}‚¦‚½‚ç
 	if (particle_->frame_ >= particle_->life_) {
 
+		// Ž€–Sƒtƒ‰ƒO‚ð—§‚Ä‚é
 		particle_->is_dead_ = true;
 	}
 
@@ -53,7 +54,6 @@ void Particle::Draw() {
 
 	// •`‰æ
 	Object3d::PreDraw();
-	//IndirectObject3d::PreDraw();
 	object_->Draw();
 }
 

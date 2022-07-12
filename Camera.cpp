@@ -7,6 +7,9 @@ Camera::Camera() {
 }
 
 void Camera::Initialize() {
+
+	aspect_ratio_ = static_cast<float>(Win32App::GetWindowWidth()) / Win32App::GetWindowHeight();
+
 	// カメラ距離の設定
 	distance_ = 20.0f;
 
@@ -23,23 +26,27 @@ void Camera::Initialize() {
 }
 
 void Camera::Update() {
+
 	UpdateViewMatrix();		// ダーティーフラグを使いたい
-	UpdateViewProjection();	// やらなくてもいい
+	//UpdateViewProjection();	// やらなくてもいい
 }
 
 void Camera::UpdateViewMatrix() {
+
 	mat_view_ = XMMatrixLookAtLH(XMLoadFloat3(&eye_), XMLoadFloat3(&target_), XMLoadFloat3(&up_vec_));
 }
 
 void Camera::UpdateViewProjection() {
+
 	mat_projection_ = XMMatrixPerspectiveFovLH(
 		XMConvertToRadians(60.0f),
-		static_cast<float>(Win32App::GetWindowWidth()) / Win32App::GetWindowHeight(),
+		aspect_ratio_,
 		0.1f, 1000.0f
 	);
 }
 
-void Camera::MoveCameraTrack(XMFLOAT3 move) {
+void Camera::MoveCameraTrack(const XMFLOAT3 &move) {
+
 	eye_.x += move.x;
 	eye_.y += move.y;
 	eye_.z += move.z;
@@ -47,4 +54,11 @@ void Camera::MoveCameraTrack(XMFLOAT3 move) {
 	target_.x += move.x;
 	target_.y += move.y;
 	target_.z += move.z;
+}
+
+void Camera::MoveEye(const XMFLOAT3 &move) {
+
+	eye_.x += move.x;
+	eye_.y += move.y;
+	eye_.z += move.z;
 }

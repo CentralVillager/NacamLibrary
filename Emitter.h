@@ -34,6 +34,7 @@ public:
 		// エミッターの寿命
 		UINT life_ = 1;
 
+		// 死んでいるか
 		bool is_dead_ = false;
 	};
 
@@ -49,9 +50,9 @@ public:
 
 	// アクセッサ
 	inline const EmitterArgs &GetEmitterArgs() { return emitter_args_; }
-	inline const XMFLOAT3 &GetPosition() { return emitter_args_.particle.position_; }
-
 	inline void SetEmitterArgs(const EmitterArgs &p) { emitter_args_ = p; }
+
+	inline const XMFLOAT3 &GetPosition() { return emitter_args_.particle.position_; }
 	inline void SetPosition(const XMFLOAT3 &pos) { emitter_args_.particle.position_ = pos; }
 
 private:
@@ -92,7 +93,5 @@ public:
 
 	/// <summary>
 	/// デバッグ用描画
-	/// </summary>
-	void DebugDraw(const string &name);
 	void DebugDraw();
 };
