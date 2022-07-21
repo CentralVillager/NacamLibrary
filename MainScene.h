@@ -15,7 +15,7 @@ private:
 	unique_ptr<Camera> camera_;
 
 	// ƒvƒŒƒCƒ„[
-	unique_ptr<Player> player_;
+	//unique_ptr<Player> player_;
 
 public:
 

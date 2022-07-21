@@ -69,23 +69,8 @@
     <Filter Include="Library\Object3d\PrimitiveObject">
       <UniqueIdentifier>{88317786-f067-43a2-a9d3-98d9681b4faf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\UniqueObject">
-      <UniqueIdentifier>{8582dad3-820d-4e57-8056-a86562efd7ff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\UniqueObject\Player">
-      <UniqueIdentifier>{c14120b6-a938-4e14-afbc-ec9907921345}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\UniqueObject\Bullet">
-      <UniqueIdentifier>{b53ae922-20c4-4b21-8591-f4be24145948}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\UniqueObject\Enemy">
-      <UniqueIdentifier>{f2378600-db7e-4589-af1d-f6fc95c5021d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application\Scene\SceneManager">
       <UniqueIdentifier>{2b67e25c-f893-4c89-8b71-9148045dfabb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\UniqueObject\BackBoard">
-      <UniqueIdentifier>{3d981a3d-aa55-4ad1-93c9-cb690f66f530}</UniqueIdentifier>
     </Filter>
     <Filter Include="Library\Pipeline">
       <UniqueIdentifier>{55c7ad60-f8a9-4c54-9a1c-947000b9344b}</UniqueIdentifier>
@@ -147,21 +132,6 @@
     <Filter Include="Library\Win32App">
       <UniqueIdentifier>{0968b96d-de9b-4276-be81-af931f62bf12}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Scene\QD">
-      <UniqueIdentifier>{ed4f5888-b1a6-4076-a7dc-a0ab61dcb636}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\Scene\QD\Main">
-      <UniqueIdentifier>{67a0bae5-5cdf-44b5-b3c8-4e299f0cdefd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\Scene\QD\Result">
-      <UniqueIdentifier>{4429a6c1-94e8-47b8-bef9-64c092b3a56c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\Scene\QD\Splash">
-      <UniqueIdentifier>{cab44bb3-be9f-4e4c-9fb6-3ccda1c23c30}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\Scene\QD\Title">
-      <UniqueIdentifier>{2ca4dd94-e3d7-4318-9777-0f6421e433c8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application\Scene\Main">
       <UniqueIdentifier>{dcf0753d-9b0d-41d1-98e8-d016a7613bf2}</UniqueIdentifier>
     </Filter>
@@ -169,9 +139,6 @@
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="QDTitleScene.cpp">
-      <Filter>Application\Scene\QD\Title</Filter>
     </ClCompile>
     <ClCompile Include="Object3d.cpp">
       <Filter>Library\Object3d</Filter>
@@ -239,9 +206,6 @@
     <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>Application\Debug\ImGui\Include</Filter>
     </ClCompile>
-    <ClCompile Include="QDMainScene.cpp">
-      <Filter>Application\Scene\QD\Main</Filter>
-    </ClCompile>
     <ClCompile Include="KeyboardInput.cpp">
       <Filter>Library\Input</Filter>
     </ClCompile>
@@ -254,26 +218,11 @@
     <ClCompile Include="TemporaryScene.cpp">
       <Filter>Application\Scene\Temporary</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Application\UniqueObject\Player</Filter>
-    </ClCompile>
     <ClCompile Include="PipelineManager.cpp">
       <Filter>Library\Pipeline</Filter>
     </ClCompile>
     <ClCompile Include="PrimitiveObject.cpp">
       <Filter>Library\Object3d\PrimitiveObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Bullet.cpp">
-      <Filter>Application\UniqueObject\Bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Application\UniqueObject\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="QDResultScene.cpp">
-      <Filter>Application\Scene\QD\Result</Filter>
-    </ClCompile>
-    <ClCompile Include="QDSplashScene.cpp">
-      <Filter>Application\Scene\QD\Splash</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>Application\Scene\SceneManager</Filter>
@@ -284,9 +233,6 @@
     <ClCompile Include="ResourceHanger.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="BackBoard.cpp">
-      <Filter>Application\UniqueObject\BackBoard</Filter>
-    </ClCompile>
     <ClCompile Include="ConstBufferManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -295,9 +241,6 @@
     </ClCompile>
     <ClCompile Include="GravityDemoScene.cpp">
       <Filter>Application\Scene\GravityDemo</Filter>
-    </ClCompile>
-    <ClCompile Include="BackBoardManager.cpp">
-      <Filter>Application\UniqueObject\BackBoard</Filter>
     </ClCompile>
     <ClCompile Include="NacamLib.cpp">
       <Filter>Library\NacamLib</Filter>
@@ -348,9 +291,6 @@
   <ItemGroup>
     <ClInclude Include="AbstractScene.h">
       <Filter>Application\Scene\Abstract</Filter>
-    </ClInclude>
-    <ClInclude Include="QDTitleScene.h">
-      <Filter>Application\Scene\QD\Title</Filter>
     </ClInclude>
     <ClInclude Include="Object3d.h">
       <Filter>Library\Object3d</Filter>
@@ -424,9 +364,6 @@
     <ClInclude Include="imgui\imstb_truetype.h">
       <Filter>Application\Debug\ImGui\Include</Filter>
     </ClInclude>
-    <ClInclude Include="QDMainScene.h">
-      <Filter>Application\Scene\QD\Main</Filter>
-    </ClInclude>
     <ClInclude Include="Singleton.h">
       <Filter>Application\Utility\Singleton</Filter>
     </ClInclude>
@@ -442,47 +379,23 @@
     <ClInclude Include="TemporaryScene.h">
       <Filter>Application\Scene\Temporary</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Application\UniqueObject\Player</Filter>
-    </ClInclude>
     <ClInclude Include="PipelineManager.h">
       <Filter>Library\Pipeline</Filter>
     </ClInclude>
     <ClInclude Include="PrimitiveObject.h">
       <Filter>Library\Object3d\PrimitiveObject</Filter>
     </ClInclude>
-    <ClInclude Include="Bullet.h">
-      <Filter>Application\UniqueObject\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Application\UniqueObject\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="QDResultScene.h">
-      <Filter>Application\Scene\QD\Result</Filter>
-    </ClInclude>
-    <ClInclude Include="QDSplashScene.h">
-      <Filter>Application\Scene\QD\Splash</Filter>
-    </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>Application\Scene\SceneManager</Filter>
     </ClInclude>
-    <ClInclude Include="AbstractUniqueObject.h">
-      <Filter>Application\UniqueObject</Filter>
-    </ClInclude>
     <ClInclude Include="ResourceLoader.h" />
     <ClInclude Include="ResourceHanger.h" />
-    <ClInclude Include="BackBoard.h">
-      <Filter>Application\UniqueObject\BackBoard</Filter>
-    </ClInclude>
     <ClInclude Include="ConstBufferManager.h" />
     <ClInclude Include="DemoScene.h">
       <Filter>Application\Scene\Demo</Filter>
     </ClInclude>
     <ClInclude Include="GravityDemoScene.h">
       <Filter>Application\Scene\GravityDemo</Filter>
-    </ClInclude>
-    <ClInclude Include="BackBoardManager.h">
-      <Filter>Application\UniqueObject\BackBoard</Filter>
     </ClInclude>
     <ClInclude Include="NacamLib.h">
       <Filter>Library\NacamLib</Filter>
