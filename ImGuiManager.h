@@ -21,8 +21,6 @@ public:
 
 	// imgui用のデスクリプタヒープ
 	static ComPtr<ID3D12DescriptorHeap> CreateDescriptorHeapForImgui(ID3D12Device *device);
-	// imgui用のヒープアクセサー
-	static ComPtr<ID3D12DescriptorHeap> GetHeapForImgui();
 
 public:
 

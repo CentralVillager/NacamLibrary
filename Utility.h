@@ -19,4 +19,14 @@ namespace NacamUtility {
 	/// 指定された範囲内で乱数を返します。
 	/// </summary>
 	float GenerateRandom(float min, float max);
+
+	/// <summary>
+	/// 0~256基準の値を0~1基準に変換します。
+	/// </summary>
+	/// <param name="value_of_256"></param>
+	/// <returns></returns>
+	inline float Convert256to01(int value_of_256) {
+
+		return value_of_256 / 256.0f;
+	}
 }

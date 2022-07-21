@@ -13,7 +13,7 @@ class RepulsionDemoScene : public AbstractScene {
 
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 
-	ComPtr<ID3D12GraphicsCommandList> cmd_list_ = DirectXBase::GetInstance()->GetCmdList().Get();
+	ComPtr<ID3D12GraphicsCommandList> cmd_list_ = DirectXBase::GetInstance()->GetCommandList().Get();
 
 private:
 

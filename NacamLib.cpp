@@ -96,10 +96,12 @@ void NacamLib::NacamLib_Draw() {
 	/*-- ƒfƒoƒbƒO•`‰æ --*/
 	SceneManager::GetSceneStack().top()->DebugDraw();
 
+	post_effect_scene_->DebugDraw();
+
 	/*-- ImGui‚Ì•`‰æ --*/
 	ImGuiManager::Draw(cmd_list_.Get());
 
-//#endif
+	//#endif
 
 	/*-- •`‰æŒãˆ— --*/
 	DrawProc::PostDraw(dx_base_);
@@ -115,7 +117,8 @@ void NacamLib::DirectXInitialize() {
 	dx_base_->Initialize();
 
 	device_ = DirectXBase::GetInstance()->GetDevice().Get();
-	cmd_list_ = DirectXBase::GetInstance()->GetCmdList().Get();
+	cmd_list_ = DirectXBase::GetInstance()->GetCommandList().Get();
+	DrawProc::StaticInitialize();
 }
 
 void NacamLib::InputInitialize() {
@@ -134,7 +137,7 @@ void NacamLib::GameObjectInitialize() {
 	Sprite::StaticInitialize(device_.Get(), cmd_list_.Get(), Win32App::GetWindowWidth(), Win32App::GetWindowHeight());
 	AudioManager::StaticInitialize();
 	PrimitiveObject::StaticInitialize(device_.Get(), cmd_list_.Get());
-	IndirectObject3d::StaticInitialize(device_.Get(), cmd_list_.Get());
+	//IndirectObject3d::StaticInitialize(device_.Get(), cmd_list_.Get());
 
 	// FBXLoader‰Šú‰»
 	FbxLoader::GetInstance()->Initialize(device_.Get());

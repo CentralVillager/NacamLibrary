@@ -2,8 +2,16 @@
 #include "DirectXBase.h"
 #include "Win32App.h"
 
+template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+
 UINT DrawProc::back_buffer_index_;
 float DrawProc::clear_color_[4] = { 0.1f, 0.1f, 0.1f, 0.0f };
+ComPtr<ID3D12GraphicsCommandList> DrawProc::command_list_;
+
+void DrawProc::StaticInitialize() {
+
+	command_list_ = DirectXBase::GetInstance()->GetCommandList();
+}
 
 void DrawProc::PreDraw(DirectXBase *dx_base) {
 
@@ -12,7 +20,7 @@ void DrawProc::PreDraw(DirectXBase *dx_base) {
 
 	// リソースバリアで書き込み可能に変更
 	// 表示状態から描画状態に変更
-	dx_base->GetCmdList()->ResourceBarrier(
+	command_list_->ResourceBarrier(
 		1,
 		&CD3DX12_RESOURCE_BARRIER::Transition(
 			dx_base->GetBackBuffers()[back_buffer_index_].Get(),
@@ -31,7 +39,7 @@ void DrawProc::PreDraw(DirectXBase *dx_base) {
 
 	// 深度ステンシルビュー用デスクリプタヒープのハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE dsvH = dx_base->GetDsvHeap()->GetCPUDescriptorHandleForHeapStart();
-	dx_base->GetCmdList()->OMSetRenderTargets(
+	dx_base->GetCommandList()->OMSetRenderTargets(
 		1,
 		&handle,
 		false,
@@ -39,13 +47,13 @@ void DrawProc::PreDraw(DirectXBase *dx_base) {
 	);
 
 	// 画面クリア
-	dx_base->GetCmdList()->ClearRenderTargetView(handle, clear_color_, 0, nullptr);
+	dx_base->GetCommandList()->ClearRenderTargetView(handle, clear_color_, 0, nullptr);
 
 	// 深度バッファのクリア
-	dx_base->GetCmdList()->ClearDepthStencilView(dsvH, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+	dx_base->GetCommandList()->ClearDepthStencilView(dsvH, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 	// ビューポートの設定コマンド
-	dx_base->GetCmdList()->RSSetViewports(
+	dx_base->GetCommandList()->RSSetViewports(
 		1,
 		&CD3DX12_VIEWPORT(
 			0.0f,
@@ -56,7 +64,7 @@ void DrawProc::PreDraw(DirectXBase *dx_base) {
 	);
 
 	// シザー矩形の設定コマンド
-	dx_base->GetCmdList()->RSSetScissorRects(
+	dx_base->GetCommandList()->RSSetScissorRects(
 		1,
 		&CD3DX12_RECT(
 			(long)(0.0f),
@@ -65,9 +73,6 @@ void DrawProc::PreDraw(DirectXBase *dx_base) {
 			Win32App::GetWindowHeight()
 		)
 	);
-
-	// プリミティブ形状の設定コマンド
-	//dx_init->getCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
 void DrawProc::PostDraw(DirectXBase *dx_base) {
@@ -75,7 +80,7 @@ void DrawProc::PostDraw(DirectXBase *dx_base) {
 	// ４．描画コマンド 終了
 	// ５．リソースバリアを戻す
 	// 描画状態から表示状態に変更
-	dx_base->GetCmdList()->ResourceBarrier(
+	dx_base->GetCommandList()->ResourceBarrier(
 		1,
 		&CD3DX12_RESOURCE_BARRIER::Transition(dx_base->GetBackBuffers()[back_buffer_index_].Get(),
 			D3D12_RESOURCE_STATE_RENDER_TARGET,
@@ -84,17 +89,17 @@ void DrawProc::PostDraw(DirectXBase *dx_base) {
 	);
 
 	// 命令のクローズ
-	dx_base->GetCmdList()->Close();
+	dx_base->GetCommandList()->Close();
 
 	// コマンドリストの実行
-	ID3D12CommandList *cmdLists[] = { dx_base->GetCmdList().Get() };	// コマンドリストの配列
-	dx_base->GetCmdQueue()->ExecuteCommandLists(1, cmdLists);
+	ID3D12CommandList *cmdLists[] = { dx_base->GetCommandList().Get() };	// コマンドリストの配列
+	dx_base->GetCommandQueue()->ExecuteCommandLists(1, cmdLists);
 
 	// バッファをフリップ
 	dx_base->GetSwapchain()->Present(1, 0);
 
 	// コマンドキューの実行完了を待つ
-	dx_base->GetCmdQueue()->Signal(dx_base->GetFence().Get(), dx_base->incrementFenceVal());
+	dx_base->GetCommandQueue()->Signal(dx_base->GetFence().Get(), dx_base->IncrementFenceVal());
 
 	if (dx_base->GetFence()->GetCompletedValue() != dx_base->GetFenceVal()) {
 
@@ -107,10 +112,10 @@ void DrawProc::PostDraw(DirectXBase *dx_base) {
 	}
 
 	// キューをクリア
-	dx_base->GetCmdAllocator()->Reset();
+	dx_base->GetCommandAllocator()->Reset();
 
 	// 再びコマンドリストを貯める準備
-	dx_base->GetCmdList()->Reset(dx_base->GetCmdAllocator().Get(), nullptr);
+	dx_base->GetCommandList()->Reset(dx_base->GetCommandAllocator().Get(), nullptr);
 }
 
 void DrawProc::ClearDepthBuffer() {
@@ -118,5 +123,5 @@ void DrawProc::ClearDepthBuffer() {
 	// 深度ステンシルビュー用デスクリプタヒープのハンドルを取得
 	CD3DX12_CPU_DESCRIPTOR_HANDLE dsvH = CD3DX12_CPU_DESCRIPTOR_HANDLE(DirectXBase::GetInstance()->GetDsvHeap()->GetCPUDescriptorHandleForHeapStart());
 	// 深度バッファのクリア
-	DirectXBase::GetInstance()->GetCmdList()->ClearDepthStencilView(dsvH, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+	DirectXBase::GetInstance()->GetCommandList()->ClearDepthStencilView(dsvH, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 }

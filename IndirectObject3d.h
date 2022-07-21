@@ -18,8 +18,7 @@ class IndirectObject3d {
 private:
 
 	static const UINT frame_count_ = 1;				// なにこれ
-	static const UINT all_particle_num_ = 1;
-	//static const UINT all_particle_num_ = 256;
+	static const UINT all_particle_num_ = 100;
 	static const UINT resource_count_ = all_particle_num_ * frame_count_;
 	static const UINT command_size_per_frame_;
 
@@ -42,7 +41,8 @@ private:
 	};
 
 	struct MatrixConstBufferData {
-		XMMATRIX mat;		// ３Ｄ変換行列
+		XMMATRIX mat;	//   64byte
+		float pad[48];	// + 48 * 4byte = 256byte
 	};
 
 	// ExecuteIndirect に使用するコマンドシグネチャと一致させるためのデータ構造
@@ -51,8 +51,8 @@ private:
 		//D3D12_GPU_VIRTUAL_ADDRESS cbv_;
 		D3D12_GPU_VIRTUAL_ADDRESS matrix_cbv_;
 		D3D12_GPU_VIRTUAL_ADDRESS material_cbv_;
-		//D3D12_DRAW_ARGUMENTS draw_arguments_;	// DrawIndexedInstancedの場合は使う型が違う
-		D3D12_DRAW_INDEXED_ARGUMENTS draw_arguments_;	// DrawIndexedInstancedの場合は使う型が違う
+		//D3D12_DRAW_INDEXED_ARGUMENTS draw_arguments_;	// DrawIndexedInstancedの場合は使う型が違う
+		D3D12_DRAW_ARGUMENTS draw_arguments_;	// DrawIndexedInstancedの場合は使う型が違う
 	};
 
 	std::vector<ConstBufferData> const_buffer_data_;
@@ -76,7 +76,6 @@ private:
 	ComPtr<ID3D12Resource> command_buffer_;
 	ComPtr<ID3D12Resource> command_buffer_upload_;
 	ComPtr<ID3D12Resource> vertex_buffer_;
-	ComPtr<ID3D12Resource> vertex_buffer_upload_;
 	D3D12_VERTEX_BUFFER_VIEW vb_view_;
 
 	XMFLOAT4 color_ = { 1, 1, 1, 1 };

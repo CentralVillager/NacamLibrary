@@ -5,9 +5,6 @@
 #include <d3d12.h>
 #include "DirectXBase.h"
 
-class DirectXBase;
-class Win32App;
-
 class DrawProc : public Singleton<DrawProc> {
 	friend Singleton<DrawProc>;
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
@@ -20,7 +17,11 @@ private:
 	// バックバッファ番号
 	static UINT back_buffer_index_;
 
+	static ComPtr<ID3D12GraphicsCommandList> command_list_;
+
 public:
+
+	static void StaticInitialize();
 
 	/// <summary>
 	/// バックバッファ準備

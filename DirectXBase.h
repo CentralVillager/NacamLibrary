@@ -10,57 +10,55 @@ using namespace std;
 
 class DirectXBase final : public Singleton<DirectXBase> {
 	friend Singleton<DirectXBase>;
-
-public:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
+	ComPtr<ID3D12Device> device_;
+	ComPtr<ID3D12Debug> debug_controller_0_;
+	ComPtr<ID3D12Debug1> debug_controller_1_;
+	ComPtr<IDXGIFactory6> dxgi_factory_;
+	vector<ComPtr<IDXGIAdapter1>> adapters_;
+	DXGI_ADAPTER_DESC1 adapter_desc_;
+	ComPtr<IDXGIAdapter1> tmp_adapter_;
+	D3D_FEATURE_LEVEL feature_level_;
+	ComPtr<ID3D12CommandAllocator> command_allocator_;
+	ComPtr<ID3D12GraphicsCommandList> command_list_;
+	D3D12_COMMAND_QUEUE_DESC command_queue_desc_{};
+	ComPtr<ID3D12CommandQueue> command_queue_;
+	DXGI_SWAP_CHAIN_DESC1 swapchain_desc_{};
+	ComPtr<IDXGISwapChain4> swapchain_;
+	ComPtr<IDXGISwapChain1> swapchain1_;
+	D3D12_DESCRIPTOR_HEAP_DESC heap_desc_{};
+	vector<ComPtr<ID3D12Resource>> back_buffers_;
+	ComPtr<ID3D12DescriptorHeap> rtv_heaps_;
+	D3D12_RESOURCE_DESC depth_res_desc_{};
+	D3D12_HEAP_PROPERTIES depth_heap_prop_{};
+	D3D12_CLEAR_VALUE depth_clear_value_{};
+	ComPtr<ID3D12Resource> depth_buffer_;
+	D3D12_DESCRIPTOR_HEAP_DESC dsv_heap_desc_{};
+	ComPtr<ID3D12DescriptorHeap> dsv_heap_;
+	D3D12_DEPTH_STENCIL_VIEW_DESC dsv_desc_{};
+	ComPtr<ID3D12Fence> fence_;
+	UINT fence_val_;
+
 private:
+
 	DirectXBase();
 
-	ComPtr<ID3D12Device> device_;
-	ComPtr<ID3D12Debug> debugController;
-	ComPtr<IDXGIFactory6> dxgiFactory;
-	vector<ComPtr<IDXGIAdapter1>> adapters;
-	DXGI_ADAPTER_DESC1 adesc;
-	ComPtr<IDXGIAdapter1> tmpAdapter;
-	D3D_FEATURE_LEVEL featureLevel;
-	ComPtr<ID3D12CommandAllocator> cmdAllocator;
-	ComPtr<ID3D12GraphicsCommandList> cmdList;
-	D3D12_COMMAND_QUEUE_DESC cmdQueueDesc{};
-	ComPtr<ID3D12CommandQueue> cmdQueue;
-	DXGI_SWAP_CHAIN_DESC1 swapchainDesc{};
-	ComPtr<IDXGISwapChain4> swapchain;
-	ComPtr<IDXGISwapChain1> swapchain1;
-	D3D12_DESCRIPTOR_HEAP_DESC heapDesc{};
-	vector<ComPtr<ID3D12Resource>> backBuffers;
-	ComPtr<ID3D12DescriptorHeap> rtvHeaps;
-	D3D12_RESOURCE_DESC depthResDesc{};
-	D3D12_HEAP_PROPERTIES depthHeapProp{};
-	D3D12_CLEAR_VALUE depthClearValue{};
-	ComPtr<ID3D12Resource> depthBuffer;
-	D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc{};
-	ComPtr<ID3D12DescriptorHeap> dsvHeap;
-	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc{};
-	ComPtr<ID3D12Fence> fence;
-	UINT fenceVal;
-
 public:
-	DirectXBase(const DirectXBase &obj) = delete;
-	DirectXBase &operator=(const DirectXBase &obj) = delete;
 
-	const ComPtr<ID3D12Device> &GetDevice() { return device_; }
-	const ComPtr<ID3D12CommandAllocator> &GetCmdAllocator() { return cmdAllocator; }
-	const ComPtr<ID3D12GraphicsCommandList> &GetCmdList() { return cmdList; }
-	const ComPtr<ID3D12CommandQueue> &GetCmdQueue() { return cmdQueue; }
-	const ComPtr<IDXGISwapChain4> &GetSwapchain() { return swapchain; }
-	const D3D12_DESCRIPTOR_HEAP_DESC &GetHeapDesc() { return heapDesc; }
-	const vector<ComPtr<ID3D12Resource>> &GetBackBuffers() { return backBuffers; }
-	const ComPtr<ID3D12DescriptorHeap> &GetRtvHeaps() { return rtvHeaps; }
-	const ComPtr<ID3D12DescriptorHeap> &GetDsvHeap() { return dsvHeap; }
-	const ComPtr<ID3D12Fence> &GetFence() { return fence; }
-	const UINT &GetFenceVal() { return fenceVal; }
+	inline const ComPtr<ID3D12Device> &GetDevice() { return device_; }
+	inline const ComPtr<ID3D12CommandAllocator> &GetCommandAllocator() { return command_allocator_; }
+	inline const ComPtr<ID3D12GraphicsCommandList> &GetCommandList() { return command_list_; }
+	inline const ComPtr<ID3D12CommandQueue> &GetCommandQueue() { return command_queue_; }
+	inline const ComPtr<IDXGISwapChain4> &GetSwapchain() { return swapchain_; }
+	inline const D3D12_DESCRIPTOR_HEAP_DESC &GetHeapDesc() { return heap_desc_; }
+	inline const vector<ComPtr<ID3D12Resource>> &GetBackBuffers() { return back_buffers_; }
+	inline const ComPtr<ID3D12DescriptorHeap> &GetRtvHeaps() { return rtv_heaps_; }
+	inline const ComPtr<ID3D12DescriptorHeap> &GetDsvHeap() { return dsv_heap_; }
+	inline const ComPtr<ID3D12Fence> &GetFence() { return fence_; }
+	inline const UINT &GetFenceVal() { return fence_val_; }
 
-	UINT incrementFenceVal() { return ++fenceVal; }
+	inline UINT IncrementFenceVal() { return ++fence_val_; }
 
 	void Initialize();
 

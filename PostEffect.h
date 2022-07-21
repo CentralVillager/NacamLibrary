@@ -2,6 +2,13 @@
 #include "Sprite.h"
 #include <array>
 
+enum class Pipeline {
+
+	Basic,
+	Blur,
+	GaussianBlur
+};
+
 class PostEffect : public Sprite {
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
@@ -34,15 +41,24 @@ private:
 private:
 
 	// グラフィクスパイプライン
-	ComPtr<ID3D12PipelineState> pipeline_state_;
+	static ComPtr<ID3D12PipelineState> pipeline_state_;
+	static ComPtr<ID3D12PipelineState> blur_pipeline_state_;
+	static ComPtr<ID3D12PipelineState> gaussian_blur_pipeline_state_;
 
 	// ルートシグネチャ
-	ComPtr<ID3D12RootSignature> root_signature_;
+	static ComPtr<ID3D12RootSignature> root_signature_;
+	static ComPtr<ID3D12RootSignature> blur_root_signature_;
+	static ComPtr<ID3D12RootSignature> gaussian_blur_root_signature_;
+
+	Pipeline pipeline_;
 
 	/// <summary>
 	/// パイプライン生成
 	/// </summary>
 	void CreateGraphicsPipelineState();
+
+	void CreateBlurPipeline();
+	void CreateGaussianBlurPipeline();
 
 public:
 
@@ -56,7 +72,14 @@ public:
 	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// デバッグ描画
+	/// </summary>
+	void DebugDraw();
+
 public:
+
+	static void SetPipeline(Pipeline p);
 
 	/// <summary>
 	/// シーン描画前処理

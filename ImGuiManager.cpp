@@ -25,9 +25,9 @@ void ImGuiManager::Initialize(ID3D12Device *device) {
 		device,
 		3,
 		DXGI_FORMAT_R8G8B8A8_UNORM,
-		GetHeapForImgui().Get(),
-		GetHeapForImgui()->GetCPUDescriptorHandleForHeapStart(),
-		GetHeapForImgui()->GetGPUDescriptorHandleForHeapStart());
+		heap_for_imgui_.Get(),
+		heap_for_imgui_->GetCPUDescriptorHandleForHeapStart(),
+		heap_for_imgui_->GetGPUDescriptorHandleForHeapStart());
 }
 
 void ImGuiManager::PreDraw() {
@@ -37,8 +37,15 @@ void ImGuiManager::PreDraw() {
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
+	ImGuiWindowFlags flag = 0;
+	flag |= ImGuiWindowFlags_AlwaysAutoResize;	// 自動で枠サイズを変更
+
+	ImGuiStyle *style = &ImGui::GetStyle();
+	style->Alpha = 1.0f;
+	style->Colors[ImGuiCol_WindowBg] = ImVec4(0.0f, 0, 0, 1.0f);
+
 	// ImGuiウィンドウの定義
-	ImGui::Begin("Debug Menu");
+	ImGui::Begin("Debug Menu", 0, flag);
 	ImGui::SetWindowSize(ImVec2(400, 500), ImGuiCond_::ImGuiCond_FirstUseEver);
 }
 
@@ -50,7 +57,7 @@ void ImGuiManager::Draw(ID3D12GraphicsCommandList *cmd_list) {
 	ImGui::Render();
 	cmd_list->SetDescriptorHeaps(
 		1,
-		GetHeapForImgui().GetAddressOf());
+		heap_for_imgui_.GetAddressOf());
 	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), cmd_list);
 }
 
@@ -70,8 +77,4 @@ ComPtr<ID3D12DescriptorHeap> ImGuiManager::CreateDescriptorHeapForImgui(ID3D12De
 	return ret;
 }
 
-ComPtr<ID3D12DescriptorHeap> ImGuiManager::GetHeapForImgui() {
-
-	return heap_for_imgui_;
-}
 

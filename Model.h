@@ -52,6 +52,8 @@ public:
 		float pad2;			// パディング
 		XMFLOAT3 specular;	// スペキュラー係数
 		float alpha;		// アルファ
+		// 48byte + 4byte * 52 = 256byte
+		float pad[52];
 	};
 
 	// テクスチャ
