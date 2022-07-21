@@ -1,6 +1,12 @@
 #include "MainScene.h"
 
 MainScene::MainScene() {
+
+	// ƒJƒƒ‰‚Ì¶¬
+	camera_ = make_unique<Camera>();
+
+	// 
+	player_ = make_unique<Player>();
 }
 
 MainScene::~MainScene() {

@@ -2,6 +2,7 @@
 #include "AbstractScene.h"
 #include <wrl.h>
 #include "Camera.h"
+#include "Player.h"
 
 class MainScene : public AbstractScene {
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
@@ -15,7 +16,7 @@ private:
 	unique_ptr<Camera> camera_;
 
 	// ÉvÉåÉCÉÑÅ[
-	//unique_ptr<Player> player_;
+	unique_ptr<Player> player_;
 
 public:
 
