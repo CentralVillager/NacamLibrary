@@ -1,10 +1,10 @@
-#include "ResultScene.h"
+#include "QDResultScene.h"
 #include "SceneManager.h"
 #include "KeyboardInput.h"
 #include "ControllerInput.h"
 #include "BackBoardManager.h"
 
-ResultScene::ResultScene() {
+QDResultScene::QDResultScene() {
 
 	// ゲームオーバーUIのロード
 	Sprite::LoadTexture(static_cast<UINT>(TexNum::Alloc::RESULT), L"Resources/Textures/game_is_over.png");
@@ -13,10 +13,10 @@ ResultScene::ResultScene() {
 	game_over_ = make_unique<Sprite>();
 }
 
-ResultScene::~ResultScene() {
+QDResultScene::~QDResultScene() {
 }
 
-void ResultScene::Initialize() {
+void QDResultScene::Initialize() {
 
 	// スプライトデータを代入
 	game_over_ = static_cast<unique_ptr<Sprite>>(Sprite::Create(static_cast<UINT>(TexNum::Alloc::RESULT), { 0, 0 }));
@@ -33,10 +33,10 @@ void ResultScene::Initialize() {
 	BackBoardManager::GetInstance()->Initialize();
 }
 
-void ResultScene::Finalize() {
+void QDResultScene::Finalize() {
 }
 
-void ResultScene::Update() {
+void QDResultScene::Update() {
 
 	// ボードの更新
 	BackBoardManager::GetInstance()->Update();
@@ -50,7 +50,7 @@ void ResultScene::Update() {
 	}
 }
 
-void ResultScene::Draw() {
+void QDResultScene::Draw() {
 
 	Object3d::PreDraw();
 
@@ -63,5 +63,5 @@ void ResultScene::Draw() {
 	game_over_->Draw();
 }
 
-void ResultScene::DebugDraw() {
+void QDResultScene::DebugDraw() {
 }

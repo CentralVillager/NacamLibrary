@@ -2,7 +2,7 @@
 #include "AbstractScene.h"
 #include "Sprite.h"
 
-class SplashScene : public AbstractScene {
+class QDSplashScene : public AbstractScene {
 
 	// ÉçÉS
 	unique_ptr<Sprite> logo_;
@@ -12,8 +12,8 @@ class SplashScene : public AbstractScene {
 
 public:
 
-	SplashScene();
-	~SplashScene();
+	QDSplashScene();
+	~QDSplashScene();
 
 public:
 

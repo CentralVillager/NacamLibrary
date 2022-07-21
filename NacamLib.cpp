@@ -15,11 +15,11 @@
 #include "DrawProc.h"
 #include "FPSManager.h"
 #include "AbstractScene.h"
-#include "SplashScene.h"
-#include "TitleScene.h"
-#include "MainScene.h"
+#include "QDSplashScene.h"
+#include "QDTitleScene.h"
+#include "QDMainScene.h"
 #include "TemporaryScene.h"
-#include "ResultScene.h"
+#include "QDResultScene.h"
 
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")

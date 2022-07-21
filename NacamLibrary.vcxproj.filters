@@ -36,9 +36,6 @@
     <Filter Include="Application\Scene">
       <UniqueIdentifier>{df96d19a-c6e7-4c8d-91d9-70b608a0eb38}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Scene\Title">
-      <UniqueIdentifier>{2ca4dd94-e3d7-4318-9777-0f6421e433c8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application\Scene\Abstract">
       <UniqueIdentifier>{8ed16d1a-200c-4fe6-bd52-1c39aafa6687}</UniqueIdentifier>
     </Filter>
@@ -63,9 +60,6 @@
     <Filter Include="Library\Camera">
       <UniqueIdentifier>{ff00d73d-9632-4d97-8051-ee608a3b3835}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Scene\Main">
-      <UniqueIdentifier>{67a0bae5-5cdf-44b5-b3c8-4e299f0cdefd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application\Scene\Temporary">
       <UniqueIdentifier>{52431df6-1b30-46b3-b2b5-87965b3e7927}</UniqueIdentifier>
     </Filter>
@@ -86,12 +80,6 @@
     </Filter>
     <Filter Include="Application\UniqueObject\Enemy">
       <UniqueIdentifier>{f2378600-db7e-4589-af1d-f6fc95c5021d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\Scene\Result">
-      <UniqueIdentifier>{4429a6c1-94e8-47b8-bef9-64c092b3a56c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\Scene\Splash">
-      <UniqueIdentifier>{cab44bb3-be9f-4e4c-9fb6-3ccda1c23c30}</UniqueIdentifier>
     </Filter>
     <Filter Include="Application\Scene\SceneManager">
       <UniqueIdentifier>{2b67e25c-f893-4c89-8b71-9148045dfabb}</UniqueIdentifier>
@@ -159,13 +147,31 @@
     <Filter Include="Library\Win32App">
       <UniqueIdentifier>{0968b96d-de9b-4276-be81-af931f62bf12}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\Scene\QD">
+      <UniqueIdentifier>{ed4f5888-b1a6-4076-a7dc-a0ab61dcb636}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\QD\Main">
+      <UniqueIdentifier>{67a0bae5-5cdf-44b5-b3c8-4e299f0cdefd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\QD\Result">
+      <UniqueIdentifier>{4429a6c1-94e8-47b8-bef9-64c092b3a56c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\QD\Splash">
+      <UniqueIdentifier>{cab44bb3-be9f-4e4c-9fb6-3ccda1c23c30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\QD\Title">
+      <UniqueIdentifier>{2ca4dd94-e3d7-4318-9777-0f6421e433c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\Main">
+      <UniqueIdentifier>{dcf0753d-9b0d-41d1-98e8-d016a7613bf2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TitleScene.cpp">
-      <Filter>Application\Scene\Title</Filter>
+    <ClCompile Include="QDTitleScene.cpp">
+      <Filter>Application\Scene\QD\Title</Filter>
     </ClCompile>
     <ClCompile Include="Object3d.cpp">
       <Filter>Library\Object3d</Filter>
@@ -233,8 +239,8 @@
     <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>Application\Debug\ImGui\Include</Filter>
     </ClCompile>
-    <ClCompile Include="MainScene.cpp">
-      <Filter>Application\Scene\Main</Filter>
+    <ClCompile Include="QDMainScene.cpp">
+      <Filter>Application\Scene\QD\Main</Filter>
     </ClCompile>
     <ClCompile Include="KeyboardInput.cpp">
       <Filter>Library\Input</Filter>
@@ -263,11 +269,11 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>Application\UniqueObject\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="ResultScene.cpp">
-      <Filter>Application\Scene\Result</Filter>
+    <ClCompile Include="QDResultScene.cpp">
+      <Filter>Application\Scene\QD\Result</Filter>
     </ClCompile>
-    <ClCompile Include="SplashScene.cpp">
-      <Filter>Application\Scene\Splash</Filter>
+    <ClCompile Include="QDSplashScene.cpp">
+      <Filter>Application\Scene\QD\Splash</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>Application\Scene\SceneManager</Filter>
@@ -335,13 +341,16 @@
     <ClCompile Include="CollisionPrimitive.cpp">
       <Filter>Application\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="MainScene.cpp">
+      <Filter>Application\Scene\Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractScene.h">
       <Filter>Application\Scene\Abstract</Filter>
     </ClInclude>
-    <ClInclude Include="TitleScene.h">
-      <Filter>Application\Scene\Title</Filter>
+    <ClInclude Include="QDTitleScene.h">
+      <Filter>Application\Scene\QD\Title</Filter>
     </ClInclude>
     <ClInclude Include="Object3d.h">
       <Filter>Library\Object3d</Filter>
@@ -415,8 +424,8 @@
     <ClInclude Include="imgui\imstb_truetype.h">
       <Filter>Application\Debug\ImGui\Include</Filter>
     </ClInclude>
-    <ClInclude Include="MainScene.h">
-      <Filter>Application\Scene\Main</Filter>
+    <ClInclude Include="QDMainScene.h">
+      <Filter>Application\Scene\QD\Main</Filter>
     </ClInclude>
     <ClInclude Include="Singleton.h">
       <Filter>Application\Utility\Singleton</Filter>
@@ -448,11 +457,11 @@
     <ClInclude Include="Enemy.h">
       <Filter>Application\UniqueObject\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="ResultScene.h">
-      <Filter>Application\Scene\Result</Filter>
+    <ClInclude Include="QDResultScene.h">
+      <Filter>Application\Scene\QD\Result</Filter>
     </ClInclude>
-    <ClInclude Include="SplashScene.h">
-      <Filter>Application\Scene\Splash</Filter>
+    <ClInclude Include="QDSplashScene.h">
+      <Filter>Application\Scene\QD\Splash</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>Application\Scene\SceneManager</Filter>
@@ -516,6 +525,9 @@
     </ClInclude>
     <ClInclude Include="CollisionPrimitive.h">
       <Filter>Application\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="MainScene.h">
+      <Filter>Application\Scene\Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

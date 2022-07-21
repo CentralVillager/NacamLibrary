@@ -1,25 +1,35 @@
 #pragma once
-#include "AbstractScene.h"
 #include <wrl.h>
+#include "AbstractScene.h"
 #include "DirectXBase.h"
 #include "Sprite.h"
-#include <memory>
+#include "InputManager.h"
+#include "Object3d.h"
+#include "FbxObject3d.h"
+#include "Camera.h"
+#include "AudioManager.h"
+#include "Utility.h"
 
-class ResultScene : public AbstractScene {
+class QDTitleScene : public AbstractScene {
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-	// コマンドリスト
 	ComPtr<ID3D12GraphicsCommandList> cmd_list_ = DirectXBase::GetInstance()->GetCommandList().Get();
 
 private:
 
-	// UI
-	std::unique_ptr<Sprite> game_over_;
+	// カメラ
+	unique_ptr<Camera> camera_;
+
+	// タイトル
+	unique_ptr<Sprite> quantum_drive_;
+
+	// BGM
+	unique_ptr<AudioManager> bgm_;
 
 public:
 
-	ResultScene();
-	~ResultScene();
+	QDTitleScene();
+	~QDTitleScene();
 
 public:
 

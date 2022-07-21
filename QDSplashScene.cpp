@@ -1,16 +1,16 @@
-#include "SplashScene.h"
+#include "QDSplashScene.h"
 #include "SceneManager.h"
 
-SplashScene::SplashScene() {
+QDSplashScene::QDSplashScene() {
 
 	Sprite::LoadTexture(static_cast<UINT>(TexNum::Alloc::LOGO), L"Resources/Textures/Logo/big_logo_alpha.png");
 	logo_ = make_unique<Sprite>();
 }
 
-SplashScene::~SplashScene() {
+QDSplashScene::~QDSplashScene() {
 }
 
-void SplashScene::Initialize() {
+void QDSplashScene::Initialize() {
 
 	logo_ = static_cast<unique_ptr<Sprite>>(Sprite::Create(static_cast<UINT>(TexNum::Alloc::LOGO), { 0, 0 }));
 
@@ -23,10 +23,10 @@ void SplashScene::Initialize() {
 	display_time_ = 100;
 }
 
-void SplashScene::Finalize() {
+void QDSplashScene::Finalize() {
 }
 
-void SplashScene::Update() {
+void QDSplashScene::Update() {
 
 	static int count = 0;
 
@@ -40,12 +40,12 @@ void SplashScene::Update() {
 	}
 }
 
-void SplashScene::Draw() {
+void QDSplashScene::Draw() {
 
 	Sprite::PreDraw();
 
 	logo_->Draw();
 }
 
-void SplashScene::DebugDraw() {
+void QDSplashScene::DebugDraw() {
 }

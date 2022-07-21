@@ -1,9 +1,10 @@
 #include "SceneManager.h"
-#include "SplashScene.h"
-#include "TitleScene.h"
+#include "QDSplashScene.h"
+#include "QDTitleScene.h"
+#include "QDMainScene.h"
 #include "MainScene.h"
 #include "TemporaryScene.h"
-#include "ResultScene.h"
+#include "QDResultScene.h"
 #include "DemoScene.h"
 #include "GravityDemoScene.h"
 #include "FrictionDemoScene.h"
@@ -22,19 +23,20 @@ void SceneManager::SetScene(Scene scene_name) {
 	// 入力されたシーンを生成し、スタックに追加
 	if (scene_name == Scene::SPLASH) {
 
-		scene_stack_.push(make_shared<SplashScene>());
+		//scene_stack_.push(make_shared<QDSplashScene>());
 
 	} else 	if (scene_name == Scene::TITLE) {
 
-		scene_stack_.push(make_shared<TitleScene>());
+		//scene_stack_.push(make_shared<QDTitleScene>());
 
 	} else if (scene_name == Scene::MAIN) {
 
 		scene_stack_.push(make_shared<MainScene>());
+		//scene_stack_.push(make_shared<QDMainScene>());
 
 	} else if (scene_name == Scene::RESULT) {
 
-		scene_stack_.push(make_shared<ResultScene>());
+		//scene_stack_.push(make_shared<QDResultScene>());
 
 	} else if (scene_name == Scene::TEMPORARY) {
 

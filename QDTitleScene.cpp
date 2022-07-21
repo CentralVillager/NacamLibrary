@@ -1,11 +1,11 @@
-#include "TitleScene.h"
+#include "QDTitleScene.h"
 #include "Win32App.h"
 #include "SceneManager.h"
 #include "BackBoardManager.h"
 #include "KeyboardInput.h"
 #include "ControllerInput.h"
 
-TitleScene::TitleScene() {
+QDTitleScene::QDTitleScene() {
 
 	// カメラの生成
 	camera_ = make_unique<Camera>();
@@ -21,10 +21,10 @@ TitleScene::TitleScene() {
 	quantum_drive_ = make_unique<Sprite>();
 }
 
-TitleScene::~TitleScene() {
+QDTitleScene::~QDTitleScene() {
 }
 
-void TitleScene::Initialize() {
+void QDTitleScene::Initialize() {
 
 	// カメラの初期化
 	camera_->Initialize();
@@ -50,7 +50,7 @@ void TitleScene::Initialize() {
 	BackBoardManager::GetInstance()->Initialize();
 }
 
-void TitleScene::Finalize() {
+void QDTitleScene::Finalize() {
 
 	// BGMを止める
 	bgm_->StopWave();
@@ -59,7 +59,7 @@ void TitleScene::Finalize() {
 	bgm_->UnloadWaveFile();
 }
 
-void TitleScene::Update() {
+void QDTitleScene::Update() {
 
 	// ボードの更新
 	BackBoardManager::GetInstance()->Update();
@@ -76,7 +76,7 @@ void TitleScene::Update() {
 	}
 }
 
-void TitleScene::Draw() {
+void QDTitleScene::Draw() {
 
 	Object3d::PreDraw();
 
@@ -89,5 +89,5 @@ void TitleScene::Draw() {
 	quantum_drive_->Draw();
 }
 
-void TitleScene::DebugDraw() {
+void QDTitleScene::DebugDraw() {
 }
