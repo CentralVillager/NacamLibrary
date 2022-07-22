@@ -93,6 +93,7 @@ void NacamLib::NacamLib_Draw() {
 	SceneManager::GetSceneStack().top()->DebugDraw();
 
 	post_effect_scene_->DebugDraw();
+	SceneManager::DebugSceneChange();
 
 	/*-- ImGui‚Ì•`‰æ --*/
 	ImGuiManager::Draw(cmd_list_.Get());

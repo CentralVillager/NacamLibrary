@@ -3,6 +3,7 @@
 #include <d3dcompiler.h>
 #include "KeyboardInput.h"
 #include "Utility.h"
+#include "ImGuiManager.h"
 
 #pragma comment(lib, "d3dcompiler.lib")
 
@@ -48,11 +49,9 @@ void IndirectObject3d::CreateVertexBuffer() {
 	// 頂点バッファの生成
 	result = device_->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
-		//&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
 		D3D12_HEAP_FLAG_NONE,
 		&CD3DX12_RESOURCE_DESC::Buffer(vertex_buffer_size),
 		D3D12_RESOURCE_STATE_GENERIC_READ,
-		//D3D12_RESOURCE_STATE_COPY_DEST,
 		nullptr,
 		IID_PPV_ARGS(&vertex_buffer_));
 	vertex_buffer_->SetName(L"VertexBuffer");
@@ -81,6 +80,7 @@ void IndirectObject3d::CreateDescriptorHeap() {
 
 	// デスクリプタヒープを作成
 	D3D12_DESCRIPTOR_HEAP_DESC desc_heap_desc = {};
+	//desc_heap_desc.NumDescriptors = 3;
 	desc_heap_desc.NumDescriptors = 3 * frame_count_;
 	desc_heap_desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	desc_heap_desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
@@ -103,155 +103,31 @@ void IndirectObject3d::CreateDescriptorHeap() {
 	CD3DX12_CPU_DESCRIPTOR_HANDLE cbv_srv_handle(descriptor_heap_->GetCPUDescriptorHandleForHeapStart(), 0, descriptor_heap_size_);
 	for (UINT frame = 0; frame < frame_count_; frame++) {
 
+		//srv_desc.Buffer.FirstElement = all_particle_num_;
 		srv_desc.Buffer.FirstElement = frame * all_particle_num_;
 		device_->CreateShaderResourceView(material_const_buffer_.Get(), &srv_desc, cbv_srv_handle);
 		cbv_srv_handle.Offset(3, descriptor_heap_size_);
 	}
 }
 
-void IndirectObject3d::CreateRootSignature() {
-
-	HRESULT result;
-
-	D3D12_FEATURE_DATA_ROOT_SIGNATURE feature_data = {};
-
-	feature_data.HighestVersion = D3D_ROOT_SIGNATURE_VERSION_1_1;
-
-	if (FAILED(device_->CheckFeatureSupport(D3D12_FEATURE_ROOT_SIGNATURE, &feature_data, sizeof(feature_data)))) {
-		feature_data.HighestVersion = D3D_ROOT_SIGNATURE_VERSION_1_0;
-	}
-
-	// デスクリプタレンジ
-	CD3DX12_DESCRIPTOR_RANGE desc_range_SRV;
-	desc_range_SRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
-
-	// ルートパラメータ
-	CD3DX12_ROOT_PARAMETER root_parameters[2];
-	root_parameters[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
-	root_parameters[1].InitAsDescriptorTable(1, &desc_range_SRV, D3D12_SHADER_VISIBILITY_ALL);
-
-	// スタティックサンプラー
-	CD3DX12_STATIC_SAMPLER_DESC sampler_desc = CD3DX12_STATIC_SAMPLER_DESC(0);
-
-	// ルートシグネチャの設定
-	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC root_signature_desc;
-	//root_signature_desc.Init_1_1(_countof(root_parameters), root_parameters, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
-	root_signature_desc.Init_1_0(_countof(root_parameters), root_parameters, 1, &sampler_desc, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
-
-	ComPtr<ID3DBlob> root_signature_blob;
-	ComPtr<ID3DBlob> error_blob;
-
-	// バージョン判定のシリアライズ
-	result = D3DX12SerializeVersionedRootSignature(&root_signature_desc, feature_data.HighestVersion, &root_signature_blob, &error_blob);
-
-	// ルートシグネチャの生成
-	result = device_->CreateRootSignature(0,
-		root_signature_blob->GetBufferPointer(),
-		root_signature_blob->GetBufferSize(),
-		IID_PPV_ARGS(&root_signature_));
-	root_signature_->SetName(L"RootSignature");
-
-	// 以下でコンピュートルートシグネチャを生成する必要あり
-}
-
 void IndirectObject3d::CreatePipelineState() {
 
-	//	HRESULT result;
-	//
-	//	ComPtr<ID3DBlob> vs_blob;
-	//	ComPtr<ID3DBlob> ps_blob;
-	//	ComPtr<ID3DBlob> error_blob;
-	//
-	//#if defined(_DEBUG)
-	//	// グラフィックスデバッグツールでより良いシェーダーデバッグを可能にする
-	//	UINT compile_flags = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
-	//#else
-	//	UINT compile_flags = 0;
-	//#endif
-	//
-	//	// 頂点シェーダの読み込みとコンパイル
-	//	result = D3DCompileFromFile(
-	//		L"Resources/shaders/ParticleVS.hlsl",
-	//		nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE,
-	//		"main", "vs_5_0", compile_flags, 0, &vs_blob, &error_blob);
-	//
-	//	if (FAILED(result)) {
-	//
-	//		// errorBlobからエラー内容をstring型にコピー
-	//		std::string errstr;
-	//		errstr.resize(error_blob->GetBufferSize());
-	//
-	//		std::copy_n((char *)error_blob->GetBufferPointer(), error_blob->GetBufferSize(), errstr.begin());
-	//		errstr += "\n";
-	//
-	//		// エラー内容を出力ウィンドウに表示
-	//		OutputDebugStringA(errstr.c_str());
-	//		exit(1);
-	//	}
-	//
-	//	// ピクセルシェーダの読み込みとコンパイル
-	//	result = D3DCompileFromFile(
-	//		L"Resources/shaders/ParticlePS.hlsl",
-	//		nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE,
-	//		"main", "ps_5_0", compile_flags, 0, &ps_blob, &error_blob);
-	//
-	//	if (FAILED(result)) {
-	//
-	//		// errorBlobからエラー内容をstring型にコピー
-	//		std::string errstr;
-	//		errstr.resize(error_blob->GetBufferSize());
-	//
-	//		std::copy_n((char *)error_blob->GetBufferPointer(), error_blob->GetBufferSize(), errstr.begin());
-	//		errstr += "\n";
-	//
-	//		// エラー内容を出力ウィンドウに表示
-	//		OutputDebugStringA(errstr.c_str());
-	//		exit(1);
-	//	}
-	//
-	//	// 頂点レイアウト
-	//	D3D12_INPUT_ELEMENT_DESC input_layout[] = {
-	//
-	//		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-	//		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-	//	};
-	//
-	//	// グラフィックスパイプラインの流れを設定
-	//	D3D12_GRAPHICS_PIPELINE_STATE_DESC gpipeline{};
-	//	gpipeline.InputLayout = { input_layout , _countof(input_layout) };
-	//	gpipeline.pRootSignature = root_signature_.Get();
-	//	gpipeline.VS = CD3DX12_SHADER_BYTECODE(vs_blob.Get());
-	//	gpipeline.PS = CD3DX12_SHADER_BYTECODE(ps_blob.Get());
-	//	gpipeline.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-	//	gpipeline.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
-	//	gpipeline.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
-	//	gpipeline.SampleMask = UINT_MAX;
-	//	gpipeline.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-	//	gpipeline.NumRenderTargets = 1;
-	//	gpipeline.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
-	//	gpipeline.DSVFormat = DXGI_FORMAT_D32_FLOAT;
-	//	gpipeline.SampleDesc.Count = 1;
-	//
-	//	result = device_->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipeline_state_));
-
-	// 以下でコンピュートパイプラインステートを生成する必要あり
-
 	HRESULT result = S_FALSE;
-	ComPtr<ID3DBlob> vs_blob; // 頂点シェーダオブジェクト
-	ComPtr<ID3DBlob> ps_blob;	// ピクセルシェーダオブジェクト
-	ComPtr<ID3DBlob> error_blob; // エラーオブジェクト
+	ComPtr<ID3DBlob> vs_blob;
+	ComPtr<ID3DBlob> ps_blob;
+	ComPtr<ID3DBlob> error_blob;
 
 	// 頂点シェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/shaders/BasicVS.hlsl",	// シェーダファイル名
+		L"Resources/shaders/IndirectVS.hlsl",
 		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"main", "vs_5_0",	// エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+		D3D_COMPILE_STANDARD_FILE_INCLUDE,
+		"main", "vs_5_0",
+		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,
 		0,
 		&vs_blob, &error_blob);
 	if (FAILED(result)) {
-		// errorBlobからエラー内容をstring型にコピー
+
 		std::string errstr;
 		errstr.resize(error_blob->GetBufferSize());
 
@@ -259,22 +135,22 @@ void IndirectObject3d::CreatePipelineState() {
 			error_blob->GetBufferSize(),
 			errstr.begin());
 		errstr += "\n";
-		// エラー内容を出力ウィンドウに表示
+
 		OutputDebugStringA(errstr.c_str());
 		exit(1);
 	}
 
 	// ピクセルシェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/shaders/IndirectPS.hlsl",	// シェーダファイル名
+		L"Resources/shaders/IndirectPS.hlsl",
 		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"main", "ps_5_0",	// エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+		D3D_COMPILE_STANDARD_FILE_INCLUDE,
+		"main", "ps_5_0",
+		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,
 		0,
 		&ps_blob, &error_blob);
 	if (FAILED(result)) {
-		// errorBlobからエラー内容をstring型にコピー
+
 		std::string errstr;
 		errstr.resize(error_blob->GetBufferSize());
 
@@ -282,7 +158,7 @@ void IndirectObject3d::CreatePipelineState() {
 			error_blob->GetBufferSize(),
 			errstr.begin());
 		errstr += "\n";
-		// エラー内容を出力ウィンドウに表示
+
 		OutputDebugStringA(errstr.c_str());
 		exit(1);
 	}
@@ -378,20 +254,13 @@ void IndirectObject3d::CreateConstantBuffer() {
 
 	HRESULT result;
 
+	//const UINT const_buffer_data_size = sizeof(ConstBufferData);
 	const UINT const_buffer_data_size = resource_count_ * sizeof(ConstBufferData);
-
-	/*result = device_->CreateCommittedResource(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
-		D3D12_HEAP_FLAG_NONE,
-		&CD3DX12_RESOURCE_DESC::Buffer(const_buffer_data_size),
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&const_buffer_));*/
 
 	result = device_->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), 	// アップロード可能
 		D3D12_HEAP_FLAG_NONE,
-		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(MatrixConstBufferData) + 0xff) & ~0xff),
+		&CD3DX12_RESOURCE_DESC::Buffer(sizeof(MatrixConstBufferData) * all_particle_num_),
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&matrix_const_buffer_));
@@ -400,7 +269,7 @@ void IndirectObject3d::CreateConstantBuffer() {
 	result = device_->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), 	// アップロード可能
 		D3D12_HEAP_FLAG_NONE,
-		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(Model::MaterialConstBufferData) + 0xff) & ~0xff),
+		&CD3DX12_RESOURCE_DESC::Buffer(sizeof(MatrixConstBufferData) * all_particle_num_),
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&material_const_buffer_));
@@ -418,26 +287,9 @@ void IndirectObject3d::CreateConstantBuffer() {
 		const_buffer_data_[i].position_ = { 0, 0, 0 };
 		const_buffer_data_[i].velocity_ = { 0, 0, 0 };
 		const_buffer_data_[i].color_ = { 0, 0, 0 };
-		//const_buffer_data_[i].matrix_ = XMMatrixIdentity();
 	}
 
-	// 確認用
-	UINT matesize = sizeof(Model::MaterialConstBufferData);
-	UINT matsize = sizeof(MatrixConstBufferData);
-
-	Model::MaterialConstBufferData *material_const_map = nullptr;
-	result = material_const_buffer_->Map(0, nullptr, reinterpret_cast<void **>(&material_const_map));
-	//std::copy(material_const_buffer_data_.begin(), material_const_buffer_data_.end(), material_const_map);
-	std::memcpy(material_const_map, &material_const_buffer_data_[0], material_const_buffer_data_.size());
-	//memcpy_s(material_const_map, material_const_buffer_data_.size(), &material_const_buffer_data_[0], material_const_buffer_data_.size());
-	material_const_buffer_->Unmap(0, nullptr);
-
-	MatrixConstBufferData *matrix_const_map = nullptr;
-	result = matrix_const_buffer_->Map(0, nullptr, reinterpret_cast<void **>(&matrix_const_map));
-	//std::copy(matrix_const_buffer_data_.begin(), matrix_const_buffer_data_.end(), matrix_const_map);
-	std::memcpy(matrix_const_map, &matrix_const_buffer_data_[0], matrix_const_buffer_data_.size());
-	//memcpy_s(matrix_const_map, matrix_const_buffer_data_.size(), &matrix_const_buffer_data_[0], matrix_const_buffer_data_.size());
-	matrix_const_buffer_->Unmap(0, nullptr);
+	TransferConstantBafferData();
 }
 
 void IndirectObject3d::CreateCommandSignature() {
@@ -473,7 +325,9 @@ void IndirectObject3d::CreateCommandBuffer() {
 	HRESULT result;
 
 	std::vector<IndirectCommand> commands;
+	//commands.resize(all_particle_num_);
 	commands.resize(resource_count_);
+	//const UINT command_buffer_size = command_size_per_frame_;
 	const UINT command_buffer_size = command_size_per_frame_ * frame_count_;
 
 	D3D12_RESOURCE_DESC command_buffer_desc = CD3DX12_RESOURCE_DESC::Buffer(command_buffer_size);
@@ -489,15 +343,6 @@ void IndirectObject3d::CreateCommandBuffer() {
 	);
 	command_buffer_->SetName(L"CommandBuffer");
 
-	/*result = device_->CreateCommittedResource(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
-		D3D12_HEAP_FLAG_NONE,
-		&command_buffer_desc,
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&command_buffer_));
-	command_buffer_->SetName(L"CommandBuffer");*/
-
 	result = device_->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
 		D3D12_HEAP_FLAG_NONE,
@@ -508,20 +353,14 @@ void IndirectObject3d::CreateCommandBuffer() {
 	);
 	command_buffer_upload_->SetName(L"CommandBufferUpload");
 
-	//D3D12_GPU_VIRTUAL_ADDRESS gpu_address = const_buffer_->GetGPUVirtualAddress();
 	D3D12_GPU_VIRTUAL_ADDRESS matrix_gpu_address = matrix_const_buffer_->GetGPUVirtualAddress();
 	D3D12_GPU_VIRTUAL_ADDRESS material_gpu_address = material_const_buffer_->GetGPUVirtualAddress();
 	UINT command_index = 0;
 	UINT vertex_count = (UINT)(model_->GetVertices().size());
 
-	//IndirectCommand *command_map = nullptr;
-	//command_buffer_->Map(0, nullptr, reinterpret_cast<void **>(&commands));
-	//command_buffer_->Map(0, nullptr, reinterpret_cast<void **>(command_map));
-
 	for (UINT frame = 0; frame < frame_count_; frame++) {
 		for (UINT n = 0; n < all_particle_num_; n++) {
 
-			//commands[command_index].cbv_ = gpu_address;
 			commands[command_index].matrix_cbv_ = matrix_gpu_address;
 			commands[command_index].material_cbv_ = material_gpu_address;
 
@@ -539,12 +378,10 @@ void IndirectObject3d::CreateCommandBuffer() {
 			commands[command_index].draw_arguments_.StartInstanceLocation = 0;
 
 			command_index++;
-			//gpu_address += sizeof(ConstBufferData);
 			matrix_gpu_address += sizeof(MatrixConstBufferData);
 			material_gpu_address += sizeof(Model::MaterialConstBufferData);
 		}
 	}
-	//command_buffer_->Unmap(0, nullptr);
 
 	// データを中間アップロードヒープにコピーし、その後、アップロードヒープからコマンドバッファへのコピーをスケジュールします。
 	// アップロードヒープからコマンドバッファにコピーする。
@@ -554,7 +391,6 @@ void IndirectObject3d::CreateCommandBuffer() {
 	command_data.SlicePitch = command_data.RowPitch;
 
 	UpdateSubresources<1>(command_list_.Get(), command_buffer_.Get(), command_buffer_upload_.Get(), 0, 0, 1, &command_data);
-	//command_list_->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(command_buffer_.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));
 
 	// コマンドバッファ用のSRVを生成
 	D3D12_SHADER_RESOURCE_VIEW_DESC srv_desc = {};
@@ -567,9 +403,9 @@ void IndirectObject3d::CreateCommandBuffer() {
 
 	CD3DX12_CPU_DESCRIPTOR_HANDLE commands_handle(descriptor_heap_->GetCPUDescriptorHandleForHeapStart(), 1, descriptor_heap_size_);
 
-	// offset何やってるかわからん なんなん
 	for (UINT frame = 0; frame < frame_count_; frame++) {
 
+		//srv_desc.Buffer.FirstElement = all_particle_num_;
 		srv_desc.Buffer.FirstElement = frame * all_particle_num_;
 		device_->CreateShaderResourceView(command_buffer_.Get(), &srv_desc, commands_handle);
 		commands_handle.Offset(3, descriptor_heap_size_);
@@ -577,6 +413,18 @@ void IndirectObject3d::CreateCommandBuffer() {
 }
 
 void IndirectObject3d::TransferConstantBafferData() {
+
+	HRESULT result;
+
+	Model::MaterialConstBufferData *material_const_map = nullptr;
+	result = material_const_buffer_->Map(0, nullptr, reinterpret_cast<void **>(&material_const_map));
+	std::memcpy(material_const_map, &material_const_buffer_data_[0], material_const_buffer_data_.size() * sizeof(MatrixConstBufferData));
+	material_const_buffer_->Unmap(0, nullptr);
+
+	MatrixConstBufferData *matrix_const_map = nullptr;
+	result = matrix_const_buffer_->Map(0, nullptr, reinterpret_cast<void **>(&matrix_const_map));
+	std::memcpy(matrix_const_map, &matrix_const_buffer_data_[0], matrix_const_buffer_data_.size() * sizeof(Model::MaterialConstBufferData));
+	matrix_const_buffer_->Unmap(0, nullptr);
 }
 
 void IndirectObject3d::StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList *cmdList) {
@@ -597,11 +445,8 @@ void IndirectObject3d::Initialize() {
 	device_ = DirectXBase::GetInstance()->GetDevice().Get();
 	command_list_ = DirectXBase::GetInstance()->GetCommandList().Get();
 
-	//object_->Initialize();
-
 	CreateVertexBuffer();
 	CreateDescriptorHeap();
-	//CreateRootSignature();
 	CreatePipelineState();
 	CreateConstantBuffer();
 	CreateCommandSignature();
@@ -613,11 +458,6 @@ void IndirectObject3d::Finalize() {
 
 void IndirectObject3d::Update() {
 
-	/*static float pos = 0;
-	pos += 0.1f;
-	SetPosition({ pos, 0, 0 });*/
-
-	HRESULT result;
 	XMMATRIX matScale, matRot, matTrans;
 
 	// スケール、回転、平行移動行列の計算
@@ -637,42 +477,17 @@ void IndirectObject3d::Update() {
 	const XMMATRIX &mat_view_ = camera_->GetMatView();
 	const XMMATRIX &mat_projection = camera_->GetMatProjection();
 
-	static UINT count = 100;
-	const UINT wait = 50;
-	count++;
+	if (is_push_) {
 
-	for (UINT i = 0; i < all_particle_num_; i++) {
-
-		if (count >= wait) {
-
-			position_ = NacamUtility::GenerateRandom({ -5.0f, -5.0f, 0 }, { 5.0f, 5.0f, 0 });
+		for (UINT i = 0; i < all_particle_num_; i++) {
+			position_ = NacamUtility::GenerateRandom({ -1.0f, -1.0f, -1.0f }, { 1.0f, 1.0f, 1.0f });
 			matTrans = XMMatrixTranslation(position_.x, position_.y, position_.z);
 			mat_world_ *= matTrans;
+			matrix_const_buffer_data_[i].mat = mat_world_ * mat_view_ * mat_projection;
 		}
-
-		/*material_const_buffer_data_[i].ambient = model_->GetMaterialData().ambient;
-		material_const_buffer_data_[i].diffuse = model_->GetMaterialData().diffuse;
-		material_const_buffer_data_[i].specular = model_->GetMaterialData().specular;
-		material_const_buffer_data_[i].alpha = model_->GetMaterialData().alpha;*/
-
-		matrix_const_buffer_data_[i].mat = mat_world_ * mat_view_ * mat_projection;
 	}
 
-	if (count >= wait) { count = 0; }
-
-	Model::MaterialConstBufferData *material_const_map = nullptr;
-	result = material_const_buffer_->Map(0, nullptr, reinterpret_cast<void **>(&material_const_map));
-	//std::copy(material_const_buffer_data_.begin(), material_const_buffer_data_.end(), material_const_map);
-	std::memcpy(material_const_map, &material_const_buffer_data_[0], material_const_buffer_data_.size());
-	//memcpy_s(material_const_map, sizeof(Model::MaterialConstBufferData) * all_particle_num_, &material_const_buffer_data_[0], material_const_buffer_data_.size());
-	material_const_buffer_->Unmap(0, nullptr);
-
-	MatrixConstBufferData *matrix_const_map = nullptr;
-	result = matrix_const_buffer_->Map(0, nullptr, reinterpret_cast<void **>(&matrix_const_map));
-	//std::copy(matrix_const_buffer_data_.begin(), matrix_const_buffer_data_.end(), matrix_const_map);
-	std::memcpy(matrix_const_map, &matrix_const_buffer_data_[0], matrix_const_buffer_data_.size());
-	//memcpy_s(matrix_const_map, sizeof(MatrixConstBufferData) * all_particle_num_, &matrix_const_buffer_data_[0], matrix_const_buffer_data_.size());
-	matrix_const_buffer_->Unmap(0, nullptr);
+	TransferConstantBafferData();
 }
 
 void IndirectObject3d::Draw() {
@@ -724,4 +539,6 @@ void IndirectObject3d::Draw() {
 }
 
 void IndirectObject3d::DebugDraw() {
+
+	ImGui::Text("SPACE : SetPosition");
 }

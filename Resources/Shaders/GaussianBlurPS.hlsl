@@ -12,18 +12,19 @@ float Gaussian(float2 draw_uv, float2 pick_uv, float sigma) {
 float4 main(VSOutput input) : SV_TARGET0 {
 
     float4 color = float4(0, 0, 0, 0);
-    float total_weight = 0, _Sigma = 0.005, _StepWidth = 0.005;
+    float total_weight = 0;
+	float sigma = 0.005;
+	float step_width = 0.005;
 
-	for (float py = -_Sigma * 2; py <= _Sigma * 2; py += _StepWidth) {
-		for (float px = -_Sigma * 2; px <= _Sigma * 2; px += _StepWidth) {
+	for (float py = -sigma * 2; py <= sigma * 2; py += step_width) {
+		for (float px = -sigma * 2; px <= sigma * 2; px += step_width) {
 
 			float2 pick_uv = input.uv + float2(px, py);
-			float weight = Gaussian(input.uv, pick_uv, _Sigma);
+			float weight = Gaussian(input.uv, pick_uv, sigma);
 			color += tex.Sample(smp, pick_uv) * weight;
 			total_weight += weight;
 		}
 	}
 
-	color.rgb = color.rgb / total_weight;
-    return color;
+    return color /= total_weight;
 }

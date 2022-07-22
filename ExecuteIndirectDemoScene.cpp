@@ -2,6 +2,7 @@
 #include "DirectXBase.h"
 #include <d3dcompiler.h>
 #include "KeyboardInput.h"
+#include "ImGuiManager.h"
 
 #pragma comment(lib, "d3dcompiler.lib")
 
@@ -42,6 +43,15 @@ void ExecuteIndirectDemoScene::Update() {
 	}
 
 	camera_->Update();
+
+	if (KeyboardInput::TriggerKey(DIK_SPACE)) {
+
+		indirect_obj_->DetectPush(true);
+
+	} else {
+
+		indirect_obj_->DetectPush(false);
+	}
 
 	indirect_obj_->Update();
 }

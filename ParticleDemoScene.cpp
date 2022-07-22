@@ -1,6 +1,7 @@
 #include "ParticleDemoScene.h"
 #include "KeyboardInput.h"
 #include "ImGuiManager.h"
+#include "SceneManager.h"
 
 ParticleDemoScene::ParticleDemoScene() {
 
@@ -98,6 +99,11 @@ void ParticleDemoScene::Update() {
 	if (KeyboardInput::PushKey(DIK_DOWN)) { camera_->MoveEye({ 0.0f, +1.0f, 0.0f }); }
 	if (KeyboardInput::PushKey(DIK_LEFT)) { camera_->MoveEye({ +1.0f, 0.0f, 0.0f }); }
 	if (KeyboardInput::PushKey(DIK_RIGHT)) { camera_->MoveEye({ -1.0f, 0.0f, 0.0f }); }
+
+	if (KeyboardInput::TriggerKey(DIK_SPACE)) {
+
+		SceneManager::SetScene(Scene::EXECUTE_INDIRECT_DEMO);
+	}
 
 	sky_dome_->Update();
 

@@ -17,8 +17,8 @@ class IndirectObject3d {
 
 private:
 
-	static const UINT frame_count_ = 1;				// なにこれ
-	static const UINT all_particle_num_ = 100;
+	static const UINT frame_count_ = 1;
+	static const UINT all_particle_num_ = 100000;
 	static const UINT resource_count_ = all_particle_num_ * frame_count_;
 	static const UINT command_size_per_frame_;
 
@@ -48,10 +48,8 @@ private:
 	// ExecuteIndirect に使用するコマンドシグネチャと一致させるためのデータ構造
 	struct IndirectCommand {
 
-		//D3D12_GPU_VIRTUAL_ADDRESS cbv_;
 		D3D12_GPU_VIRTUAL_ADDRESS matrix_cbv_;
 		D3D12_GPU_VIRTUAL_ADDRESS material_cbv_;
-		//D3D12_DRAW_INDEXED_ARGUMENTS draw_arguments_;	// DrawIndexedInstancedの場合は使う型が違う
 		D3D12_DRAW_ARGUMENTS draw_arguments_;	// DrawIndexedInstancedの場合は使う型が違う
 	};
 
@@ -90,6 +88,8 @@ private:
 	// モデル
 	std::unique_ptr<Model> model_;
 
+	bool is_push_ = false;
+
 public:
 
 	IndirectObject3d();
@@ -99,7 +99,6 @@ private:
 
 	void CreateVertexBuffer();
 	void CreateDescriptorHeap();
-	void CreateRootSignature();
 	void CreatePipelineState();
 	void CreateGraphicsPipeline();
 	void CreateConstantBuffer();
@@ -111,9 +110,7 @@ private:
 public:
 
 	static void StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList *cmdList);
-
 	static void PreDraw();
-
 	static void SetCamera(Camera *camera) { camera_ = camera; }
 
 	void Initialize();
@@ -129,4 +126,6 @@ public:
 		scale_.y = scale;
 		scale_.z = scale;
 	}
+
+	void DetectPush(bool is_push) { is_push_ = is_push; }
 };

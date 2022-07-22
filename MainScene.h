@@ -1,6 +1,9 @@
 #pragma once
 #include "AbstractScene.h"
+#include "DirectXBase.h"
+#include <DirectXMath.h>
 #include <wrl.h>
+#include <memory>
 #include "Camera.h"
 #include "Player.h"
 
@@ -13,10 +16,10 @@ class MainScene : public AbstractScene {
 private:
 
 	// カメラ
-	unique_ptr<Camera> camera_;
+	std::unique_ptr<Camera> camera_;
 
 	// プレイヤー
-	unique_ptr<Player> player_;
+	std::shared_ptr<Player> player_; // uniqueにするとエラーを吐く なぜ [検索]
 
 public:
 

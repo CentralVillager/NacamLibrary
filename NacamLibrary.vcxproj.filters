@@ -287,6 +287,9 @@
     <ClCompile Include="MainScene.cpp">
       <Filter>Application\Scene\Main</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractScene.h">
@@ -442,6 +445,7 @@
     <ClInclude Include="MainScene.h">
       <Filter>Application\Scene\Main</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">
@@ -460,6 +464,9 @@
       <Filter>シェーダファイル</Filter>
     </None>
     <None Include="Resources\Shaders\PostEffect.hlsli">
+      <Filter>シェーダファイル</Filter>
+    </None>
+    <None Include="Resources\Shaders\Indirect.hlsli">
       <Filter>シェーダファイル</Filter>
     </None>
   </ItemGroup>
@@ -510,6 +517,9 @@
       <Filter>シェーダファイル</Filter>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\IndirectPS.hlsl">
+      <Filter>シェーダファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\IndirectVS.hlsl">
       <Filter>シェーダファイル</Filter>
     </FxCompile>
   </ItemGroup>

@@ -7,9 +7,11 @@ float4 main(VSOutput input) : SV_TARGET0
 {
     float4 color = tex.Sample(smp, input.uv);
     
-    // 2.5テクセルずらすためのUV値を求める
-    float offset_u = 1.5f / 1280.0f;
-    float offset_v = 1.5f / 720.0f;
+    float n = 1.5f;
+
+    // nテクセルずらすためのUV値を求める
+    float offset_u = n / 1280.0f;
+    float offset_v = n / 720.0f;
 
     // 基準テクセルから右のテクセルのカラーをサンプリングする
     color += tex.Sample(smp, input.uv + float2(offset_u, 0.0f));
