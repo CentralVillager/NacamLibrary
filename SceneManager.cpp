@@ -1,9 +1,6 @@
 #include "SceneManager.h"
-#include "SplashScene.h"
-#include "TitleScene.h"
 #include "MainScene.h"
 #include "TemporaryScene.h"
-#include "ResultScene.h"
 #include "DemoScene.h"
 #include "GravityDemoScene.h"
 #include "FrictionDemoScene.h"
@@ -17,24 +14,23 @@ stack<shared_ptr<AbstractScene>> SceneManager::scene_stack_;
 
 void SceneManager::SetScene(Scene scene_name) {
 
-	ClearSceneStack();
-
 	// 入力されたシーンを生成し、スタックに追加
 	if (scene_name == Scene::SPLASH) {
 
-		scene_stack_.push(make_shared<SplashScene>());
+		//scene_stack_.push(make_shared<QDSplashScene>());
 
 	} else 	if (scene_name == Scene::TITLE) {
 
-		scene_stack_.push(make_shared<TitleScene>());
+		//scene_stack_.push(make_shared<QDTitleScene>());
 
 	} else if (scene_name == Scene::MAIN) {
 
 		scene_stack_.push(make_shared<MainScene>());
+		//scene_stack_.push(make_shared<QDMainScene>());
 
 	} else if (scene_name == Scene::RESULT) {
 
-		scene_stack_.push(make_shared<ResultScene>());
+		//scene_stack_.push(make_shared<QDResultScene>());
 
 	} else if (scene_name == Scene::TEMPORARY) {
 
@@ -88,4 +84,20 @@ void SceneManager::ClearSceneStack() {
 
 		scene_stack_.pop();
 	}
+}
+
+void SceneManager::DebugSceneChange() {
+
+	static int button;
+
+	ImGui::Begin("Scene", 0, ImGuiWindowFlags_AlwaysAutoResize);
+	if (ImGui::RadioButton("PostEffect", &button, 0)) {
+
+		SetScene(Scene::PARTICLE_DEMO);
+
+	} else if (ImGui::RadioButton("Indirect", &button, 1)) {
+
+		SetScene(Scene::EXECUTE_INDIRECT_DEMO);
+	}
+	ImGui::End();
 }

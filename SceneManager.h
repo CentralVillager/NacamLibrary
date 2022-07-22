@@ -47,4 +47,6 @@ public:
 	/// スタックに積まれているシーンを全て解除します。
 	/// </summary>
 	static void ClearSceneStack();
+
+	static void DebugSceneChange();
 };
