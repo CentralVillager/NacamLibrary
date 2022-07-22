@@ -29,7 +29,7 @@ NacamLib::~NacamLib() {
 	KeyboardInput::Finalize();
 }
 
-void NacamLib::NacamLib_Initialize(Scene initial_scene_name) {
+void NacamLib::NacamLib_Initialize(SceneName initial_scene_name) {
 
 	Win32AppInitialize();
 	DirectXInitialize();
@@ -56,6 +56,12 @@ void NacamLib::NacamLib_Update(int fps) {
 
 	/*-- fps制御 --*/
 	FpsManager::RegulateFps(fps);
+
+	/*-- シーンチェンジ --*/
+	if (SceneManager::NoticeChangeScene()) {
+
+		SceneManager::ExecuteSceneChange();
+	}
 
 	/*-- キーボード入力更新処理 --*/
 	KeyboardInput::Update();
@@ -91,9 +97,8 @@ void NacamLib::NacamLib_Draw() {
 
 	/*-- デバッグ描画 --*/
 	SceneManager::GetSceneStack().top()->DebugDraw();
-
 	post_effect_scene_->DebugDraw();
-	SceneManager::DebugSceneChange();
+	SceneManager::DebugDraw();
 
 	/*-- ImGuiの描画 --*/
 	ImGuiManager::Draw(cmd_list_.Get());
@@ -151,13 +156,10 @@ void NacamLib::ImGuiInitialize() {
 	ImGuiManager::Initialize(device_.Get());
 }
 
-void NacamLib::SceneInitialize(Scene initial_scene_name) {
-
-	// シーン初期化
-	SceneManager::ClearSceneStack();
+void NacamLib::SceneInitialize(SceneName initial_scene_name) {
 
 	// シーンを生成
-	SceneManager::SetScene(initial_scene_name);
+	SceneManager::SetInitialScene(initial_scene_name);
 }
 
 bool NacamLib::CatchQuitSignal() {

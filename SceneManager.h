@@ -2,10 +2,10 @@
 #include <stack>
 #include <memory>
 #include "AbstractScene.h"
-#include "Singleton.h"
+#include <array>
 
 // 全シーン名
-enum class Scene {
+enum class SceneName {
 
 	SPLASH,		// ロゴなどを表示
 	TITLE,		// タイトルを表示
@@ -19,34 +19,60 @@ enum class Scene {
 	PARTICLE_DEMO,
 	REPULSION_DEMO,
 	EXECUTE_INDIRECT_DEMO
-
 };
 
-class SceneManager : public Singleton<SceneManager> {
-	friend Singleton<SceneManager>;
+class SceneManager {
+
+	enum class SceneState : unsigned int {
+
+		Current,
+		Next,
+		StateNum
+	};
 
 	// シーンを溜めるためのスタック
 	static stack<shared_ptr<AbstractScene>> scene_stack_;
+
+	static std::array<SceneName, (int)(SceneState::StateNum)> scene_state_;
 
 public:
 
 	static const stack<shared_ptr<AbstractScene>> &GetSceneStack() { return scene_stack_; }
 
 	/// <summary>
-	/// 指定したシーンに移ります。
+	/// シーン切り替えの実行
 	/// </summary>
-	/// <param name="scene_name">次に映したいシーン名</param>
-	static void SetScene(Scene scene_name);
+	static void ExecuteSceneChange();
 
 	/// <summary>
-	/// ひとつ前のシーンに戻ります。
+	/// アプリ初期化時のシーンの設定
+	/// </summary>
+	/// <param name="scene_name"></param>
+	static void SetInitialScene(SceneName scene_name);
+
+	/// <summary>
+	/// 次に映したいシーンのセット
+	/// アプリ内でのシーン切り替え時には基本的にこの関数を使用
+	/// </summary>
+	static void SetNextScene(SceneName name);
+
+	/// <summary>
+	/// シーン切り替えが行われようとしていることを通知
+	/// </summary>
+	static bool NoticeChangeScene();
+
+	/// <summary>
+	/// ひとつ前のシーンに戻る
 	/// </summary>
 	static void ReturnScene();
 
 	/// <summary>
-	/// スタックに積まれているシーンを全て解除します。
+	/// スタックに積まれているシーンを全て解除
 	/// </summary>
 	static void ClearSceneStack();
 
-	static void DebugSceneChange();
+	/// <summary>
+	/// デバッグ描画
+	/// </summary>
+	static void DebugDraw();
 };

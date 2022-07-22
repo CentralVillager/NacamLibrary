@@ -102,7 +102,7 @@ void ParticleDemoScene::Update() {
 
 	if (KeyboardInput::TriggerKey(DIK_SPACE)) {
 
-		SceneManager::SetScene(Scene::EXECUTE_INDIRECT_DEMO);
+		SceneManager::SetInitialScene(SceneName::EXECUTE_INDIRECT_DEMO);
 	}
 
 	sky_dome_->Update();

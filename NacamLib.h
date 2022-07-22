@@ -32,7 +32,7 @@ public:
 	/// <summary>
 	/// ‰Šú‰»ˆ—
 	/// </summary>
-	void NacamLib_Initialize(Scene initial_scene_name);
+	void NacamLib_Initialize(SceneName initial_scene_name);
 
 	/// <summary>
 	/// I—¹ˆ—
@@ -57,7 +57,7 @@ private:
 	void InputInitialize();
 	void GameObjectInitialize();
 	void ImGuiInitialize();
-	void SceneInitialize(Scene initial_scene_name);
+	void SceneInitialize(SceneName initial_scene_name);
 
 public:
 
