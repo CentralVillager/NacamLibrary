@@ -63,4 +63,6 @@ void ExecuteIndirectDemoScene::Draw() {
 }
 
 void ExecuteIndirectDemoScene::DebugDraw() {
+
+	indirect_obj_->DebugDraw();
 }
