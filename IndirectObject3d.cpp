@@ -451,6 +451,34 @@ void IndirectObject3d::Initialize() {
 	CreateConstantBuffer();
 	CreateCommandSignature();
 	CreateCommandBuffer();
+
+	XMMATRIX matScale, matRot, matTrans;
+
+	// スケール、回転、平行移動行列の計算
+	matScale = XMMatrixScaling(scale_.x, scale_.y, scale_.z);
+	matRot = XMMatrixIdentity();
+	matRot *= XMMatrixRotationZ(XMConvertToRadians(rotation_.z));
+	matRot *= XMMatrixRotationX(XMConvertToRadians(rotation_.x));
+	matRot *= XMMatrixRotationY(XMConvertToRadians(rotation_.y));
+	matTrans = XMMatrixTranslation(position_.x, position_.y, position_.z);
+
+	// ワールド行列の合成
+	mat_world_ = XMMatrixIdentity();	// 変形をリセット
+	mat_world_ *= matScale;				// ワールド行列にスケーリングを反映
+	mat_world_ *= matRot;				// ワールド行列に回転を反映
+	mat_world_ *= matTrans;				// ワールド行列に平行移動を反映
+
+	const XMMATRIX &mat_view_ = camera_->GetMatView();
+	const XMMATRIX &mat_projection = camera_->GetMatProjection();
+
+	for (UINT i = 0; i < all_particle_num_; i++) {
+		position_ = NacamUtility::GenerateRandom({ -1.0f, -1.0f, -1.0f }, { 1.0f, 1.0f, 1.0f });
+		matTrans = XMMatrixTranslation(position_.x, position_.y, position_.z);
+		mat_world_ *= matTrans;
+		matrix_const_buffer_data_[i].mat = mat_world_ * mat_view_ * mat_projection;
+	}
+
+	TransferConstantBafferData();
 }
 
 void IndirectObject3d::Finalize() {
