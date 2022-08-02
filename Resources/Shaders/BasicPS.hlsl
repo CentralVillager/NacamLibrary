@@ -26,7 +26,8 @@ struct PSOutput
 PSOutput main(VSOutput input)
 {
    PSOutput output;
-   float3 light = normalize(float3(1, -1, 1)); // 右下奥向きのライト
+   float3 light = normalize(float3(0, 0, 1));
+   //float3 light = normalize(float3(1, -1, 1)); // 右下奥向きのライト
    float light_diffuse = saturate(dot(-light, input.normal));
    float brightness = light_diffuse + 0.3f;
    float4 shade_color = float4(brightness, brightness, brightness, 1.0f);

@@ -6,7 +6,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	NacamLib *nacam_lib_ = NacamLib::GetInstance();
 
 	/*-- ‰Šú‰»ˆ— --*/
-	nacam_lib_->NacamLib_Initialize(SceneName::PARTICLE_DEMO);
+	nacam_lib_->NacamLib_Initialize(SceneName::MAIN);
 
 	/*-- ƒQ[ƒ€ƒ‹[ƒv --*/
 	while (!nacam_lib_->CatchQuitSignal()) {
