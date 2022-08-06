@@ -1,12 +1,10 @@
 #pragma once
+#include <memory>
 #include "../DirectXBase/DirectXBase.h"
 #include "../Singleton/Singleton.h"
-#include <memory>
 #include "../Scene/SceneManager/SceneManager.h"
 #include "../Pipeline/PipelineManager.h"
 #include "../PreDraw/PreDraw.h"
-#include <memory>
-
 #include "../PostEffect/PostEffect.h"
 
 class NacamLib  final : public Singleton<NacamLib> {

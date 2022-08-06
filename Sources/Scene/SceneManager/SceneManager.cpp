@@ -122,11 +122,15 @@ void SceneManager::DebugDraw() {
 	static int button;
 
 	ImGui::Begin("Scene", 0, ImGuiWindowFlags_AlwaysAutoResize);
-	if (ImGui::RadioButton("PostEffect", &button, 0)) {
+	if (ImGui::RadioButton("Main", &button, 0)) {
+
+		SetNextScene(SceneName::MAIN);
+
+	} else if (ImGui::RadioButton("PostEffect", &button, 1)) {
 
 		SetNextScene(SceneName::PARTICLE_DEMO);
 
-	} else if (ImGui::RadioButton("Indirect", &button, 1)) {
+	} else if (ImGui::RadioButton("Indirect", &button, 2)) {
 
 		SetNextScene(SceneName::EXECUTE_INDIRECT_DEMO);
 	}

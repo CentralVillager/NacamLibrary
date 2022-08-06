@@ -3,45 +3,39 @@
 
 Camera *GridRender::cam_ptr_ = nullptr;
 
-void GridRender::Initialize(XMFLOAT3 pos) {
+void GridRender::Initialize(UINT grid_num, UINT offset, XMFLOAT3 origin_pos) {
 
 	Line::SetCamera(cam_ptr_);
 
-	for (auto &i : grid_x_) {
+	// + 2しないとグリッドの終端が中途半端に終わります
+	grid_.resize(grid_num + 2);
+
+	for (auto &i : grid_) {
 
 		i.Initialize();
 	}
 
-	for (auto &i : grid_z_) {
+	// x軸に対してz軸方向に展開
+	float x_pos = (origin_pos.x - (grid_num / 2) * offset) / 2;
+	float z_pos = (origin_pos.z + (grid_num / 2) * offset) / 2;
+	for (UINT i = 0; i < grid_.size() / 2; i++) {
 
-		i.Initialize();
+		grid_[i].SetVertPos(XMFLOAT3(offset * i + x_pos, 0.0f, -z_pos), (UINT)(VertDesc::Start));
+		grid_[i].SetVertPos(XMFLOAT3(offset * i + x_pos, 0.0f, z_pos), (UINT)(VertDesc::End));
 	}
 
-	// x軸について
-	for (UINT i = 0; i < grid_x_.size(); i++) {
+	// z軸に対してx軸方向に展開
+	z_pos = (origin_pos.z - (grid_num / 2) * offset) / 2;
+	for (UINT i = 0; i < grid_.size() / 2; i++) {
 
-		grid_x_[i].SetRotation({ 0, 90.0f, 0 });
-		grid_x_[i].SetScale(50.0f);
-		grid_x_[i].SetPosition({ (pos.x + OFFSET_ * i) - (GRID_NUM_ * OFFSET_) / 2, 0, 0 });
-	}
-
-	// z軸について
-	for (UINT i = 0; i < grid_z_.size(); i++) {
-
-		grid_z_[i].SetRotation({ 0, 0, 0 });
-		grid_z_[i].SetScale(50.0f);
-		grid_z_[i].SetPosition({ 0, 0, (pos.z + OFFSET_ * i) - (GRID_NUM_ * OFFSET_) / 2 });
+		grid_[i + grid_.size() / 2].SetVertPos(XMFLOAT3(-x_pos, 0.0f, offset * i + z_pos), (UINT)(VertDesc::Start));
+		grid_[i + grid_.size() / 2].SetVertPos(XMFLOAT3(x_pos, 0.0f, offset * i + z_pos), (UINT)(VertDesc::End));
 	}
 }
 
 void GridRender::Update() {
 
-	for (auto &i : grid_x_) {
-
-		i.Update();
-	}
-
-	for (auto &i : grid_z_) {
+	for (auto &i : grid_) {
 
 		i.Update();
 	}
@@ -49,13 +43,11 @@ void GridRender::Update() {
 
 void GridRender::Draw() {
 
-	for (auto &i : grid_x_) {
+	for (auto &i : grid_) {
 
 		i.Draw();
 	}
+}
 
-	for (auto &i : grid_z_) {
-
-		i.Draw();
-	}
+void GridRender::DebugDraw() {
 }

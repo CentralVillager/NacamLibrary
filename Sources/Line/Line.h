@@ -2,7 +2,15 @@
 #include <DirectXMath.h>
 #include <wrl.h>
 #include <d3d12.h>
+#include <array>
 #include "../Camera/Camera.h"
+
+enum class VertDesc {
+
+	Start,
+	End,
+	MaxVertNum
+};
 
 class Line {
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
@@ -28,12 +36,13 @@ private:
 	static ComPtr<ID3D12GraphicsCommandList> command_list_;
 	static ComPtr<ID3D12DescriptorHeap> desc_heap_;
 	static UINT desc_heap_size_;
+	static const UINT VERT_NUM_ = (UINT)(VertDesc::MaxVertNum);
 
 private:
 
 	ComPtr<ID3D12Resource> matrix_const_buffer_;
-	Vertex matrix_const_buffer_data_;
 	ComPtr<ID3D12Resource> vertex_buffer_;
+	std::array<Vertex, VERT_NUM_> vertices_data_;
 	D3D12_VERTEX_BUFFER_VIEW vb_view_;
 
 private:
@@ -75,6 +84,7 @@ public:
 	void SetRotation(XMFLOAT3 rotation) { this->rotation_ = rotation; }
 	void SetScale(XMFLOAT3 scale) { this->scale_ = scale; };
 	void SetScale(float scale) { this->scale_.x = this->scale_.y = this->scale_.z = scale; };
+	void SetVertPos(XMFLOAT3 position, UINT index) { vertices_data_[index].pos = position; }
 
 public:
 
@@ -82,4 +92,5 @@ public:
 	void Finalize();
 	void Update();
 	void Draw();
+	void DebugDraw();
 };

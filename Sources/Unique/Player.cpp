@@ -1,5 +1,4 @@
 #include "Player.h"
-#include "../PreDraw/PreDraw.h"
 
 Player::Player() {
 
@@ -30,7 +29,6 @@ void Player::Update() {
 
 void Player::Draw() {
 
-	PreDraw::PreRender(PipelineName::Object3d);
 	object_->Draw();
 }
 

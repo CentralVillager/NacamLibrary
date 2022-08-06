@@ -1,13 +1,14 @@
 #pragma once
-#include "../Scene/AbstractScene.h"
-#include "../DirectXBase/DirectXBase.h"
-#include <DirectXMath.h>
 #include <wrl.h>
 #include <memory>
+#include <DirectXMath.h>
+#include "../Scene/AbstractScene.h"
+#include "../DirectXBase/DirectXBase.h"
 #include "../Camera/Camera.h"
 #include "../Unique/Player.h"
 #include "../Sprite/Sprite.h"
 #include "../Grid/GridRender.h"
+#include "../Unique/MissileManager.h"
 
 class MainScene : public AbstractScene {
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
@@ -26,6 +27,8 @@ private:
 	std::unique_ptr<Sprite> texture_;
 
 	std::unique_ptr<GridRender> grid_;
+
+	std::unique_ptr<MissileManager> missile_mgr_;
 
 public:
 

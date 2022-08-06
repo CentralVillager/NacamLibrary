@@ -202,6 +202,8 @@
     <ClCompile Include="Sources\Scene\TemporaryScene.cpp" />
     <ClCompile Include="Sources\Sprite\Sprite.cpp" />
     <ClCompile Include="Sources\Ui\Ui.cpp" />
+    <ClCompile Include="Sources\Unique\Missile.cpp" />
+    <ClCompile Include="Sources\Unique\MissileManager.cpp" />
     <ClCompile Include="Sources\Unique\Player.cpp" />
     <ClCompile Include="Sources\Utility\Utility.cpp" />
     <ClCompile Include="Sources\Win32App\Win32App.cpp" />
@@ -258,6 +260,8 @@
     <ClInclude Include="Sources\Singleton\Singleton.h" />
     <ClInclude Include="Sources\Sprite\Sprite.h" />
     <ClInclude Include="Sources\Ui\Ui.h" />
+    <ClInclude Include="Sources\Unique\Missile.h" />
+    <ClInclude Include="Sources\Unique\MissileManager.h" />
     <ClInclude Include="Sources\Unique\Player.h" />
     <ClInclude Include="Sources\Utility\Utility.h" />
     <ClInclude Include="Sources\Win32App\Win32App.h" />

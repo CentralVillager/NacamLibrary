@@ -16,6 +16,7 @@ MainScene::MainScene() {
 	texture_ = (std::unique_ptr<Sprite>)(Sprite::Create(1, { 0, 0 }));
 
 	grid_ = std::make_unique<GridRender>();
+	missile_mgr_ = std::make_unique<MissileManager>();
 }
 
 MainScene::~MainScene() {
@@ -26,13 +27,15 @@ void MainScene::Initialize() {
 	// ƒJƒƒ‰‚Ì‰Šú‰»
 	camera_->Initialize();
 	camera_->SetDistance(20.0f);
-	camera_->MoveCameraTrack({ 0, 0, 0 });
+	camera_->MoveCameraTrack(XMFLOAT3(0, 10.0f, 0));
+	camera_->MoveEye(XMFLOAT3(0, 10.0f, 0));
 	Object3d::SetCamera(camera_.get());
 
 	player_->Initialize();
 
 	GridRender::SetCamera(camera_.get());
-	grid_->Initialize({ 0, 0, 0 });
+	grid_->Initialize(200, 10, XMFLOAT3(0, 0, 0));
+	missile_mgr_->Initialize();
 }
 
 void MainScene::Finalize() {
@@ -40,27 +43,36 @@ void MainScene::Finalize() {
 
 void MainScene::Update() {
 
-	camera_->BasicCameraMoveTrack(0.5f);
+	camera_->BasicCameraMoveTrack(2.0f);
+
+	if (KeyboardInput::TriggerKey(DIK_1)) {
+
+		//camera_->MoveCameraTrack(XMFLOAT3(0, 10.0f, 0));
+		camera_->SetEye(XMFLOAT3(0, 20.0f, -20.0f));
+		camera_->SetTarget(XMFLOAT3(0, 10.0f, 0));
+	}
 
 	if (KeyboardInput::TriggerKey(DIK_SPACE)) {
 
-		camera_->ResetCamera();
+		missile_mgr_->Fire();
 	}
 
 	player_->Update();
 	grid_->Update();
+	missile_mgr_->Update();
 }
 
 void MainScene::Draw() {
 
-
 	PreDraw::PreRender(PipelineName::Line);
 	grid_->Draw();
 
+	PreDraw::PreRender(PipelineName::Object3d_WireFrame);
 	player_->Draw();
+	missile_mgr_->Draw();
 
 	PreDraw::PreRender(PipelineName::Sprite);
-	texture_->Draw();
+	//texture_->Draw();
 }
 
 void MainScene::DebugDraw() {

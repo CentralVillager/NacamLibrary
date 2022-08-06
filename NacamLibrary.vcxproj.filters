@@ -150,6 +150,9 @@
     <Filter Include="Application\Unique">
       <UniqueIdentifier>{145e02b9-18e3-450a-959a-9c432dde636f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\Unique\Missile">
+      <UniqueIdentifier>{7143d688-6709-45c4-835f-83eb08d8487a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -304,6 +307,12 @@
     </ClCompile>
     <ClCompile Include="Sources\Unique\Player.cpp">
       <Filter>Application\Unique</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Unique\Missile.cpp">
+      <Filter>Application\Unique\Missile</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Unique\MissileManager.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -469,6 +478,10 @@
     <ClInclude Include="Sources\Unique\Player.h">
       <Filter>Application\Unique</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Unique\Missile.h">
+      <Filter>Application\Unique\Missile</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Unique\MissileManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">
