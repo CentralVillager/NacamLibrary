@@ -5,7 +5,8 @@
 #include "../Line/Line.h"
 #include "../Camera/Camera.h"
 
-class GridRender {
+class GridRender
+{
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 
 private:

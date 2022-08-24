@@ -356,7 +356,7 @@ void MathDemoScene::Update() {
 	// 軸を原点とした場合のぶら下がっている物の座標を算出
 	// このままだと－45～45度の振り子になるので
 	// 時計回りに90度（PI/2.0）回転
-	angle = x / LENGTH_ + PI_ / 2.0;
+	angle = x / LENGTH_ + PI_ / 2.0f;
 
 	// 求めた角度から軸を原点とした円周上の座標を取得
 	nx = cos(angle) * LENGTH_;

@@ -5,7 +5,8 @@
 #include "../Model/Model.h"
 
 // パーティクル一粒の構成要素
-struct ParticleMember {
+struct ParticleMember
+{
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 
 	// 座標
@@ -36,14 +37,17 @@ struct ParticleMember {
 	int frame_ = 0;
 };
 
-class Particle {
+class Particle
+{
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 
 	std::unique_ptr<Object3d> object_;
-
-private:
-
 	std::shared_ptr<ParticleMember> particle_;
+
+public:
+
+	Particle();
+	~Particle();
 
 public:
 

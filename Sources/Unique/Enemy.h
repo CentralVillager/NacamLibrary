@@ -1,81 +1,51 @@
 #pragma once
-#include <DirectXMath.h>
-#include <memory>
-#include "Model.h"
-#include "Object3d.h"
-#include "Collision.h"
-#include "AudioManager.h"
+#include "../Object3d/Object3d.h"
+#include "../Model/Model.h"
+#include "../Collision/CollisionPrimitive.h"
 
-enum class Pattern {
-	NUTORAL,
-	HORIZONTAL,
-	VERTICAL
-};
-
-class Enemy {
+class Enemy
+{
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 
-public:
+	static std::unique_ptr<Model> model_;
+	static std::unique_ptr<Model> sphere_model_;
+	std::shared_ptr<Object3d> object_;
+	std::shared_ptr<Object3d> sphere_obj_;
+	Sphere coll_;
+	const float COLL_RADIUS_ = 2.0f;
 
-	// 方向
-	enum class Direction {
-		UP,
-		DOWN,
-		RIGHT,
-		LEFT
-	};
+	bool is_dead_ = false;
 
-private:
-
-	// 当たり判定
-	AABB collision = {};
-
-	// 敵モデル
-	static std::unique_ptr<Model> model_enemy_;
-
-	// 敵オブジェクト
-	std::shared_ptr<Object3d> enemy_ = nullptr;
-
-	// スピード
-	float move_speed_ = 0;
-
-	// 移動可能範囲
-	static float movable_range_[4];
-
-	// 生存しているか
-	bool is_alive_ = false;
-
-	std::shared_ptr<AudioManager> death_;
-
-	Pattern pattern_;
+	float speed_ = 0.5f;
+	int count_ = 100;
 
 public:
 
-	// 現在出現している敵の数
-	static int spawned_enemy_;
+	Enemy();
+	~Enemy();
 
-	static void InitializeModel();
+public:
 
-	void Initialize();
+	const XMFLOAT3 &GetPos() { return object_->GetPosition(); }
+	const Sphere &GetCollData() { return coll_; }
+	const bool &GetIsDead() { return is_dead_; }
+
+	static void LoadResources();
+	void Kill() { is_dead_ = true; }
+
+	void Initialize(XMFLOAT3 pos);
 	void Finalize();
 	void Update();
 	void Draw();
+	void DrawColl();
+	void DebugDraw();
 
-	const AABB &GetAABB() { return collision; }
-	void SetIsAlive(bool is_alive) { is_alive_ = is_alive; }
+public:
 
-	void Spawn(XMFLOAT3 pos, Pattern p);
+	void RotY();
+	void MoveHorizontally(float speed, float range);
 
-	void Move();
+private:
 
-	// 左右に反復移動
-	void MoveHorizontally();
-
-	// 上下に反復移動
-	void MoveVertically();
-
-	/// <summary>
-	/// 当たり判定の位置を更新する
-	/// </summary>
-	void UpdateAABB();
+	void UpdateCollision();
 };

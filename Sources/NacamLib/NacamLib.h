@@ -7,7 +7,8 @@
 #include "../PreDraw/PreDraw.h"
 #include "../PostEffect/PostEffect.h"
 
-class NacamLib  final : public Singleton<NacamLib> {
+class NacamLib  final : public Singleton<NacamLib>
+{
 	friend Singleton<NacamLib>;
 
 public:

@@ -3,7 +3,7 @@
 
 using namespace DirectX;
 
-XMFLOAT3 NacamUtility::GenerateRandom(XMFLOAT3 min, XMFLOAT3 max) {
+XMFLOAT3 NcmUtill::GenerateRandom(XMFLOAT3 min, XMFLOAT3 max) {
 
 	// シード値
 	std::random_device seed;
@@ -20,7 +20,7 @@ XMFLOAT3 NacamUtility::GenerateRandom(XMFLOAT3 min, XMFLOAT3 max) {
 	return { float(random_x(engine)), float(random_y(engine)),  float(random_z(engine)) };
 }
 
-int NacamUtility::GenerateRandom(int min, int max) {
+int NcmUtill::GenerateRandom(int min, int max) {
 
 	// シード値
 	std::random_device seed;
@@ -35,7 +35,7 @@ int NacamUtility::GenerateRandom(int min, int max) {
 	return random(engine);
 }
 
-float NacamUtility::GenerateRandom(float min, float max) {
+float NcmUtill::GenerateRandom(float min, float max) {
 
 	// シード値
 	std::random_device seed;

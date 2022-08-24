@@ -5,7 +5,8 @@
 #include <memory>
 #include <DirectXMath.h>
 
-class Emitter {
+class Emitter
+{
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 
 	// モデルデータ
@@ -14,8 +15,8 @@ class Emitter {
 public:
 
 	// エミッター生成に必要な要素
-	struct EmitterArgs {
-
+	struct EmitterArgs
+	{
 		// パーティクルの構成要素
 		ParticleMember particle;
 
@@ -68,7 +69,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	static void StaticInitialize();
+	static void LoadResources();
 
 	/// <summary>
 	/// パーティクルを生成する

@@ -8,13 +8,13 @@ UINT DrawProc::back_buffer_index_;
 float DrawProc::clear_color_[4] = { 0.1f, 0.1f, 0.1f, 0.0f };
 ComPtr<ID3D12GraphicsCommandList> DrawProc::command_list_;
 
-void DrawProc::StaticInitialize() {
-
+void DrawProc::StaticInitialize()
+{
 	command_list_ = DirectXBase::GetInstance()->GetCommandList();
 }
 
-void DrawProc::PreDraw(DirectXBase *dx_base) {
-
+void DrawProc::PreDraw(DirectXBase *dx_base)
+{
 	// バックバッファの番号を取得（２つなので0番か1番）
 	back_buffer_index_ = dx_base->GetSwapchain()->GetCurrentBackBufferIndex();
 
@@ -25,9 +25,7 @@ void DrawProc::PreDraw(DirectXBase *dx_base) {
 		&CD3DX12_RESOURCE_BARRIER::Transition(
 			dx_base->GetBackBuffers()[back_buffer_index_].Get(),
 			D3D12_RESOURCE_STATE_PRESENT,
-			D3D12_RESOURCE_STATE_RENDER_TARGET
-		)
-	);
+			D3D12_RESOURCE_STATE_RENDER_TARGET));
 
 	// 描画先指定
 	// レンダーターゲットビュー用ディスクリプタヒープのハンドルを取得
@@ -43,8 +41,7 @@ void DrawProc::PreDraw(DirectXBase *dx_base) {
 		1,
 		&handle,
 		false,
-		&dsvH
-	);
+		&dsvH);
 
 	// 画面クリア
 	dx_base->GetCommandList()->ClearRenderTargetView(handle, clear_color_, 0, nullptr);
@@ -59,9 +56,7 @@ void DrawProc::PreDraw(DirectXBase *dx_base) {
 			0.0f,
 			0.0f,
 			(float)(Win32App::GetWindowWidth()),
-			(float)(Win32App::GetWindowHeight())
-		)
-	);
+			(float)(Win32App::GetWindowHeight())));
 
 	// シザー矩形の設定コマンド
 	dx_base->GetCommandList()->RSSetScissorRects(
@@ -70,13 +65,11 @@ void DrawProc::PreDraw(DirectXBase *dx_base) {
 			(long)(0.0f),
 			(long)(0.0f),
 			Win32App::GetWindowWidth(),
-			Win32App::GetWindowHeight()
-		)
-	);
+			Win32App::GetWindowHeight()));
 }
 
-void DrawProc::PostDraw(DirectXBase *dx_base) {
-
+void DrawProc::PostDraw(DirectXBase *dx_base)
+{
 	// ４．描画コマンド 終了
 	// ５．リソースバリアを戻す
 	// 描画状態から表示状態に変更
@@ -84,9 +77,7 @@ void DrawProc::PostDraw(DirectXBase *dx_base) {
 		1,
 		&CD3DX12_RESOURCE_BARRIER::Transition(dx_base->GetBackBuffers()[back_buffer_index_].Get(),
 			D3D12_RESOURCE_STATE_RENDER_TARGET,
-			D3D12_RESOURCE_STATE_PRESENT
-		)
-	);
+			D3D12_RESOURCE_STATE_PRESENT));
 
 	// 命令のクローズ
 	dx_base->GetCommandList()->Close();
@@ -101,8 +92,8 @@ void DrawProc::PostDraw(DirectXBase *dx_base) {
 	// コマンドキューの実行完了を待つ
 	dx_base->GetCommandQueue()->Signal(dx_base->GetFence().Get(), dx_base->IncrementFenceVal());
 
-	if (dx_base->GetFence()->GetCompletedValue() != dx_base->GetFenceVal()) {
-
+	if (dx_base->GetFence()->GetCompletedValue() != dx_base->GetFenceVal())
+	{
 		HANDLE event = CreateEvent(nullptr, false, false, nullptr);
 
 		dx_base->GetFence()->SetEventOnCompletion(dx_base->GetFenceVal(), event);
@@ -118,8 +109,8 @@ void DrawProc::PostDraw(DirectXBase *dx_base) {
 	dx_base->GetCommandList()->Reset(dx_base->GetCommandAllocator().Get(), nullptr);
 }
 
-void DrawProc::ClearDepthBuffer() {
-
+void DrawProc::ClearDepthBuffer()
+{
 	// 深度ステンシルビュー用デスクリプタヒープのハンドルを取得
 	CD3DX12_CPU_DESCRIPTOR_HANDLE dsvH = CD3DX12_CPU_DESCRIPTOR_HANDLE(DirectXBase::GetInstance()->GetDsvHeap()->GetCPUDescriptorHandleForHeapStart());
 	// 深度バッファのクリア

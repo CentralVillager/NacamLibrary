@@ -11,7 +11,7 @@
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
-using namespace NacamUtility;
+using namespace NcmUtill;
 
 ComPtr<ID3D12Device> PostEffect::device_ = nullptr;
 ComPtr<ID3D12GraphicsCommandList> PostEffect::command_list_;

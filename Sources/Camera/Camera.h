@@ -1,11 +1,29 @@
 #pragma once
 #include <DirectXMath.h>
+#include <memory>
+#include <wrl.h>
+#include <d3d12.h>
 
-class Camera {
+class Camera
+{
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMMATRIX = DirectX::XMMATRIX;
 
+	struct MatrixConstBufferData
+	{
+		XMMATRIX mat;
+	};
+
 private:
+
+	static ComPtr<ID3D12Device> device_;
+
+	// 定数バッファ
+	ComPtr<ID3D12Resource> matrix_const_buffer_;
+
+	// ワールド行列
+	XMMATRIX mat_world_;
 
 	// ビュー行列
 	XMMATRIX mat_view_;
@@ -30,6 +48,9 @@ private:
 
 	// アスペクト比
 	float aspect_ratio_;
+
+	// 親行列のポインタ
+	XMMATRIX *parent_mat_;
 
 public:
 
@@ -96,4 +117,8 @@ public:
 	/// 視点の移動
 	/// </summary>
 	void MoveEye(const XMFLOAT3 &move);
+
+private:
+
+	void CreateConstBuffer();
 };

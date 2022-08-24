@@ -1,13 +1,20 @@
 #include "Particle.h"
 #include "../Debug/ImGuiManager.h"
 
-void Particle::Initialize(Model *model, ParticleMember &particle) {
-
+Particle::Particle()
+{
 	object_ = std::make_unique<Object3d>();
+	particle_ = std::make_shared<ParticleMember>();
+}
+
+Particle::~Particle()
+{}
+
+void Particle::Initialize(Model *model, ParticleMember &particle)
+{
 	object_->SetModel(model);
 	object_->Initialize();
 
-	particle_ = std::make_shared<ParticleMember>();
 	particle_->position_ = particle.position_;
 	particle_->velocity_ = particle.velocity_;
 	particle_->accel_ = particle.accel_;
@@ -17,14 +24,14 @@ void Particle::Initialize(Model *model, ParticleMember &particle) {
 	particle_->is_dead_ = false;
 }
 
-void Particle::Finalize() {
-}
+void Particle::Finalize()
+{}
 
-void Particle::Update() {
-
+void Particle::Update()
+{
 	// Žõ–½‚ðŒ}‚¦‚½‚ç
-	if (particle_->frame_ >= particle_->life_) {
-
+	if (particle_->frame_ >= particle_->life_)
+	{
 		// Ž€–Sƒtƒ‰ƒO‚ð—§‚Ä‚é
 		particle_->is_dead_ = true;
 	}
@@ -50,18 +57,17 @@ void Particle::Update() {
 	object_->Update();
 }
 
-void Particle::Draw() {
-
+void Particle::Draw()
+{
 	// •`‰æ
-	Object3d::PreDraw();
 	object_->Draw();
 }
 
-void Particle::DebugDraw() {
-}
+void Particle::DebugDraw()
+{}
 
-const DirectX::XMFLOAT3 operator+(const DirectX::XMFLOAT3 &lhs, const DirectX::XMFLOAT3 &rhs) {
-
+const DirectX::XMFLOAT3 operator+(const DirectX::XMFLOAT3 &lhs, const DirectX::XMFLOAT3 &rhs)
+{
 	DirectX::XMFLOAT3 result;
 	result.x = lhs.x + rhs.x;
 	result.y = lhs.y + rhs.y;
@@ -69,8 +75,8 @@ const DirectX::XMFLOAT3 operator+(const DirectX::XMFLOAT3 &lhs, const DirectX::X
 	return result;
 }
 
-const DirectX::XMFLOAT3 operator-(const DirectX::XMFLOAT3 &lhs, const DirectX::XMFLOAT3 &rhs) {
-	
+const DirectX::XMFLOAT3 operator-(const DirectX::XMFLOAT3 &lhs, const DirectX::XMFLOAT3 &rhs)
+{
 	DirectX::XMFLOAT3 result;
 	result.x = lhs.x - rhs.x;
 	result.y = lhs.y - rhs.y;
@@ -78,8 +84,8 @@ const DirectX::XMFLOAT3 operator-(const DirectX::XMFLOAT3 &lhs, const DirectX::X
 	return result;
 }
 
-const DirectX::XMFLOAT3 operator/(const DirectX::XMFLOAT3 &lhs, const int &rhs) {
-	
+const DirectX::XMFLOAT3 operator/(const DirectX::XMFLOAT3 &lhs, const int &rhs)
+{
 	DirectX::XMFLOAT3 result;
 	result.x = lhs.x / rhs;
 	result.y = lhs.y / rhs;

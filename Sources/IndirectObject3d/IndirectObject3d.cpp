@@ -323,7 +323,7 @@ void IndirectObject3d::Initialize() {
 	const XMMATRIX &mat_projection = camera_->GetMatProjection();
 
 	for (UINT i = 0; i < all_particle_num_; i++) {
-		position_ = NacamUtility::GenerateRandom({ -1.0f, -1.0f, -1.0f }, { 1.0f, 1.0f, 1.0f });
+		position_ = NcmUtill::GenerateRandom({ -1.0f, -1.0f, -1.0f }, { 1.0f, 1.0f, 1.0f });
 		matTrans = XMMatrixTranslation(position_.x, position_.y, position_.z);
 		mat_world_ *= matTrans;
 		matrix_const_buffer_data_[i].mat = mat_world_ * mat_view_ * mat_projection;
@@ -359,7 +359,7 @@ void IndirectObject3d::Update() {
 	if (is_push_) {
 
 		for (UINT i = 0; i < all_particle_num_; i++) {
-			position_ = NacamUtility::GenerateRandom({ -1.0f, -1.0f, -1.0f }, { 1.0f, 1.0f, 1.0f });
+			position_ = NcmUtill::GenerateRandom({ -1.0f, -1.0f, -1.0f }, { 1.0f, 1.0f, 1.0f });
 			matTrans = XMMatrixTranslation(position_.x, position_.y, position_.z);
 			mat_world_ *= matTrans;
 			matrix_const_buffer_data_[i].mat = mat_world_ * mat_view_ * mat_projection;

@@ -1,7 +1,8 @@
 #pragma once
 #include "../Collision/CollisionPrimitive.h"
 
-class Collision {
+class Collision
+{
 	using XMVECTOR = DirectX::XMVECTOR;
 
 public:
@@ -86,11 +87,4 @@ public:
 	/// <param name="pos2"></param>
 	/// <returns></returns>
 	static bool CheckAABB2AABB(const AABB &pos1, const AABB &pos2);
-
-	static inline bool CheckMinus(const float &value) {
-
-		if (value < 0) { return true; }
-
-		return false;
-	}
 };

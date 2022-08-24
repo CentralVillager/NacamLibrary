@@ -1,209 +1,101 @@
 #include "Enemy.h"
-#include "KeyboardInput.h"
+#include "../Utility/Utility.h"
 
-std::unique_ptr<Model> Enemy::model_enemy_ = nullptr;
-float Enemy::movable_range_[4] = {};
-int Enemy::spawned_enemy_ = 0;
-//std::unique_ptr<AudioManager> Enemy::death_ = nullptr;
+using namespace NcmUtill;
 
-void Enemy::InitializeModel() {
+std::unique_ptr<Model> Enemy::model_ = nullptr;
+std::unique_ptr<Model> Enemy::sphere_model_ = nullptr;
 
-	// 敵モデルの読み込み
-	model_enemy_ = make_unique<Model>();
-	model_enemy_->LoadObjModel("Resources/enemy/", "enemy.obj", "enemy.mtl");
-
-	// 移動可能範囲の設定
-	movable_range_[(int)Direction::UP] = 14.0f + 5.0f;
-	movable_range_[(int)Direction::DOWN] = -14.0f + 5.0f;
-	movable_range_[(int)Direction::RIGHT] = 26.0f;
-	movable_range_[(int)Direction::LEFT] = -26.0f;
+Enemy::Enemy()
+{
+	object_ = std::make_unique<Object3d>();
+	sphere_obj_ = std::make_shared<Object3d>();
 }
 
-void Enemy::Initialize() {
+Enemy::~Enemy()
+{}
 
-	death_ = make_shared<AudioManager>();
-	death_->LoadWaveFile("Resources/Sounds/", "kill");
+void Enemy::LoadResources()
+{
+	if (!model_)
+	{
+		model_ = std::make_unique<Model>();
+		model_->LoadObjModel("Resources/enemy/", "enemy.obj", "enemy.mtl");
 
-	// 敵オブジェクトの初期化
-	enemy_ = make_shared<Object3d>();
-	enemy_->Initialize();
-	enemy_->SetModel(model_enemy_.get());
-	enemy_->SetScale(0.5f);
-
-	// 当たり判定をセット
-	collision.width = 3.5f;
-	collision.height = 3.5f;
-	collision.depth = 3.5f;
-	collision.center = { enemy_->GetPosition() };
-	collision.near_left_upper = {
-		collision.center.x - collision.width / 2,
-		collision.center.y + collision.height / 2,
-		collision.center.z - collision.depth / 2
-	};
-	collision.near_right_downer = {
-		collision.near_left_upper.x + collision.width,
-		collision.near_left_upper.y - collision.height,
-		collision.near_left_upper.z
-	};
-	collision.far_left_upper = {
-		collision.near_left_upper.x,
-		collision.near_left_upper.y,
-		collision.near_left_upper.z + collision.depth
-	};
-	collision.far_right_downer = {
-		collision.near_right_downer.x,
-		collision.near_right_downer.y,
-		collision.near_right_downer.z + collision.depth
-	};
-}
-
-void Enemy::Finalize() {
-
-	death_->UnloadWaveFile();
-}
-
-void Enemy::Update() {
-	//Move();
-
-	if (pattern_ == Pattern::HORIZONTAL) {
-
-		MoveHorizontally();
+		sphere_model_ = std::make_unique<Model>();
+		sphere_model_->LoadObjModel("Resources/Ball/", "smooth_ball.obj", "smooth_ball.mtl");
 	}
-	if (pattern_ == Pattern::VERTICAL) {
-
-		MoveVertically();
-	}
-
-	UpdateAABB();
-
-	XMFLOAT3 rotation = enemy_->GetRotation();
-
-	rotation.y += 1.0f;
-
-	enemy_->SetRotation(rotation);
-
-	// 倒されたら
-	if (!is_alive_) {
-
-		death_->PlayWave(0.1f, AudioManager::SINGLE, false);
-
-		// 現在の位置を取得
-		XMFLOAT3 position = enemy_->GetPosition();
-
-		position.y -= 3.0f;
-
-		// 変更した位置を反映
-		enemy_->SetPosition(position);
-	}
-
-	// 落ちるところまで落ちたら
-	if (enemy_->GetPosition().y <= -20.0f) {
-
-		is_alive_ = false;
-	}
-
-	enemy_->Update();
 }
 
-void Enemy::Draw() {
-	enemy_->Draw();
+void Enemy::Initialize(XMFLOAT3 pos)
+{
+	object_->Initialize();
+	object_->SetModel(model_.get());
+	object_->SetPosition(pos);
+	object_->SetRotation(XMFLOAT3(0, 0, 0));
+	object_->SetScale(1.0f);
+
+	sphere_obj_->Initialize();
+	sphere_obj_->SetModel(sphere_model_.get());
+
+	UpdateCollision();
+
+	is_dead_ = false;
 }
 
-void Enemy::Spawn(XMFLOAT3 pos, Pattern p) {
+void Enemy::Finalize()
+{}
 
-	Initialize();
-	is_alive_ = true;
-	move_speed_ = 0.3f;
-	pattern_ = p;
-	enemy_->SetPosition(pos);
+void Enemy::Update()
+{
+	RotY();
+	MoveHorizontally(0.5f, 100.0f);
+	object_->Update();
+	UpdateCollision();
 }
 
-void Enemy::Move() {
+void Enemy::Draw()
+{
+	object_->Draw();
+}
 
-	// 現在の位置を取得
-	XMFLOAT3 position = enemy_->GetPosition();
+void Enemy::DrawColl()
+{
+	sphere_obj_->Draw();
+}
 
-	// 上に移動
-	if (KeyboardInput::PushKey(DIK_UP) && position.y < movable_range_[(int)Direction::UP]) { position.y += move_speed_; }
-	//if (KeyboardInput::PushKey(DIK_UP)) { position.y += move_speed_; }
+void Enemy::DebugDraw()
+{}
 
-	// 下に移動
-	if (KeyboardInput::PushKey(DIK_DOWN) && position.y > movable_range_[(int)Direction::DOWN]) { position.y -= move_speed_; }
-	//if (KeyboardInput::PushKey(DIK_DOWN)) { position.y -= move_speed_; }
+void Enemy::RotY()
+{
+	XMFLOAT3 rot = object_->GetRotation();
+	rot.y += 1.0f;
+	object_->SetRotation(rot);
+}
 
-	// 右に移動
-	if (KeyboardInput::PushKey(DIK_RIGHT) && position.x < movable_range_[(int)Direction::RIGHT]) { position.x += move_speed_; }
-	//if (KeyboardInput::PushKey(DIK_RIGHT)) { position.x += move_speed_; }
+void Enemy::MoveHorizontally(float speed, float range)
+{
+	count_--;
 
-	// 左に移動
-	if (KeyboardInput::PushKey(DIK_LEFT) && position.x > movable_range_[(int)Direction::LEFT]) { position.x -= move_speed_; }
-	//if (KeyboardInput::PushKey(DIK_LEFT)) { position.x -= move_speed_; }
+	XMFLOAT3 pos = object_->GetPosition();
+	pos.x += speed_;
+	object_->SetPosition(pos);
 
-	if (!is_alive_) {
-		position.y -= 3.0f;
-
+	if (IsZero(count_))
+	{
+		// 符号を反転
+		speed_ *= -1.0f;
+		count_ = 100 * 2;
 	}
-
-	// 変更した位置を反映
-	enemy_->SetPosition(position);
 }
 
-void Enemy::UpdateAABB() {
+void Enemy::UpdateCollision()
+{
+	coll_.center = XMLoadFloat3(&object_->GetPosition());
+	coll_.radius = COLL_RADIUS_;
 
-	collision.center = { enemy_->GetPosition() };
-
-	collision.near_left_upper = {
-		collision.center.x - collision.width / 2,
-		collision.center.y + collision.height / 2,
-		collision.center.z - collision.depth / 2
-	};
-	collision.near_right_downer = {
-		collision.near_left_upper.x + collision.width,
-		collision.near_left_upper.y - collision.height,
-		collision.near_left_upper.z
-	};
-	collision.far_left_upper = {
-		collision.near_left_upper.x,
-		collision.near_left_upper.y,
-		collision.near_left_upper.z + collision.depth
-	};
-	collision.far_right_downer = {
-		collision.near_right_downer.x,
-		collision.near_right_downer.y,
-		collision.near_right_downer.z + collision.depth
-	};
-}
-
-void Enemy::MoveHorizontally() {
-
-	// 現在の位置を取得
-	XMFLOAT3 position = enemy_->GetPosition();
-
-
-	if (position.x >= movable_range_[(int)Direction::RIGHT] || position.x <= movable_range_[(int)Direction::LEFT]) {
-
-		move_speed_ *= -1.0f;
-	}
-
-	position.x += move_speed_;
-
-	// 変更した位置を反映
-	enemy_->SetPosition(position);
-}
-
-void Enemy::MoveVertically() {
-
-	// 現在の位置を取得
-	XMFLOAT3 position = enemy_->GetPosition();
-
-
-	if (position.y >= movable_range_[(int)Direction::UP] || position.y <= movable_range_[(int)Direction::DOWN]) {
-
-		move_speed_ *= -1.0f;
-	}
-
-	position.y += move_speed_;
-
-	// 変更した位置を反映
-	enemy_->SetPosition(position);
+	sphere_obj_->SetPosition(ToFloat3(coll_.center));
+	sphere_obj_->SetScale(coll_.radius);
+	sphere_obj_->Update();
 }

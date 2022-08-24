@@ -7,12 +7,15 @@
 
 enum class TexNum {
 
-	LOGO,
+	/*LOGO,
 	QUANTUM,
 	RESULT,
 	DEBUG_FONT,
 	TEST,
-	WHITE
+	WHITE*/
+	Test,
+	Title,
+	Reticle
 };
 
 /// <summary>

@@ -14,7 +14,8 @@
 /// <summary>
 /// 3Dオブジェクト
 /// </summary>
-class Object3d {
+class Object3d
+{
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -23,7 +24,8 @@ class Object3d {
 
 public:
 
-	struct MatrixConstBufferData {
+	struct MatrixConstBufferData
+	{
 		XMMATRIX mat;	// ３Ｄ変換行列
 	};
 
@@ -117,16 +119,16 @@ public:
 	void Draw();
 
 	/*-- アクセッサ群 --*/
-	const XMFLOAT3 &GetPosition() { return position_; }
-	const XMFLOAT3 &GetRotation() { return rotation_; }
-	const XMFLOAT3 &GetScale() { return scale_; }
-	void SetPosition(XMFLOAT3 position) { position_ = position; }
-	void SetRotation(XMFLOAT3 rotation) { this->rotation_ = rotation; }
-	void SetScale(XMFLOAT3 scale) { this->scale_ = scale; };
-	void SetScale(float scale) { this->scale_.x = this->scale_.y = this->scale_.z = scale; };
+	inline const XMFLOAT3 &GetPosition() { return position_; }
+	inline const XMFLOAT3 &GetRotation() { return rotation_; }
+	inline const XMFLOAT3 &GetScale() { return scale_; }
+	inline void SetPosition(XMFLOAT3 position) { position_ = position; }
+	inline void SetRotation(XMFLOAT3 rotation) { rotation_ = rotation; }
+	inline void SetScale(XMFLOAT3 scale) { scale_ = scale; };
+	inline void SetScale(float scale) { scale_.x = scale_.y = scale_.z = scale; };
 
-	const ComPtr<ID3D12Resource> &GetMaterialConstBuffer() { return material_const_buffer_; }
-	const ComPtr<ID3D12Resource> &GetMatrixConstBuffer() { return matrix_const_buffer_; }
+	inline const ComPtr<ID3D12Resource> &GetMaterialConstBuffer() { return material_const_buffer_; }
+	inline const ComPtr<ID3D12Resource> &GetMatrixConstBuffer() { return matrix_const_buffer_; }
 
 	/// <summary>
 	/// モデルデータと3Dオブジェクトの紐づけ

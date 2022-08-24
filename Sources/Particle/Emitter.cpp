@@ -7,9 +7,9 @@ using namespace DirectX;
 
 std::unique_ptr<Model> Emitter::model_ = nullptr;
 
-ParticleMember Emitter::GenerateValue(EmitterArgs emitter) {
-
-	using namespace NacamUtility;
+ParticleMember Emitter::GenerateValue(EmitterArgs emitter)
+{
+	using namespace NcmUtill;
 
 	{
 		// マイナス防止
@@ -38,7 +38,7 @@ ParticleMember Emitter::GenerateValue(EmitterArgs emitter) {
 	}
 
 	XMFLOAT3 acc{};
-	acc.y = 0.001f;
+	acc.y = 0.000f;
 
 	// 設定された値で要素を作成
 	ParticleMember _p{};
@@ -52,8 +52,8 @@ ParticleMember Emitter::GenerateValue(EmitterArgs emitter) {
 	return _p;
 }
 
-void Emitter::Add(ParticleMember p) {
-
+void Emitter::Add(ParticleMember p)
+{
 	// 先頭に要素を構築
 	particles_.emplace_front();
 
@@ -64,28 +64,31 @@ void Emitter::Add(ParticleMember p) {
 	p_.Initialize(model_.get(), p);
 }
 
-void Emitter::StaticInitialize() {
-
-	// モデルデータの読み込みと生成
-	model_ = make_unique<Model>();
-	model_->LoadObjModel("Resources/Ball/", "smooth_ball.obj", "smooth_ball.mtl");
+void Emitter::LoadResources()
+{
+	if (!model_)
+	{
+		// モデルデータの読み込みと生成
+		model_ = make_unique<Model>();
+		model_->LoadObjModel("Resources/Ball/", "smooth_ball.obj", "smooth_ball.mtl");
+	}
 }
 
-void Emitter::GenerateParticle() {
-
+void Emitter::GenerateParticle()
+{
 	// 寿命を使用する設定なら
-	if (emitter_args_.use_life_ && emitter_args_.life_ > 0) {
-
+	if (emitter_args_.use_life_ && emitter_args_.life_ > 0)
+	{
 		// 寿命を削る
 		emitter_args_.life_--;
 	}
 
 	// 寿命を迎えていなければ && 終了命令が来ていなければ
-	if (emitter_args_.life_ > 0 && !emitter_args_.is_dead_) {
-
+	if (emitter_args_.life_ > 0 && !emitter_args_.is_dead_)
+	{
 		// 1フレーム中に指定された数を生成する
-		for (UINT count = emitter_args_.gene_num_; count > 0; count--) {
-
+		for (UINT count = emitter_args_.gene_num_; count > 0; count--)
+		{
 			Add(GenerateValue(emitter_args_));
 		}
 	}
@@ -94,27 +97,27 @@ void Emitter::GenerateParticle() {
 	particles_.remove_if([](Particle &x) { return x.GetIsDead(); });
 
 	// 全てのパーティクルを更新
-	for (auto &i : particles_) {
-
+	for (auto &i : particles_)
+	{
 		i.Update();
 	}
 }
 
-void Emitter::PrepareTerminate() {
-
+void Emitter::PrepareTerminate()
+{
 	// 終了フラグが立っていなかったら
-	if (!emitter_args_.is_dead_) {
-
+	if (!emitter_args_.is_dead_)
+	{
 		// 終了フラグを立たせる
 		emitter_args_.is_dead_ = true;
 	}
 }
 
-bool Emitter::NoticeCanTerminate() {
-
+bool Emitter::NoticeCanTerminate()
+{
 	// パーティクルコンテナが空になったら
-	if (particles_.empty()) {
-
+	if (particles_.empty())
+	{
 		// 終了準備が出来たと知らせる
 		return true;
 	}
@@ -122,17 +125,17 @@ bool Emitter::NoticeCanTerminate() {
 	return false;
 }
 
-void Emitter::Draw() {
-
+void Emitter::Draw()
+{
 	// 全てのパーティクルを描画
-	for (auto &i : particles_) {
-
+	for (auto &i : particles_)
+	{
 		i.Draw();
 	}
 }
 
-void Emitter::DebugDraw() {
-
+void Emitter::DebugDraw()
+{
 	ImGuiManager::DragFloat3("pos", emitter_args_.particle.position_, 1.0f, -100.0f, 100.0f);
 	ImGuiManager::SliderFloat3("range", emitter_args_.pos_rand_, 0.0f, 100.0f);
 	ImGuiManager::DragFloat3("velocity", emitter_args_.particle.velocity_, 0.1f, -5.0f, 5.0f);

@@ -5,8 +5,8 @@
 #include "../AbstractScene.h"
 
 // 全シーン名
-enum class SceneName {
-
+enum class SceneName : unsigned int
+{
 	SPLASH,		// ロゴなどを表示
 	TITLE,		// タイトルを表示
 	MAIN,		// ゲームのメイン要素のシーン
@@ -22,10 +22,10 @@ enum class SceneName {
 	MATH_DEMO
 };
 
-class SceneManager {
-
-	enum class SceneState : unsigned int {
-
+class SceneManager
+{
+	enum class SceneState : unsigned int
+	{
 		Current,
 		Next,
 		StateNum

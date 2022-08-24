@@ -5,14 +5,15 @@
 #include <array>
 #include "../Camera/Camera.h"
 
-enum class VertDesc {
-
+enum class VertDesc
+{
 	Start,
 	End,
 	MaxVertNum
 };
 
-class Line {
+class Line
+{
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
@@ -20,13 +21,13 @@ class Line {
 
 public:
 
-	struct MatrixConstBufferData {
-
+	struct MatrixConstBufferData
+	{
 		XMMATRIX mat;
 	};
 
-	struct Vertex {
-
+	struct Vertex
+	{
 		XMFLOAT3 pos;
 	};
 
@@ -77,14 +78,14 @@ private:
 
 public:
 
-	const XMFLOAT3 &GetPosition() { return position_; }
-	const XMFLOAT3 &GetRotation() { return rotation_; }
-	const XMFLOAT3 &GetScale() { return scale_; }
-	void SetPosition(XMFLOAT3 position) { position_ = position; }
-	void SetRotation(XMFLOAT3 rotation) { this->rotation_ = rotation; }
-	void SetScale(XMFLOAT3 scale) { this->scale_ = scale; };
-	void SetScale(float scale) { this->scale_.x = this->scale_.y = this->scale_.z = scale; };
-	void SetVertPos(XMFLOAT3 position, UINT index) { vertices_data_[index].pos = position; }
+	inline const XMFLOAT3 &GetPosition() { return position_; }
+	inline const XMFLOAT3 &GetRotation() { return rotation_; }
+	inline const XMFLOAT3 &GetScale() { return scale_; }
+	inline void SetPosition(XMFLOAT3 position) { position_ = position; }
+	inline void SetRotation(XMFLOAT3 rotation) { this->rotation_ = rotation; }
+	inline void SetScale(XMFLOAT3 scale) { this->scale_ = scale; };
+	inline void SetScale(float scale) { this->scale_.x = this->scale_.y = this->scale_.z = scale; };
+	inline void SetVertPos(XMFLOAT3 position, UINT index) { vertices_data_[index].pos = position; }
 
 public:
 

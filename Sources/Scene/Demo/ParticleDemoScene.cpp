@@ -41,7 +41,7 @@ void ParticleDemoScene::Initialize() {
 	sky_dome_->SetRotation({ 0.0f, 0, 0 });
 	sky_dome_->Update();
 
-	Emitter::StaticInitialize();
+	Emitter::LoadResources();
 
 	mode_ = MODE::MONO;
 

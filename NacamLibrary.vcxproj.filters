@@ -153,6 +153,18 @@
     <Filter Include="Application\Unique\Missile">
       <UniqueIdentifier>{7143d688-6709-45c4-835f-83eb08d8487a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\Quaternion">
+      <UniqueIdentifier>{f761a761-daf2-42b3-9bad-b7395958884f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\Title">
+      <UniqueIdentifier>{1c7a64bd-2284-4273-b46a-15e3ee729b19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\Result">
+      <UniqueIdentifier>{53b017de-637f-413a-a355-20fc07d32e5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Unique\Enemy">
+      <UniqueIdentifier>{0a196a83-e0e5-49e6-8eba-ba7eec34cb45}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -312,6 +324,27 @@
       <Filter>Application\Unique\Missile</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Unique\MissileManager.cpp">
+      <Filter>Application\Unique\Missile</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Particle\EmittersList.cpp">
+      <Filter>Application\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Math\Quaternion\Quaternion.cpp">
+      <Filter>Application\Quaternion</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Scene\TitleScene.cpp">
+      <Filter>Application\Scene\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Unique\LockOnSystem.cpp">
+      <Filter>Application\Unique</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Unique\Enemy.cpp">
+      <Filter>Application\Unique\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Unique\EnemiesList.cpp">
+      <Filter>Application\Unique\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Unique\Reticle.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -481,7 +514,31 @@
     <ClInclude Include="Sources\Unique\Missile.h">
       <Filter>Application\Unique\Missile</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Unique\MissileManager.h" />
+    <ClInclude Include="Sources\Unique\MissileManager.h">
+      <Filter>Application\Unique\Missile</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utility\Transform.h">
+      <Filter>Application\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Particle\EmittersList.h">
+      <Filter>Application\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Math\Quaternion\Quaternion.h">
+      <Filter>Application\Quaternion</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Scene\TitleScene.h">
+      <Filter>Application\Scene\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Unique\LockOnSystem.h">
+      <Filter>Application\Unique</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Unique\Enemy.h">
+      <Filter>Application\Unique\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Unique\EnemiesList.h">
+      <Filter>Application\Unique\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Unique\Reticle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">

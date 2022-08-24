@@ -1,9 +1,5 @@
 ﻿#include "../Object3d/Object3d.h"
-#include <d3dcompiler.h>
-#include <DirectXTex.h>
 #include "../PreDraw/PreDraw.h"
-
-#pragma comment(lib, "d3dcompiler.lib")
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
@@ -19,8 +15,8 @@ ComPtr<ID3D12PipelineState> Object3d::pipelinestate;
 ComPtr<ID3D12DescriptorHeap> Object3d::descHeap;
 Camera *Object3d::cam_ptr_ = nullptr;
 
-bool Object3d::StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList *cmdList) {
-
+bool Object3d::StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList *cmdList)
+{
 	// nullptrチェック
 	assert(device);
 
@@ -33,23 +29,14 @@ bool Object3d::StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList 
 	return true;
 }
 
-void Object3d::PreDraw() {
-
-	// パイプラインステートの設定
-	//cmd_list_->SetPipelineState(pipelinestate.Get());
-
-	//// ルートシグネチャの設定
-	//cmd_list_->SetGraphicsRootSignature(rootsignature.Get());
-
-	//// プリミティブ形状を設定
-	//cmd_list_->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
+void Object3d::PreDraw()
+{
 	// 仮置き
 	PreDraw::PreRender(PipelineName::Object3d);
 }
 
-bool Object3d::InitializeDescriptorHeap() {
-
+bool Object3d::InitializeDescriptorHeap()
+{
 	HRESULT result = S_FALSE;
 
 	// デスクリプタヒープを生成	
@@ -58,7 +45,8 @@ bool Object3d::InitializeDescriptorHeap() {
 	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;//シェーダから見えるように
 	descHeapDesc.NumDescriptors = 1; // シェーダーリソースビュー1つ
 	result = device->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeap));//生成
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		assert(0);
 		return false;
 	}
@@ -69,8 +57,8 @@ bool Object3d::InitializeDescriptorHeap() {
 	return true;
 }
 
-void Object3d::Initialize() {
-
+void Object3d::Initialize()
+{
 	assert(device);
 
 	HRESULT result;
@@ -95,8 +83,8 @@ void Object3d::Initialize() {
 	scale_ = XMFLOAT3(1.0f, 1.0f, 1.0f);
 }
 
-void Object3d::Update() {
-
+void Object3d::Update()
+{
 	HRESULT result;
 	XMMATRIX matScale, matRot, matTrans;
 
@@ -115,7 +103,8 @@ void Object3d::Update() {
 	mat_world_ *= matTrans;				// ワールド行列に平行移動を反映
 
 	// 親オブジェクトがあれば
-	if (parent_ != nullptr) {
+	if (parent_ != nullptr)
+	{
 		// 親オブジェクトのワールド行列を掛ける
 		mat_world_ *= parent_->mat_world_;
 	}
@@ -138,8 +127,8 @@ void Object3d::Update() {
 	matrix_const_buffer_->Unmap(0, nullptr);
 }
 
-void Object3d::Draw() {
-
+void Object3d::Draw()
+{
 	// nullptrチェック
 	assert(device);
 	assert(Object3d::cmd_list_);
@@ -165,7 +154,7 @@ void Object3d::Draw() {
 	cmd_list_->DrawIndexedInstanced(static_cast<UINT>(model_ptr_->GetIndices().size()), 1, 0, 0, 0);
 }
 
-const Object3d Object3d::operator=(const Object3d &rhs) {
-
+const Object3d Object3d::operator=(const Object3d &rhs)
+{
 	return *this;
 }

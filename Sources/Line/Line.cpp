@@ -11,8 +11,8 @@ ComPtr<ID3D12DescriptorHeap> Line::desc_heap_ = nullptr;
 UINT Line::desc_heap_size_;
 Camera *Line::cam_ptr_;
 
-void Line::StaticInitialize() {
-
+void Line::StaticInitialize()
+{
 	device_ = DirectXBase::GetInstance()->GetDevice().Get();
 	command_list_ = DirectXBase::GetInstance()->GetCommandList().Get();
 
@@ -30,8 +30,8 @@ void Line::StaticInitialize() {
 	desc_heap_size_ = device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 }
 
-void Line::CreateVertexBuffer() {
-
+void Line::CreateVertexBuffer()
+{
 	HRESULT result;
 
 	Vertex line_vertices[] = {
@@ -54,8 +54,8 @@ void Line::CreateVertexBuffer() {
 
 	Vertex *vert_map = nullptr;
 	result = vertex_buffer_->Map(0, nullptr, reinterpret_cast<void **>(&vert_map));
-	if (SUCCEEDED(result)) {
-
+	if (SUCCEEDED(result))
+	{
 		std::memcpy(vert_map, line_vertices, sizeof(Vertex) * 2);
 		vertex_buffer_->Unmap(0, nullptr);
 	}
@@ -66,8 +66,8 @@ void Line::CreateVertexBuffer() {
 	vb_view_.SizeInBytes = sizeof(line_vertices);
 }
 
-void Line::CreateConstantBuffer() {
-
+void Line::CreateConstantBuffer()
+{
 	HRESULT result;
 
 	result = device_->CreateCommittedResource(
@@ -80,20 +80,17 @@ void Line::CreateConstantBuffer() {
 	matrix_const_buffer_->SetName(L"LineMatrixConstBuffer");
 }
 
-void Line::Initialize() {
-
+void Line::Initialize()
+{
 	CreateVertexBuffer();
 	CreateConstantBuffer();
-
-	/*vertices_data_[0].pos = XMFLOAT3(-5.0f, 0, 0);
-	vertices_data_[1].pos = XMFLOAT3(5.0f, 0, 0);*/
 }
 
-void Line::Finalize() {
-}
+void Line::Finalize()
+{}
 
-void Line::Update() {
-
+void Line::Update()
+{
 	HRESULT result;
 	XMMATRIX matScale, matRot, matTrans;
 
@@ -119,21 +116,18 @@ void Line::Update() {
 	matrix_const_map->mat = mat_world_ * mat_view_ * mat_projection;	// 行列の合成
 	matrix_const_buffer_->Unmap(0, nullptr);
 
-	//vertices_data_[0].pos.y = 10.001f;
-	//vertices_data_[1].pos.y = 10.001f;
-
 	// 頂点バッファへのデータ転送
 	Vertex *vert_map = nullptr;
 	result = vertex_buffer_->Map(0, nullptr, reinterpret_cast<void **>(&vert_map));
-	if (SUCCEEDED(result)) {
-
+	if (SUCCEEDED(result))
+	{
 		std::copy(vertices_data_.begin(), vertices_data_.end(), vert_map);
 		vertex_buffer_->Unmap(0, nullptr);
 	}
 }
 
-void Line::Draw() {
-
+void Line::Draw()
+{
 	// 頂点バッファの設定
 	command_list_->IASetVertexBuffers(0, 1, &vb_view_);
 
@@ -148,7 +142,7 @@ void Line::Draw() {
 	command_list_->DrawInstanced((UINT)(2), 1, 0, 0);
 }
 
-void Line::DebugDraw() {
-
+void Line::DebugDraw()
+{
 	ImGuiManager::DragFloat3("pos", vertices_data_[0].pos, 0.1f, -10.0f, 10.0f);
 }

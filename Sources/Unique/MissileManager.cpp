@@ -1,62 +1,113 @@
 #include "MissileManager.h"
+#include "../Collision/Collision.h"
 
-MissileManager::MissileManager() {
+using namespace DirectX;
+
+MissileManager::MissileManager()
+{
+	missile_list_.resize(0);
 }
 
-MissileManager::~MissileManager() {
+MissileManager::~MissileManager()
+{}
+
+void MissileManager::Initialize(LockOnSystem *sys)
+{
+	lockon_sys_ = sys;
 }
 
-void MissileManager::Initialize() {
+void MissileManager::Finalize()
+{}
 
-	for (auto &i : missile_list_) {
-
-		//i.Initialize();
-	}
-}
-
-void MissileManager::Finalize() {
-}
-
-void MissileManager::Update() {
-
-	for (auto &i : missile_list_) {
-
+void MissileManager::Update()
+{
+	for (auto &i : missile_list_)
+	{
 		i.Update();
 	}
 
-	missile_list_.remove_if([](Missile &x) { return !x.GetIsAlive(); });
+	/*for (UINT i = 0; i < missile_list_.size(); i++)
+	{
+		missile_list_[i].Update();
+
+		if (missile_list_[i].IsDead())
+		{
+			missile_list_.erase(missile_list_.begin() + i);
+		}
+	}*/
+
+	missile_list_.remove_if([](Missile &x) { return x.IsDead(); });
 }
 
-void MissileManager::Draw() {
-
-	for (auto &i : missile_list_) {
-
+void MissileManager::Draw()
+{
+	for (auto &i : missile_list_)
+	{
 		i.Draw();
 	}
 }
 
-void MissileManager::DebugDraw() {
+void MissileManager::DrawColl()
+{
+	for (auto &i : missile_list_)
+	{
+		i.DrawColl();
+	}
 }
 
-void MissileManager::Fire() {
-
-	AddMissile();
+void MissileManager::DebugDraw()
+{
+	ImGui::Checkbox("Hit", &is_hit_);
 }
 
-void MissileManager::FollowingTarget(XMFLOAT3 target_pos) {
+void MissileManager::Fire(const MissileArgs &args)
+{
+	AddMissile(args);
 }
 
-void MissileManager::AddMissile() {
+void MissileManager::HomingTarget(XMFLOAT3 target_pos)
+{
+	for (auto &i : missile_list_)
+	{
+		i.HomingTarget(target_pos);
+	}
+}
 
-	MissileArgs args{};
-	args.pos = XMFLOAT3(0, 0, 0);
-	args.vel = XMFLOAT3(0, 0, 1.0f);
-	args.acc = XMFLOAT3(0, 0, 0);
-	args.life = 100;
-	args.is_alive = false;
+void MissileManager::HomingTarget(EnemiesList &enemies)
+{
+	for (auto &i : missile_list_)
+	{
+		i.HomingTarget(enemies);
+	}
+}
+
+bool MissileManager::CalcCollision(const Sphere &enemy)
+{
+	for (auto &i : missile_list_)
+	{
+		if (Collision::CheckSphere2Sphere(i.GetCollData(), enemy))
+		{
+			is_hit_ = true;
+			i.TermEmitter();
+			i.SetMissileLife(0);
+
+			return true;
+		}
+		else
+		{
+			is_hit_ = false;
+			return false;
+		}
+	}
+}
+
+void MissileManager::AddMissile(const MissileArgs &args)
+{
+	/*missile_list_.emplace_back();
+	missile_list_.back().Initialize(args);
+	missile_list_.back().Activate();*/
 
 	missile_list_.emplace_front();
-	Missile &ptr = missile_list_.front();
-	ptr.Initialize(args);
-	ptr.Activate();
+	missile_list_.front().Initialize(args, lockon_sys_);
+	missile_list_.front().Activate();
 }

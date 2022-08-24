@@ -123,6 +123,8 @@
       <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -143,6 +145,8 @@
       <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -181,10 +185,12 @@
     <ClCompile Include="Sources\Input\KeyboardInput.cpp" />
     <ClCompile Include="Sources\Line\Line.cpp" />
     <ClCompile Include="Sources\Math\Easing\Easing.cpp" />
+    <ClCompile Include="Sources\Math\Quaternion\Quaternion.cpp" />
     <ClCompile Include="Sources\Model\Model.cpp" />
     <ClCompile Include="Sources\NacamLib\NacamLib.cpp" />
     <ClCompile Include="Sources\Object3d\Object3d.cpp" />
     <ClCompile Include="Sources\Particle\Emitter.cpp" />
+    <ClCompile Include="Sources\Particle\EmittersList.cpp" />
     <ClCompile Include="Sources\Particle\Particle.cpp" />
     <ClCompile Include="Sources\Pipeline\PipelineManager.cpp" />
     <ClCompile Include="Sources\PostEffect\PostEffect.cpp" />
@@ -200,11 +206,16 @@
     <ClCompile Include="Sources\Scene\MainScene.cpp" />
     <ClCompile Include="Sources\Scene\SceneManager\SceneManager.cpp" />
     <ClCompile Include="Sources\Scene\TemporaryScene.cpp" />
+    <ClCompile Include="Sources\Scene\TitleScene.cpp" />
     <ClCompile Include="Sources\Sprite\Sprite.cpp" />
     <ClCompile Include="Sources\Ui\Ui.cpp" />
+    <ClCompile Include="Sources\Unique\EnemiesList.cpp" />
+    <ClCompile Include="Sources\Unique\Enemy.cpp" />
+    <ClCompile Include="Sources\Unique\LockOnSystem.cpp" />
     <ClCompile Include="Sources\Unique\Missile.cpp" />
     <ClCompile Include="Sources\Unique\MissileManager.cpp" />
     <ClCompile Include="Sources\Unique\Player.cpp" />
+    <ClCompile Include="Sources\Unique\Reticle.cpp" />
     <ClCompile Include="Sources\Utility\Utility.cpp" />
     <ClCompile Include="Sources\Win32App\Win32App.cpp" />
   </ItemGroup>
@@ -237,10 +248,12 @@
     <ClInclude Include="Sources\Input\KeyboardInput.h" />
     <ClInclude Include="Sources\Line\Line.h" />
     <ClInclude Include="Sources\Math\Easing\Easing.h" />
+    <ClInclude Include="Sources\Math\Quaternion\Quaternion.h" />
     <ClInclude Include="Sources\Model\Model.h" />
     <ClInclude Include="Sources\NacamLib\NacamLib.h" />
     <ClInclude Include="Sources\Object3d\Object3d.h" />
     <ClInclude Include="Sources\Particle\Emitter.h" />
+    <ClInclude Include="Sources\Particle\EmittersList.h" />
     <ClInclude Include="Sources\Particle\Particle.h" />
     <ClInclude Include="Sources\Pipeline\PipelineManager.h" />
     <ClInclude Include="Sources\PostEffect\PostEffect.h" />
@@ -257,12 +270,18 @@
     <ClInclude Include="Sources\Scene\MainScene.h" />
     <ClInclude Include="Sources\Scene\SceneManager\SceneManager.h" />
     <ClInclude Include="Sources\Scene\TemporaryScene.h" />
+    <ClInclude Include="Sources\Scene\TitleScene.h" />
     <ClInclude Include="Sources\Singleton\Singleton.h" />
     <ClInclude Include="Sources\Sprite\Sprite.h" />
     <ClInclude Include="Sources\Ui\Ui.h" />
+    <ClInclude Include="Sources\Unique\EnemiesList.h" />
+    <ClInclude Include="Sources\Unique\Enemy.h" />
+    <ClInclude Include="Sources\Unique\LockOnSystem.h" />
     <ClInclude Include="Sources\Unique\Missile.h" />
     <ClInclude Include="Sources\Unique\MissileManager.h" />
     <ClInclude Include="Sources\Unique\Player.h" />
+    <ClInclude Include="Sources\Unique\Reticle.h" />
+    <ClInclude Include="Sources\Utility\Transform.h" />
     <ClInclude Include="Sources\Utility\Utility.h" />
     <ClInclude Include="Sources\Win32App\Win32App.h" />
   </ItemGroup>

@@ -5,7 +5,8 @@
 #include <d3d12.h>
 #include "../DirectXBase/DirectXBase.h"
 
-class DrawProc : public Singleton<DrawProc> {
+class DrawProc : public Singleton<DrawProc>
+{
 	friend Singleton<DrawProc>;
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 

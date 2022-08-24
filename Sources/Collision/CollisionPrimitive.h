@@ -4,8 +4,8 @@
 /// <summary>
 /// 球
 /// </summary>
-struct Sphere {
-
+struct Sphere
+{
 	// 中心座標
 	DirectX::XMVECTOR center = { 0, 0, 0, 1 };
 
@@ -16,8 +16,8 @@ struct Sphere {
 /// <summary>
 /// 平面
 /// </summary>
-struct Plane {
-
+struct Plane
+{
 	// 法線ベクトル
 	DirectX::XMVECTOR normal = { 0, 1, 0, 0 };
 
@@ -28,7 +28,8 @@ struct Plane {
 /// <summary>
 /// 三角形
 /// </summary>
-class Triangle {
+class Triangle
+{
 public:
 
 	// 頂点座標3つ
@@ -48,8 +49,8 @@ public:
 /// <summary>
 /// レイ（半直線）
 /// </summary>
-struct Ray {
-
+struct Ray
+{
 	// 始点座標
 	DirectX::XMVECTOR start = { 0, 0, 0, 1 };
 
@@ -60,8 +61,8 @@ struct Ray {
 /// <summary>
 /// 線分
 /// </summary>
-struct LineSegment {
-
+struct LineSegment
+{
 	// 始点座標
 	DirectX::XMVECTOR start = { 0, 0, 0, 1 };
 
@@ -72,8 +73,8 @@ struct LineSegment {
 /// <summary>
 /// 軸並行バウンディングボックス
 /// </summary>
-struct AABB {
-
+struct AABB
+{
 	DirectX::XMFLOAT3 near_left_upper;
 	DirectX::XMFLOAT3 near_right_downer;
 	DirectX::XMFLOAT3 far_left_upper;
