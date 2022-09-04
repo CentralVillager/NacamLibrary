@@ -32,7 +32,7 @@ namespace NcmUtill
 	/// </summary>
 	/// <param name="value_of_256"></param>
 	/// <returns></returns>
-	static inline float Convert256to01(int value_of_256)
+	inline static float Convert256to01(int value_of_256)
 	{
 		return value_of_256 / 256.0f;
 	}
@@ -42,7 +42,7 @@ namespace NcmUtill
 	/// </summary>
 	/// <param name="v"></param>
 	/// <returns></returns>
-	static inline const XMFLOAT3 &ToFloat3(const XMVECTOR &v)
+	inline static const XMFLOAT3 &ToFloat3(const XMVECTOR &v)
 	{
 		return XMFLOAT3(v.m128_f32[0], v.m128_f32[1], v.m128_f32[2]);
 	}
@@ -56,7 +56,7 @@ namespace NcmUtill
 	/// </summary>
 	/// <param name="value"></param>
 	/// <returns></returns>
-	static inline bool IsPlus(const float &value)
+	inline static bool IsPlus(const float &value)
 	{
 		if (value >= 0) { return true; }
 
@@ -68,14 +68,14 @@ namespace NcmUtill
 	/// </summary>
 	/// <param name="value"></param>
 	/// <returns></returns>
-	static inline bool IsMinus(const float &value)
+	inline static bool IsMinus(const float &value)
 	{
 		if (value < 0) { return true; }
 
 		return false;
 	}
 
-	static inline bool IsZero(const int &num)
+	inline static bool IsZero(const int &num)
 	{
 		if (num == 0) { return true; }
 

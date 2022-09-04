@@ -48,19 +48,18 @@ void LockOnSystem::Draw()
 
 void LockOnSystem::CalcNearestTarget(const XMFLOAT3 &player_pos, EnemiesList &enemies)
 {
-	static float old_dist = 1000000.0f;
+	float nearest_dist = 1000000.0f;
 
 	for (UINT i = 0; i < enemies.GetSize(); i++)
 	{
-		float dist = CalcDistance(player_pos, enemies.GetPos(i));
+		float current_dist = CalcDistance(player_pos, enemies.GetPos(i));
 
-		if (old_dist > dist)
+		if (nearest_dist > current_dist)
 		{
 			target_pos_ = enemies.GetPos(i);
 			tgt_index_ = i;
+			nearest_dist = current_dist;
 		}
-
-		old_dist = dist;
 	}
 }
 

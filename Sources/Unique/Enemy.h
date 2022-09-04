@@ -31,7 +31,7 @@ public:
 	const bool &GetIsDead() { return is_dead_; }
 
 	static void LoadResources();
-	void Kill() { is_dead_ = true; }
+	void Death() { is_dead_ = true; }
 
 	void Initialize(XMFLOAT3 pos);
 	void Finalize();

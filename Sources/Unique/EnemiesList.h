@@ -21,7 +21,7 @@ public:
 	const XMFLOAT3 &GetPos(UINT i) { return enemies_[i].GetPos(); }
 	const Sphere &GetCollData(UINT i) { return enemies_[i].GetCollData(); }
 	const size_t &GetSize() { return enemies_.size(); }
-	void Kill(int i) { enemies_[i].Kill(); } 
+	void Death(int i) { enemies_[i].Death(); } 
 
 	void Update();
 	void Draw();

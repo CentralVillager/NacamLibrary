@@ -160,7 +160,7 @@ void MainScene::Update()
 	{
 		if (missile_mgr_->CalcCollision(ene_list_->GetCollData(i)))
 		{
-			ene_list_->Kill(i);
+			ene_list_->Death(i);
 		}
 	}
 

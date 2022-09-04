@@ -99,6 +99,8 @@ bool MissileManager::CalcCollision(const Sphere &enemy)
 			return false;
 		}
 	}
+
+	return false;
 }
 
 void MissileManager::AddMissile(const MissileArgs &args)
