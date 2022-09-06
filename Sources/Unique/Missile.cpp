@@ -267,6 +267,11 @@ void Missile::HomingTarget(const XMFLOAT3 &target_pos)
 
 void Missile::HomingTarget(EnemiesList &enemies)
 {
+	if (enemies.GetSize() <= 0)
+	{
+		return;
+	}
+
 	XMFLOAT3 pos = object_->GetPosition();
 
 	const float speed = 3.0f;	// 仮
@@ -282,6 +287,11 @@ void Missile::HomingTarget(EnemiesList &enemies)
 
 	// XMVECTORに変換
 	XMVECTOR mi_vec = XMLoadFloat3(&object_->GetPosition());
+
+	if (enemies.GetSize() == 1)
+	{
+		tgt_index_ = 0;
+	}
 	XMVECTOR ta_vec = XMLoadFloat3(&enemies.GetPos(tgt_index_));
 
 	// ふたつの座標を結ぶベクトルを計算

@@ -14,8 +14,6 @@ class MissileManager
 
 	std::forward_list<Missile> missile_list_;
 
-	bool is_hit_ = false;
-
 	LockOnSystem *lockon_sys_;
 
 public:

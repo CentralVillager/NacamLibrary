@@ -33,9 +33,11 @@ class Missile
 	std::unique_ptr<Object3d> object_;
 	std::shared_ptr<Object3d> sphere_obj_;
 
+	// 当たり判定
 	Sphere coll_;
 	const float COLL_RADIUS_ = 1.0f;
 
+	// エミッター
 	std::unique_ptr<Emitter> emitter_;
 	MissileArgs mi_args_;
 	float min_dist_;
@@ -66,6 +68,7 @@ public:
 
 	const Sphere &GetCollData() { return coll_; }
 	const XMFLOAT3 &GetPos() { return object_->GetPosition(); }
+	const bool &GetIsHit() { return is_hit_; }
 
 	void SetMissileLife(const int &life) { mi_args_.life = life; }
 	void SetTgtPos(const XMFLOAT3 pos) { mi_args_.tgt_pos = pos; }

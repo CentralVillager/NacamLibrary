@@ -42,6 +42,7 @@ public:
 
 	void FireMissile(const MissileArgs &args);
 	void Move(float speed);
+	void MoveXY(float speed);
 	void UpdateCollision();
 };
 \

@@ -50,6 +50,11 @@ void LockOnSystem::CalcNearestTarget(const XMFLOAT3 &player_pos, EnemiesList &en
 {
 	float nearest_dist = 1000000.0f;
 
+	if (enemies.GetSize() <= 0)
+	{
+		target_pos_ = XMFLOAT3(0, 0, -100.0f);
+	}
+
 	for (UINT i = 0; i < enemies.GetSize(); i++)
 	{
 		float current_dist = CalcDistance(player_pos, enemies.GetPos(i));

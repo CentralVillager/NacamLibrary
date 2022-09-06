@@ -113,6 +113,21 @@ void Player::Move(float speed)
 	}
 }
 
+void Player::MoveXY(float speed)
+{
+	if (KeyboardInput::PushKey(DIK_W) || KeyboardInput::PushKey(DIK_S) || KeyboardInput::PushKey(DIK_D) || KeyboardInput::PushKey(DIK_A))
+	{
+		XMFLOAT3 pos = object_->GetPosition();
+
+		if (KeyboardInput::PushKey(DIK_W)) { pos.y += speed; }
+		else if (KeyboardInput::PushKey(DIK_S)) { pos.y -= speed; }
+		if (KeyboardInput::PushKey(DIK_D)) { pos.x += speed; }
+		else if (KeyboardInput::PushKey(DIK_A)) { pos.x -= speed; }
+
+		object_->SetPosition(pos);
+	}
+}
+
 void Player::UpdateCollision()
 {
 	coll_.center = XMLoadFloat3(&object_->GetPosition());

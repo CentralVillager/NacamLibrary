@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 #include "../TitleScene.h"
 #include "../MainScene.h"
+#include "../ResultScene.h"
 #include "../TemporaryScene.h"
 #include "../Demo/DemoScene.h"
 #include "../Demo/GravityDemoScene.h"
@@ -38,6 +39,7 @@ void SceneManager::ExecuteSceneChange()
 	}
 	else if (scene_state_[(int)(SceneState::Next)] == SceneName::RESULT)
 	{
+		scene_stack_.push(make_shared<ResultScene>());
 		//scene_stack_.push(make_shared<QDResultScene>());
 	}
 	else if (scene_state_[(int)(SceneState::Next)] == SceneName::TEMPORARY)
@@ -131,11 +133,15 @@ void SceneManager::DebugDraw()
 	{
 		SetNextScene(SceneName::MAIN);
 	}
-	else if (ImGui::RadioButton("ParticleDemo", &button, 2))
+	else if (ImGui::RadioButton("Result", &button, 2))
+	{
+		SetNextScene(SceneName::RESULT);
+	}
+	else if (ImGui::RadioButton("ParticleDemo", &button, 3))
 	{
 		SetNextScene(SceneName::PARTICLE_DEMO);
 	}
-	else if (ImGui::RadioButton("Indirect", &button, 3))
+	else if (ImGui::RadioButton("Indirect", &button, 4))
 	{
 		SetNextScene(SceneName::EXECUTE_INDIRECT_DEMO);
 	}

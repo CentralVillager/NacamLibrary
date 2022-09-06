@@ -204,6 +204,7 @@
     <ClCompile Include="Sources\Scene\Demo\PostEffectDemoScene.cpp" />
     <ClCompile Include="Sources\Scene\Demo\RepulsionDemoScene.cpp" />
     <ClCompile Include="Sources\Scene\MainScene.cpp" />
+    <ClCompile Include="Sources\Scene\ResultScene.cpp" />
     <ClCompile Include="Sources\Scene\SceneManager\SceneManager.cpp" />
     <ClCompile Include="Sources\Scene\TemporaryScene.cpp" />
     <ClCompile Include="Sources\Scene\TitleScene.cpp" />
@@ -216,6 +217,7 @@
     <ClCompile Include="Sources\Unique\MissileManager.cpp" />
     <ClCompile Include="Sources\Unique\Player.cpp" />
     <ClCompile Include="Sources\Unique\Reticle.cpp" />
+    <ClCompile Include="Sources\Unique\WaveManager.cpp" />
     <ClCompile Include="Sources\Utility\Utility.cpp" />
     <ClCompile Include="Sources\Win32App\Win32App.cpp" />
   </ItemGroup>
@@ -268,6 +270,7 @@
     <ClInclude Include="Sources\Scene\Demo\PostEffectDemoScene.h" />
     <ClInclude Include="Sources\Scene\Demo\RepulsionDemoScene.h" />
     <ClInclude Include="Sources\Scene\MainScene.h" />
+    <ClInclude Include="Sources\Scene\ResultScene.h" />
     <ClInclude Include="Sources\Scene\SceneManager\SceneManager.h" />
     <ClInclude Include="Sources\Scene\TemporaryScene.h" />
     <ClInclude Include="Sources\Scene\TitleScene.h" />
@@ -281,6 +284,7 @@
     <ClInclude Include="Sources\Unique\MissileManager.h" />
     <ClInclude Include="Sources\Unique\Player.h" />
     <ClInclude Include="Sources\Unique\Reticle.h" />
+    <ClInclude Include="Sources\Unique\WaveManager.h" />
     <ClInclude Include="Sources\Utility\Transform.h" />
     <ClInclude Include="Sources\Utility\Utility.h" />
     <ClInclude Include="Sources\Win32App\Win32App.h" />

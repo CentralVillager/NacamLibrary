@@ -15,6 +15,12 @@ enum class TexNum {
 	WHITE*/
 	Test,
 	Title,
+	Play_b,
+	Play_w,
+	Exit_b,
+	Exit_w,
+	Space,
+	Clear,
 	Reticle
 };
 

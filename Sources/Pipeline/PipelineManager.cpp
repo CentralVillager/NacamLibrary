@@ -17,16 +17,16 @@ ComPtr<ID3D12Device> PipelineManager::device_;
 array<PipelineSet, (int)(PipelineName::MaxPipelineNum)> PipelineManager::pipeline_container_;
 array<PipelineConfigs, (int)(PipelineName::MaxPipelineNum)> PipelineManager::configs_;
 
-PipelineManager::PipelineManager() {
-
+PipelineManager::PipelineManager()
+{
 	device_ = DirectXBase::GetInstance()->GetDevice().Get();
 }
 
-PipelineManager::~PipelineManager() {
-}
+PipelineManager::~PipelineManager()
+{}
 
-void PipelineManager::GeneratePipeline(const PipelineName &p_name) {
-
+void PipelineManager::GeneratePipeline(const PipelineName &p_name)
+{
 	HRESULT result = S_FALSE;
 	ComPtr<ID3DBlob> vs_blob;		// 頂点シェーダオブジェクト
 	ComPtr<ID3DBlob> ps_blob;		// ピクセルシェーダオブジェクト
@@ -36,8 +36,8 @@ void PipelineManager::GeneratePipeline(const PipelineName &p_name) {
 	result = D3DCompileFromFile(configs_[(int)(p_name)].VS_name, nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE,
 		"main", "vs_5_0", D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, 0, &vs_blob, &error_blob);
 
-	if (FAILED(result)) {
-
+	if (FAILED(result))
+	{
 		// errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
 		errstr.resize(error_blob->GetBufferSize());
@@ -54,8 +54,8 @@ void PipelineManager::GeneratePipeline(const PipelineName &p_name) {
 	result = D3DCompileFromFile(configs_[(int)(p_name)].PS_name, nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE,
 		"main", "ps_5_0", D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, 0, &ps_blob, &error_blob);
 
-	if (FAILED(result)) {
-
+	if (FAILED(result))
+	{
 		// errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
 		errstr.resize(error_blob->GetBufferSize());
@@ -95,8 +95,8 @@ void PipelineManager::GeneratePipeline(const PipelineName &p_name) {
 	blend_desc.DestBlendAlpha = D3D12_BLEND_ZERO;
 
 	// ブレンドステートの設定
-	for (UINT i = 0; i < configs_[(int)(p_name)].num_render_targets; i++) {
-
+	for (UINT i = 0; i < configs_[(int)(p_name)].num_render_targets; i++)
+	{
 		gpipeline.BlendState.RenderTarget[i] = blend_desc;
 	}
 	/*gpipeline.BlendState.RenderTarget[0] = blend_desc;
@@ -110,14 +110,14 @@ void PipelineManager::GeneratePipeline(const PipelineName &p_name) {
 	gpipeline.InputLayout.NumElements = (UINT)(configs_[(int)(p_name)].input_layout.size());
 
 	// 図形の形状設定
-	gpipeline.PrimitiveTopologyType = configs_[(int)(p_name)].plimitive_topology_type;
+	gpipeline.PrimitiveTopologyType = configs_[(int)(p_name)].primitive_topology_type;
 
 	//gpipeline.NumRenderTargets = 2;	// 描画対象は2つ
 	//gpipeline.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM; // 0～255指定のRGBA
 	//gpipeline.RTVFormats[1] = DXGI_FORMAT_R8G8B8A8_UNORM; // 0～255指定のRGBA
 	gpipeline.NumRenderTargets = configs_[(int)(p_name)].num_render_targets;
-	for (size_t i = 0; i < configs_[(int)(p_name)].rtv_formats.size(); i++) {
-
+	for (size_t i = 0; i < configs_[(int)(p_name)].rtv_formats.size(); i++)
+	{
 		gpipeline.RTVFormats[i] = configs_[(int)(p_name)].rtv_formats[i];
 	}
 	gpipeline.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
@@ -155,21 +155,21 @@ void PipelineManager::GeneratePipeline(const PipelineName &p_name) {
 	pipeline_container_[(int)(p_name)].primitive_topology = configs_[(int)(p_name)].primitive_topology;
 }
 
-void PipelineManager::SetTemplateConfigs() {
-
+void PipelineManager::SetTemplateConfigs()
+{
 	// Object3d
 	PipelineName p_name = PipelineName::Object3d;
 	configs_[(int)(p_name)].VS_name = L"Resources/shaders/BasicVS.hlsl";
 	configs_[(int)(p_name)].PS_name = L"Resources/shaders/BasicPS.hlsl";
 	configs_[(int)(p_name)].fill_mode = D3D12_FILL_MODE_SOLID;
 	configs_[(int)(p_name)].input_layout.resize(3);
-	configs_[(int)(p_name)].input_layout = {
-
+	configs_[(int)(p_name)].input_layout =
+	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
 	};
-	configs_[(int)(p_name)].plimitive_topology_type = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+	configs_[(int)(p_name)].primitive_topology_type = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	configs_[(int)(p_name)].primitive_topology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	configs_[(int)(p_name)].num_render_targets = 2;
 	configs_[(int)(p_name)].rtv_formats.resize(2);
@@ -188,7 +188,7 @@ void PipelineManager::SetTemplateConfigs() {
 	configs_[(int)(p_name)].PS_name = configs_[(int)(PipelineName::Object3d)].PS_name;
 	configs_[(int)(p_name)].fill_mode = D3D12_FILL_MODE_WIREFRAME;
 	configs_[(int)(p_name)].input_layout = configs_[(int)(PipelineName::Object3d)].input_layout;
-	configs_[(int)(p_name)].plimitive_topology_type = configs_[(int)(PipelineName::Object3d)].plimitive_topology_type;
+	configs_[(int)(p_name)].primitive_topology_type = configs_[(int)(PipelineName::Object3d)].primitive_topology_type;
 	configs_[(int)(p_name)].primitive_topology = configs_[(int)(PipelineName::Object3d)].primitive_topology;
 	configs_[(int)(p_name)].num_render_targets = configs_[(int)(PipelineName::Object3d)].num_render_targets;
 	configs_[(int)(p_name)].rtv_formats.resize(2);
@@ -207,13 +207,13 @@ void PipelineManager::SetTemplateConfigs() {
 	configs_[(int)(p_name)].PS_name = L"Resources/shaders/IndirectPS.hlsl";
 	configs_[(int)(p_name)].fill_mode = D3D12_FILL_MODE_SOLID;
 	configs_[(int)(p_name)].input_layout.resize(3);
-	configs_[(int)(p_name)].input_layout = {
-
+	configs_[(int)(p_name)].input_layout =
+	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
 	};
-	configs_[(int)(p_name)].plimitive_topology_type = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+	configs_[(int)(p_name)].primitive_topology_type = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	configs_[(int)(p_name)].primitive_topology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	configs_[(int)(p_name)].num_render_targets = 2;
 	configs_[(int)(p_name)].rtv_formats.resize(2);
@@ -232,7 +232,7 @@ void PipelineManager::SetTemplateConfigs() {
 	configs_[(int)(p_name)].PS_name = configs_[(int)(PipelineName::IndirectObject3d)].PS_name;
 	configs_[(int)(p_name)].fill_mode = D3D12_FILL_MODE_WIREFRAME;
 	configs_[(int)(p_name)].input_layout = configs_[(int)(PipelineName::IndirectObject3d)].input_layout;
-	configs_[(int)(p_name)].plimitive_topology_type = configs_[(int)(PipelineName::IndirectObject3d)].plimitive_topology_type;
+	configs_[(int)(p_name)].primitive_topology_type = configs_[(int)(PipelineName::IndirectObject3d)].primitive_topology_type;
 	configs_[(int)(p_name)].primitive_topology = configs_[(int)(PipelineName::IndirectObject3d)].primitive_topology;
 	configs_[(int)(p_name)].num_render_targets = configs_[(int)(PipelineName::IndirectObject3d)].num_render_targets;
 	configs_[(int)(p_name)].rtv_formats.resize(2);
@@ -250,11 +250,11 @@ void PipelineManager::SetTemplateConfigs() {
 	configs_[(int)(p_name)].VS_name = L"Resources/shaders/LineVS.hlsl";
 	configs_[(int)(p_name)].PS_name = L"Resources/shaders/LinePS.hlsl";
 	configs_[(int)(p_name)].fill_mode = D3D12_FILL_MODE_SOLID;
-	configs_[(int)(p_name)].input_layout = {
-
+	configs_[(int)(p_name)].input_layout =
+	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 	};
-	configs_[(int)(p_name)].plimitive_topology_type = D3D12_PRIMITIVE_TOPOLOGY_TYPE_LINE;
+	configs_[(int)(p_name)].primitive_topology_type = D3D12_PRIMITIVE_TOPOLOGY_TYPE_LINE;
 	configs_[(int)(p_name)].primitive_topology = D3D_PRIMITIVE_TOPOLOGY_LINESTRIP;
 	configs_[(int)(p_name)].num_render_targets = 1;
 	configs_[(int)(p_name)].rtv_formats.resize(1);
@@ -264,19 +264,19 @@ void PipelineManager::SetTemplateConfigs() {
 	configs_[(int)(p_name)].root_parameter.resize(2);
 	configs_[(int)(p_name)].root_parameter[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 	configs_[(int)(p_name)].root_parameter[1].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
-	
+
 	// Sprite
 	p_name = PipelineName::Sprite;
 	configs_[(int)(p_name)].VS_name = L"Resources/shaders/SpriteVS.hlsl";
 	configs_[(int)(p_name)].PS_name = L"Resources/shaders/SpritePS.hlsl";
 	configs_[(int)(p_name)].fill_mode = D3D12_FILL_MODE_SOLID;
 	configs_[(int)(p_name)].input_layout.resize(2);
-	configs_[(int)(p_name)].input_layout = {
-
+	configs_[(int)(p_name)].input_layout =
+	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
 	};
-	configs_[(int)(p_name)].plimitive_topology_type = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+	configs_[(int)(p_name)].primitive_topology_type = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	configs_[(int)(p_name)].primitive_topology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
 	configs_[(int)(p_name)].num_render_targets = 1;
 	configs_[(int)(p_name)].rtv_formats.resize(1);
@@ -293,12 +293,12 @@ void PipelineManager::SetTemplateConfigs() {
 	configs_[(int)(p_name)].PS_name = L"Resources/shaders/PostEffectPS.hlsl";
 	configs_[(int)(p_name)].fill_mode = D3D12_FILL_MODE_SOLID;
 	configs_[(int)(p_name)].input_layout.resize(2);
-	configs_[(int)(p_name)].input_layout = {
-
+	configs_[(int)(p_name)].input_layout =
+	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
 	};
-	configs_[(int)(p_name)].plimitive_topology_type = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+	configs_[(int)(p_name)].primitive_topology_type = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	configs_[(int)(p_name)].primitive_topology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	configs_[(int)(p_name)].num_render_targets = 1;
 	configs_[(int)(p_name)].rtv_formats.resize(1);
@@ -317,12 +317,12 @@ void PipelineManager::SetTemplateConfigs() {
 	configs_[(int)(p_name)].PS_name = L"Resources/shaders/BlurPS.hlsl";
 	configs_[(int)(p_name)].fill_mode = D3D12_FILL_MODE_SOLID;
 	configs_[(int)(p_name)].input_layout.resize(2);
-	configs_[(int)(p_name)].input_layout = {
-
+	configs_[(int)(p_name)].input_layout =
+	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
 	};
-	configs_[(int)(p_name)].plimitive_topology_type = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+	configs_[(int)(p_name)].primitive_topology_type = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	configs_[(int)(p_name)].primitive_topology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	configs_[(int)(p_name)].num_render_targets = 1;
 	configs_[(int)(p_name)].rtv_formats.resize(1);
@@ -341,12 +341,12 @@ void PipelineManager::SetTemplateConfigs() {
 	configs_[(int)(p_name)].PS_name = L"Resources/shaders/GaussianBlurPS.hlsl";
 	configs_[(int)(p_name)].fill_mode = D3D12_FILL_MODE_SOLID;
 	configs_[(int)(p_name)].input_layout.resize(2);
-	configs_[(int)(p_name)].input_layout = {
-
+	configs_[(int)(p_name)].input_layout =
+	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
 	};
-	configs_[(int)(p_name)].plimitive_topology_type = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+	configs_[(int)(p_name)].primitive_topology_type = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	configs_[(int)(p_name)].primitive_topology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	configs_[(int)(p_name)].num_render_targets = 1;
 	configs_[(int)(p_name)].rtv_formats.resize(1);
@@ -358,5 +358,4 @@ void PipelineManager::SetTemplateConfigs() {
 	configs_[(int)(p_name)].root_parameter[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 	configs_[(int)(p_name)].root_parameter[1].InitAsDescriptorTable(1, &configs_[(int)(p_name)].desc_range[0], D3D12_SHADER_VISIBILITY_ALL);
 	configs_[(int)(p_name)].root_parameter[2].InitAsDescriptorTable(1, &configs_[(int)(p_name)].desc_range[1], D3D12_SHADER_VISIBILITY_ALL);
-
 }

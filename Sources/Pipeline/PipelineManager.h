@@ -8,8 +8,8 @@
 /// <summary>
 /// パイプラインの名前
 /// </summary>
-enum class PipelineName {
-
+enum class PipelineName
+{
 	Object3d,
 	Object3d_WireFrame,
 	IndirectObject3d,
@@ -28,7 +28,8 @@ enum class PipelineName {
 	MaxPipelineNum
 };
 
-struct PipelineSet {
+struct PipelineSet
+{
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 	ComPtr<ID3D12RootSignature> root_signature;
@@ -39,15 +40,15 @@ struct PipelineSet {
 /// <summary>
 /// パイプライン毎の詳細設定
 /// </summary>
-struct PipelineConfigs {
-
+struct PipelineConfigs
+{
 	LPCWSTR VS_name;
 	LPCWSTR PS_name;
 	LPCWSTR GS_name;
 	LPCWSTR CS_name;
 	D3D12_FILL_MODE fill_mode;
 	std::vector<D3D12_INPUT_ELEMENT_DESC> input_layout;
-	D3D12_PRIMITIVE_TOPOLOGY_TYPE plimitive_topology_type;
+	D3D12_PRIMITIVE_TOPOLOGY_TYPE primitive_topology_type;
 	D3D_PRIMITIVE_TOPOLOGY primitive_topology;
 	UINT num_render_targets;
 	std::vector<DXGI_FORMAT> rtv_formats;
@@ -55,7 +56,8 @@ struct PipelineConfigs {
 	std::vector<CD3DX12_ROOT_PARAMETER> root_parameter;
 };
 
-class PipelineManager {
+class PipelineManager
+{
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 public:
@@ -77,8 +79,6 @@ private:
 public:
 
 	inline const PipelineSet &GetPipeline(PipelineName p_name) { return pipeline_container_[(int)(p_name)]; }
-
-	void GenerateAllPipeline();
 
 	/// <summary>
 	/// グラフィクスパイプラインの生成

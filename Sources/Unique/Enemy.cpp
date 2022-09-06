@@ -5,11 +5,13 @@ using namespace NcmUtill;
 
 std::unique_ptr<Model> Enemy::model_ = nullptr;
 std::unique_ptr<Model> Enemy::sphere_model_ = nullptr;
+int Enemy::id_counter_ = -1;
 
 Enemy::Enemy()
 {
 	object_ = std::make_unique<Object3d>();
 	sphere_obj_ = std::make_shared<Object3d>();
+	id_counter_++;
 }
 
 Enemy::~Enemy()
@@ -41,6 +43,7 @@ void Enemy::Initialize(XMFLOAT3 pos)
 	UpdateCollision();
 
 	is_dead_ = false;
+	ID_ = id_counter_;
 }
 
 void Enemy::Finalize()

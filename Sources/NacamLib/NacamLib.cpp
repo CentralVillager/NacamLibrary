@@ -88,7 +88,7 @@ void NacamLib::NacamLib_Draw()
 	post_effect_scene_->Draw();
 
 	// デバッグ時描画
-//#ifdef _DEBUG
+#ifdef _DEBUG
 
 	/*-- タイトルバーに現fps数を描画 --*/
 	FpsManager::ObserveFps();
@@ -104,7 +104,7 @@ void NacamLib::NacamLib_Draw()
 	/*-- ImGuiの描画 --*/
 	ImGuiManager::Draw(cmd_list_.Get());
 
-	//#endif
+#endif
 
 	/*-- 描画後処理 --*/
 	DrawProc::PostDraw(dx_base_);

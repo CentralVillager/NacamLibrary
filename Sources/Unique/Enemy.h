@@ -12,9 +12,11 @@ class Enemy
 	std::shared_ptr<Object3d> object_;
 	std::shared_ptr<Object3d> sphere_obj_;
 	Sphere coll_;
-	const float COLL_RADIUS_ = 2.0f;
+	float COLL_RADIUS_ = 2.0f;
 
 	bool is_dead_ = false;
+	static int id_counter_;
+	int ID_;
 
 	float speed_ = 0.5f;
 	int count_ = 100;
@@ -29,6 +31,7 @@ public:
 	const XMFLOAT3 &GetPos() { return object_->GetPosition(); }
 	const Sphere &GetCollData() { return coll_; }
 	const bool &GetIsDead() { return is_dead_; }
+	const int &GetID() { return ID_; }
 
 	static void LoadResources();
 	void Death() { is_dead_ = true; }

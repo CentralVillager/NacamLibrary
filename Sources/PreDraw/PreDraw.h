@@ -4,7 +4,8 @@
 #include "../Pipeline/PipelineManager.h"
 #include <memory>
 
-class PreDraw {
+class PreDraw
+{
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 public:

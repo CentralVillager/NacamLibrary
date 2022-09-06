@@ -13,6 +13,7 @@
 #include "../Unique/EnemiesList.h"
 #include "../Unique/Reticle.h"
 #include "../Unique/LockOnSystem.h"
+#include "../Unique/WaveManager.h"
 
 class MainScene : public AbstractScene
 {
@@ -41,6 +42,8 @@ private:
 	std::unique_ptr<Enemy> enemy_;
 	std::unique_ptr<EnemiesList> ene_list_;
 	std::unique_ptr<Sprite> texture_;
+	std::unique_ptr<Sprite> clear_;
+	std::unique_ptr<Sprite> space_;
 	std::unique_ptr<GridRender> grid_;
 	std::unique_ptr<MissileManager> missile_mgr_;
 	std::unique_ptr<Emitter> dust_;
@@ -53,6 +56,8 @@ private:
 	bool is_wire_ = false;
 	bool draw_dust_ = false;
 	bool draw_coll_ = false;
+
+	bool is_result_ = false;
 
 	float ImGui_detection_range_ = 1000.0f;
 

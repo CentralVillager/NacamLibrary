@@ -12,6 +12,8 @@ MainScene::MainScene()
 	enemy_ = std::make_unique<Enemy>();
 	ene_list_ = std::make_unique<EnemiesList>();
 	texture_ = std::make_unique<Sprite>();
+	clear_ = std::make_unique<Sprite>();
+	space_ = std::make_unique<Sprite>();
 	grid_ = std::make_unique<GridRender>();
 	missile_mgr_ = std::make_unique<MissileManager>();
 	dust_ = make_unique<Emitter>();
@@ -23,6 +25,8 @@ MainScene::MainScene()
 	// テクスチャ生成のテスト
 	Sprite::GenerateTexture((int)(TexNum::Test), { 100, 100 }, 0xffff00ff);
 	Sprite::LoadTexture((int)(TexNum::Test), L"Resources/Textures/Temp/orenge_texture.png");
+	Sprite::LoadTexture((int)(TexNum::Clear), L"Resources/Textures/clear.png");
+	Sprite::LoadTexture((int)(TexNum::Space), L"Resources/Textures/space.png");
 
 	// 各リソースのロード
 	model_sky_dome_->LoadObjModel("Resources/SkyDome/", "skydome.obj", "skydome.mtl");
@@ -62,11 +66,17 @@ void MainScene::Initialize()
 	reticle_->Initialize();
 
 	float offset = 10.0f;
+	float z_offset = 50.0f;
 	UINT ene_num = 10;
-	for (UINT i = 0; i < ene_num; i++)
+
+	ene_list_->Add(XMFLOAT3(0, 0, z_offset));
+	for (UINT i = 0; i < ene_num / 2; i++)
 	{
-		ene_list_->Add(XMFLOAT3(0 + offset * i, 0, 50));
-		//ene_list_->Add(XMFLOAT3(0 + offset * i, 20, 50));
+		ene_list_->Add(XMFLOAT3(offset * i + offset, 0, z_offset * i + z_offset));
+	}
+	for (UINT i = 0; i < ene_num / 2; i++)
+	{
+		ene_list_->Add(XMFLOAT3(-(offset * i + offset), 0, z_offset * i + z_offset));
 	}
 
 	Emitter::EmitterArgs p;
@@ -82,7 +92,15 @@ void MainScene::Initialize()
 	dust_->SetEmitterArgs(p);
 
 	texture_ = (std::unique_ptr<Sprite>)(Sprite::Create(1, { 0, 0 }));
+	clear_ = (std::unique_ptr<Sprite>)(Sprite::Create((int)(TexNum::Clear), { 0, 0 }));
+	space_ = (std::unique_ptr<Sprite>)(Sprite::Create((int)(TexNum::Space), { 0, 0 }));
+	space_->SetAnchorPoint({ 0.5f, 0.5f });
+	space_->SetSize({ space_->GetTexSize().x / 2, space_->GetTexSize().y / 2 });
+	space_->SetPosition({ Win32App::window_center_x_, 650 });
+
 	key_bind_ = (int)(KeyBind::Player);
+
+	is_result_ = false;
 }
 
 void MainScene::Finalize()
@@ -90,6 +108,7 @@ void MainScene::Finalize()
 
 void MainScene::Update()
 {
+#ifdef _DEBUG
 	// キーバインドごとの操作
 	if (key_bind_ == (int)(KeyBind::Camera))
 	{
@@ -145,16 +164,42 @@ void MainScene::Update()
 
 	if (KeyboardInput::TriggerKey(DIK_0))
 	{
-		SceneManager::SetNextScene(SceneName::TITLE);
+		SceneManager::SetNextScene(SceneName::RESULT);
+	}
+#endif
+
+	if (ene_list_->NoticeEmpty())
+	{
+		is_result_ = true;
+
+		if (KeyboardInput::TriggerKey(DIK_SPACE))
+		{
+			SceneManager::SetNextScene(SceneName::TITLE);
+		}
 	}
 
+	if (KeyboardInput::TriggerKey(DIK_SPACE))
+	{
+		MissileArgs args{};
+		args.pos = player_->GetPos();
+		args.vel = XMFLOAT3(0, 0, 1.0f);
+		args.acc = XMFLOAT3(0, 0, 0);
+		args.tgt_pos = lockon_sys_->GetTgtPos();
+		args.detection_range = 1000.0f;
+		args.init_straight_time_ = 0;
+		args.life = 100;
+		args.is_alive = false;
+		player_->FireMissile(args);
+	}
+
+	player_->MoveXY(1.0f);
+
 	player_->Update();
-	//enemy_->Update();
 	ene_list_->Update();
 	grid_->Update();
 	missile_mgr_->Update();
-	missile_mgr_->HomingTarget(*ene_list_);
 	lockon_sys_->Update();
+	missile_mgr_->HomingTarget(*ene_list_);
 
 	for (UINT i = 0; i < ene_list_->GetEnemies().size(); i++)
 	{
@@ -195,7 +240,32 @@ void MainScene::Draw()
 
 	PreDraw::PreRender(PipelineName::Sprite);
 	//texture_->Draw();
-	reticle_->Draw();
+	//reticle_->Draw();
+	if (is_result_)
+	{
+		int visible_time = 75;
+		int invisivle_time = 25;
+		static int visi_count = visible_time;
+		static int invi_count = invisivle_time;
+
+		if (visi_count >= 0)
+		{
+			visi_count--;
+			space_->Draw();
+		}
+		else
+		{
+			invi_count--;
+
+			if (invi_count <= 0)
+			{
+				visi_count = visible_time;
+				invi_count = invisivle_time;
+			}
+		}
+
+		clear_->Draw();
+	}
 }
 
 void MainScene::DebugDraw()
