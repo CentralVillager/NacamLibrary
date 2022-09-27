@@ -22,8 +22,10 @@ ComPtr<ID3D12PipelineState> Sprite::pipelineState;
 XMMATRIX Sprite::matProjection;
 ComPtr<ID3D12DescriptorHeap> Sprite::descHeap;
 ComPtr<ID3D12Resource> Sprite::tex_buff_[srv_count];
+int Sprite::handle_handler = 0;
 
-bool Sprite::StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList *cmdList, int window_width, int window_height) {
+bool Sprite::StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList *cmdList, int window_width, int window_height)
+{
 	// nullptrチェック
 	assert(device);
 
@@ -47,7 +49,8 @@ bool Sprite::StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList *c
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
 		0,
 		&vsBlob, &errorBlob);
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		// errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());
@@ -71,7 +74,8 @@ bool Sprite::StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList *c
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
 		0,
 		&psBlob, &errorBlob);
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		// errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
 		errstr.resize(errorBlob->GetBufferSize());
@@ -162,13 +166,15 @@ bool Sprite::StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList *c
 	ComPtr<ID3DBlob> rootSigBlob;
 	// バージョン自動判定のシリアライズ
 	result = D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0, &rootSigBlob, &errorBlob);
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		assert(0);
 		return false;
 	}
 	// ルートシグネチャの生成
 	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature));
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		assert(0);
 		return false;
 	}
@@ -178,7 +184,8 @@ bool Sprite::StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList *c
 	// グラフィックスパイプラインの生成
 	result = device->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelineState));
 
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		assert(0);
 		return false;
 	}
@@ -195,7 +202,8 @@ bool Sprite::StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList *c
 	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;//シェーダから見えるように
 	descHeapDesc.NumDescriptors = srv_count;
 	result = device->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeap));//生成
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		assert(0);
 		return false;
 	}
@@ -203,7 +211,8 @@ bool Sprite::StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList *c
 	return true;
 }
 
-bool Sprite::LoadTexture(UINT texnumber, const wchar_t *filename) {
+bool Sprite::LoadTexture(UINT texnumber, const wchar_t *filename)
+{
 	dx_base_ = DirectXBase::GetInstance();
 	device = dx_base_->GetDevice().Get();
 
@@ -218,7 +227,8 @@ bool Sprite::LoadTexture(UINT texnumber, const wchar_t *filename) {
 	result = LoadFromWICFile(
 		filename, WIC_FLAGS_NONE,
 		&metadata, scratchImg);
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		assert(0);
 		return false;
 	}
@@ -242,7 +252,8 @@ bool Sprite::LoadTexture(UINT texnumber, const wchar_t *filename) {
 		D3D12_RESOURCE_STATE_GENERIC_READ, // テクスチャ用指定
 		nullptr,
 		IID_PPV_ARGS(&tex_buff_[texnumber]));
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		assert(0);
 		return false;
 	}
@@ -255,7 +266,8 @@ bool Sprite::LoadTexture(UINT texnumber, const wchar_t *filename) {
 		(UINT)img->rowPitch,  // 1ラインサイズ
 		(UINT)img->slicePitch // 1枚サイズ
 	);
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		assert(0);
 		return false;
 	}
@@ -277,7 +289,8 @@ bool Sprite::LoadTexture(UINT texnumber, const wchar_t *filename) {
 	return true;
 }
 
-void Sprite::PreDraw() {
+void Sprite::PreDraw()
+{
 
 	// パイプラインステートの設定
 	cmd_list_->SetPipelineState(pipelineState.Get());
@@ -287,16 +300,19 @@ void Sprite::PreDraw() {
 	cmd_list_->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 }
 
-void Sprite::PostDraw() {
+void Sprite::PostDraw()
+{
 	// コマンドリストを解除
 	Sprite::cmd_list_ = nullptr;
 }
 
-Sprite *Sprite::Create(UINT texNumber, XMFLOAT2 position, XMFLOAT4 color, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY) {
+Sprite *Sprite::Create(UINT texNumber, XMFLOAT2 position, XMFLOAT4 color, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
+{
 	// 仮サイズ
 	XMFLOAT2 size = { 100.0f, 100.0f };
 
-	if (tex_buff_[texNumber]) {
+	if (tex_buff_[texNumber])
+	{
 		// テクスチャ情報取得
 		D3D12_RESOURCE_DESC resDesc = tex_buff_[texNumber]->GetDesc();
 		// スプライトのサイズをテクスチャのサイズに設定
@@ -305,12 +321,14 @@ Sprite *Sprite::Create(UINT texNumber, XMFLOAT2 position, XMFLOAT4 color, XMFLOA
 
 	// Spriteのインスタンスを生成
 	Sprite *sprite = new Sprite(texNumber, position, size, color, anchorpoint, isFlipX, isFlipY);
-	if (sprite == nullptr) {
+	if (sprite == nullptr)
+	{
 		return nullptr;
 	}
 
 	// 初期化
-	if (!sprite->Initialize()) {
+	if (!sprite->Initialize())
+	{
 		delete sprite;
 		assert(0);
 		return nullptr;
@@ -319,7 +337,8 @@ Sprite *Sprite::Create(UINT texNumber, XMFLOAT2 position, XMFLOAT4 color, XMFLOA
 	return sprite;
 }
 
-void Sprite::GenerateTexture(UINT tex_num, XMFLOAT2 size, UINT color) {
+void Sprite::GenerateTexture(UINT tex_num, XMFLOAT2 size, UINT color)
+{
 
 	HRESULT result;
 
@@ -374,10 +393,95 @@ void Sprite::GenerateTexture(UINT tex_num, XMFLOAT2 size, UINT color) {
 	delete[] img;
 }
 
-Sprite::Sprite() {
+int Sprite::LoadTex(const wchar_t *filename)
+{
+	handle_handler++;
+
+	// nullptrチェック
+	assert(device);
+
+	HRESULT result;
+
+	TexMetadata meta_data{};
+	ScratchImage scratch_img{};
+
+	// WICテクスチャのロード
+	result = LoadFromWICFile(
+		filename, WIC_FLAGS_NONE,
+		&meta_data, scratch_img);
+
+	if (FAILED(result))
+	{
+		assert(0);
+		return false;
+	}
+
+	const Image *img = scratch_img.GetImage(0, 0, 0); // 生データ抽出
+
+	// リソース設定
+	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
+		meta_data.format,
+		meta_data.width,
+		(UINT)meta_data.height,
+		(UINT16)meta_data.arraySize,
+		(UINT16)meta_data.mipLevels
+	);
+
+	// テクスチャ用バッファの生成
+	result = device->CreateCommittedResource(
+		&CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0),
+		D3D12_HEAP_FLAG_NONE,
+		&texresDesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ, // テクスチャ用指定
+		nullptr,
+		IID_PPV_ARGS(&tex_buff_[handle_handler]));
+	if (FAILED(result))
+	{
+		assert(0);
+		return false;
+	}
+
+	// テクスチャバッファにデータ転送
+	result = tex_buff_[handle_handler]->WriteToSubresource(
+		0,
+		nullptr, // 全領域へコピー
+		img->pixels,    // 元データアドレス
+		(UINT)img->rowPitch,  // 1ラインサイズ
+		(UINT)img->slicePitch // 1枚サイズ
+	);
+	if (FAILED(result))
+	{
+		assert(0);
+		return false;
+	}
+
+	// シェーダリソースビュー作成
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; // 設定構造体
+	D3D12_RESOURCE_DESC resDesc = tex_buff_[handle_handler]->GetDesc();
+
+	srvDesc.Format = resDesc.Format;
+	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
+	srvDesc.Texture2D.MipLevels = 1;
+
+	device->CreateShaderResourceView(tex_buff_[handle_handler].Get(), //ビューと関連付けるバッファ
+		&srvDesc, //テクスチャ設定情報
+		CD3DX12_CPU_DESCRIPTOR_HANDLE(descHeap->GetCPUDescriptorHandleForHeapStart(), handle_handler, descriptorHandleIncrementSize)
+	);
+
+	return handle_handler - 1;
 }
 
-Sprite::Sprite(UINT texNumber, XMFLOAT2 position, XMFLOAT2 size, XMFLOAT4 color, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY) {
+void Sprite::DrawTex(int handle)
+{
+
+}
+
+Sprite::Sprite()
+{}
+
+Sprite::Sprite(UINT texNumber, XMFLOAT2 position, XMFLOAT2 size, XMFLOAT4 color, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
+{
 	this->position = position;
 	this->size = size;
 	this->anchorpoint = anchorpoint;
@@ -389,7 +493,8 @@ Sprite::Sprite(UINT texNumber, XMFLOAT2 position, XMFLOAT2 size, XMFLOAT4 color,
 	this->texSize = size;
 }
 
-bool Sprite::Initialize() {
+bool Sprite::Initialize()
+{
 	// nullptrチェック
 	assert(device);
 
@@ -403,7 +508,8 @@ bool Sprite::Initialize() {
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&vertBuff));
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		assert(0);
 		return false;
 	}
@@ -424,7 +530,8 @@ bool Sprite::Initialize() {
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&constBuff));
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		assert(0);
 		return false;
 	}
@@ -432,7 +539,8 @@ bool Sprite::Initialize() {
 	// 定数バッファにデータ転送
 	ConstBufferData *constMap = nullptr;
 	result = constBuff->Map(0, nullptr, (void **)&constMap);
-	if (SUCCEEDED(result)) {
+	if (SUCCEEDED(result))
+	{
 		constMap->color = color;
 		constMap->mat = matProjection;
 		constBuff->Unmap(0, nullptr);
@@ -441,49 +549,56 @@ bool Sprite::Initialize() {
 	return true;
 }
 
-void Sprite::SetRotation(float rotation) {
+void Sprite::SetRotation(float rotation)
+{
 	this->rotation = rotation;
 
 	// 頂点バッファへのデータ転送
 	TransferVertices();
 }
 
-void Sprite::SetPosition(XMFLOAT2 position) {
+void Sprite::SetPosition(XMFLOAT2 position)
+{
 	this->position = position;
 
 	// 頂点バッファへのデータ転送
 	TransferVertices();
 }
 
-void Sprite::SetSize(XMFLOAT2 size) {
+void Sprite::SetSize(XMFLOAT2 size)
+{
 	this->size = size;
 
 	// 頂点バッファへのデータ転送
 	TransferVertices();
 }
 
-void Sprite::SetAnchorPoint(XMFLOAT2 anchorpoint) {
+void Sprite::SetAnchorPoint(XMFLOAT2 anchorpoint)
+{
 	this->anchorpoint = anchorpoint;
 
 	// 頂点バッファへのデータ転送
 	TransferVertices();
 }
 
-void Sprite::SetIsFlipX(bool isFlipX) {
+void Sprite::SetIsFlipX(bool isFlipX)
+{
 	this->isFlipX = isFlipX;
 
 	// 頂点バッファへのデータ転送
 	TransferVertices();
 }
 
-void Sprite::SetIsFlipY(bool isFlipY) {
+void Sprite::SetIsFlipY(bool isFlipY)
+{
 	this->isFlipY = isFlipY;
 
 	// 頂点バッファへのデータ転送
 	TransferVertices();
 }
 
-void Sprite::SetTextureRect(XMFLOAT2 texBase, XMFLOAT2 texSize) {
+void Sprite::SetTextureRect(XMFLOAT2 texBase, XMFLOAT2 texSize)
+{
 	this->texBase = texBase;
 	this->texSize = texSize;
 
@@ -491,8 +606,8 @@ void Sprite::SetTextureRect(XMFLOAT2 texBase, XMFLOAT2 texSize) {
 	TransferVertices();
 }
 
-void Sprite::Draw() {
-
+void Sprite::Draw()
+{
 	// ワールド行列の更新
 	this->matWorld = XMMatrixIdentity();
 	this->matWorld *= XMMatrixRotationZ(XMConvertToRadians(rotation));
@@ -501,7 +616,8 @@ void Sprite::Draw() {
 	// 定数バッファにデータ転送
 	ConstBufferData *constMap = nullptr;
 	HRESULT result = this->constBuff->Map(0, nullptr, (void **)&constMap);
-	if (SUCCEEDED(result)) {
+	if (SUCCEEDED(result))
+	{
 		constMap->color = this->color;
 		constMap->mat = this->matWorld * matProjection;	// 行列の合成	
 		this->constBuff->Unmap(0, nullptr);
@@ -509,7 +625,6 @@ void Sprite::Draw() {
 
 	// 頂点バッファの設定
 	cmd_list_->IASetVertexBuffers(0, 1, &this->vbView);
-
 	ID3D12DescriptorHeap *ppHeaps[] = { descHeap.Get() };
 	// デスクリプタヒープをセット
 	cmd_list_->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
@@ -521,7 +636,8 @@ void Sprite::Draw() {
 	cmd_list_->DrawInstanced(4, 1, 0, 0);
 }
 
-void Sprite::TransferVertices() {
+void Sprite::TransferVertices()
+{
 	HRESULT result = S_FALSE;
 
 	// 左下、左上、右下、右上
@@ -531,12 +647,14 @@ void Sprite::TransferVertices() {
 	float right = (1.0f - anchorpoint.x) * size.x;
 	float top = (0.0f - anchorpoint.y) * size.y;
 	float bottom = (1.0f - anchorpoint.y) * size.y;
-	if (isFlipX) {// 左右入れ替え
+	if (isFlipX)
+	{// 左右入れ替え
 		left = -left;
 		right = -right;
 	}
 
-	if (isFlipY) {// 上下入れ替え
+	if (isFlipY)
+	{// 上下入れ替え
 		top = -top;
 		bottom = -bottom;
 	}
@@ -550,7 +668,8 @@ void Sprite::TransferVertices() {
 	vertices_[RT].pos = { right,	top,	0.0f }; // 右上
 
 	// テクスチャ情報取得
-	if (tex_buff_[texNumber]) {
+	if (tex_buff_[texNumber])
+	{
 		D3D12_RESOURCE_DESC resDesc = tex_buff_[texNumber]->GetDesc();
 
 		float tex_left = texBase.x / resDesc.Width;
@@ -567,13 +686,15 @@ void Sprite::TransferVertices() {
 	// 頂点バッファへのデータ転送
 	VertexPosUv *vertMap = nullptr;
 	result = vertBuff->Map(0, nullptr, (void **)&vertMap);
-	if (SUCCEEDED(result)) {
+	if (SUCCEEDED(result))
+	{
 		memcpy(vertMap, vertices_, sizeof(vertices_));
 		vertBuff->Unmap(0, nullptr);
 	}
 }
 
-void Sprite::TransferVerticesForSetTextureRect(Sprite sprite) {
+void Sprite::TransferVerticesForSetTextureRect(Sprite sprite)
+{
 	HRESULT result = S_FALSE;
 
 	// 左下、左上、右下、右上
@@ -583,12 +704,14 @@ void Sprite::TransferVerticesForSetTextureRect(Sprite sprite) {
 	float right = (1.0f - sprite.anchorpoint.x) * sprite.texSize.x;
 	float top = (0.0f - sprite.anchorpoint.y) * sprite.texSize.y;
 	float bottom = (1.0f - sprite.anchorpoint.y) * sprite.texSize.y;
-	if (isFlipX) {// 左右入れ替え
+	if (isFlipX)
+	{// 左右入れ替え
 		left = -left;
 		right = -right;
 	}
 
-	if (isFlipY) {// 上下入れ替え
+	if (isFlipY)
+	{// 上下入れ替え
 		top = -top;
 		bottom = -bottom;
 	}
@@ -619,7 +742,8 @@ void Sprite::TransferVerticesForSetTextureRect(Sprite sprite) {
 	// 頂点バッファへのデータ転送
 	VertexPosUv *vertMap = nullptr;
 	result = vertBuff->Map(0, nullptr, (void **)&vertMap);
-	if (SUCCEEDED(result)) {
+	if (SUCCEEDED(result))
+	{
 		memcpy(vertMap, vertices_, sizeof(vertices_));
 		vertBuff->Unmap(0, nullptr);
 	}

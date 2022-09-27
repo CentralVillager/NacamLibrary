@@ -5,6 +5,7 @@
 #include "../Input/ControllerInput.h"
 #include "../Object3d/Object3d.h"
 #include "../Sprite/Sprite.h"
+#include "../Sprite/SpriteManager.h"
 #include "../Audio/AudioManager.h"
 #include "../Fbx/FbxLoader.h"
 #include "../Fbx/FbxObject3d.h"
@@ -155,6 +156,7 @@ void NacamLib::GameObjectInitialize()
 	Object3d::StaticInitialize(device_.Get(), cmd_list_.Get());
 	Model::StaticInitialize();
 	Sprite::StaticInitialize(device_.Get(), cmd_list_.Get(), Win32App::GetWindowWidth(), Win32App::GetWindowHeight());
+	SpriteManager::StaticInitialize(device_.Get(), cmd_list_.Get());
 	AudioManager::StaticInitialize();
 	//PrimitiveObject::StaticInitialize(device_.Get(), cmd_list_.Get());
 	Line::StaticInitialize();

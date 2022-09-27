@@ -209,6 +209,7 @@
     <ClCompile Include="Sources\Scene\TemporaryScene.cpp" />
     <ClCompile Include="Sources\Scene\TitleScene.cpp" />
     <ClCompile Include="Sources\Sprite\Sprite.cpp" />
+    <ClCompile Include="Sources\Sprite\SpriteManager.cpp" />
     <ClCompile Include="Sources\Ui\Ui.cpp" />
     <ClCompile Include="Sources\Unique\EnemiesList.cpp" />
     <ClCompile Include="Sources\Unique\Enemy.cpp" />
@@ -276,6 +277,7 @@
     <ClInclude Include="Sources\Scene\TitleScene.h" />
     <ClInclude Include="Sources\Singleton\Singleton.h" />
     <ClInclude Include="Sources\Sprite\Sprite.h" />
+    <ClInclude Include="Sources\Sprite\SpriteManager.h" />
     <ClInclude Include="Sources\Ui\Ui.h" />
     <ClInclude Include="Sources\Unique\EnemiesList.h" />
     <ClInclude Include="Sources\Unique\Enemy.h" />

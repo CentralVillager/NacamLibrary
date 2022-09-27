@@ -5,7 +5,8 @@
 #include <DirectXMath.h>
 #include "../DirectXBase/DirectXBase.h"
 
-enum class TexNum {
+enum class TexNum
+{
 
 	/*LOGO,
 	QUANTUM,
@@ -27,7 +28,8 @@ enum class TexNum {
 /// <summary>
 /// スプライト
 /// </summary>
-class Sprite {
+class Sprite
+{
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -39,7 +41,8 @@ public:
 	/// <summary>
 	/// 頂点データ構造体
 	/// </summary>
-	struct VertexPosUv {
+	struct VertexPosUv
+	{
 		XMFLOAT3 pos; // xyz座標
 		XMFLOAT2 uv;  // uv座標
 	};
@@ -47,7 +50,8 @@ public:
 	/// <summary>
 	/// 定数バッファ用データ構造体
 	/// </summary>
-	struct ConstBufferData {
+	struct ConstBufferData
+	{
 		XMFLOAT4 color;	// 色 (RGBA)
 		XMMATRIX mat;	// ３Ｄ変換行列
 	};
@@ -99,6 +103,10 @@ public:
 	/// <param name="tex_num"></param>
 	static void GenerateTexture(UINT tex_num, XMFLOAT2 size, UINT color);
 
+	static int LoadTex(const wchar_t *filename);
+
+	static void DrawTex(int handle);
+
 protected:
 
 	static DirectXBase *dx_base_;
@@ -132,6 +140,8 @@ protected:
 
 	// テクスチャバッファ
 	static ComPtr<ID3D12Resource> tex_buff_[srv_count];
+
+	static int handle_handler;
 
 public:
 

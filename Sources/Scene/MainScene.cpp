@@ -108,7 +108,7 @@ void MainScene::Finalize()
 
 void MainScene::Update()
 {
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	// キーバインドごとの操作
 	if (key_bind_ == (int)(KeyBind::Camera))
 	{
@@ -166,7 +166,7 @@ void MainScene::Update()
 	{
 		SceneManager::SetNextScene(SceneName::RESULT);
 	}
-#endif
+//#endif
 
 	if (ene_list_->NoticeEmpty())
 	{

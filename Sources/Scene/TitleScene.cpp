@@ -12,26 +12,20 @@ TitleScene::TitleScene()
 	sky_dome_ = make_unique<Object3d>();
 	emitter_ = make_unique<Emitter>();
 
-	Sprite::LoadTexture((int)(TexNum::Title), L"Resources/Textures/SkyCircuse.png");
-	Sprite::LoadTexture((int)(TexNum::Play_b), L"Resources/Textures/play_b.png");
-	Sprite::LoadTexture((int)(TexNum::Play_w), L"Resources/Textures/play_w.png");
-	Sprite::LoadTexture((int)(TexNum::Exit_b), L"Resources/Textures/exit_b.png");
-	Sprite::LoadTexture((int)(TexNum::Exit_w), L"Resources/Textures/exit_w.png");
-	Sprite::LoadTexture((int)(TexNum::Space), L"Resources/Textures/space.png");
 	model_sky_dome_->LoadObjModel("Resources/SkyDome/", "skydome.obj", "skydome.mtl");
 
-	// タイトルテクスチャの設定
-	title_ = (std::unique_ptr<Sprite>)(Sprite::Create((int)(TexNum::Title), { 0, 0 }));
-	title_->SetSize({ 1280, 720 });
-	play_b_ = (std::unique_ptr<Sprite>)(Sprite::Create((int)(TexNum::Play_b), { 100, 100 }));
-	//play_b_->SetSize({ play_b_->GetTexSize().x / 2, play_b_->GetTexSize().y / 2 });
-	play_w_ = (std::unique_ptr<Sprite>)(Sprite::Create((int)(TexNum::Play_w), { 0, 0 }));
-	//play_w_->SetSize({ play_w_->GetTexSize().x / 2, play_w_->GetTexSize().y / 2 });
-	exit_b_ = (std::unique_ptr<Sprite>)(Sprite::Create((int)(TexNum::Exit_b), { 0, 0 }));
-	exit_w_ = (std::unique_ptr<Sprite>)(Sprite::Create((int)(TexNum::Exit_w), { 0, 0 }));
-	space_ = (std::unique_ptr<Sprite>)(Sprite::Create((int)(TexNum::Space), { 0, 0 }));
-	space_->SetAnchorPoint({ 0.5f, 0.5f });
-	space_->SetSize({ space_->GetTexSize().x / 2, space_->GetTexSize().y / 2 });
+	title_ = SpriteManager::LoadTex(L"Resources/Textures/SkyCircuse.png");
+	play_b_ = SpriteManager::LoadTex(L"Resources/Textures/play_b.png");
+	play_w_ = SpriteManager::LoadTex(L"Resources/Textures/play_w.png");
+	exit_b_ = SpriteManager::LoadTex(L"Resources/Textures/exit_b.png");
+	exit_w_ = SpriteManager::LoadTex(L"Resources/Textures/exit_w.png");
+	space_ = SpriteManager::LoadTex(L"Resources/Textures/space.png");
+
+	SpriteManager::SetSize(title_, { 1280, 720 });
+
+	XMFLOAT2 space_size = SpriteManager::GetSize(space_);
+	SpriteManager::SetSize(space_, { space_size.x / 2, space_size.y / 2 });
+	SpriteManager::SetAnchorPoint(space_, { 0.5f, 0.5f });
 }
 
 TitleScene::~TitleScene()
@@ -61,9 +55,7 @@ void TitleScene::Initialize()
 	p.use_life_ = false;
 	emitter_->SetEmitterArgs(p);
 
-	ImGui_pos_ = { 50, 500 };
-	space_->SetPosition({ Win32App::window_center_x_, 650 });
-	ImGui_pos2_ = space_->GetPosition();
+	SpriteManager::SetPos(space_, { Win32App::window_center_x_, 650 });
 }
 
 void TitleScene::Finalize()
@@ -76,11 +68,16 @@ void TitleScene::Update()
 		SceneManager::SetNextScene(SceneName::MAIN);
 	}
 
+	if (KeyboardInput::PushKey(DIK_DOWN))
+	{
+		XMFLOAT2 pos = SpriteManager::GetPos(title_);
+		pos.y += 1.0f;
+		SpriteManager::SetPos(title_, pos);
+	}
+
 	camera_->BasicCameraMoveTrack(1.0f);
 	sky_dome_->Update();
 	emitter_->GenerateParticle();
-
-	space_->SetPosition(ImGui_pos2_);
 }
 
 void TitleScene::Draw()
@@ -90,8 +87,6 @@ void TitleScene::Draw()
 	emitter_->Draw();
 
 	PreDraw::PreRender(PipelineName::Sprite);
-	/*play_w_->Draw();
-	play_b_->Draw();*/
 
 	int visible_time = 75;
 	int invisivle_time = 25;
@@ -101,7 +96,7 @@ void TitleScene::Draw()
 	if (visi_count >= 0)
 	{
 		visi_count--;
-		space_->Draw();
+		SpriteManager::DrawTex(space_);
 	}
 	else
 	{
@@ -114,11 +109,8 @@ void TitleScene::Draw()
 		}
 	}
 
-	title_->Draw();
+	SpriteManager::DrawTex(title_);
 }
 
 void TitleScene::DebugDraw()
-{
-	ImGuiManager::DragFloat2("pos : play", ImGui_pos_, 1.0f, 0, 1280);
-	ImGuiManager::DragFloat2("pos : space", ImGui_pos2_, 1.0f, 0, 1280);
-}
+{}

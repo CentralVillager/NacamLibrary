@@ -353,6 +353,9 @@
     <ClCompile Include="Sources\Unique\WaveManager.cpp">
       <Filter>Application\Unique</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Sprite\SpriteManager.cpp">
+      <Filter>Library\Sprite</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -550,6 +553,9 @@
     </ClInclude>
     <ClInclude Include="Sources\Unique\WaveManager.h">
       <Filter>Application\Unique</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Sprite\SpriteManager.h">
+      <Filter>Library\Sprite</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
