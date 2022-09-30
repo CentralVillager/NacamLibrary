@@ -4,7 +4,7 @@
 
 ResultScene::ResultScene()
 {
-	result_ = std::make_unique<Sprite>();
+	//result_ = std::make_unique<Sprite>();
 }
 
 ResultScene::~ResultScene()

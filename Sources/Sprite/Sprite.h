@@ -1,36 +1,13 @@
-﻿#pragma once
-#include <Windows.h>
+#pragma once
 #include <wrl.h>
 #include <d3d12.h>
 #include <DirectXMath.h>
-#include "../DirectXBase/DirectXBase.h"
+#include <vector>
 
-enum class TexNum
-{
-
-	/*LOGO,
-	QUANTUM,
-	RESULT,
-	DEBUG_FONT,
-	TEST,
-	WHITE*/
-	Test,
-	Title,
-	Play_b,
-	Play_w,
-	Exit_b,
-	Exit_w,
-	Space,
-	Clear,
-	Reticle
-};
-
-/// <summary>
-/// スプライト
-/// </summary>
 class Sprite
 {
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+	using XMINT2 = DirectX::XMINT2;
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
@@ -38,229 +15,133 @@ class Sprite
 
 public:
 
-	/// <summary>
-	/// 頂点データ構造体
-	/// </summary>
-	struct VertexPosUv
-	{
-		XMFLOAT3 pos; // xyz座標
-		XMFLOAT2 uv;  // uv座標
-	};
-
-	/// <summary>
-	/// 定数バッファ用データ構造体
-	/// </summary>
-	struct ConstBufferData
-	{
-		XMFLOAT4 color;	// 色 (RGBA)
-		XMMATRIX mat;	// ３Ｄ変換行列
-	};
-
-public:
-
-	/// <summary>
-	/// 静的初期化
-	/// </summary>
-	/// <param name="device">デバイス</param>
-	/// <param name="window_width">画面幅</param>
-	/// <param name="window_height">画面高さ</param>
-	/// <returns>成否</returns>
-	static bool StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList *cmdList, int window_width, int window_height);
-
-	/// <summary>
-	/// テクスチャ読み込み
-	/// </summary>
-	/// <param name="texnumber">テクスチャ番号</param>
-	/// <param name="filename">画像ファイル名</param>
-	/// <returns>成否</returns>
-	static bool LoadTexture(UINT texnumber, const wchar_t *filename);
-
-	/// <summary>
-	/// 描画前処理
-	/// </summary>
-	static void PreDraw();
-
-	/// <summary>
-	/// 描画後処理
-	/// </summary>
-	static void PostDraw();
-
-	/// <summary>
-	/// スプライト生成
-	/// </summary>
-	/// <param name="texNumber">テクスチャ番号</param>
-	/// <param name="position">座標</param>
-	/// <param name="color">色</param>
-	/// <param name="anchorpoint">アンカーポイント</param>
-	/// <param name="isFlipX">左右反転</param>
-	/// <param name="isFlipY">上下反転</param>
-	/// <returns>生成されたスプライト</returns>
-	static Sprite *Create(UINT texNumber, XMFLOAT2 position, XMFLOAT4 color = { 1, 1, 1, 1 }, XMFLOAT2 anchorpoint = { 0.0f, 0.0f }, bool isFlipX = false, bool isFlipY = false);
-
-	/// <summary>
-	///  テクスチャの生成
-	/// </summary>
-	/// <param name="tex_num"></param>
-	static void GenerateTexture(UINT tex_num, XMFLOAT2 size, UINT color);
-
-	static int LoadTex(const wchar_t *filename);
-
-	static void DrawTex(int handle);
-
-protected:
-
-	static DirectXBase *dx_base_;
-
-	// テクスチャの最大枚数
-	static const int srv_count = 512;
-
-	// 頂点数
-	static const int vertNum = 4;
-
-	// デバイス
-	static ComPtr<ID3D12Device> device;
-
-	// デスクリプタサイズ
-	static UINT descriptorHandleIncrementSize;
-
-	// コマンドリスト
-	static ComPtr<ID3D12GraphicsCommandList> cmd_list_;
-
-	// ルートシグネチャ
-	static ComPtr<ID3D12RootSignature> rootSignature;
-
-	// パイプラインステートオブジェクト
-	static ComPtr<ID3D12PipelineState> pipelineState;
-
-	// 射影行列
-	static XMMATRIX matProjection;
-
-	// デスクリプタヒープ
-	static ComPtr<ID3D12DescriptorHeap> descHeap;
-
-	// テクスチャバッファ
-	static ComPtr<ID3D12Resource> tex_buff_[srv_count];
-
-	static int handle_handler;
-
-public:
-
-	Sprite();
-
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
-	Sprite(UINT texNumber, XMFLOAT2 position, XMFLOAT2 size, XMFLOAT4 color, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY);
-
-	/// <summary>
-	/// 初期化
-	/// </summary>
-	/// <returns>成否</returns>
-	bool Initialize();
-
-	XMFLOAT2 GetPosition() { return position; }
-	const XMFLOAT2 &GetTexSize() { return texSize; }
-
-	/// <summary>
-	/// 角度の設定
-	/// </summary>
-	/// <param name="rotation">角度</param>
-	void SetRotation(float rotation);
-
-	/// <summary>
-	/// 座標の設定
-	/// </summary>
-	/// <param name="position">座標</param>
-	void SetPosition(XMFLOAT2 position);
-
-	/// <summary>
-	/// サイズの設定
-	/// </summary>
-	/// <param name="size">サイズ</param>
-	void SetSize(XMFLOAT2 size);
-
-	/// <summary>
-	/// アンカーポイントの設定
-	/// </summary>
-	/// <param name="anchorpoint">アンカーポイント</param>
-	void SetAnchorPoint(XMFLOAT2 anchorpoint);
-
-	/// <summary>
-	/// 左右反転の設定
-	/// </summary>
-	/// <param name="isFlipX">左右反転</param>
-	void SetIsFlipX(bool isFlipX);
-
-	/// <summary>
-	/// 上下反転の設定
-	/// </summary>
-	/// <param name="isFlipX">上下反転</param>
-	void SetIsFlipY(bool isFlipY);
-
-	/// <summary>
-	/// テクスチャ範囲設定
-	/// </summary>
-	/// <param name="texBase">テクスチャ左上座標</param>
-	/// <param name="texSize">テクスチャサイズ</param>
-	void SetTextureRect(XMFLOAT2 texBase, XMFLOAT2 texSize);
-
-	/// <summary>
-	/// 描画
-	/// </summary>
-	void Draw();
-
-protected:
-
-	// 頂点バッファ
-	ComPtr<ID3D12Resource> vertBuff;
-
-	// 定数バッファ
-	ComPtr<ID3D12Resource> constBuff;
-
-	// 頂点バッファビュー
-	D3D12_VERTEX_BUFFER_VIEW vbView{};
-
-	// テクスチャ番号
-	UINT texNumber = 0;
-
-	// Z軸回りの回転角
-	float rotation = 0.0f;
-
-	// 座標
-	XMFLOAT2 position{};
-
-	// スプライト幅、高さ
-	XMFLOAT2 size = { 100.0f, 100.0f };
-
-	// アンカーポイント
-	XMFLOAT2 anchorpoint = { 0, 0 };
-
-	// ワールド行列
-	XMMATRIX matWorld{};
-
-	// 色
-	XMFLOAT4 color = { 1, 1, 1, 1 };
-
-	// 左右反転
-	bool isFlipX = false;
-
-	// 上下反転
-	bool isFlipY = false;
-
-	// テクスチャ始点
-	XMFLOAT2 texBase = { 0, 0 };
-
-	// テクスチャ幅、高さ
-	XMFLOAT2 texSize = { 100.0f, 100.0f };
+	static void TermSprite();
 
 private:
 
 	/// <summary>
-	/// 頂点データ転送
+	/// ���_�f�[�^�\����
 	/// </summary>
-	void TransferVertices();
+	struct VertexPosUv
+	{
+		XMFLOAT3 pos;
+		XMFLOAT2 uv;
+	};
+
+	/// <summary>
+	/// �萔�o�b�t�@�p�f�[�^�\����
+	/// </summary>
+	struct ConstBufferData
+	{
+		XMFLOAT4 color;
+		XMMATRIX mat;
+	};
+
+	struct DrawData
+	{
+		int handle = 0;
+
+		ComPtr<ID3D12Resource> vertex_buffer_;
+		ComPtr<ID3D12Resource> const_buffer_;
+		D3D12_VERTEX_BUFFER_VIEW vb_view_{};
+		XMMATRIX mat_world_{};
+
+		XMFLOAT4 color_ = { 1, 1, 1, 1 };
+		XMFLOAT2 position_{};
+		float rotation_ = 0.0f;
+		XMFLOAT2 size_ = { 100.0f, 100.0f };
+		XMFLOAT2 anchorpoint_ = { 0, 0 };
+
+		bool is_flip_x_ = false;
+		bool is_flip_y_ = false;
+
+		XMFLOAT2 tex_base_ = { 0, 0 };
+		XMFLOAT2 tex_size_ = { 100.0f, 100.0f };
+	};
+
+private:
+
+	// �e�N�X�`���̍ő喇��
+	static const int srv_count_ = 512;
+
+	// ���_��
+	static const int vert_num_ = 4;
+
+	// �f�o�C�X
+	static ComPtr<ID3D12Device> device_;
+
+	// �f�X�N���v�^�T�C�Y
+	static UINT desc_handle_incre_size_;
+
+	// �R�}���h���X�g
+	static ComPtr<ID3D12GraphicsCommandList> cmd_list_;
+
+	// �ˉe�s��
+	static XMMATRIX mat_projection_;
+
+	// �f�X�N���v�^�q�[�v
+	static ComPtr<ID3D12DescriptorHeap> desc_heap_;
+
+	// �e�N�X�`���o�b�t�@
+	static ComPtr<ID3D12Resource> tex_buff_[srv_count_];
+
+	// ���n���h���J�E���^�[
+	static UINT handle_counter_;
+
+	// �S�X�v���C�g���̔z��
+	static std::vector<DrawData> sprite_hub_;
 
 public:
 
-	void TransferVerticesForSetTextureRect(Sprite sprite);
+	/// <summary>
+	/// �ÓI������
+	/// </summary>
+	/// <param name="device"></param>
+	/// <param name="cmd_list"></param>
+	static void StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList *cmd_list);
+
+	/// <summary>
+	/// �摜�̓ǂݍ���
+	/// </summary>
+	/// <param name="filename"></param>
+	/// <returns></returns>
+	static int LoadTex(const wchar_t *filename);
+
+	/// <summary>
+	/// �摜�̕`��
+	/// </summary>
+	/// <param name="handle"></param>
+	static void DrawTex(int handle);
+	static void DrawTex(int handle, XMFLOAT2 pos, float scale = 1.0f);
+
+public:
+
+	static inline const XMFLOAT2 &GetPos(int handle) { return sprite_hub_[handle].position_; }
+	static inline const XMFLOAT2 &GetSize(int handle) { return sprite_hub_[handle].size_; }
+
+	static inline void SetPos(int handle, XMINT2 pos)
+	{
+		sprite_hub_[handle].position_ = { (float)(pos.x), (float)(pos.y) };
+		TransferVertices(&sprite_hub_[handle]);
+	}
+	static inline void SetPos(int handle, XMFLOAT2 pos)
+	{
+		sprite_hub_[handle].position_ = pos;
+		TransferVertices(&sprite_hub_[handle]);
+	}
+	static inline void SetSize(int handle, XMFLOAT2 size)
+	{
+		sprite_hub_[handle].size_ = size;
+		TransferVertices(&sprite_hub_[handle]);
+	}
+	static inline void SetAnchorPoint(int handle, XMFLOAT2 anchor_point)
+	{
+		sprite_hub_[handle].anchorpoint_ = anchor_point;
+		TransferVertices(&sprite_hub_[handle]);
+	}
+
+private:
+
+	static void GenerateDrawData(int handle);
+	static void TransferVertices(DrawData *itr);
 };

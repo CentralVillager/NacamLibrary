@@ -1,12 +1,17 @@
 #include "../Win32App/Win32App.h"
 
+using namespace DirectX;
+
 WNDCLASSEX Win32App::w{};
 HWND Win32App::hwnd;
 RECT Win32App::wrc;
+const XMINT2 Win32App::SIZE_ = { 1280, 720 };
+const XMINT2 Win32App::CENTER_ = { SIZE_.x / 2, SIZE_.y / 2 };
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND, UINT, WPARAM, LPARAM);
 
-void Win32App::StaticInitialize() {
+void Win32App::StaticInitialize()
+{
 	// ウィンドウクラスの設定
 	w.cbSize = sizeof(WNDCLASSEX);
 	w.lpfnWndProc = static_cast<WNDPROC>(WindowProc);	// ウィンドウプロシージャを指定
@@ -17,7 +22,7 @@ void Win32App::StaticInitialize() {
 	RegisterClassEx(&w);								// ウィンドウクラスをOSに指定
 
 	// ウィンドウサイズ
-	wrc = { 0, 0, window_width_, window_height_ };
+	wrc = { 0, 0, SIZE_.x, SIZE_.y };
 
 	// ウィンドウオブジェクトの生成
 	hwnd = CreateWindow(
@@ -38,26 +43,31 @@ void Win32App::StaticInitialize() {
 	ShowWindow(hwnd, SW_SHOW);
 }
 
-bool Win32App::ProcessMessage() {
+bool Win32App::ProcessMessage()
+{
 	MSG msg{};
 
-	if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
+	if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+	{
 		TranslateMessage(&msg);	// キー入力メッセージの処理
 		DispatchMessage(&msg);	// プロシージャにメッセージを送る
 	}
 
-	if (msg.message == WM_QUIT) {
+	if (msg.message == WM_QUIT)
+	{
 		return false;
 	}
 
 	return true;
 }
 
-LRESULT Win32App::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
-	switch (msg) {
-		case WM_DESTROY:
-			PostQuitMessage(0);
-			return 0;
+LRESULT Win32App::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
+{
+	switch (msg)
+	{
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		return 0;
 	}
 
 	ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam);

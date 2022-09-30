@@ -14,18 +14,18 @@ TitleScene::TitleScene()
 
 	model_sky_dome_->LoadObjModel("Resources/SkyDome/", "skydome.obj", "skydome.mtl");
 
-	title_ = SpriteManager::LoadTex(L"Resources/Textures/SkyCircuse.png");
-	play_b_ = SpriteManager::LoadTex(L"Resources/Textures/play_b.png");
-	play_w_ = SpriteManager::LoadTex(L"Resources/Textures/play_w.png");
-	exit_b_ = SpriteManager::LoadTex(L"Resources/Textures/exit_b.png");
-	exit_w_ = SpriteManager::LoadTex(L"Resources/Textures/exit_w.png");
-	space_ = SpriteManager::LoadTex(L"Resources/Textures/space.png");
+	title_ = Sprite::LoadTex(L"Resources/Textures/SkyCircuse.png");
+	play_b_ = Sprite::LoadTex(L"Resources/Textures/play_b.png");
+	play_w_ = Sprite::LoadTex(L"Resources/Textures/play_w.png");
+	exit_b_ = Sprite::LoadTex(L"Resources/Textures/exit_b.png");
+	exit_w_ = Sprite::LoadTex(L"Resources/Textures/exit_w.png");
+	space_ = Sprite::LoadTex(L"Resources/Textures/space.png");
 
-	SpriteManager::SetSize(title_, { 1280, 720 });
+	Sprite::SetSize(title_, { 1280, 720 });
 
-	XMFLOAT2 space_size = SpriteManager::GetSize(space_);
-	SpriteManager::SetSize(space_, { space_size.x / 2, space_size.y / 2 });
-	SpriteManager::SetAnchorPoint(space_, { 0.5f, 0.5f });
+	XMFLOAT2 space_size = Sprite::GetSize(space_);
+	Sprite::SetSize(space_, { space_size.x / 2, space_size.y / 2 });
+	Sprite::SetAnchorPoint(space_, { 0.5f, 0.5f });
 }
 
 TitleScene::~TitleScene()
@@ -55,7 +55,8 @@ void TitleScene::Initialize()
 	p.use_life_ = false;
 	emitter_->SetEmitterArgs(p);
 
-	SpriteManager::SetPos(space_, { Win32App::window_center_x_, 650 });
+	XMINT2 pos = { Win32App::CENTER_.x, 650 };
+	Sprite::SetPos(space_, pos);
 }
 
 void TitleScene::Finalize()
@@ -70,9 +71,9 @@ void TitleScene::Update()
 
 	if (KeyboardInput::PushKey(DIK_DOWN))
 	{
-		XMFLOAT2 pos = SpriteManager::GetPos(title_);
+		XMFLOAT2 pos = Sprite::GetPos(title_);
 		pos.y += 1.0f;
-		SpriteManager::SetPos(title_, pos);
+		Sprite::SetPos(title_, pos);
 	}
 
 	camera_->BasicCameraMoveTrack(1.0f);
@@ -96,7 +97,7 @@ void TitleScene::Draw()
 	if (visi_count >= 0)
 	{
 		visi_count--;
-		SpriteManager::DrawTex(space_);
+		Sprite::DrawTex(space_);
 	}
 	else
 	{
@@ -109,7 +110,7 @@ void TitleScene::Draw()
 		}
 	}
 
-	SpriteManager::DrawTex(title_);
+	Sprite::DrawTex(title_);
 }
 
 void TitleScene::DebugDraw()

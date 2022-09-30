@@ -55,8 +55,8 @@ void DrawProc::PreDraw(DirectXBase *dx_base)
 		&CD3DX12_VIEWPORT(
 			0.0f,
 			0.0f,
-			(float)(Win32App::GetWindowWidth()),
-			(float)(Win32App::GetWindowHeight())));
+			(float)(Win32App::SIZE_.x),
+			(float)(Win32App::SIZE_.y)));
 
 	// シザー矩形の設定コマンド
 	dx_base->GetCommandList()->RSSetScissorRects(
@@ -64,8 +64,8 @@ void DrawProc::PreDraw(DirectXBase *dx_base)
 		&CD3DX12_RECT(
 			(long)(0.0f),
 			(long)(0.0f),
-			Win32App::GetWindowWidth(),
-			Win32App::GetWindowHeight()));
+			Win32App::SIZE_.x,
+			Win32App::SIZE_.y));
 }
 
 void DrawProc::PostDraw(DirectXBase *dx_base)

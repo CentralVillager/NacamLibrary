@@ -8,7 +8,8 @@
 
 using namespace std;
 
-class DirectXBase final : public Singleton<DirectXBase> {
+class DirectXBase final : public Singleton<DirectXBase>
+{
 	friend Singleton<DirectXBase>;
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 

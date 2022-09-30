@@ -4,24 +4,17 @@
 #include "AbstractScene.h"
 #include "../Camera/Camera.h"
 #include "../Sprite/Sprite.h"
-#include "../Sprite/SpriteManager.h"
 #include "../Model/Model.h"
 #include "../Object3d/Object3d.h"
 #include "../Particle/Emitter.h"
 
 class TitleScene : public AbstractScene
 {
+	using XMINT2 = DirectX::XMINT2;
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 
 	std::unique_ptr<Camera> camera_;
-
-	std::unique_ptr<Sprite> title_s_;
-	/*std::unique_ptr<Sprite> play_b_;
-	std::unique_ptr<Sprite> play_w_;
-	std::unique_ptr<Sprite> exit_b_;
-	std::unique_ptr<Sprite> exit_w_;
-	std::unique_ptr<Sprite> space_;*/
 
 	int title_;
 	int play_b_;
@@ -34,9 +27,6 @@ class TitleScene : public AbstractScene
 	std::unique_ptr<Object3d> sky_dome_;
 
 	std::unique_ptr<Emitter> emitter_;
-
-	XMFLOAT2 ImGui_pos_;
-	XMFLOAT2 ImGui_pos2_;
 
 	int logo_;
 

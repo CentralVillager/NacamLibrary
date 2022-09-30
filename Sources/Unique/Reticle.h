@@ -8,7 +8,8 @@ class Reticle
 	using float2 = DirectX::XMFLOAT2;
 	using float3 = DirectX::XMFLOAT3;
 
-	std::unique_ptr<Sprite> reticle_;
+	//std::unique_ptr<Sprite> reticle_;
+	static int reticle_;
 
 public:
 

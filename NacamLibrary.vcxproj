@@ -170,7 +170,6 @@
     <ClCompile Include="Sources\Camera\Camera.cpp" />
     <ClCompile Include="Sources\Collision\Collision.cpp" />
     <ClCompile Include="Sources\Collision\CollisionPrimitive.cpp" />
-    <ClCompile Include="Sources\Debug\DebugText.cpp" />
     <ClCompile Include="Sources\Debug\ImGuiManager.cpp" />
     <ClCompile Include="Sources\DirectXBase\DirectXBase.cpp" />
     <ClCompile Include="Sources\DrawProc\DrawProc.cpp" />
@@ -209,8 +208,6 @@
     <ClCompile Include="Sources\Scene\TemporaryScene.cpp" />
     <ClCompile Include="Sources\Scene\TitleScene.cpp" />
     <ClCompile Include="Sources\Sprite\Sprite.cpp" />
-    <ClCompile Include="Sources\Sprite\SpriteManager.cpp" />
-    <ClCompile Include="Sources\Ui\Ui.cpp" />
     <ClCompile Include="Sources\Unique\EnemiesList.cpp" />
     <ClCompile Include="Sources\Unique\Enemy.cpp" />
     <ClCompile Include="Sources\Unique\LockOnSystem.cpp" />
@@ -236,7 +233,6 @@
     <ClInclude Include="Sources\Camera\Camera.h" />
     <ClInclude Include="Sources\Collision\Collision.h" />
     <ClInclude Include="Sources\Collision\CollisionPrimitive.h" />
-    <ClInclude Include="Sources\Debug\DebugText.h" />
     <ClInclude Include="Sources\Debug\ImGuiManager.h" />
     <ClInclude Include="Sources\DirectXBase\DirectXBase.h" />
     <ClInclude Include="Sources\DrawProc\DrawProc.h" />
@@ -277,8 +273,6 @@
     <ClInclude Include="Sources\Scene\TitleScene.h" />
     <ClInclude Include="Sources\Singleton\Singleton.h" />
     <ClInclude Include="Sources\Sprite\Sprite.h" />
-    <ClInclude Include="Sources\Sprite\SpriteManager.h" />
-    <ClInclude Include="Sources\Ui\Ui.h" />
     <ClInclude Include="Sources\Unique\EnemiesList.h" />
     <ClInclude Include="Sources\Unique\Enemy.h" />
     <ClInclude Include="Sources\Unique\LockOnSystem.h" />

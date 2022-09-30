@@ -17,7 +17,7 @@ void Camera::Initialize()
 {
 	CreateConstBuffer();
 
-	aspect_ratio_ = static_cast<float>(Win32App::GetWindowWidth()) / Win32App::GetWindowHeight();
+	aspect_ratio_ = static_cast<float>(Win32App::SIZE_.x) / Win32App::SIZE_.y;
 
 	// ƒJƒƒ‰‹——£‚Ìİ’è
 	distance_ = 20.0f;

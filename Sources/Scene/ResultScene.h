@@ -5,8 +5,8 @@
 
 class ResultScene : public AbstractScene
 {
-
-	std::unique_ptr<Sprite> result_;
+	//std::unique_ptr<Sprite> result_;
+	int result_;
 
 public:
 

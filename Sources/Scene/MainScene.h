@@ -6,6 +6,7 @@
 #include "../DirectXBase/DirectXBase.h"
 #include "../Camera/Camera.h"
 #include "../Sprite/Sprite.h"
+#include "../Sprite/Sprite.h"
 #include "../Grid/GridRender.h"
 #include "../Unique/Player.h"
 #include "../Unique/Enemy.h"
@@ -18,6 +19,8 @@
 class MainScene : public AbstractScene
 {
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+	using XMINT2 = DirectX::XMINT2;
+	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 
 	ComPtr<ID3D12GraphicsCommandList> cmd_list_ = DirectXBase::GetInstance()->GetCommandList().Get();
@@ -41,9 +44,12 @@ private:
 	std::unique_ptr<Player> player_;
 	std::unique_ptr<Enemy> enemy_;
 	std::unique_ptr<EnemiesList> ene_list_;
-	std::unique_ptr<Sprite> texture_;
+	/*std::unique_ptr<Sprite> texture_;
 	std::unique_ptr<Sprite> clear_;
-	std::unique_ptr<Sprite> space_;
+	std::unique_ptr<Sprite> space_;*/
+	int texture_;
+	int clear_;
+	int space_;
 	std::unique_ptr<GridRender> grid_;
 	std::unique_ptr<MissileManager> missile_mgr_;
 	std::unique_ptr<Emitter> dust_;

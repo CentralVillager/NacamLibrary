@@ -1,8 +1,9 @@
 #pragma once
-#include "../Sprite/Sprite.h"
 #include <DirectXMath.h>
+#include "../Sprite/SpriteManager.h"
 
-class Ui {
+class Ui
+{
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 
 	static const int max_char_count_ = 256;	// 1ƒtƒŒ[ƒ€“à‚Å‚ÌÅ‘å•\¦•¶š”
@@ -23,7 +24,8 @@ class Ui {
 	Sprite texture[13];
 
 public:
-	enum SpriteType {
+	enum SpriteType
+	{
 		NUMBER
 	};
 

@@ -8,7 +8,8 @@
 #include "../../PostEffect/PostEffect.h"
 #include "../../Sprite/Sprite.h"
 
-class PostEffectDemoScene : public AbstractScene {
+class PostEffectDemoScene : public AbstractScene
+{
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 	ComPtr<ID3D12GraphicsCommandList> cmd_list_ = DirectXBase::GetInstance()->GetCommandList().Get();
@@ -27,7 +28,8 @@ private:
 	// ポストエフェクト
 	std::unique_ptr<PostEffect> post_effect_scene_;
 
-	std::unique_ptr<Sprite> back_;
+	//std::unique_ptr<Sprite> back_;
+	int back_;
 
 	bool is_push_;
 
@@ -47,5 +49,4 @@ public:
 private:
 
 	void RollY();
-
 };

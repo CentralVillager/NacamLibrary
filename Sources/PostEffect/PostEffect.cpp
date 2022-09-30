@@ -80,8 +80,8 @@ void PostEffect::Initialize() {
 	// テクスチャリソース生成
 	CD3DX12_RESOURCE_DESC tex_res_desc = CD3DX12_RESOURCE_DESC::Tex2D(
 		DXGI_FORMAT_R8G8B8A8_UNORM,
-		Win32App::window_width_,
-		static_cast<UINT>(Win32App::window_height_),
+		Win32App::SIZE_.x,
+		static_cast<UINT>(Win32App::SIZE_.y),
 		1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET
 	);
 
@@ -175,8 +175,8 @@ void PostEffect::Initialize() {
 	// デプスバッファリソース設定
 	CD3DX12_RESOURCE_DESC depth_res_desc = CD3DX12_RESOURCE_DESC::Tex2D(
 		DXGI_FORMAT_D32_FLOAT,
-		Win32App::window_width_,
-		Win32App::window_height_,
+		Win32App::SIZE_.x,
+		Win32App::SIZE_.y,
 		1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL
 	);
 
@@ -332,8 +332,8 @@ void PostEffect::PreDrawScene() {
 
 	for (int i = 0; i < 2; i++) {
 
-		viewports[i] = CD3DX12_VIEWPORT(0.0f, 0.0f, Win32App::window_width_, Win32App::window_height_);
-		scissor_rects[i] = CD3DX12_RECT(0, 0, Win32App::window_width_, Win32App::window_height_);
+		viewports[i] = CD3DX12_VIEWPORT(0.0f, 0.0f, Win32App::SIZE_.x, Win32App::SIZE_.y);
+		scissor_rects[i] = CD3DX12_RECT(0, 0, Win32App::SIZE_.x, Win32App::SIZE_.y);
 	}
 
 	// ビューポートの設定

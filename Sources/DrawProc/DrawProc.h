@@ -1,8 +1,8 @@
 #pragma once
 #include <Windows.h>
-#include "../Singleton/Singleton.h"
 #include <wrl.h>
 #include <d3d12.h>
+#include "../Singleton/Singleton.h"
 #include "../DirectXBase/DirectXBase.h"
 
 class DrawProc : public Singleton<DrawProc>

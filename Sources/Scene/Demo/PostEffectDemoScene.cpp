@@ -3,8 +3,8 @@
 #include "../../Input/KeyboardInput.h"
 #include "../../Debug/ImGuiManager.h"
 
-PostEffectDemoScene::PostEffectDemoScene() {
-
+PostEffectDemoScene::PostEffectDemoScene()
+{
 	// ÉJÉÅÉâÇÃê∂ê¨
 	camera_ = make_unique<Camera>();
 
@@ -16,16 +16,14 @@ PostEffectDemoScene::PostEffectDemoScene() {
 	object_ = make_unique<Object3d>();
 
 	// îwåiÇÃê∂ê¨
-	Sprite::LoadTexture(100, L"Resources/Textures/background.png");
-	back_ = make_unique<Sprite>();
-	back_ = static_cast<std::unique_ptr<Sprite>>(Sprite::Create(100, { 0, 0 }));
+	back_ = Sprite::LoadTex(L"Resources/Textures/background.png");
 }
 
-PostEffectDemoScene::~PostEffectDemoScene() {
-}
+PostEffectDemoScene::~PostEffectDemoScene()
+{}
 
-void PostEffectDemoScene::Initialize() {
-
+void PostEffectDemoScene::Initialize()
+{
 	// ÉJÉÅÉâÇÃèâä˙âª
 	camera_->Initialize();
 	camera_->SetDistance(20.0f);
@@ -41,30 +39,30 @@ void PostEffectDemoScene::Initialize() {
 	is_push_ = false;
 }
 
-void PostEffectDemoScene::Finalize() {
-}
+void PostEffectDemoScene::Finalize()
+{}
 
-void PostEffectDemoScene::Update() {
-
+void PostEffectDemoScene::Update()
+{
 	// Yé≤âÒì]
 	RollY();
 
 	// çXêV
 	object_->Update();
 
-	if (KeyboardInput::PushKey(DIK_SPACE) || KeyboardInput::PushKey(DIK_V)) {
-
+	if (KeyboardInput::PushKey(DIK_SPACE) || KeyboardInput::PushKey(DIK_V))
+	{
 		is_push_ = true;
-
-	} else {
-
+	}
+	else
+	{
 		is_push_ = false;
 	}
 }
 
-void PostEffectDemoScene::Draw() {
-
-	/*Sprite::PreDraw();  
+void PostEffectDemoScene::Draw()
+{
+	/*Sprite::PreDraw();
 	back_->Draw();
 	DrawProc::ClearDepthBuffer();*/
 
@@ -73,13 +71,13 @@ void PostEffectDemoScene::Draw() {
 	object_->Draw();
 }
 
-void PostEffectDemoScene::DebugDraw() {
-
+void PostEffectDemoScene::DebugDraw()
+{
 	ImGui::Checkbox("Pushed", &is_push_);
 }
 
-void PostEffectDemoScene::RollY() {
-
+void PostEffectDemoScene::RollY()
+{
 	float rotation = object_->GetRotation().y;
 
 	rotation += 1.0f;

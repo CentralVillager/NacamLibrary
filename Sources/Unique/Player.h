@@ -45,4 +45,3 @@ public:
 	void MoveXY(float speed);
 	void UpdateCollision();
 };
-\

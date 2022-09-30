@@ -11,9 +11,6 @@ MainScene::MainScene()
 	player_ = std::make_unique<Player>();
 	enemy_ = std::make_unique<Enemy>();
 	ene_list_ = std::make_unique<EnemiesList>();
-	texture_ = std::make_unique<Sprite>();
-	clear_ = std::make_unique<Sprite>();
-	space_ = std::make_unique<Sprite>();
 	grid_ = std::make_unique<GridRender>();
 	missile_mgr_ = std::make_unique<MissileManager>();
 	dust_ = make_unique<Emitter>();
@@ -23,10 +20,8 @@ MainScene::MainScene()
 	lockon_sys_ = make_unique<LockOnSystem>();
 
 	// テクスチャ生成のテスト
-	Sprite::GenerateTexture((int)(TexNum::Test), { 100, 100 }, 0xffff00ff);
-	Sprite::LoadTexture((int)(TexNum::Test), L"Resources/Textures/Temp/orenge_texture.png");
-	Sprite::LoadTexture((int)(TexNum::Clear), L"Resources/Textures/clear.png");
-	Sprite::LoadTexture((int)(TexNum::Space), L"Resources/Textures/space.png");
+	clear_ = Sprite::LoadTex(L"Resources/Textures/clear.png");
+	space_ = Sprite::LoadTex(L"Resources/Textures/space.png");
 
 	// 各リソースのロード
 	model_sky_dome_->LoadObjModel("Resources/SkyDome/", "skydome.obj", "skydome.mtl");
@@ -91,12 +86,13 @@ void MainScene::Initialize()
 	p.use_life_ = false;
 	dust_->SetEmitterArgs(p);
 
-	texture_ = (std::unique_ptr<Sprite>)(Sprite::Create(1, { 0, 0 }));
-	clear_ = (std::unique_ptr<Sprite>)(Sprite::Create((int)(TexNum::Clear), { 0, 0 }));
-	space_ = (std::unique_ptr<Sprite>)(Sprite::Create((int)(TexNum::Space), { 0, 0 }));
-	space_->SetAnchorPoint({ 0.5f, 0.5f });
-	space_->SetSize({ space_->GetTexSize().x / 2, space_->GetTexSize().y / 2 });
-	space_->SetPosition({ Win32App::window_center_x_, 650 });
+	Sprite::SetSize(clear_, { 1280, 720 });
+
+	XMFLOAT2 size = Sprite::GetSize(space_);
+	XMINT2 pos = { Win32App::CENTER_.x, 650 };
+	Sprite::SetPos(space_, pos);
+	Sprite::SetSize(space_, { size.x / 2, size.y / 2 });
+	Sprite::SetAnchorPoint(space_, { 0.5f, 0.5f });
 
 	key_bind_ = (int)(KeyBind::Player);
 
@@ -108,8 +104,8 @@ void MainScene::Finalize()
 
 void MainScene::Update()
 {
-//#ifdef _DEBUG
-	// キーバインドごとの操作
+	//#ifdef _DEBUG
+		// キーバインドごとの操作
 	if (key_bind_ == (int)(KeyBind::Camera))
 	{
 		camera_->BasicCameraMoveTrack(2.0f);
@@ -162,11 +158,16 @@ void MainScene::Update()
 		}
 	}
 
-	if (KeyboardInput::TriggerKey(DIK_0))
+	/*if (KeyboardInput::TriggerKey(DIK_0))
 	{
 		SceneManager::SetNextScene(SceneName::RESULT);
+	}*/
+	//#endif
+
+	if (KeyboardInput::TriggerKey(DIK_0))
+	{
+		is_result_ = true;
 	}
-//#endif
 
 	if (ene_list_->NoticeEmpty())
 	{
@@ -251,7 +252,8 @@ void MainScene::Draw()
 		if (visi_count >= 0)
 		{
 			visi_count--;
-			space_->Draw();
+			//space_->Draw();
+			Sprite::DrawTex(space_);
 		}
 		else
 		{
@@ -264,7 +266,8 @@ void MainScene::Draw()
 			}
 		}
 
-		clear_->Draw();
+		//clear_->Draw();
+		Sprite::DrawTex(clear_);
 	}
 }
 
