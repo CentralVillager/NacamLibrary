@@ -4,28 +4,29 @@
 #include <wrl.h>
 #include <DirectXMath.h>
 
-class PostEffect {
+class PostEffect
+{
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
 
-	enum class Pipeline {
-
+	enum class Pipeline
+	{
 		Basic,
 		AverageBlur,
 		GaussianBlur
 	};
 
-	struct Vertex {
-
+	struct Vertex
+	{
 		XMFLOAT3 pos;
 		XMFLOAT2 uv;
 	};
 
-	struct ConstBufferData {
-
+	struct ConstBufferData
+	{
 		XMFLOAT4 color;
 		XMMATRIX mat;
 	};
@@ -38,7 +39,6 @@ public:
 private:
 
 	static ComPtr<ID3D12Device> device_;
-
 	static ComPtr<ID3D12GraphicsCommandList> command_list_;
 
 	// í∏ì_êî

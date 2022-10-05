@@ -46,7 +46,7 @@ void Enemy::Initialize(XMFLOAT3 pos)
 	is_dead_ = false;
 	ID_ = id_counter_;
 
-	circular_angle_ = 0;
+	circular_angle_ = 0.0f;
 }
 
 void Enemy::Finalize()
@@ -119,7 +119,7 @@ void Enemy::MoveCircular()
 
 	if (count <= 0)
 	{
-		circular_angle_--;
+		circular_angle_ += 0.1f;
 		count = 10;
 	}
 }

@@ -22,7 +22,7 @@ class Enemy
 	float speed_ = 0.5f;
 	int count_ = 100;
 
-	int circular_angle_ = 0;
+	float circular_angle_ = 0.0f;
 
 public:
 

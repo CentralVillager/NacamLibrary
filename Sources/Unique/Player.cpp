@@ -71,10 +71,8 @@ void Player::DrawColl()
 void Player::DebugDraw()
 {}
 
-void Player::FireMissile(const MissileArgs &args)
+void Player::FireMissile()
 {
-	//mi_mgr_->Fire(args);
-
 	MissileArgs l_args{};
 	l_args.pos = object_->GetPosition();
 	l_args.vel = XMFLOAT3(0, 0, 1.0f);

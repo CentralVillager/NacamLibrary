@@ -28,7 +28,7 @@ private:
 	static std::unique_ptr<Model> model_;
 	std::vector<Object3d> markers_;
 
-	int multi_target_num_;
+	UINT multi_target_num_;
 
 	std::vector<TargetData> tgt_datas_;
 	int tgt_index_;
@@ -45,15 +45,16 @@ public:
 
 	static void LoadResources();
 
-	void Initialize(Player *player, EnemiesList *enemies_ptr, int multi_tgt_n);
+	void Initialize(Player *player, EnemiesList *enemies_ptr, UINT multi_tgt_n);
 	void Update();
 	void Draw();
 
 public:
 
-	const TargetData &GetTgtData(int i) { return tgt_datas_[i]; }
-	const size_t &GetTgtDataSize() { return tgt_datas_.size(); }
-	const int &GetTgtIndex() { return tgt_index_; }
+	inline const TargetData &GetTgtData(int i) { return tgt_datas_[i]; }
+	//inline const size_t &GetTgtDataSize() { return tgt_datas_.size(); }
+	inline const std::vector<TargetData> &GetTgtData() { return tgt_datas_; }
+	inline const int &GetTgtIndex() { return tgt_index_; }
 
 private:
 

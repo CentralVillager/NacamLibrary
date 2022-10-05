@@ -38,16 +38,6 @@ void Missile::Initialize(const MissileArgs &args, LockOnSystem *sys)
 
 	// ’l‚ð“ü—Í‚æ‚èÝ’è
 	mi_args_ = args;
-	/*mi_args_.pos = XMFLOAT3(args.pos);
-	mi_args_.vel = XMFLOAT3(args.vel);
-	mi_args_.acc = XMFLOAT3(args.acc);
-	mi_args_.tgt_pos = args.tgt_pos;
-	mi_args_.tgt_index = args.tgt_index;
-	mi_args_.detection_range = args.detection_range;
-	mi_args_.init_straight_time_ = args.init_straight_time_;
-	mi_args_.life = args.life;
-	mi_args_.is_alive = args.is_alive;*/
-	//tgt_index_ = sys->GetTgtIndex();
 
 	object_->Initialize();
 	object_->SetModel(model_.get());
@@ -273,7 +263,8 @@ void Missile::HomingTarget(EnemiesList &enemies)
 	XMFLOAT3 pos = object_->GetPosition();
 
 	// “G‚ª‚¢‚È‚¢‚È‚ç
-	if (enemies.GetSize() <= 0)
+	if (enemies.GetEnemies().size() <= 0)
+	//if (enemies.GetSize() <= 0)
 	{
 		// ’¼i‚³‚¹‚é
 		pos.z += speed;
@@ -298,7 +289,8 @@ void Missile::HomingTarget(EnemiesList &enemies)
 	XMVECTOR mi_vec = XMLoadFloat3(&object_->GetPosition());
 
 	// ?
-	if (enemies.GetSize() == 1)
+	if (enemies.GetEnemies().size() == 1)
+	//if (enemies.GetSize() == 1)
 	{
 		mi_args_.tgt_index = 0;
 		//tgt_index_ = 0;

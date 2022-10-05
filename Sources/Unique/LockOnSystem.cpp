@@ -23,7 +23,7 @@ void LockOnSystem::LoadResources()
 	}
 }
 
-void LockOnSystem::Initialize(Player *player, EnemiesList *enemies_ptr, int multi_tgt_n)
+void LockOnSystem::Initialize(Player *player, EnemiesList *enemies_ptr, UINT multi_tgt_n)
 {
 	player_ptr_ = player;
 	enemies_ptr_ = enemies_ptr;
@@ -68,7 +68,8 @@ void LockOnSystem::CalcNearestTargets(const XMFLOAT3 &player_pos, EnemiesList &e
 	float nearest_dist = 1000000.0f;
 
 	// “G‚ª‚¢‚È‚¢‚È‚ç
-	if (enemies.GetSize() <= 0)
+	if (enemies.GetEnemies().size() <= 0)
+	//if (enemies.GetSize() <= 0)
 	{
 		// ³–Ê‰œ‚Éƒ^[ƒQƒbƒg‚ð’u‚­
 		tgt_datas_[0].pos = XMFLOAT3(0, 0, -100.0f);
@@ -77,7 +78,8 @@ void LockOnSystem::CalcNearestTargets(const XMFLOAT3 &player_pos, EnemiesList &e
 	std::vector<TargetData> dist_sort;
 
 	// ‘S‚Ä‚Ì“G‚É‘Î‚µ‚Ä
-	for (UINT i = 0; i < enemies.GetSize(); i++)
+	for (UINT i = 0; i < enemies.GetEnemies().size(); i++)
+	//for (UINT i = 0; i < enemies.GetSize(); i++)
 	{
 		// ‹——£‚ðŒvŽZAŠeƒf[ƒ^‚ðŠi”[
 		dist_sort.emplace_back();

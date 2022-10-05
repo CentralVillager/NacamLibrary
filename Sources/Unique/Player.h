@@ -40,7 +40,7 @@ public:
 	void DrawColl();
 	void DebugDraw();
 
-	void FireMissile(const MissileArgs &args);
+	void FireMissile();
 	void Move(float speed);
 	void MoveXY(float speed);
 	void UpdateCollision();

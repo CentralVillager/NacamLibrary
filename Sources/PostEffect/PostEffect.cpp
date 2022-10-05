@@ -17,17 +17,17 @@ ComPtr<ID3D12Device> PostEffect::device_ = nullptr;
 ComPtr<ID3D12GraphicsCommandList> PostEffect::command_list_;
 const float PostEffect::clear_color_[4] = { Convert256to01(25), Convert256to01(25), Convert256to01(25), 0.0f };
 
-PostEffect::PostEffect() {
-
+PostEffect::PostEffect()
+{
 	device_ = DirectXBase::GetInstance()->GetDevice().Get();
 	command_list_ = DirectXBase::GetInstance()->GetCommandList().Get();
 }
 
-PostEffect::~PostEffect() {
-}
+PostEffect::~PostEffect()
+{}
 
-void PostEffect::Initialize() {
-
+void PostEffect::Initialize()
+{
 	HRESULT result;
 
 	// 頂点バッファ生成
@@ -43,8 +43,8 @@ void PostEffect::Initialize() {
 	assert(SUCCEEDED(result));
 
 	// 頂点データ
-	Vertex vertices[vertex_num_] = {
-
+	Vertex vertices[vertex_num_] =
+	{
 		{{-1.0f, -1.0f, 0.0f}, {0.0f, 1.0f}},	// 左下
 		{{-1.0f, +1.0f, 0.0f}, {0.0f, 0.0f}},	// 左上
 		{{+1.0f, -1.0f, 0.0f}, {1.0f, 1.0f}},	// 右下
@@ -54,8 +54,8 @@ void PostEffect::Initialize() {
 	// 頂点バッファへのデータ転送
 	Vertex *vert_map = nullptr;
 	result = vertex_buffer_->Map(0, nullptr, reinterpret_cast<void **>(&vert_map));
-	if (SUCCEEDED(result)) {
-
+	if (SUCCEEDED(result))
+	{
 		memcpy(vert_map, vertices, sizeof(vertices));
 		vertex_buffer_->Unmap(0, nullptr);
 	}
@@ -86,8 +86,8 @@ void PostEffect::Initialize() {
 	);
 
 	// テクスチャバッファの生成
-	for (int i = 0; i < 2; i++) {
-
+	for (int i = 0; i < 2; i++)
+	{
 		result = device_->CreateCommittedResource(
 			&CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK,
 				D3D12_MEMORY_POOL_L0),
@@ -141,8 +141,8 @@ void PostEffect::Initialize() {
 	srv_desc.Texture2D.MipLevels = 1;
 
 	// デスクリプタヒープにSRV作成
-	for (int i = 0; i < 2; i++) {
-
+	for (int i = 0; i < 2; i++)
+	{
 		device_->CreateShaderResourceView(tex_buff_[i].Get(),
 			&srv_desc,
 			CD3DX12_CPU_DESCRIPTOR_HANDLE(
@@ -162,8 +162,8 @@ void PostEffect::Initialize() {
 
 	assert(SUCCEEDED(result));
 
-	for (int i = 0; i < 2; i++) {
-
+	for (int i = 0; i < 2; i++)
+	{
 		// デスクリプタヒープにRTV作成
 		device_->CreateRenderTargetView(tex_buff_[i].Get(),
 			nullptr,
@@ -211,10 +211,11 @@ void PostEffect::Initialize() {
 		desc_heap_DSV_->GetCPUDescriptorHandleForHeapStart());
 }
 
-void PostEffect::Draw() {
+void PostEffect::Draw()
+{
 
-	if (KeyboardInput::TriggerKey(DIK_1)) {
-
+	if (KeyboardInput::TriggerKey(DIK_1))
+	{
 		static int tex = 0;
 
 		tex = (tex + 1) % 2;
@@ -233,7 +234,8 @@ void PostEffect::Draw() {
 	// 定数バッファにデータ転送
 	ConstBufferData *constMap = nullptr;
 	HRESULT result = this->const_buffer_->Map(0, nullptr, (void **)&constMap);
-	if (SUCCEEDED(result)) {
+	if (SUCCEEDED(result))
+	{
 		constMap->color = this->color;
 		constMap->mat = XMMatrixIdentity();	// 行列の合成	
 		this->const_buffer_->Unmap(0, nullptr);
@@ -265,47 +267,49 @@ void PostEffect::Draw() {
 	command_list_->DrawInstanced(4, 1, 0, 0);
 }
 
-void PostEffect::DebugDraw() {
-
+void PostEffect::DebugDraw()
+{
 	static int button;
 
 	ImGui::Begin("PostEffect", 0, ImGuiWindowFlags_AlwaysAutoResize);
-	if (ImGui::RadioButton("Basic", &button, 0)) {
-
+	if (ImGui::RadioButton("Basic", &button, 0))
+	{
 		pipeline_ = Pipeline::Basic;
-
-	} else if (ImGui::RadioButton("AverageBlur", &button, 1)) {
-
+	}
+	else if (ImGui::RadioButton("AverageBlur", &button, 1))
+	{
 		pipeline_ = Pipeline::AverageBlur;
-
-	} else if (ImGui::RadioButton("GaussianBlur", &button, 2)) {
-
+	}
+	else if (ImGui::RadioButton("GaussianBlur", &button, 2))
+	{
 		pipeline_ = Pipeline::GaussianBlur;
 	}
 	ImGui::End();
 }
 
-void PostEffect::SetPipeline(Pipeline p) {
-
-	if (p == Pipeline::Basic) {
-
+void PostEffect::SetPipeline(Pipeline p)
+{
+	if (p == Pipeline::Basic)
+	{
 		PreDraw::PreRender(PipelineName::PostEffect);
 
-	} else if (p == Pipeline::AverageBlur) {
-
+	}
+	else if (p == Pipeline::AverageBlur)
+	{
 		PreDraw::PreRender(PipelineName::AverageBlur);
 
-	} else if (p == Pipeline::GaussianBlur) {
-
+	}
+	else if (p == Pipeline::GaussianBlur)
+	{
 		PreDraw::PreRender(PipelineName::GaussianBlur);
 	}
 }
 
-void PostEffect::PreDrawScene() {
-
+void PostEffect::PreDrawScene()
+{
 	// リソースバリアを変更（シェーダーリソース->描画可能）
-	for (int i = 0; i < 2; i++) {
-
+	for (int i = 0; i < 2; i++)
+	{
 		command_list_->ResourceBarrier(1,
 			&CD3DX12_RESOURCE_BARRIER::Transition(tex_buff_[i].Get(),
 				D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
@@ -314,8 +318,8 @@ void PostEffect::PreDrawScene() {
 	}
 	// レンダーターゲットビュー用デスクリプタヒープのハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE rtv_h[2];
-	for (int i = 0; i < 2; i++) {
-
+	for (int i = 0; i < 2; i++)
+	{
 		rtv_h[i] = CD3DX12_CPU_DESCRIPTOR_HANDLE(
 			desc_heap_RTV_->GetCPUDescriptorHandleForHeapStart(), i,
 			device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV)
@@ -330,10 +334,10 @@ void PostEffect::PreDrawScene() {
 	CD3DX12_VIEWPORT viewports[2];
 	CD3DX12_RECT scissor_rects[2];
 
-	for (int i = 0; i < 2; i++) {
-
-		viewports[i] = CD3DX12_VIEWPORT(0.0f, 0.0f, Win32App::SIZE_.x, Win32App::SIZE_.y);
-		scissor_rects[i] = CD3DX12_RECT(0, 0, Win32App::SIZE_.x, Win32App::SIZE_.y);
+	for (int i = 0; i < 2; i++)
+	{
+		viewports[i] = CD3DX12_VIEWPORT(0.0f, 0.0f, (FLOAT)(Win32App::SIZE_.x), (FLOAT)(Win32App::SIZE_.y));
+		scissor_rects[i] = CD3DX12_RECT(0, 0, (LONG)(Win32App::SIZE_.x), (LONG)(Win32App::SIZE_.y));
 	}
 
 	// ビューポートの設定
@@ -343,8 +347,8 @@ void PostEffect::PreDrawScene() {
 	command_list_->RSSetScissorRects(2, scissor_rects);
 
 	// 全画面クリア
-	for (int i = 0; i < 2; i++) {
-
+	for (int i = 0; i < 2; i++)
+	{
 		command_list_->ClearRenderTargetView(rtv_h[i], clear_color_, 0, nullptr);
 	}
 
@@ -352,11 +356,11 @@ void PostEffect::PreDrawScene() {
 	command_list_->ClearDepthStencilView(dsv_h, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 }
 
-void PostEffect::PostDrawScene() {
-
+void PostEffect::PostDrawScene()
+{
 	// リソースバリアの変更（描画可能->シェーダーリソース）
-	for (int i = 0; i < 2; i++) {
-
+	for (int i = 0; i < 2; i++)
+	{
 		command_list_->ResourceBarrier(1,
 			&CD3DX12_RESOURCE_BARRIER::Transition(tex_buff_[i].Get(),
 				D3D12_RESOURCE_STATE_RENDER_TARGET,

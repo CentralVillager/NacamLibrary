@@ -53,7 +53,7 @@ void MainScene::Initialize()
 	sky_dome_->SetScale(50.0f);
 	sky_dome_->Update();
 
-	lockon_sys_->Initialize(player_.get(), ene_list_.get(), 5);
+	lockon_sys_->Initialize(player_.get(), ene_list_.get(), 4);
 	missile_mgr_->Initialize(lockon_sys_.get());
 	player_->Initialize(missile_mgr_.get(), lockon_sys_.get());
 	grid_->Initialize(200, 10, XMFLOAT3(0, 0, 0));
@@ -122,16 +122,7 @@ void MainScene::Update()
 			// ミサイルの発射
 			if (KeyboardInput::TriggerKey(DIK_SPACE))
 			{
-				MissileArgs args{};
-				/*args.pos = player_->GetPos();
-				args.vel = XMFLOAT3(0, 0, 1.0f);
-				args.acc = XMFLOAT3(0, 0, 0);
-				args.tgt_pos = lockon_sys_->GetTgtPos();
-				args.detection_range = 1000.0f;
-				args.init_straight_time_ = 0;
-				args.life = 100;
-				args.is_alive = false;*/
-				player_->FireMissile(args);
+				player_->FireMissile();
 			}
 
 			player_->Move(1.0f);
@@ -165,34 +156,26 @@ void MainScene::Update()
 			}
 		}
 
-		/*if (KeyboardInput::TriggerKey(DIK_0))
+		// 強制シーン遷移
+		if (KeyboardInput::TriggerKey(DIK_0))
 		{
 			SceneManager::SetNextScene(SceneName::RESULT);
-		}*/
+		}
 	}
 	else if (!use_keybind_)
 	{
 		// ミサイル発射
 		if (KeyboardInput::TriggerKey(DIK_SPACE))
 		{
-			MissileArgs args{};
-			/*args.pos = player_->GetPos();
-			args.vel = XMFLOAT3(0, 0, 1.0f);
-			args.acc = XMFLOAT3(0, 0, 0);
-			args.tgt_pos = lockon_sys_->GetTgtPos();
-			args.detection_range = 1000.0f;
-			args.init_straight_time_ = 0;
-			args.life = 100;
-			args.is_alive = false;*/
-			player_->FireMissile(args);
+			player_->FireMissile();
 		}
 	}
 
 	// 強制リザルト
-	if (KeyboardInput::TriggerKey(DIK_0))
+	/*if (KeyboardInput::TriggerKey(DIK_0))
 	{
 		is_result_ = true;
-	}
+	}*/
 
 	// クリア遷移
 	/*if (ene_list_->NoticeEmpty())
