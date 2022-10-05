@@ -16,6 +16,7 @@ struct MissileArgs
 	XMFLOAT3 vel;
 	XMFLOAT3 acc;
 	XMFLOAT3 tgt_pos;
+	int tgt_index;
 	float detection_range;
 	UINT init_straight_time_;
 	int life;

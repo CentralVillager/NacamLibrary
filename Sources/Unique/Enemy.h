@@ -5,6 +5,7 @@
 
 class Enemy
 {
+	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 
 	static std::unique_ptr<Model> model_;
@@ -20,6 +21,8 @@ class Enemy
 
 	float speed_ = 0.5f;
 	int count_ = 100;
+
+	int circular_angle_ = 0;
 
 public:
 
@@ -47,6 +50,7 @@ public:
 
 	void RotY();
 	void MoveHorizontally(float speed, float range);
+	void MoveCircular();
 
 private:
 

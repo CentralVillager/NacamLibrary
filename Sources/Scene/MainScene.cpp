@@ -19,7 +19,7 @@ MainScene::MainScene()
 	reticle_ = make_unique<Reticle>();
 	lockon_sys_ = make_unique<LockOnSystem>();
 
-	// テクスチャ生成のテスト
+	// テクスチャのロード
 	clear_ = Sprite::LoadTex(L"Resources/Textures/clear.png");
 	space_ = Sprite::LoadTex(L"Resources/Textures/space.png");
 
@@ -53,13 +53,13 @@ void MainScene::Initialize()
 	sky_dome_->SetScale(50.0f);
 	sky_dome_->Update();
 
-	lockon_sys_->Initialize(player_.get(), ene_list_.get());
+	lockon_sys_->Initialize(player_.get(), ene_list_.get(), 5);
 	missile_mgr_->Initialize(lockon_sys_.get());
 	player_->Initialize(missile_mgr_.get(), lockon_sys_.get());
-	//enemy_->Initialize(XMFLOAT3(0, 0, 100.0f));
 	grid_->Initialize(200, 10, XMFLOAT3(0, 0, 0));
 	reticle_->Initialize();
 
+	// enemyの生成
 	float offset = 10.0f;
 	float z_offset = 50.0f;
 	UINT ene_num = 10;
@@ -88,13 +88,19 @@ void MainScene::Initialize()
 
 	Sprite::SetSize(clear_, { 1280, 720 });
 
-	XMFLOAT2 size = Sprite::GetSize(space_);
 	XMINT2 pos = { Win32App::CENTER_.x, 650 };
+	XMFLOAT2 size = Sprite::GetSize(space_);
 	Sprite::SetPos(space_, pos);
 	Sprite::SetSize(space_, { size.x / 2, size.y / 2 });
 	Sprite::SetAnchorPoint(space_, { 0.5f, 0.5f });
 
+	// キーバインド機能を使用するか
+#ifdef _DEBUG
+	use_keybind_ = true;
 	key_bind_ = (int)(KeyBind::Player);
+#else
+	use_keybind_ = false;
+#endif
 
 	is_result_ = false;
 }
@@ -104,72 +110,92 @@ void MainScene::Finalize()
 
 void MainScene::Update()
 {
-	//#ifdef _DEBUG
+	if (use_keybind_)
+	{
 		// キーバインドごとの操作
-	if (key_bind_ == (int)(KeyBind::Camera))
-	{
-		camera_->BasicCameraMoveTrack(2.0f);
+		if (key_bind_ == (int)(KeyBind::Camera))
+		{
+			camera_->BasicCameraMoveTrack(2.0f);
+		}
+		else if (key_bind_ == (int)(KeyBind::Player))
+		{
+			// ミサイルの発射
+			if (KeyboardInput::TriggerKey(DIK_SPACE))
+			{
+				MissileArgs args{};
+				/*args.pos = player_->GetPos();
+				args.vel = XMFLOAT3(0, 0, 1.0f);
+				args.acc = XMFLOAT3(0, 0, 0);
+				args.tgt_pos = lockon_sys_->GetTgtPos();
+				args.detection_range = 1000.0f;
+				args.init_straight_time_ = 0;
+				args.life = 100;
+				args.is_alive = false;*/
+				player_->FireMissile(args);
+			}
+
+			player_->Move(1.0f);
+		}
+		else if (key_bind_ == (int)(KeyBind::AddEnemy))
+		{
+			if (KeyboardInput::TriggerKey(DIK_SPACE))
+			{
+				ene_list_->Add(XMFLOAT3(0, 0, 100));
+			}
+		}
+
+		// リセット
+		if (KeyboardInput::TriggerKey(DIK_2))
+		{
+			//camera_->MoveCameraTrack(XMFLOAT3(0, 10.0f, 0));
+			camera_->SetEye(XMFLOAT3(0, 20.0f, -20.0f));
+			camera_->SetTarget(XMFLOAT3(0, 10.0f, 0));
+			player_->Initialize(missile_mgr_.get(), lockon_sys_.get());
+		}
+
+		// キーアサインの変更
+		if (KeyboardInput::TriggerKey(DIK_RETURN))
+		{
+			key_bind_++;
+
+			if (key_bind_ >= (int)(KeyBind::MaxNum))
+			{
+				key_bind_ = (int)(KeyBind::Start);
+				key_bind_++;
+			}
+		}
+
+		/*if (KeyboardInput::TriggerKey(DIK_0))
+		{
+			SceneManager::SetNextScene(SceneName::RESULT);
+		}*/
 	}
-	else if (key_bind_ == (int)(KeyBind::Player))
+	else if (!use_keybind_)
 	{
-		// ミサイルの発射
+		// ミサイル発射
 		if (KeyboardInput::TriggerKey(DIK_SPACE))
 		{
 			MissileArgs args{};
-			args.pos = player_->GetPos();
+			/*args.pos = player_->GetPos();
 			args.vel = XMFLOAT3(0, 0, 1.0f);
 			args.acc = XMFLOAT3(0, 0, 0);
 			args.tgt_pos = lockon_sys_->GetTgtPos();
 			args.detection_range = 1000.0f;
 			args.init_straight_time_ = 0;
 			args.life = 100;
-			args.is_alive = false;
+			args.is_alive = false;*/
 			player_->FireMissile(args);
 		}
-
-		player_->Move(1.0f);
-	}
-	else if (key_bind_ == (int)(KeyBind::AddEnemy))
-	{
-		if (KeyboardInput::TriggerKey(DIK_SPACE))
-		{
-			ene_list_->Add(XMFLOAT3(0, 0, 100));
-		}
 	}
 
-	// リセット
-	if (KeyboardInput::TriggerKey(DIK_2))
-	{
-		//camera_->MoveCameraTrack(XMFLOAT3(0, 10.0f, 0));
-		camera_->SetEye(XMFLOAT3(0, 20.0f, -20.0f));
-		camera_->SetTarget(XMFLOAT3(0, 10.0f, 0));
-		player_->Initialize(missile_mgr_.get(), lockon_sys_.get());
-	}
-
-	// キーアサインの変更
-	if (KeyboardInput::TriggerKey(DIK_RETURN))
-	{
-		key_bind_++;
-
-		if (key_bind_ >= (int)(KeyBind::MaxNum))
-		{
-			key_bind_ = (int)(KeyBind::Start);
-			key_bind_++;
-		}
-	}
-
-	/*if (KeyboardInput::TriggerKey(DIK_0))
-	{
-		SceneManager::SetNextScene(SceneName::RESULT);
-	}*/
-	//#endif
-
+	// 強制リザルト
 	if (KeyboardInput::TriggerKey(DIK_0))
 	{
 		is_result_ = true;
 	}
 
-	if (ene_list_->NoticeEmpty())
+	// クリア遷移
+	/*if (ene_list_->NoticeEmpty())
 	{
 		is_result_ = true;
 
@@ -177,39 +203,31 @@ void MainScene::Update()
 		{
 			SceneManager::SetNextScene(SceneName::TITLE);
 		}
-	}
-
-	if (KeyboardInput::TriggerKey(DIK_SPACE))
-	{
-		MissileArgs args{};
-		args.pos = player_->GetPos();
-		args.vel = XMFLOAT3(0, 0, 1.0f);
-		args.acc = XMFLOAT3(0, 0, 0);
-		args.tgt_pos = lockon_sys_->GetTgtPos();
-		args.detection_range = 1000.0f;
-		args.init_straight_time_ = 0;
-		args.life = 100;
-		args.is_alive = false;
-		player_->FireMissile(args);
-	}
+	}*/
 
 	player_->MoveXY(1.0f);
 
+	// 各オブジェクト更新処理
 	player_->Update();
 	ene_list_->Update();
 	grid_->Update();
 	missile_mgr_->Update();
 	lockon_sys_->Update();
+
+	// ミサイル追尾処理
 	missile_mgr_->HomingTarget(*ene_list_);
 
+	// 当たり判定
 	for (UINT i = 0; i < ene_list_->GetEnemies().size(); i++)
 	{
 		if (missile_mgr_->CalcCollision(ene_list_->GetCollData(i)))
 		{
+			// 死亡処理
 			ene_list_->Death(i);
 		}
 	}
 
+	// 塵描画他
 	if (draw_dust_) { dust_->GenerateParticle(); }
 	sky_dome_->Update();
 }
@@ -221,7 +239,6 @@ void MainScene::Draw()
 
 	PreDraw::PreRender(PipelineName::Object3d_WireFrame);
 	player_->Draw();
-	//enemy_->Draw();
 	ene_list_->Draw();
 	missile_mgr_->Draw();
 	lockon_sys_->Draw();
@@ -234,14 +251,11 @@ void MainScene::Draw()
 	{
 		PreDraw::PreRender(PipelineName::Object3d_WireFrame);
 		player_->DrawColl();
-		//enemy_->DrawColl();
 		ene_list_->DrawColl();
 		missile_mgr_->DrawColl();
 	}
 
 	PreDraw::PreRender(PipelineName::Sprite);
-	//texture_->Draw();
-	//reticle_->Draw();
 	if (is_result_)
 	{
 		int visible_time = 75;
@@ -252,7 +266,6 @@ void MainScene::Draw()
 		if (visi_count >= 0)
 		{
 			visi_count--;
-			//space_->Draw();
 			Sprite::DrawTex(space_);
 		}
 		else
@@ -266,7 +279,6 @@ void MainScene::Draw()
 			}
 		}
 
-		//clear_->Draw();
 		Sprite::DrawTex(clear_);
 	}
 }
@@ -275,7 +287,7 @@ void MainScene::DebugDraw()
 {
 	if (ImGui::CollapsingHeader("Draw"))
 	{
-		ImGui::Checkbox("WireFrame?", &is_wire_);
+		ImGui::Checkbox("DrawWireFrame?", &is_wire_);
 		ImGui::Checkbox("DrawDust?", &draw_dust_);
 		ImGui::Checkbox("DrawCollision?", &draw_coll_);
 		ImGui::Dummy(ImVec2(10.0f, 10.0f));

@@ -37,15 +37,17 @@ void Missile::Initialize(const MissileArgs &args, LockOnSystem *sys)
 	lockon_sys_ = sys;
 
 	// 値を入力より設定
-	mi_args_.pos = XMFLOAT3(args.pos);
+	mi_args_ = args;
+	/*mi_args_.pos = XMFLOAT3(args.pos);
 	mi_args_.vel = XMFLOAT3(args.vel);
 	mi_args_.acc = XMFLOAT3(args.acc);
 	mi_args_.tgt_pos = args.tgt_pos;
+	mi_args_.tgt_index = args.tgt_index;
 	mi_args_.detection_range = args.detection_range;
 	mi_args_.init_straight_time_ = args.init_straight_time_;
 	mi_args_.life = args.life;
-	mi_args_.is_alive = args.is_alive;
-	tgt_index_ = sys->GetTgtIndex();
+	mi_args_.is_alive = args.is_alive;*/
+	//tgt_index_ = sys->GetTgtIndex();
 
 	object_->Initialize();
 	object_->SetModel(model_.get());
@@ -267,18 +269,25 @@ void Missile::HomingTarget(const XMFLOAT3 &target_pos)
 
 void Missile::HomingTarget(EnemiesList &enemies)
 {
+	const float speed = 3.0f;	// 仮
+	XMFLOAT3 pos = object_->GetPosition();
+
+	// 敵がいないなら
 	if (enemies.GetSize() <= 0)
 	{
+		// 直進させる
+		pos.z += speed;
+		object_->SetPosition(pos);
+
 		return;
 	}
 
-	XMFLOAT3 pos = object_->GetPosition();
-
-	const float speed = 3.0f;	// 仮
-
+	// 無追尾時間中なら
 	if (mi_args_.init_straight_time_ > 0)
 	{
 		mi_args_.init_straight_time_--;
+
+		// 直進させる
 		pos.z += speed;
 		object_->SetPosition(pos);
 
@@ -288,14 +297,27 @@ void Missile::HomingTarget(EnemiesList &enemies)
 	// XMVECTORに変換
 	XMVECTOR mi_vec = XMLoadFloat3(&object_->GetPosition());
 
+	// ?
 	if (enemies.GetSize() == 1)
 	{
-		tgt_index_ = 0;
+		mi_args_.tgt_index = 0;
+		//tgt_index_ = 0;
 	}
-	XMVECTOR ta_vec = XMLoadFloat3(&enemies.GetPos(tgt_index_));
+
+	// 範囲外を参照してしまったときの応急処置的処理
+	if (mi_args_.tgt_index >= enemies.GetEnemies().size())
+	//if (tgt_index_ >= enemies.GetEnemies().size())
+	{
+		mi_args_.tgt_index--;
+		//tgt_index_--;
+	}
+
+	XMVECTOR ta_vec = XMLoadFloat3(&enemies.GetPos(mi_args_.tgt_index));
+	//XMVECTOR ta_vec = XMLoadFloat3(&enemies.GetPos(tgt_index_));
 
 	// ふたつの座標を結ぶベクトルを計算
-	XMVECTOR vec = {
+	XMVECTOR vec =
+	{
 		(ta_vec.m128_f32[0] - mi_vec.m128_f32[0]),
 		(ta_vec.m128_f32[1] - mi_vec.m128_f32[1]),
 		(ta_vec.m128_f32[2] - mi_vec.m128_f32[2])
@@ -315,9 +337,11 @@ void Missile::HomingTarget(EnemiesList &enemies)
 		return;
 	}
 
-	if (pos.z >= enemies.GetPos(tgt_index_).z)
+	// ミサイルが敵を追い越したら
+	if (pos.z >= enemies.GetPos(mi_args_.tgt_index).z)
+	//if (pos.z >= enemies.GetPos(tgt_index_).z)
 	{
-		// 位置を更新
+		// 以前の速度をそのまま加算
 		pos.x += mi_args_.vel.x;
 		pos.y += mi_args_.vel.y;
 		pos.z += mi_args_.vel.z;
@@ -334,18 +358,20 @@ void Missile::HomingTarget(EnemiesList &enemies)
 
 	rot_dead_zone_ = 1.0f;
 
-	XMVECTOR differ = {
-
+	// 離れている距離
+	XMVECTOR differ =
+	{
 		norm_vec.m128_f32[0] - mi_norm_vec.m128_f32[0],
 		norm_vec.m128_f32[1] - mi_norm_vec.m128_f32[1],
 		norm_vec.m128_f32[2] - mi_norm_vec.m128_f32[2]
 	};
 
-	// 速度を加算
+	// 回頭角度を適用
 	differ.m128_f32[0] /= rot_dead_zone_;
 	differ.m128_f32[1] /= rot_dead_zone_;
 	differ.m128_f32[2] /= rot_dead_zone_;
 
+	// 速度を加算
 	mi_args_.vel.x += differ.m128_f32[0] * speed;
 	mi_args_.vel.y += differ.m128_f32[1] * speed;
 	mi_args_.vel.z = speed;

@@ -44,12 +44,6 @@ private:
 	std::unique_ptr<Player> player_;
 	std::unique_ptr<Enemy> enemy_;
 	std::unique_ptr<EnemiesList> ene_list_;
-	/*std::unique_ptr<Sprite> texture_;
-	std::unique_ptr<Sprite> clear_;
-	std::unique_ptr<Sprite> space_;*/
-	int texture_;
-	int clear_;
-	int space_;
 	std::unique_ptr<GridRender> grid_;
 	std::unique_ptr<MissileManager> missile_mgr_;
 	std::unique_ptr<Emitter> dust_;
@@ -57,7 +51,11 @@ private:
 	std::unique_ptr<Model> model_sky_dome_;
 	std::unique_ptr<Reticle> reticle_;
 	std::unique_ptr<LockOnSystem> lockon_sys_;
+	int texture_;
+	int clear_;
+	int space_;
 
+	bool use_keybind_ = true;
 	int key_bind_ = 0;
 	bool is_wire_ = false;
 	bool draw_dust_ = false;

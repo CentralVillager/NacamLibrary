@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include <cmath>
 #include "../Utility/Utility.h"
 
 using namespace NcmUtill;
@@ -44,6 +45,8 @@ void Enemy::Initialize(XMFLOAT3 pos)
 
 	is_dead_ = false;
 	ID_ = id_counter_;
+
+	circular_angle_ = 0;
 }
 
 void Enemy::Finalize()
@@ -53,6 +56,7 @@ void Enemy::Update()
 {
 	RotY();
 	MoveHorizontally(0.5f, 100.0f);
+	//MoveCircular();
 	object_->Update();
 	UpdateCollision();
 }
@@ -90,6 +94,33 @@ void Enemy::MoveHorizontally(float speed, float range)
 		// •„†‚ð”½“]
 		speed_ *= -1.0f;
 		count_ = 100 * 2;
+	}
+}
+
+void Enemy::MoveCircular()
+{
+	float origin = 0.0f;
+	float radius = 10.0f;
+
+	XMFLOAT3 speed =
+	{
+		radius * cosf(circular_angle_),
+		0,
+		radius * sinf(circular_angle_)
+	};
+
+	XMFLOAT3 pos = object_->GetPosition();
+	pos.x += speed.x;
+	pos.z += speed.z;
+	object_->SetPosition(pos);
+
+	static int count = 10;
+	count--;
+
+	if (count <= 0)
+	{
+		circular_angle_--;
+		count = 10;
 	}
 }
 

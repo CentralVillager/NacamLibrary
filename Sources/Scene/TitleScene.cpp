@@ -38,18 +38,18 @@ void TitleScene::Initialize()
 
 	sky_dome_->Initialize();
 	sky_dome_->SetModel(model_sky_dome_.get());
-	sky_dome_->SetScale(2.0f);
+	sky_dome_->SetScale(10.0f);
 	sky_dome_->Update();
 
 	Emitter::LoadResources();
 
 	Emitter::EmitterArgs p;
-	p.particle.position_ = { 0.0f, 0.0f, 200.0f };
-	p.particle.velocity_ = { 0.0f, 0.0f, -4.0f };
+	p.particle.position_ = { 0.0f, 0.0f, 500.0f };
+	p.particle.velocity_ = { 0.0f, 0.0f, -10.0f };
 	p.particle.accel_ = { 0.001f, 0.001f, 0 };
 	p.particle.life_ = 100;
 	p.particle.s_scale_ = 1.0f;
-	p.pos_rand_ = { 200.0f, 200.0f, 0 };
+	p.pos_rand_ = { 500.0f, 500.0f, 0 };
 	p.vel_rand_ = { 0.1f, 0.1f, 0.1f };
 	p.gene_num_ = 1;
 	p.use_life_ = false;

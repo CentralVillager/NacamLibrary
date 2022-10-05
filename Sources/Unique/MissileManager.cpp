@@ -53,6 +53,25 @@ void MissileManager::Fire(const MissileArgs &args)
 	AddMissile(args);
 }
 
+void MissileManager::FireMultiMissile(const MissileArgs &args)
+{
+	MissileArgs l_args{};
+
+	l_args = args;
+	/*l_args.tgt_pos = lockon_sys_->GetTgtData(0).pos;
+	l_args.tgt_index = lockon_sys_->GetTgtData(0).index;
+
+	AddMissile(args);*/
+
+	for (UINT i = 0; i < lockon_sys_->GetTgtDataSize(); i++)
+	{
+		l_args.tgt_pos = lockon_sys_->GetTgtData(i).pos;
+		l_args.tgt_index = lockon_sys_->GetTgtData(i).index;
+
+		AddMissile(l_args);
+	}
+}
+
 void MissileManager::HomingTarget(XMFLOAT3 target_pos)
 {
 	for (auto &i : missile_list_)

@@ -33,6 +33,7 @@ public:
 public:
 
 	void Fire(const MissileArgs &args);
+	void FireMultiMissile(const MissileArgs &args);
 	void HomingTarget(XMFLOAT3 target_pos);
 	void HomingTarget(EnemiesList &enemies);
 

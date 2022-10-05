@@ -73,15 +73,20 @@ void Player::DebugDraw()
 
 void Player::FireMissile(const MissileArgs &args)
 {
-	/*MissileArgs args{};
-	args.pos = object_->GetPosition();
-	args.vel = XMFLOAT3(0, 0, 1.0f);
-	args.acc = XMFLOAT3(0, 0, 0);
-	args.detection_range = 1000.0f;
-	args.init_straight_time_ = 0;
-	args.life = 100;
-	args.is_alive = false;*/
-	mi_mgr_->Fire(args);
+	//mi_mgr_->Fire(args);
+
+	MissileArgs l_args{};
+	l_args.pos = object_->GetPosition();
+	l_args.vel = XMFLOAT3(0, 0, 1.0f);
+	l_args.acc = XMFLOAT3(0, 0, 0);
+	// tgt_pos ‚ÍMissileManager‚ÅÝ’è
+	// tgt_index ‚ÍMissileManager‚ÅÝ’è
+	l_args.detection_range = 1000.0f;
+	l_args.init_straight_time_ = 0;
+	l_args.life = 100;
+	l_args.is_alive = false;
+
+	mi_mgr_->FireMultiMissile(l_args);
 }
 
 void Player::Move(float speed)
