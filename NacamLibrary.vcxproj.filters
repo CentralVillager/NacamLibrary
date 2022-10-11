@@ -159,6 +159,9 @@
     <Filter Include="Application\Unique\Enemy">
       <UniqueIdentifier>{0a196a83-e0e5-49e6-8eba-ba7eec34cb45}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\Number">
+      <UniqueIdentifier>{fe85f7ac-bb8a-4063-9fbb-bb4ff9b59558}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -340,6 +343,9 @@
     </ClCompile>
     <ClCompile Include="Sources\Sprite\Sprite.cpp">
       <Filter>Library\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Number\Numbers.cpp">
+      <Filter>Application\Number</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -534,6 +540,9 @@
       <Filter>Library\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="Sources\NacamError.h" />
+    <ClInclude Include="Sources\Number\Numbers.h">
+      <Filter>Application\Number</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">

@@ -34,8 +34,8 @@ void Line::CreateVertexBuffer()
 {
 	HRESULT result;
 
-	Vertex line_vertices[] = {
-
+	Vertex line_vertices[] =
+	{
 		{ { -1.0f, 0.0f, 0.0f } },
 		{ { 1.0f, 0.0f, 0.0f } }
 	};

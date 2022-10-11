@@ -17,7 +17,6 @@ struct MissileArgs
 	XMFLOAT3 acc;
 
 	XMFLOAT3 tgt_pos;
-	UINT tgt_index;
 	int tgt_id;
 
 	float detection_range;

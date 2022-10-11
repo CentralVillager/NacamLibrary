@@ -22,4 +22,8 @@ public:
 	void Update();
 	void Draw();
 	void DebugDraw();
+
+public:
+
+	void MoveMinusZ();
 };

@@ -15,6 +15,7 @@
 #include "../Unique/Reticle.h"
 #include "../Unique/LockOnSystem.h"
 #include "../Unique/WaveManager.h"
+#include "../Number/Numbers.h"
 
 class MainScene : public AbstractScene
 {
@@ -45,12 +46,14 @@ private:
 	std::unique_ptr<Enemy> enemy_;
 	std::unique_ptr<EnemiesList> ene_list_;
 	std::unique_ptr<GridRender> grid_;
+	std::array<GridRender, 3> grid_floor_;
 	std::unique_ptr<MissileManager> missile_mgr_;
 	std::unique_ptr<Emitter> dust_;
 	std::unique_ptr<Object3d> sky_dome_;
 	std::unique_ptr<Model> model_sky_dome_;
 	std::unique_ptr<Reticle> reticle_;
 	std::unique_ptr<LockOnSystem> lockon_sys_;
+	std::unique_ptr<Numbers> numbers_;
 	int texture_;
 	int clear_;
 	int space_;

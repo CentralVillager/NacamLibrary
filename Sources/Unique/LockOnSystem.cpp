@@ -1,8 +1,10 @@
 #include "LockOnSystem.h"
 #include "Player.h"
+#include "../Debug/ImGuiManager.h"
 
 using namespace DirectX;
 
+UINT LockOnSystem::multi_tgt_num_ = 0;
 std::unique_ptr<Model> LockOnSystem::model_ = nullptr;
 
 LockOnSystem::LockOnSystem()
@@ -28,17 +30,12 @@ void LockOnSystem::Initialize(Player *player, EnemiesList *enemies_ptr, UINT mul
 	player_ptr_ = player;
 	enemies_ptr_ = enemies_ptr;
 
+	multi_tgt_num_ = multi_tgt_n;
 	multi_target_num_ = multi_tgt_n;
 	for (UINT i = 0; i < multi_target_num_; i++)
 	{
-		markers_.emplace_back();
-		markers_.back().Initialize();
-		markers_.back().SetModel(model_.get());
-		markers_.back().SetScale(2.0f);
-
-		tgt_datas_.emplace_back();
+		AddTargetNum();
 	}
-	tgt_index_ = 0;
 }
 
 void LockOnSystem::Update()
@@ -60,6 +57,29 @@ void LockOnSystem::Draw()
 	{
 		i.Draw();
 	}
+}
+
+void LockOnSystem::DebugDraw()
+{
+	ImGui::Text("target_num : %d", multi_target_num_);
+}
+
+void LockOnSystem::AddTargetNum()
+{
+	markers_.emplace_back();
+	markers_.back().Initialize();
+	markers_.back().SetModel(model_.get());
+	markers_.back().SetScale(2.0f);
+
+	tgt_datas_.emplace_back();
+}
+
+void LockOnSystem::ResetTargetNum()
+{
+	markers_.clear();
+	tgt_datas_.clear();
+
+	AddTargetNum();
 }
 
 void LockOnSystem::CalcNearestTargets(const XMFLOAT3 &player_pos, EnemiesList &enemies)
@@ -84,7 +104,6 @@ void LockOnSystem::CalcNearestTargets(const XMFLOAT3 &player_pos, EnemiesList &e
 		dist_sort.emplace_back();
 		dist_sort.back().dist = CalcDistance(player_pos, enemies.GetPos(i));
 		dist_sort.back().pos = enemies.GetPos(i);
-		dist_sort.back().index = i;
 		dist_sort.back().id = enemies.GetID(i);
 	}
 

@@ -22,6 +22,9 @@ class Player
 	MissileManager *mi_mgr_;
 	LockOnSystem *lockon_sys_;
 
+	int charge_time = 40;
+	int count = 0;
+
 public:
 
 	Player();
@@ -40,7 +43,10 @@ public:
 	void DrawColl();
 	void DebugDraw();
 
+public:
+
 	void FireMissile();
+	void ChargeMissile();
 	void Move(float speed);
 	void MoveXY(float speed);
 	void UpdateCollision();

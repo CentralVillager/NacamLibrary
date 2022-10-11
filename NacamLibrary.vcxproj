@@ -187,6 +187,7 @@
     <ClCompile Include="Sources\Math\Quaternion\Quaternion.cpp" />
     <ClCompile Include="Sources\Model\Model.cpp" />
     <ClCompile Include="Sources\NacamLib\NacamLib.cpp" />
+    <ClCompile Include="Sources\Number\Numbers.cpp" />
     <ClCompile Include="Sources\Object3d\Object3d.cpp" />
     <ClCompile Include="Sources\Particle\Emitter.cpp" />
     <ClCompile Include="Sources\Particle\EmittersList.cpp" />
@@ -251,6 +252,7 @@
     <ClInclude Include="Sources\Model\Model.h" />
     <ClInclude Include="Sources\NacamError.h" />
     <ClInclude Include="Sources\NacamLib\NacamLib.h" />
+    <ClInclude Include="Sources\Number\Numbers.h" />
     <ClInclude Include="Sources\Object3d\Object3d.h" />
     <ClInclude Include="Sources\Particle\Emitter.h" />
     <ClInclude Include="Sources\Particle\EmittersList.h" />

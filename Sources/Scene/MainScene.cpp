@@ -18,6 +18,7 @@ MainScene::MainScene()
 	model_sky_dome_ = make_unique<Model>();
 	reticle_ = make_unique<Reticle>();
 	lockon_sys_ = make_unique<LockOnSystem>();
+	numbers_ = make_unique<Numbers>();
 
 	// テクスチャのロード
 	clear_ = Sprite::LoadTex(L"Resources/Textures/clear.png");
@@ -31,6 +32,7 @@ MainScene::MainScene()
 	Missile::LoadResources();
 	Reticle::LoadResources();
 	LockOnSystem::LoadResources();
+	Numbers::LoadResources();
 }
 
 MainScene::~MainScene()
@@ -53,11 +55,15 @@ void MainScene::Initialize()
 	sky_dome_->SetScale(50.0f);
 	sky_dome_->Update();
 
-	lockon_sys_->Initialize(player_.get(), ene_list_.get(), 4);
+	lockon_sys_->Initialize(player_.get(), ene_list_.get(), 1);
 	missile_mgr_->Initialize(lockon_sys_.get());
 	player_->Initialize(missile_mgr_.get(), lockon_sys_.get());
 	grid_->Initialize(200, 10, XMFLOAT3(0, 0, 0));
 	reticle_->Initialize();
+	for (UINT i = 0; i < grid_floor_.size(); i++)
+	{
+		grid_floor_[i].Initialize(200, 10, XMFLOAT3(0, 0, i * 1000));
+	}
 
 	// enemyの生成
 	ene_list_->AddTemplateSet();
@@ -109,10 +115,15 @@ void MainScene::Update()
 		else if (key_bind_ == (int)(KeyBind::Player))
 		{
 			// ミサイルの発射
-			if (KeyboardInput::TriggerKey(DIK_SPACE))
+			/*if (KeyboardInput::TriggerKey(DIK_SPACE))
 			{
 				player_->FireMissile();
 			}
+
+			if (KeyboardInput::TriggerKey(DIK_T))
+			{
+				lockon_sys_->AddTargetNum();
+			}*/
 
 			player_->Move(1.0f);
 		}
@@ -179,12 +190,21 @@ void MainScene::Update()
 
 	player_->MoveXY(1.0f);
 
+	for (auto &i : grid_floor_)
+	{
+		i.MoveMinusZ();
+	}
+
 	// 各オブジェクト更新処理
 	player_->Update();
 	ene_list_->Update();
 	grid_->Update();
 	missile_mgr_->Update();
 	lockon_sys_->Update();
+	for (auto &i : grid_floor_)
+	{
+		i.Update();
+	}
 
 	// ミサイル追尾処理
 	missile_mgr_->HomingTarget(*ene_list_);
@@ -200,6 +220,10 @@ void MainScene::Update()
 void MainScene::Draw()
 {
 	PreDraw::PreRender(PipelineName::Line);
+	/*for (auto &i : grid_floor_)
+	{
+		i.Draw();
+	}*/
 	grid_->Draw();
 
 	PreDraw::PreRender(PipelineName::Object3d_WireFrame);
@@ -234,6 +258,9 @@ void MainScene::Draw()
 
 void MainScene::DebugDraw()
 {
+	player_->DebugDraw();
+	lockon_sys_->DebugDraw();
+
 	if (ImGui::CollapsingHeader("Draw"))
 	{
 		ImGui::Checkbox("DrawWireFrame?", &is_wire_);

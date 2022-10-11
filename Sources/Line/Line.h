@@ -82,9 +82,9 @@ public:
 	inline const XMFLOAT3 &GetRotation() { return rotation_; }
 	inline const XMFLOAT3 &GetScale() { return scale_; }
 	inline void SetPosition(XMFLOAT3 position) { position_ = position; }
-	inline void SetRotation(XMFLOAT3 rotation) { this->rotation_ = rotation; }
-	inline void SetScale(XMFLOAT3 scale) { this->scale_ = scale; };
-	inline void SetScale(float scale) { this->scale_.x = this->scale_.y = this->scale_.z = scale; };
+	inline void SetRotation(XMFLOAT3 rotation) { rotation_ = rotation; }
+	inline void SetScale(XMFLOAT3 scale) { scale_ = scale; };
+	inline void SetScale(float scale) { scale_.x = scale_.y = scale_.z = scale; };
 	inline void SetVertPos(XMFLOAT3 position, UINT index) { vertices_data_[index].pos = position; }
 
 public:

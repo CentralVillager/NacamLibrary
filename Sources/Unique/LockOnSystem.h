@@ -20,9 +20,12 @@ public:
 	{
 		float dist;
 		XMFLOAT3 pos;
-		int index;
 		UINT id;
 	};
+
+private:
+
+	static UINT multi_tgt_num_;
 
 private:
 
@@ -32,7 +35,6 @@ private:
 	UINT multi_target_num_;
 
 	std::vector<TargetData> tgt_datas_;
-	int tgt_index_;
 
 	Player *player_ptr_;
 	EnemiesList *enemies_ptr_;
@@ -49,13 +51,17 @@ public:
 	void Initialize(Player *player, EnemiesList *enemies_ptr, UINT multi_tgt_n);
 	void Update();
 	void Draw();
+	void DebugDraw();
 
 public:
 
 	inline const TargetData &GetTgtData(int i) { return tgt_datas_[i]; }
-	//inline const size_t &GetTgtDataSize() { return tgt_datas_.size(); }
 	inline const std::vector<TargetData> &GetTgtData() { return tgt_datas_; }
-	inline const int &GetTgtIndex() { return tgt_index_; }
+
+public:
+
+	void AddTargetNum();
+	void ResetTargetNum();
 
 private:
 

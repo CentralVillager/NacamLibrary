@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "../Input/KeyboardInput.h"
 #include "../Utility/Utility.h"
+#include "../Debug/ImGuiManager.h"
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
@@ -52,6 +53,16 @@ void Player::Finalize()
 
 void Player::Update()
 {
+	if (KeyboardInput::HoldKey(DIK_SPACE))
+	{
+		ChargeMissile();
+	}
+	else if (KeyboardInput::ReleaseKey(DIK_SPACE))
+	{
+		FireMissile();
+		lockon_sys_->ResetTargetNum();
+	}
+
 	object_->Update();
 	//lockon_sys_->Update();
 	UpdateCollision();
@@ -69,7 +80,10 @@ void Player::DrawColl()
 }
 
 void Player::DebugDraw()
-{}
+{
+	ImGui::Text("count : %d", count);
+	ImGui::DragInt("charge_time", &charge_time);
+}
 
 void Player::FireMissile()
 {
@@ -85,6 +99,20 @@ void Player::FireMissile()
 	l_args.is_alive = false;
 
 	mi_mgr_->FireMultiMissile(l_args);
+}
+
+void Player::ChargeMissile()
+{
+	/*const UINT charge_time = 100;
+	static int count = 0;*/
+
+	count++;
+
+	if (count >= charge_time)
+	{
+		lockon_sys_->AddTargetNum();
+		count = 0;
+	}
 }
 
 void Player::Move(float speed)

@@ -63,7 +63,6 @@ void MissileManager::FireMultiMissile(const MissileArgs &args)
 	{
 		// ターゲットデータを取得
 		l_args.tgt_pos = lockon_sys_->GetTgtData(i).pos;
-		l_args.tgt_index = lockon_sys_->GetTgtData(i).index;
 		l_args.tgt_id = lockon_sys_->GetTgtData(i).id;
 
 		// ミサイルを追加
