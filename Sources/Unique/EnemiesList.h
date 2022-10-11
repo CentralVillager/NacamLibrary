@@ -24,7 +24,7 @@ public:
 	const Sphere &GetCollData(UINT i) { return enemies_[i].GetCollData(); }
 	const bool &GetIsDead(UINT i) { return enemies_[i].GetIsDead(); }
 	const size_t &GetSize() { return enemies_.size(); }
-	void Death(int i) { enemies_[i].Death(); }
+	const int &GetID(UINT i) { return enemies_[i].GetID(); }
 
 	void Update();
 	void Draw();
@@ -33,6 +33,10 @@ public:
 
 public:
 
-	void Add(XMFLOAT3 pos);
+	void Add(const XMFLOAT3 &pos);
+	void AddTemplateSet();
+	void Death(int i) { enemies_[i].Death(); }
 	bool NoticeEmpty();
+
+	const int &GetEnemyIndexWithID(UINT id);
 };

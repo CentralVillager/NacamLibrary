@@ -115,7 +115,7 @@ int Sprite::LoadTex(const wchar_t *filename)
 	return count_for_array;
 }
 
-void Sprite::DrawTex(int handle)
+void Sprite::DrawTex(const int &handle)
 {
 	// ワールド行列の更新
 	sprite_hub_[handle].mat_world_ = XMMatrixIdentity();
@@ -145,7 +145,7 @@ void Sprite::DrawTex(int handle)
 	cmd_list_->DrawInstanced(4, 1, 0, 0);
 }
 
-void Sprite::DrawTex(int handle, XMFLOAT2 pos, float scale)
+void Sprite::DrawTex(const int &handle, const XMFLOAT2 &pos, const float &scale)
 {
 	// Transを設定
 	SetPos(handle, pos);
@@ -158,7 +158,7 @@ void Sprite::DrawTex(int handle, XMFLOAT2 pos, float scale)
 	SetSize(handle, { sprite_hub_[handle].size_.x / scale, sprite_hub_[handle].size_.y / scale });
 }
 
-void Sprite::GenerateDrawData(int handle)
+void Sprite::GenerateDrawData(const int &handle)
 {
 	HRESULT result = S_FALSE;
 

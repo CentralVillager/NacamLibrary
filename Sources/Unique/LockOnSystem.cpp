@@ -69,37 +69,50 @@ void LockOnSystem::CalcNearestTargets(const XMFLOAT3 &player_pos, EnemiesList &e
 
 	// 敵がいないなら
 	if (enemies.GetEnemies().size() <= 0)
-	//if (enemies.GetSize() <= 0)
 	{
 		// 正面奥にターゲットを置く
 		tgt_datas_[0].pos = XMFLOAT3(0, 0, -100.0f);
 	}
 
+	// ソート用コンテナ
 	std::vector<TargetData> dist_sort;
 
 	// 全ての敵に対して
 	for (UINT i = 0; i < enemies.GetEnemies().size(); i++)
-	//for (UINT i = 0; i < enemies.GetSize(); i++)
 	{
 		// 距離を計算、各データを格納
 		dist_sort.emplace_back();
 		dist_sort.back().dist = CalcDistance(player_pos, enemies.GetPos(i));
 		dist_sort.back().pos = enemies.GetPos(i);
 		dist_sort.back().index = i;
+		dist_sort.back().id = enemies.GetID(i);
 	}
 
 	// distに対して昇順ソート
 	std::sort(dist_sort.begin(), dist_sort.end(),
 		[](const TargetData &a, const TargetData &b) { return a.dist < b.dist; });
 
+	size_t size = 0;
+
+	// ロックオン可能数 > 敵の総数 なら
+	if (tgt_datas_.size() > enemies.GetEnemies().size())
+	{
+		size = enemies.GetEnemies().size();
+	}
+	// ロックオン可能数 <= 敵の総数 なら
+	else if (tgt_datas_.size() <= enemies.GetEnemies().size())
+	{
+		size = tgt_datas_.size();
+	}
+
 	// ターゲット上限数まで最短距離の敵情報を格納
-	for (UINT i = 0; i < tgt_datas_.size(); i++)
+	for (UINT i = 0; i < size; i++)
 	{
 		tgt_datas_[i] = dist_sort[i];
 	}
 }
 
-float LockOnSystem::CalcDistance(XMFLOAT3 dist_pos, XMFLOAT3 src_pos)
+float LockOnSystem::CalcDistance(const XMFLOAT3 &dist_pos, const XMFLOAT3 &src_pos)
 {
 	XMVECTOR dist =
 	{

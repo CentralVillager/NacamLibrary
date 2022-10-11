@@ -49,13 +49,13 @@ public:
 	/// アプリ初期化時のシーンの設定
 	/// </summary>
 	/// <param name="scene_name"></param>
-	static void SetInitialScene(SceneName scene_name);
+	static void SetInitialScene(const SceneName &scene_name);
 
 	/// <summary>
 	/// 次に映したいシーンのセット
 	/// アプリ内でのシーン切り替え時には基本的にこの関数を使用
 	/// </summary>
-	static void SetNextScene(SceneName name);
+	static void SetNextScene(const SceneName &name);
 
 	/// <summary>
 	/// シーン切り替えが行われようとしていることを通知

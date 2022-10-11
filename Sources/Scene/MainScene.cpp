@@ -60,20 +60,9 @@ void MainScene::Initialize()
 	reticle_->Initialize();
 
 	// enemy‚Ì¶¬
-	float offset = 10.0f;
-	float z_offset = 50.0f;
-	UINT ene_num = 10;
+	ene_list_->AddTemplateSet();
 
-	ene_list_->Add(XMFLOAT3(0, 0, z_offset));
-	for (UINT i = 0; i < ene_num / 2; i++)
-	{
-		ene_list_->Add(XMFLOAT3(offset * i + offset, 0, z_offset * i + z_offset));
-	}
-	for (UINT i = 0; i < ene_num / 2; i++)
-	{
-		ene_list_->Add(XMFLOAT3(-(offset * i + offset), 0, z_offset * i + z_offset));
-	}
-
+	// oƒGƒ~ƒbƒ^[‚Ì¶¬
 	Emitter::EmitterArgs p;
 	p.particle.position_ = { 0.0f, 0.0f, 0.0f };
 	p.particle.velocity_ = { 0.0f, 0.0f, 0.0f };
@@ -172,13 +161,13 @@ void MainScene::Update()
 	}
 
 	// ‹­§ƒŠƒUƒ‹ƒg
-	/*if (KeyboardInput::TriggerKey(DIK_0))
+	if (KeyboardInput::TriggerKey(DIK_0))
 	{
 		is_result_ = true;
-	}*/
+	}
 
 	// ƒNƒŠƒA‘JˆÚ
-	/*if (ene_list_->NoticeEmpty())
+	if (ene_list_->NoticeEmpty())
 	{
 		is_result_ = true;
 
@@ -186,7 +175,7 @@ void MainScene::Update()
 		{
 			SceneManager::SetNextScene(SceneName::TITLE);
 		}
-	}*/
+	}
 
 	player_->MoveXY(1.0f);
 
@@ -201,14 +190,7 @@ void MainScene::Update()
 	missile_mgr_->HomingTarget(*ene_list_);
 
 	// “–‚½‚è”»’è
-	for (UINT i = 0; i < ene_list_->GetEnemies().size(); i++)
-	{
-		if (missile_mgr_->CalcCollision(ene_list_->GetCollData(i)))
-		{
-			// Ž€–Sˆ—
-			ene_list_->Death(i);
-		}
-	}
+	CollisionProcess();
 
 	// o•`‰æ‘¼
 	if (draw_dust_) { dust_->GenerateParticle(); }
@@ -241,25 +223,9 @@ void MainScene::Draw()
 	PreDraw::PreRender(PipelineName::Sprite);
 	if (is_result_)
 	{
-		int visible_time = 75;
-		int invisivle_time = 25;
-		static int visi_count = visible_time;
-		static int invi_count = invisivle_time;
-
-		if (visi_count >= 0)
+		if (CheckDoDisplay())
 		{
-			visi_count--;
 			Sprite::DrawTex(space_);
-		}
-		else
-		{
-			invi_count--;
-
-			if (invi_count <= 0)
-			{
-				visi_count = visible_time;
-				invi_count = invisivle_time;
-			}
 		}
 
 		Sprite::DrawTex(clear_);
@@ -296,4 +262,47 @@ void MainScene::DebugDraw()
 	{
 		ImGui::DragFloat("Missile : DetectRange", &ImGui_detection_range_, 1.0f, 0.0f, 1000.0f);
 	}
+}
+
+void MainScene::CollisionProcess()
+{
+	for (UINT i = 0; i < ene_list_->GetEnemies().size(); i++)
+	{
+		for (UINT j = 0; j < missile_mgr_->GetMissileList().size(); j++)
+		{
+			if (Collision::CheckSphere2Sphere(ene_list_->GetCollData(i), missile_mgr_->GetCollData(j)))
+			{
+				ene_list_->Death(i);
+				missile_mgr_->Death(j);
+			}
+		}
+	}
+}
+
+bool MainScene::CheckDoDisplay()
+{
+	int visible_time = 75;
+	int invisivle_time = 25;
+	static int visi_count = visible_time;
+	static int invi_count = invisivle_time;
+
+	if (visi_count >= 0)
+	{
+		visi_count--;
+		return true;
+	}
+	else
+	{
+		invi_count--;
+
+		if (invi_count <= 0)
+		{
+			visi_count = visible_time;
+			invi_count = invisivle_time;
+		}
+
+		return false;
+	}
+
+	return false;
 }

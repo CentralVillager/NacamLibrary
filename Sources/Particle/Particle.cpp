@@ -10,7 +10,7 @@ Particle::Particle()
 Particle::~Particle()
 {}
 
-void Particle::Initialize(Model *model, ParticleMember &particle)
+void Particle::Initialize(Model *model, const ParticleMember &particle)
 {
 	object_->SetModel(model);
 	object_->Initialize();

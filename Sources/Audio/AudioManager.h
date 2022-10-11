@@ -6,7 +6,8 @@
 
 #pragma comment(lib, "xaudio2.lib")
 
-class AudioManager {
+class AudioManager
+{
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 public:
@@ -16,25 +17,29 @@ public:
 	AudioManager();
 
 	// チャンクヘッダ
-	struct ChunkHeader {
+	struct ChunkHeader
+	{
 		char id[4];			// チャンクごとのID
 		int32_t size;		// チャンクサイズ
 	};
 
 	// RIFFヘッダチャンク
-	struct RiffHeader {
+	struct RiffHeader
+	{
 		ChunkHeader chunk;	// "RIFF"
 		char type[4];		// "WAVE"
 	};
 
 	// FMTチャンク
-	struct FormatChunk {
+	struct FormatChunk
+	{
 		ChunkHeader chunk;	// "fmt"
 		WAVEFORMATEX fmt;	// 波形フォーマット
 	};
 
 	// 音声データ
-	struct SoundData {
+	struct SoundData
+	{
 		WAVEFORMATEX wfex;				// 波形フォーマット
 		BYTE *buffer_ptr;				// バッファの先頭アドレス
 		unsigned int buffer_size;		// バッファサイズ
@@ -44,7 +49,8 @@ public:
 	}sound_data_;
 
 	// 単発かループか
-	enum PlayStyle {
+	enum PlayStyle
+	{
 		SINGLE = 0,
 		LOOP = 255
 	};

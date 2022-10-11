@@ -249,6 +249,7 @@
     <ClInclude Include="Sources\Math\Easing\Easing.h" />
     <ClInclude Include="Sources\Math\Quaternion\Quaternion.h" />
     <ClInclude Include="Sources\Model\Model.h" />
+    <ClInclude Include="Sources\NacamError.h" />
     <ClInclude Include="Sources\NacamLib\NacamLib.h" />
     <ClInclude Include="Sources\Object3d\Object3d.h" />
     <ClInclude Include="Sources\Particle\Emitter.h" />

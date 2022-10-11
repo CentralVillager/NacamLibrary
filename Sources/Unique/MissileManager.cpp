@@ -60,11 +60,11 @@ void MissileManager::FireMultiMissile(const MissileArgs &args)
 
 	// ロック上限数まで
 	for (UINT i = 0; i < lockon_sys_->GetTgtData().size(); i++)
-		//for (UINT i = 0; i < lockon_sys_->GetTgtDataSize(); i++)
 	{
 		// ターゲットデータを取得
 		l_args.tgt_pos = lockon_sys_->GetTgtData(i).pos;
 		l_args.tgt_index = lockon_sys_->GetTgtData(i).index;
+		l_args.tgt_id = lockon_sys_->GetTgtData(i).id;
 
 		// ミサイルを追加
 		AddMissile(l_args);
@@ -85,6 +85,19 @@ void MissileManager::HomingTarget(EnemiesList &enemies)
 	{
 		i.HomingTarget(enemies);
 	}
+}
+
+void MissileManager::Death(UINT n)
+{
+	auto itr = missile_list_.begin();
+
+	for (UINT i = 0; i < n; i++)
+	{
+		itr++;
+	}
+
+	itr->TermEmitter();
+	itr->SetMissileLife(0);
 }
 
 bool MissileManager::CalcCollision(const Sphere &enemy)

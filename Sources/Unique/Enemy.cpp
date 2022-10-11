@@ -30,7 +30,7 @@ void Enemy::LoadResources()
 	}
 }
 
-void Enemy::Initialize(XMFLOAT3 pos)
+void Enemy::Initialize(const XMFLOAT3 &pos)
 {
 	object_->Initialize();
 	object_->SetModel(model_.get());
@@ -44,7 +44,7 @@ void Enemy::Initialize(XMFLOAT3 pos)
 	UpdateCollision();
 
 	is_dead_ = false;
-	ID_ = id_counter_;
+	id_ = id_counter_;
 
 	circular_angle_ = 0.0f;
 }
@@ -81,7 +81,7 @@ void Enemy::RotY()
 	object_->SetRotation(rot);
 }
 
-void Enemy::MoveHorizontally(float speed, float range)
+void Enemy::MoveHorizontally(const float &speed, const float &range)
 {
 	count_--;
 

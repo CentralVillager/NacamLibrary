@@ -15,11 +15,14 @@ struct MissileArgs
 	XMFLOAT3 pos;
 	XMFLOAT3 vel;
 	XMFLOAT3 acc;
+
 	XMFLOAT3 tgt_pos;
-	int tgt_index;
+	UINT tgt_index;
+	int tgt_id;
+
 	float detection_range;
 	UINT init_straight_time_;
-	int life;
+	UINT life;
 	bool is_alive;
 };
 

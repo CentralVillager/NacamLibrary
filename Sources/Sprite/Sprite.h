@@ -37,6 +37,9 @@ private:
 		XMMATRIX mat;
 	};
 
+	/// <summary>
+	/// 描画用データ
+	/// </summary>
 	struct DrawData
 	{
 		int handle = 0;
@@ -111,30 +114,30 @@ public:
 	/// 画像の描画
 	/// </summary>
 	/// <param name="handle"></param>
-	static void DrawTex(int handle);
-	static void DrawTex(int handle, XMFLOAT2 pos, float scale = 1.0f);
+	static void DrawTex(const int &handle);
+	static void DrawTex(const int &handle, const XMFLOAT2 &pos, const float &scale = 1.0f);
 
 public:
 
-	static inline const XMFLOAT2 &GetPos(int handle) { return sprite_hub_[handle].position_; }
-	static inline const XMFLOAT2 &GetSize(int handle) { return sprite_hub_[handle].size_; }
+	static inline const XMFLOAT2 &GetPos(const int &handle) { return sprite_hub_[handle].position_; }
+	static inline const XMFLOAT2 &GetSize(const int &handle) { return sprite_hub_[handle].size_; }
 
-	static inline void SetPos(int handle, XMINT2 pos)
+	static inline void SetPos(const int &handle, const XMINT2 &pos)
 	{
 		sprite_hub_[handle].position_ = { (float)(pos.x), (float)(pos.y) };
 		TransferVertices(&sprite_hub_[handle]);
 	}
-	static inline void SetPos(int handle, XMFLOAT2 pos)
+	static inline void SetPos(const int &handle, const XMFLOAT2 &pos)
 	{
 		sprite_hub_[handle].position_ = pos;
 		TransferVertices(&sprite_hub_[handle]);
 	}
-	static inline void SetSize(int handle, XMFLOAT2 size)
+	static inline void SetSize(const int &handle, const XMFLOAT2 &size)
 	{
 		sprite_hub_[handle].size_ = size;
 		TransferVertices(&sprite_hub_[handle]);
 	}
-	static inline void SetAnchorPoint(int handle, XMFLOAT2 anchor_point)
+	static inline void SetAnchorPoint(const int &handle, const XMFLOAT2 &anchor_point)
 	{
 		sprite_hub_[handle].anchorpoint_ = anchor_point;
 		TransferVertices(&sprite_hub_[handle]);
@@ -142,6 +145,6 @@ public:
 
 private:
 
-	static void GenerateDrawData(int handle);
+	static void GenerateDrawData(const int &handle);
 	static void TransferVertices(DrawData *itr);
 };

@@ -17,7 +17,7 @@ class Enemy
 
 	bool is_dead_ = false;
 	static int id_counter_;
-	int ID_;
+	int id_;
 
 	float speed_ = 0.5f;
 	int count_ = 100;
@@ -34,12 +34,12 @@ public:
 	const XMFLOAT3 &GetPos() { return object_->GetPosition(); }
 	const Sphere &GetCollData() { return coll_; }
 	const bool &GetIsDead() { return is_dead_; }
-	const int &GetID() { return ID_; }
+	const int &GetID() { return id_; }
 
 	static void LoadResources();
 	void Death() { is_dead_ = true; }
 
-	void Initialize(XMFLOAT3 pos);
+	void Initialize(const XMFLOAT3 &pos);
 	void Finalize();
 	void Update();
 	void Draw();
@@ -49,7 +49,7 @@ public:
 public:
 
 	void RotY();
-	void MoveHorizontally(float speed, float range);
+	void MoveHorizontally(const float &speed, const float &range);
 	void MoveCircular();
 
 private:

@@ -7,10 +7,11 @@ template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 ComPtr<IXAudio2> AudioManager::x_audio2_;
 IXAudio2MasteringVoice *AudioManager::master_voice_;
 
-AudioManager::AudioManager() {
-}
+AudioManager::AudioManager()
+{}
 
-void AudioManager::StaticInitialize() {
+void AudioManager::StaticInitialize()
+{
 	HRESULT result;
 
 	// XAudioエンジンのインスタンスを生成
@@ -20,7 +21,8 @@ void AudioManager::StaticInitialize() {
 	result = x_audio2_->CreateMasteringVoice(&master_voice_);
 }
 
-void AudioManager::LoadWaveFile(const std::string &directory, const std::string &file_name) {
+void AudioManager::LoadWaveFile(const std::string &directory, const std::string &file_name)
+{
 	HRESULT result;
 
 	std::string &full_path = directory + file_name + ".wav";
@@ -38,12 +40,14 @@ void AudioManager::LoadWaveFile(const std::string &directory, const std::string 
 	file.read(reinterpret_cast<char *>(&riff), sizeof(riff));
 
 	// ファイルがRIFFかチェック
-	if (strncmp(riff.chunk.id, "RIFF", 4) != 0) {
+	if (strncmp(riff.chunk.id, "RIFF", 4) != 0)
+	{
 		assert(0);
 	}
 
 	// タイプがWAVEかチェック
-	if (strncmp(riff.type, "WAVE", 4) != 0) {
+	if (strncmp(riff.type, "WAVE", 4) != 0)
+	{
 		assert(0);
 	}
 	// Formatチャンクの読み込み
@@ -51,7 +55,8 @@ void AudioManager::LoadWaveFile(const std::string &directory, const std::string 
 
 	// チャンクヘッダーの確認
 	file.read(reinterpret_cast<char *>(&format), sizeof(ChunkHeader));
-	if (strncmp(format.chunk.id, "fmt ", 4) != 0) {
+	if (strncmp(format.chunk.id, "fmt ", 4) != 0)
+	{
 		assert(0);
 	}
 
@@ -64,13 +69,15 @@ void AudioManager::LoadWaveFile(const std::string &directory, const std::string 
 	file.read(reinterpret_cast<char *>(&data), sizeof(data));
 
 	// JUNKチャンクを検出した場合
-	if (strncmp(data.id, "JUNK ", 4) == 0) {
+	if (strncmp(data.id, "JUNK ", 4) == 0)
+	{
 		// 読み取り位置をJUNKチャンクの終わりまで進める
 		file.seekg(data.size, std::ios_base::cur);
 		// 再読み込み
 		file.read(reinterpret_cast<char *>(&data), sizeof(data));
 	}
-	if (strncmp(data.id, "data ", 4) != 0) {
+	if (strncmp(data.id, "data ", 4) != 0)
+	{
 		assert(0);
 	}
 
@@ -93,7 +100,8 @@ void AudioManager::LoadWaveFile(const std::string &directory, const std::string 
 	sound_data_.source_voice = source_voice_ptr;
 }
 
-void AudioManager::UnloadWaveFile() {
+void AudioManager::UnloadWaveFile()
+{
 	// バッファのメモリを解放
 	delete[] sound_data_.buffer_ptr;
 
@@ -102,7 +110,8 @@ void AudioManager::UnloadWaveFile() {
 	sound_data_.wfex = {};
 }
 
-void AudioManager::PlayWave(float volume, PlayStyle play_style, bool allow_duplicate) {
+void AudioManager::PlayWave(float volume, PlayStyle play_style, bool allow_duplicate)
+{
 	if (sound_data_.is_playing && !allow_duplicate) { return; }
 
 	HRESULT result;
@@ -113,7 +122,8 @@ void AudioManager::PlayWave(float volume, PlayStyle play_style, bool allow_dupli
 	buf.AudioBytes = sound_data_.buffer_size;
 	buf.Flags = XAUDIO2_END_OF_STREAM;
 	buf.LoopCount = play_style;
-	if (play_style == SINGLE) {
+	if (play_style == SINGLE)
+	{
 		buf.LoopBegin = 0;
 		buf.LoopLength = 0;
 	}
@@ -125,7 +135,8 @@ void AudioManager::PlayWave(float volume, PlayStyle play_style, bool allow_dupli
 	sound_data_.is_playing = true;
 }
 
-void AudioManager::StopWave() {
+void AudioManager::StopWave()
+{
 	HRESULT result;
 
 	result = sound_data_.source_voice->Stop();

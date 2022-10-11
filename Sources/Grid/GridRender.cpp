@@ -3,7 +3,7 @@
 
 Camera *GridRender::cam_ptr_ = nullptr;
 
-void GridRender::Initialize(UINT grid_num, UINT offset, XMFLOAT3 origin_pos)
+void GridRender::Initialize(const UINT &grid_num, const UINT &offset, const XMFLOAT3 &origin_pos)
 {
 	Line::SetCamera(cam_ptr_);
 

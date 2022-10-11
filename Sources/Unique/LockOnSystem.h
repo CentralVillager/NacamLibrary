@@ -21,6 +21,7 @@ public:
 		float dist;
 		XMFLOAT3 pos;
 		int index;
+		UINT id;
 	};
 
 private:
@@ -59,5 +60,5 @@ public:
 private:
 
 	void CalcNearestTargets(const XMFLOAT3 &player_pos, EnemiesList &enemies);
-	float CalcDistance(XMFLOAT3 dist_pos, XMFLOAT3 src_pos);
+	float CalcDistance(const XMFLOAT3 &dist_pos, const XMFLOAT3 &src_pos);
 };

@@ -7,52 +7,55 @@ using namespace DirectX;
 
 std::unique_ptr<Model> Emitter::model_ = nullptr;
 
-ParticleMember Emitter::GenerateValue(EmitterArgs emitter)
+ParticleMember Emitter::GenerateValue(const EmitterArgs &emitter)
 {
 	using namespace NcmUtill;
 
+	EmitterArgs emi{};
+	emi = emitter;
+
 	{
 		// マイナス防止
-		emitter.pos_rand_.x = fabs(emitter.pos_rand_.x);
-		emitter.pos_rand_.y = fabs(emitter.pos_rand_.y);
-		emitter.pos_rand_.z = fabs(emitter.pos_rand_.z);
+		emi.pos_rand_.x = fabs(emi.pos_rand_.x);
+		emi.pos_rand_.y = fabs(emi.pos_rand_.y);
+		emi.pos_rand_.z = fabs(emi.pos_rand_.z);
 
 		// 位置のランダム値を取得
-		XMFLOAT3 pos_rand = GenerateRandom((emitter.pos_rand_ / 2) - emitter.pos_rand_, emitter.pos_rand_ / 2);
+		XMFLOAT3 pos_rand = GenerateRandom((emi.pos_rand_ / 2) - emi.pos_rand_, emi.pos_rand_ / 2);
 
 		// ランダム値を位置に加算
-		emitter.particle.position_ = emitter.particle.position_ + pos_rand;
+		emi.particle.position_ = emi.particle.position_ + pos_rand;
 	}
 
 	{
 		// マイナス防止
-		emitter.vel_rand_.x = fabs(emitter.vel_rand_.x);
-		emitter.vel_rand_.y = fabs(emitter.vel_rand_.y);
-		emitter.vel_rand_.z = fabs(emitter.vel_rand_.z);
+		emi.vel_rand_.x = fabs(emi.vel_rand_.x);
+		emi.vel_rand_.y = fabs(emi.vel_rand_.y);
+		emi.vel_rand_.z = fabs(emi.vel_rand_.z);
 
 		// 速度のランダム値を取得
-		XMFLOAT3 vel_rand = GenerateRandom((emitter.vel_rand_ / 2) - emitter.vel_rand_, emitter.vel_rand_ / 2);
+		XMFLOAT3 vel_rand = GenerateRandom((emi.vel_rand_ / 2) - emi.vel_rand_, emi.vel_rand_ / 2);
 
 		// ランダム値を速度に加算
-		emitter.particle.velocity_ = emitter.particle.velocity_ + vel_rand;
+		emi.particle.velocity_ = emi.particle.velocity_ + vel_rand;
 	}
 
 	XMFLOAT3 acc{};
 	acc.y = 0.000f;
 
 	// 設定された値で要素を作成
-	ParticleMember _p{};
-	_p.position_ = emitter.particle.position_;
-	_p.velocity_ = emitter.particle.velocity_;
-	_p.accel_ = acc;
-	_p.scale_ = _p.s_scale_ = emitter.particle.s_scale_;
-	_p.e_scale_ = 0.0f;
-	_p.life_ = emitter.particle.life_;
+	ParticleMember p{};
+	p.position_ = emi.particle.position_;
+	p.velocity_ = emi.particle.velocity_;
+	p.accel_ = acc;
+	p.scale_ = p.s_scale_ = emi.particle.s_scale_;
+	p.e_scale_ = 0.0f;
+	p.life_ = emi.particle.life_;
 
-	return _p;
+	return p;
 }
 
-void Emitter::Add(ParticleMember p)
+void Emitter::Add(const ParticleMember &p)
 {
 	// 先頭に要素を構築
 	particles_.emplace_front();

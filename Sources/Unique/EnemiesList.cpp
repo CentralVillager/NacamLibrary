@@ -1,5 +1,6 @@
 #include "EnemiesList.h"
 #include <algorithm>
+#include "../NacamError.h"
 
 using namespace std;
 
@@ -49,10 +50,27 @@ void EnemiesList::DrawColl()
 	}
 }
 
-void EnemiesList::Add(XMFLOAT3 pos)
+void EnemiesList::Add(const XMFLOAT3 &pos)
 {
 	enemies_.emplace_back();
 	enemies_.back().Initialize(pos);
+}
+
+void EnemiesList::AddTemplateSet()
+{
+	float offset = 10.0f;
+	float z_offset = 50.0f;
+	UINT ene_num = 10;
+
+	Add(XMFLOAT3(0, 0, z_offset));
+	for (UINT i = 0; i < ene_num / 2; i++)
+	{
+		Add(XMFLOAT3(offset * i + offset, 0, z_offset * i + z_offset));
+	}
+	for (UINT i = 0; i < ene_num / 2; i++)
+	{
+		Add(XMFLOAT3(-(offset * i + offset), 0, z_offset * i + z_offset));
+	}
 }
 
 bool EnemiesList::NoticeEmpty()
@@ -63,4 +81,21 @@ bool EnemiesList::NoticeEmpty()
 	}
 
 	return false;
+}
+
+const int &EnemiesList::GetEnemyIndexWithID(UINT id)
+{
+	// ‘S‚Ä‚Ì“G‚É‘Î‚µ‚ÄID‚ðŒŸõ
+	for (UINT i = 0; i < enemies_.size(); i++)
+	{
+		// ŠY“–ID‚ªŒ©‚Â‚©‚Á‚½‚ç
+		if (enemies_[i].GetID() == id)
+		{
+			// ‚»‚ÌID‚ðŽ‚Â“G‚Ì“YŽš‚ð•Ô‚·
+			return i;
+		}
+	}
+
+	// ŠY“–ID‚ª‘¶Ý‚µ‚È‚¢‚Ì‚ÅƒGƒ‰[‚ðŽ¦‚³‚¹‚é
+	return (int)(NacamError::NonDetected);
 }

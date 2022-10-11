@@ -59,10 +59,10 @@ public:
 private:
 
 	// コンテナに粒を追加
-	void Add(ParticleMember p);
+	void Add(const ParticleMember &p);
 
 	// 値を生成する
-	ParticleMember GenerateValue(EmitterArgs emitter);
+	ParticleMember GenerateValue(const EmitterArgs &emitter);
 
 public:
 

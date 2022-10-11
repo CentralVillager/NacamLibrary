@@ -533,6 +533,7 @@
     <ClInclude Include="Sources\Sprite\Sprite.h">
       <Filter>Library\Sprite</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\NacamError.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">

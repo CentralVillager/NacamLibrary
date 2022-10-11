@@ -18,7 +18,7 @@ public:
 
 	static void SetCamera(Camera *camera) { cam_ptr_ = camera; }
 
-	void Initialize(UINT grid_num, UINT offset, XMFLOAT3 origin_pos);
+	void Initialize(const UINT &grid_num, const UINT &offset, const XMFLOAT3 &origin_pos);
 	void Update();
 	void Draw();
 	void DebugDraw();

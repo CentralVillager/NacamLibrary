@@ -83,14 +83,14 @@ void SceneManager::ExecuteSceneChange()
 	scene_stack_.top()->Initialize();
 }
 
-void SceneManager::SetInitialScene(SceneName scene_name)
+void SceneManager::SetInitialScene(const SceneName &scene_name)
 {
 	scene_state_[(int)(SceneState::Next)] = scene_name;
 
 	ExecuteSceneChange();
 }
 
-void SceneManager::SetNextScene(SceneName name)
+void SceneManager::SetNextScene(const SceneName &name)
 {
 	scene_state_[(int)(SceneState::Next)] = name;
 }
