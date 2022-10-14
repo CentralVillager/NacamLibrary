@@ -66,9 +66,6 @@
     <Filter Include="Application\Scene\Demo">
       <UniqueIdentifier>{cbf95c0a-ea18-4fac-b66b-a3a63b0befd6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Scene\GravityDemo">
-      <UniqueIdentifier>{6235a44a-852b-4b10-9cb2-6c4e45271e1d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application\FpsManager">
       <UniqueIdentifier>{4ef5cec6-c04e-465b-b003-6d7e4d37a181}</UniqueIdentifier>
     </Filter>
@@ -90,29 +87,14 @@
     <Filter Include="Library\NacamLib">
       <UniqueIdentifier>{ef9a38c7-6ffb-464f-a430-373a89ee910b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Scene\FrictionDemo">
-      <UniqueIdentifier>{e33af627-efae-435d-9531-24561d24bfc0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\Scene\PostEffectDemo">
-      <UniqueIdentifier>{2e87c18e-e2c8-4a9a-9e20-0cccb93600e3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Library\PostEffect">
       <UniqueIdentifier>{9f2e0b44-abdf-495e-94df-0fb88ffccbfe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\Scene\ParticleDemo">
-      <UniqueIdentifier>{e60ada7b-fff6-46be-843c-7cb54d0a65de}</UniqueIdentifier>
     </Filter>
     <Filter Include="Application\Particle">
       <UniqueIdentifier>{d47cdcb2-8fd6-450b-abb0-52855d6b2520}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Scene\RepulsionDemo">
-      <UniqueIdentifier>{6ca2f6cb-fe99-4d57-a672-430c3379513d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Library\DrawProc">
       <UniqueIdentifier>{da5d3ac7-42e0-4ee9-974a-f1245c2c5c07}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\Scene\ExecuteIndirectDemo">
-      <UniqueIdentifier>{0d11723b-fab3-488c-a8b9-6482732831eb}</UniqueIdentifier>
     </Filter>
     <Filter Include="Library\Win32App">
       <UniqueIdentifier>{0968b96d-de9b-4276-be81-af931f62bf12}</UniqueIdentifier>
@@ -122,15 +104,6 @@
     </Filter>
     <Filter Include="Library\PreDraw">
       <UniqueIdentifier>{00bf2e44-7a2d-4076-bab0-71dea2f1d5a7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\Scene\MathDemo">
-      <UniqueIdentifier>{ca6caf7b-91cf-4840-9711-c7b2bc3def2a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\Easing">
-      <UniqueIdentifier>{951cf166-1a19-4d53-a518-5228e252c0be}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Library\GridRender">
-      <UniqueIdentifier>{533267ff-1973-42d4-8ead-fdfb2b77d299}</UniqueIdentifier>
     </Filter>
     <Filter Include="Library\Fbx">
       <UniqueIdentifier>{ae9ef1cb-19b5-44e1-89b3-3ef065680ff9}</UniqueIdentifier>
@@ -147,9 +120,6 @@
     <Filter Include="Application\Unique\Missile">
       <UniqueIdentifier>{7143d688-6709-45c4-835f-83eb08d8487a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Quaternion">
-      <UniqueIdentifier>{f761a761-daf2-42b3-9bad-b7395958884f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application\Scene\Title">
       <UniqueIdentifier>{1c7a64bd-2284-4273-b46a-15e3ee729b19}</UniqueIdentifier>
     </Filter>
@@ -161,6 +131,51 @@
     </Filter>
     <Filter Include="Application\Number">
       <UniqueIdentifier>{fe85f7ac-bb8a-4063-9fbb-bb4ff9b59558}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\NacamMath">
+      <UniqueIdentifier>{cb7ad0a6-a25c-4946-88c8-c2c944f7dc1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\NacamMath\Easing">
+      <UniqueIdentifier>{951cf166-1a19-4d53-a518-5228e252c0be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\Demo\ExecuteIndirectDemo">
+      <UniqueIdentifier>{0d11723b-fab3-488c-a8b9-6482732831eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\Demo\FrictionDemo">
+      <UniqueIdentifier>{e33af627-efae-435d-9531-24561d24bfc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\Demo\GravityDemo">
+      <UniqueIdentifier>{6235a44a-852b-4b10-9cb2-6c4e45271e1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\Demo\MathDemo">
+      <UniqueIdentifier>{ca6caf7b-91cf-4840-9711-c7b2bc3def2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\Demo\ParticleDemo">
+      <UniqueIdentifier>{e60ada7b-fff6-46be-843c-7cb54d0a65de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\Demo\PostEffectDemo">
+      <UniqueIdentifier>{2e87c18e-e2c8-4a9a-9e20-0cccb93600e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\Demo\RepulsionDemo">
+      <UniqueIdentifier>{6ca2f6cb-fe99-4d57-a672-430c3379513d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Unique\LockOnSystem">
+      <UniqueIdentifier>{05d84303-fd12-4b3d-8cde-2768a48db8d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Unique\Player">
+      <UniqueIdentifier>{d43ed821-5acb-44f9-b1b2-5c1366dcebae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Unique\WaveManager">
+      <UniqueIdentifier>{fd3a06a5-04ee-4725-9ee2-3dbdffed6dbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\GridRender">
+      <UniqueIdentifier>{533267ff-1973-42d4-8ead-fdfb2b77d299}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\NacamError">
+      <UniqueIdentifier>{c354f98d-2b30-4473-a995-82af6a19c808}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Unique\Reticle">
+      <UniqueIdentifier>{35b2469b-5bad-44bc-9091-67fbb9b8581c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -188,164 +203,161 @@
     <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>Application\Debug\ImGui\Include</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Audio\AudioManager.cpp">
-      <Filter>Library\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Camera\Camera.cpp">
-      <Filter>Library\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Collision\Collision.cpp">
+    <ClCompile Include="Sources\App\Collision\Collision.cpp">
       <Filter>Application\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Collision\CollisionPrimitive.cpp">
+    <ClCompile Include="Sources\App\Collision\CollisionPrimitive.cpp">
       <Filter>Application\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Debug\ImGuiManager.cpp">
+    <ClCompile Include="Sources\App\Debug\ImGuiManager.cpp">
       <Filter>Application\Debug\ImGui\ImGuiManager</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Math\Easing\Easing.cpp">
-      <Filter>Application\Easing</Filter>
+    <ClCompile Include="Sources\App\Math\Easing\Easing.cpp">
+      <Filter>Application\NacamMath\Easing</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\FpsManager\FPSManager.cpp">
+    <ClCompile Include="Sources\App\FpsManager\FPSManager.cpp">
       <Filter>Application\FpsManager</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Particle\Emitter.cpp">
+    <ClCompile Include="Sources\App\Number\Numbers.cpp">
+      <Filter>Application\Number</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Particle\Emitter.cpp">
       <Filter>Application\Particle</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Particle\Particle.cpp">
+    <ClCompile Include="Sources\App\Particle\EmittersList.cpp">
       <Filter>Application\Particle</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Scene\Demo\DemoScene.cpp">
+    <ClCompile Include="Sources\App\Particle\Particle.cpp">
+      <Filter>Application\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Scene\Demo\DemoScene.cpp">
       <Filter>Application\Scene\Demo</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Scene\Demo\ExecuteIndirectDemoScene.cpp">
-      <Filter>Application\Scene\ExecuteIndirectDemo</Filter>
+    <ClCompile Include="Sources\App\Scene\Demo\ExecuteIndirectDemoScene.cpp">
+      <Filter>Application\Scene\Demo\ExecuteIndirectDemo</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Scene\Demo\FrictionDemoScene.cpp">
-      <Filter>Application\Scene\FrictionDemo</Filter>
+    <ClCompile Include="Sources\App\Scene\Demo\FrictionDemoScene.cpp">
+      <Filter>Application\Scene\Demo\FrictionDemo</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Scene\Demo\GravityDemoScene.cpp">
-      <Filter>Application\Scene\GravityDemo</Filter>
+    <ClCompile Include="Sources\App\Scene\Demo\GravityDemoScene.cpp">
+      <Filter>Application\Scene\Demo\GravityDemo</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Scene\MainScene.cpp">
+    <ClCompile Include="Sources\App\Scene\Demo\MathDemoScene.cpp">
+      <Filter>Application\Scene\Demo\MathDemo</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Scene\Demo\ParticleDemoScene.cpp">
+      <Filter>Application\Scene\Demo\ParticleDemo</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Scene\Demo\PostEffectDemoScene.cpp">
+      <Filter>Application\Scene\Demo\PostEffectDemo</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Scene\Demo\RepulsionDemoScene.cpp">
+      <Filter>Application\Scene\Demo\RepulsionDemo</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Scene\MainScene.cpp">
       <Filter>Application\Scene\Main</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Scene\Demo\MathDemoScene.cpp">
-      <Filter>Application\Scene\MathDemo</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Scene\Demo\ParticleDemoScene.cpp">
-      <Filter>Application\Scene\ParticleDemo</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Scene\Demo\PostEffectDemoScene.cpp">
-      <Filter>Application\Scene\PostEffectDemo</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Scene\Demo\RepulsionDemoScene.cpp">
-      <Filter>Application\Scene\RepulsionDemo</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Scene\SceneManager\SceneManager.cpp">
-      <Filter>Application\Scene\SceneManager</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Scene\TemporaryScene.cpp">
-      <Filter>Application\Scene\Temporary</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Utility\Utility.cpp">
-      <Filter>Application\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\DirectXBase\DirectXBase.cpp">
-      <Filter>Library\DirectXBase</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\DrawProc\DrawProc.cpp">
-      <Filter>Library\DrawProc</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Grid\GridRender.cpp">
-      <Filter>Library\GridRender</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Input\ControllerInput.cpp">
-      <Filter>Library\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Input\InputManager.cpp">
-      <Filter>Library\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Input\KeyboardInput.cpp">
-      <Filter>Library\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Model\Model.cpp">
-      <Filter>Library\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\NacamLib\NacamLib.cpp">
-      <Filter>Library\NacamLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Fbx\FbxLoader.cpp">
-      <Filter>Library\Fbx</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Fbx\FbxModel.cpp">
-      <Filter>Library\Fbx</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Fbx\FbxObject3d.cpp">
-      <Filter>Library\Fbx</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Line\Line.cpp">
-      <Filter>Library\Line</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\IndirectObject3d\IndirectObject3d.cpp">
-      <Filter>Library\IndirectObject3d</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Object3d\Object3d.cpp">
-      <Filter>Library\Object3d</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Pipeline\PipelineManager.cpp">
-      <Filter>Library\Pipeline</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\PostEffect\PostEffect.cpp">
-      <Filter>Library\PostEffect</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\PreDraw\PreDraw.cpp">
-      <Filter>Library\PreDraw</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Win32App\Win32App.cpp">
-      <Filter>Library\Win32App</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Unique\Player.cpp">
-      <Filter>Application\Unique</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Unique\Missile.cpp">
-      <Filter>Application\Unique\Missile</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Unique\MissileManager.cpp">
-      <Filter>Application\Unique\Missile</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Particle\EmittersList.cpp">
-      <Filter>Application\Particle</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Math\Quaternion\Quaternion.cpp">
-      <Filter>Application\Quaternion</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Scene\TitleScene.cpp">
-      <Filter>Application\Scene\Title</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Unique\LockOnSystem.cpp">
-      <Filter>Application\Unique</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Unique\Enemy.cpp">
-      <Filter>Application\Unique\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Unique\EnemiesList.cpp">
-      <Filter>Application\Unique\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Unique\Reticle.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Scene\ResultScene.cpp">
+    <ClCompile Include="Sources\App\Scene\ResultScene.cpp">
       <Filter>Application\Scene\Result</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Unique\WaveManager.cpp">
-      <Filter>Application\Unique</Filter>
+    <ClCompile Include="Sources\App\Scene\SceneManager\SceneManager.cpp">
+      <Filter>Application\Scene\SceneManager</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Sprite\Sprite.cpp">
+    <ClCompile Include="Sources\App\Scene\TemporaryScene.cpp">
+      <Filter>Application\Scene\Temporary</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Scene\TitleScene.cpp">
+      <Filter>Application\Scene\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Unique\Enemy\EnemiesList.cpp">
+      <Filter>Application\Unique\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Unique\Enemy\Enemy.cpp">
+      <Filter>Application\Unique\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Unique\Missile\Missile.cpp">
+      <Filter>Application\Unique\Missile</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Unique\Missile\MissileManager.cpp">
+      <Filter>Application\Unique\Missile</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Unique\Player\Player.cpp">
+      <Filter>Application\Unique\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Unique\WaveManager\WaveManager.cpp">
+      <Filter>Application\Unique\WaveManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Utility\Utility.cpp">
+      <Filter>Application\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\Audio\AudioManager.cpp">
+      <Filter>Library\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\Camera\Camera.cpp">
+      <Filter>Library\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\DirectXBase\DirectXBase.cpp">
+      <Filter>Library\DirectXBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\DrawProc\DrawProc.cpp">
+      <Filter>Library\DrawProc</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\Fbx\FbxLoader.cpp">
+      <Filter>Library\Fbx</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\Fbx\FbxModel.cpp">
+      <Filter>Library\Fbx</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\Fbx\FbxObject3d.cpp">
+      <Filter>Library\Fbx</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Grid\GridRender.cpp">
+      <Filter>Application\GridRender</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\IndirectObject3d\IndirectObject3d.cpp">
+      <Filter>Library\IndirectObject3d</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\Input\ControllerInput.cpp">
+      <Filter>Library\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\Input\InputManager.cpp">
+      <Filter>Library\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\Input\KeyboardInput.cpp">
+      <Filter>Library\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\Line\Line.cpp">
+      <Filter>Library\Line</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\Model\Model.cpp">
+      <Filter>Library\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\NacamLib\NacamLib.cpp">
+      <Filter>Library\NacamLib</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\Object3d\Object3d.cpp">
+      <Filter>Library\Object3d</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\Pipeline\PipelineManager.cpp">
+      <Filter>Library\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\PostEffect\PostEffect.cpp">
+      <Filter>Library\PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\PreDraw\PreDraw.cpp">
+      <Filter>Library\PreDraw</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\Sprite\Sprite.cpp">
       <Filter>Library\Sprite</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Number\Numbers.cpp">
-      <Filter>Application\Number</Filter>
+    <ClCompile Include="Sources\Lib\Win32App\Win32App.cpp">
+      <Filter>Library\Win32App</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Unique\Reticle\Reticle.cpp">
+      <Filter>Application\Unique\Reticle</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Unique\LockOnSystem\LockOnSystem.cpp">
+      <Filter>Application\Unique\LockOnSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -376,172 +388,170 @@
     <ClInclude Include="imgui\imstb_truetype.h">
       <Filter>Application\Debug\ImGui\Include</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Audio\AudioManager.h">
-      <Filter>Library\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Camera\Camera.h">
-      <Filter>Library\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Collision\Collision.h">
+    <ClInclude Include="Sources\App\Collision\Collision.h">
       <Filter>Application\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Collision\CollisionPrimitive.h">
+    <ClInclude Include="Sources\App\Collision\CollisionPrimitive.h">
       <Filter>Application\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Debug\ImGuiManager.h">
+    <ClInclude Include="Sources\App\Debug\ImGuiManager.h">
       <Filter>Application\Debug\ImGui\ImGuiManager</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Math\Easing\Easing.h">
-      <Filter>Application\Easing</Filter>
+    <ClInclude Include="Sources\App\Math\Easing\Easing.h">
+      <Filter>Application\NacamMath\Easing</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\FpsManager\FPSManager.h">
+    <ClInclude Include="Sources\App\FpsManager\FPSManager.h">
       <Filter>Application\FpsManager</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Particle\Emitter.h">
+    <ClInclude Include="Sources\App\Number\Numbers.h">
+      <Filter>Application\Number</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Particle\Emitter.h">
       <Filter>Application\Particle</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Particle\Particle.h">
+    <ClInclude Include="Sources\App\Particle\EmittersList.h">
       <Filter>Application\Particle</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Scene\AbstractScene.h">
+    <ClInclude Include="Sources\App\Particle\Particle.h">
+      <Filter>Application\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Scene\AbstractScene.h">
       <Filter>Application\Scene\Abstract</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Scene\Demo\DemoScene.h">
+    <ClInclude Include="Sources\App\Scene\Demo\DemoScene.h">
       <Filter>Application\Scene\Demo</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Scene\Demo\ExecuteIndirectDemoScene.h">
-      <Filter>Application\Scene\ExecuteIndirectDemo</Filter>
+    <ClInclude Include="Sources\App\Scene\Demo\ExecuteIndirectDemoScene.h">
+      <Filter>Application\Scene\Demo\ExecuteIndirectDemo</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Scene\Demo\FrictionDemoScene.h">
-      <Filter>Application\Scene\FrictionDemo</Filter>
+    <ClInclude Include="Sources\App\Scene\Demo\FrictionDemoScene.h">
+      <Filter>Application\Scene\Demo\FrictionDemo</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Scene\Demo\GravityDemoScene.h">
-      <Filter>Application\Scene\GravityDemo</Filter>
+    <ClInclude Include="Sources\App\Scene\Demo\GravityDemoScene.h">
+      <Filter>Application\Scene\Demo\GravityDemo</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Scene\MainScene.h">
+    <ClInclude Include="Sources\App\Scene\Demo\MathDemoScene.h">
+      <Filter>Application\Scene\Demo\MathDemo</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Scene\Demo\ParticleDemoScene.h">
+      <Filter>Application\Scene\Demo\ParticleDemo</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Scene\Demo\PostEffectDemoScene.h">
+      <Filter>Application\Scene\Demo\PostEffectDemo</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Scene\Demo\RepulsionDemoScene.h">
+      <Filter>Application\Scene\Demo\RepulsionDemo</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Scene\MainScene.h">
       <Filter>Application\Scene\Main</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Scene\Demo\MathDemoScene.h">
-      <Filter>Application\Scene\MathDemo</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Scene\Demo\ParticleDemoScene.h">
-      <Filter>Application\Scene\ParticleDemo</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Scene\Demo\PostEffectDemoScene.h">
-      <Filter>Application\Scene\PostEffectDemo</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Scene\Demo\RepulsionDemoScene.h">
-      <Filter>Application\Scene\RepulsionDemo</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Scene\SceneManager\SceneManager.h">
-      <Filter>Application\Scene\SceneManager</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Scene\TemporaryScene.h">
-      <Filter>Application\Scene\Temporary</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Singleton\Singleton.h">
-      <Filter>Application\Utility\Singleton</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Utility\Utility.h">
-      <Filter>Application\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\DirectXBase\DirectXBase.h">
-      <Filter>Library\DirectXBase</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\DrawProc\DrawProc.h">
-      <Filter>Library\DrawProc</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Grid\GridRender.h">
-      <Filter>Library\GridRender</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Input\ControllerInput.h">
-      <Filter>Library\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Input\InputManager.h">
-      <Filter>Library\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Input\KeyboardInput.h">
-      <Filter>Library\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Model\Model.h">
-      <Filter>Library\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\NacamLib\NacamLib.h">
-      <Filter>Library\NacamLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Fbx\FbxLoader.h">
-      <Filter>Library\Fbx</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Fbx\FbxModel.h">
-      <Filter>Library\Fbx</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Fbx\FbxObject3d.h">
-      <Filter>Library\Fbx</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Line\Line.h">
-      <Filter>Library\Line</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\IndirectObject3d\IndirectObject3d.h">
-      <Filter>Library\IndirectObject3d</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Object3d\Object3d.h">
-      <Filter>Library\Object3d</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Pipeline\PipelineManager.h">
-      <Filter>Library\Pipeline</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\PostEffect\PostEffect.h">
-      <Filter>Library\PostEffect</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\PreDraw\PreDraw.h">
-      <Filter>Library\PreDraw</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Win32App\Win32App.h">
-      <Filter>Library\Win32App</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Unique\Player.h">
-      <Filter>Application\Unique</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Unique\Missile.h">
-      <Filter>Application\Unique\Missile</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Unique\MissileManager.h">
-      <Filter>Application\Unique\Missile</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Utility\Transform.h">
-      <Filter>Application\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Particle\EmittersList.h">
-      <Filter>Application\Particle</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Math\Quaternion\Quaternion.h">
-      <Filter>Application\Quaternion</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Scene\TitleScene.h">
-      <Filter>Application\Scene\Title</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Unique\LockOnSystem.h">
-      <Filter>Application\Unique</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Unique\Enemy.h">
-      <Filter>Application\Unique\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Unique\EnemiesList.h">
-      <Filter>Application\Unique\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Unique\Reticle.h" />
-    <ClInclude Include="Sources\Scene\ResultScene.h">
+    <ClInclude Include="Sources\App\Scene\ResultScene.h">
       <Filter>Application\Scene\Result</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Unique\WaveManager.h">
-      <Filter>Application\Unique</Filter>
+    <ClInclude Include="Sources\App\Scene\SceneManager\SceneManager.h">
+      <Filter>Application\Scene\SceneManager</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Sprite\Sprite.h">
+    <ClInclude Include="Sources\App\Scene\TemporaryScene.h">
+      <Filter>Application\Scene\Temporary</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Scene\TitleScene.h">
+      <Filter>Application\Scene\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Unique\Enemy\EnemiesList.h">
+      <Filter>Application\Unique\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Unique\Enemy\Enemy.h">
+      <Filter>Application\Unique\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Unique\Missile\Missile.h">
+      <Filter>Application\Unique\Missile</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Unique\Missile\MissileManager.h">
+      <Filter>Application\Unique\Missile</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Unique\Player\Player.h">
+      <Filter>Application\Unique\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Unique\WaveManager\WaveManager.h">
+      <Filter>Application\Unique\WaveManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Singleton\Singleton.h">
+      <Filter>Application\Utility\Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Utility\Utility.h">
+      <Filter>Application\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Audio\AudioManager.h">
+      <Filter>Library\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Camera\Camera.h">
+      <Filter>Library\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\DirectXBase\DirectXBase.h">
+      <Filter>Library\DirectXBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\DrawProc\DrawProc.h">
+      <Filter>Library\DrawProc</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Fbx\FbxLoader.h">
+      <Filter>Library\Fbx</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Fbx\FbxModel.h">
+      <Filter>Library\Fbx</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Fbx\FbxObject3d.h">
+      <Filter>Library\Fbx</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Grid\GridRender.h">
+      <Filter>Application\GridRender</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\IndirectObject3d\IndirectObject3d.h">
+      <Filter>Library\IndirectObject3d</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Input\ControllerInput.h">
+      <Filter>Library\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Input\InputManager.h">
+      <Filter>Library\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Input\KeyboardInput.h">
+      <Filter>Library\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Line\Line.h">
+      <Filter>Library\Line</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Model\Model.h">
+      <Filter>Library\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\NacamLib\NacamLib.h">
+      <Filter>Library\NacamLib</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Object3d\Object3d.h">
+      <Filter>Library\Object3d</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Pipeline\PipelineManager.h">
+      <Filter>Library\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\PostEffect\PostEffect.h">
+      <Filter>Library\PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\PreDraw\PreDraw.h">
+      <Filter>Library\PreDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Sprite\Sprite.h">
       <Filter>Library\Sprite</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\NacamError.h" />
-    <ClInclude Include="Sources\Number\Numbers.h">
-      <Filter>Application\Number</Filter>
+    <ClInclude Include="Sources\Lib\Win32App\Win32App.h">
+      <Filter>Library\Win32App</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\NacamError.h">
+      <Filter>Library\NacamError</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Unique\Reticle\Reticle.h">
+      <Filter>Application\Unique\Reticle</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Unique\LockOnSystem\LockOnSystem.h">
+      <Filter>Application\Unique\LockOnSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,4 @@
-#include "Sources/NacamLib/NacamLib.h"
+#include "Sources/Lib/NacamLib/NacamLib.h"
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
