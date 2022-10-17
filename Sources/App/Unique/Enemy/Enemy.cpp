@@ -1,6 +1,6 @@
 #include "Enemy.h"
 #include <cmath>
-#include "../Sources/App/Utility/Utility.h"
+#include "../Sources/App/Utility/NcmUtil.h"
 
 using namespace NcmUtill;
 

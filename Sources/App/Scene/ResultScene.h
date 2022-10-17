@@ -1,11 +1,11 @@
 #pragma once
 #include <memory>
 #include "AbstractScene.h"
-#include "../../Lib/Sprite/Sprite.h"
+#include "../../Lib/Sprite/NcmSprite.h"
 
 class ResultScene : public AbstractScene
 {
-	//std::unique_ptr<Sprite> result_;
+	//std::unique_ptr<NcmSprite> result_;
 	int result_;
 
 public:

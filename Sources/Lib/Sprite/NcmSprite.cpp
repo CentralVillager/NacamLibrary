@@ -1,4 +1,4 @@
-#include "Sprite.h"
+#include "NcmSprite.h"
 #include <cassert>
 #include <d3dx12.h>
 #include <DirectXTex.h>
@@ -7,21 +7,21 @@
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
-ComPtr<ID3D12Device> Sprite::device_ = nullptr;
-UINT Sprite::desc_handle_incre_size_;
-ComPtr<ID3D12GraphicsCommandList> Sprite::cmd_list_ = nullptr;
-XMMATRIX Sprite::mat_projection_;
-ComPtr<ID3D12DescriptorHeap> Sprite::desc_heap_;
-ComPtr<ID3D12Resource> Sprite::tex_buff_[srv_count_];
-UINT Sprite::handle_counter_ = 0;
-std::vector<Sprite::DrawData> Sprite::sprite_hub_;
+ComPtr<ID3D12Device> NcmSprite::device_ = nullptr;
+UINT NcmSprite::desc_handle_incre_size_;
+ComPtr<ID3D12GraphicsCommandList> NcmSprite::cmd_list_ = nullptr;
+XMMATRIX NcmSprite::mat_projection_;
+ComPtr<ID3D12DescriptorHeap> NcmSprite::desc_heap_;
+ComPtr<ID3D12Resource> NcmSprite::tex_buff_[srv_count_];
+UINT NcmSprite::handle_counter_ = 0;
+std::vector<NcmSprite::DrawData> NcmSprite::sprite_hub_;
 
-void Sprite::TermSprite()
+void NcmSprite::TermSprite()
 {
 	sprite_hub_.clear();
 }
 
-void Sprite::StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList *cmd_list)
+void NcmSprite::StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList *cmd_list)
 {
 	HRESULT result;
 
@@ -46,7 +46,7 @@ void Sprite::StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList *c
 	assert(SUCCEEDED(result));
 }
 
-int Sprite::LoadTex(const wchar_t *filename)
+int NcmSprite::LoadTex(const wchar_t *filename)
 {
 	handle_counter_++;
 	int32_t count_for_array = handle_counter_ - 1;
@@ -115,7 +115,7 @@ int Sprite::LoadTex(const wchar_t *filename)
 	return count_for_array;
 }
 
-void Sprite::DrawTex(const int handle)
+void NcmSprite::DrawTex(const int handle)
 {
 	// ワールド行列の更新
 	sprite_hub_[handle].mat_world_ = XMMatrixIdentity();
@@ -145,7 +145,7 @@ void Sprite::DrawTex(const int handle)
 	cmd_list_->DrawInstanced(4, 1, 0, 0);
 }
 
-void Sprite::DrawTex(const int handle, const XMFLOAT2 &pos, const float scale)
+void NcmSprite::DrawTex(const int handle, const XMFLOAT2 &pos, const float scale)
 {
 	// Transを設定
 	SetPos(handle, pos);
@@ -158,7 +158,7 @@ void Sprite::DrawTex(const int handle, const XMFLOAT2 &pos, const float scale)
 	SetSize(handle, { sprite_hub_[handle].size_.x / scale, sprite_hub_[handle].size_.y / scale });
 }
 
-void Sprite::GenerateDrawData(const int handle)
+void NcmSprite::GenerateDrawData(const int handle)
 {
 	HRESULT result = S_FALSE;
 
@@ -214,7 +214,7 @@ void Sprite::GenerateDrawData(const int handle)
 	sprite_hub_.back().handle = handle;
 }
 
-void Sprite::TransferVertices(DrawData *itr)
+void NcmSprite::TransferVertices(DrawData *itr)
 {
 	HRESULT result = S_FALSE;
 

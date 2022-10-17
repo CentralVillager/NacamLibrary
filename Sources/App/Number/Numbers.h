@@ -2,7 +2,7 @@
 #include <array>
 #include <vector>
 #include <DirectXMath.h>
-#include "../../Lib/Sprite/Sprite.h"
+#include "../../Lib/Sprite/NcmSprite.h"
 
 enum class HorizontalAlignment
 {
@@ -51,6 +51,6 @@ public:
 
 private:
 
-	void DivDigit(std::vector<int> *dist, const int &num);
+	void DivDigit(std::vector<int> *dist, const int num);
 	void SortDigitWithAlign(std::vector<int> *dist, const HorizontalAlignment &align);
 };

@@ -52,6 +52,9 @@ private:
 	// 親行列のポインタ
 	XMMATRIX *parent_mat_;
 
+	// 視野角
+	float fov_;
+
 public:
 
 	Camera();
@@ -90,10 +93,14 @@ public:
 	/// <param name="speed"></param>
 	void BasicCameraMove(float speed);
 
+	void MoveXY(float speed);
+
 	/// <summary>
 	/// カメラ位置のリセット
 	/// </summary>
 	void ResetCamera();
+
+	void DebugDraw();
 
 public:
 

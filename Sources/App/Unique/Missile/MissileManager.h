@@ -47,5 +47,4 @@ public:
 private:
 
 	void AddMissile(const MissileArgs &args);
-	auto MoveItr(UINT n);
 };

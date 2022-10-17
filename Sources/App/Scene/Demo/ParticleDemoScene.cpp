@@ -1,5 +1,5 @@
 #include "ParticleDemoScene.h"
-#include "../../Debug/ImGuiManager.h"
+#include "../../Debug/NcmImGui.h"
 #include "../../Scene/SceneManager/SceneManager.h"
 #include "../../../Lib/PreDraw/PreDraw.h"
 #include "../../../Lib/Input/KeyboardInput.h"

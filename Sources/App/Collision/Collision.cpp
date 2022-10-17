@@ -1,5 +1,5 @@
 #include "../Sources/App/Collision/Collision.h"
-#include "../Utility/Utility.h"
+#include "../Utility/NcmUtil.h"
 
 using namespace DirectX;
 using namespace NcmUtill;

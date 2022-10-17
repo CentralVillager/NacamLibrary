@@ -1,5 +1,5 @@
 #include "GravityDemoScene.h"
-#include "../../Debug/ImGuiManager.h"
+#include "../../Debug/NcmImGui.h"
 
 using namespace std;
 

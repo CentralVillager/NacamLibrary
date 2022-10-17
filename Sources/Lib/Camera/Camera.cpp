@@ -2,6 +2,7 @@
 #include "../Win32App/Win32App.h"
 #include "../Input/KeyboardInput.h"
 #include "../DirectXBase/DirectXBase.h"
+#include "../../App/Debug/NcmImGui.h"
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
@@ -27,6 +28,8 @@ void Camera::Initialize()
 	target_ = { 0, 0, 0 };
 	up_vec_ = { 0, 1, 0 };
 
+	fov_ = 60.0f;
+
 	// ビュー行列の更新
 	UpdateViewMatrix();
 
@@ -37,7 +40,7 @@ void Camera::Initialize()
 void Camera::Update()
 {
 	UpdateViewMatrix();		// ダーティーフラグを使いたい
-	//UpdateViewProjection();	// やらなくてもいい
+	UpdateViewProjection();	// やらなくてもいい
 
 	HRESULT result = S_FALSE;
 
@@ -87,10 +90,29 @@ void Camera::BasicCameraMove(float speed)
 	Update();
 }
 
+void Camera::MoveXY(float speed)
+{
+	if (KeyboardInput::PushKey(DIK_W) || KeyboardInput::PushKey(DIK_S) || KeyboardInput::PushKey(DIK_D) || KeyboardInput::PushKey(DIK_A))
+	{
+		if (KeyboardInput::PushKey(DIK_W)) { MoveCameraTrack({ 0.0f, 0.0f, +speed }); }
+		else if (KeyboardInput::PushKey(DIK_S)) { MoveCameraTrack({ 0.0f, 0.0f, -speed }); }
+
+		if (KeyboardInput::PushKey(DIK_D)) { MoveCameraTrack({ +speed, 0.0f, 0.0f }); }
+		else if (KeyboardInput::PushKey(DIK_A)) { MoveCameraTrack({ -speed, 0.0f, 0.0f }); }
+	}
+
+	Update();
+}
+
 void Camera::ResetCamera()
 {
 	SetEye({ 0.0f, 0.0f, -distance_ });
 	SetTarget({ 0.0f, 0.0f, 0.0f });
+}
+
+void Camera::DebugDraw()
+{
+	ImGui::DragFloat("FOV", &fov_, 0.1f, 0.1f, 179.9f);
 }
 
 void Camera::UpdateViewMatrix()
@@ -106,7 +128,7 @@ void Camera::UpdateViewMatrix()
 void Camera::UpdateViewProjection()
 {
 	mat_projection_ = XMMatrixPerspectiveFovLH(
-		XMConvertToRadians(60.0f),
+		XMConvertToRadians(fov_),
 		aspect_ratio_,
 		0.1f, 10000.0f
 	);

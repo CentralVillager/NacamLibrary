@@ -15,13 +15,9 @@ class Win32App final : public Singleton<Win32App>
 public:
 
 	// ウィンドウサイズ
-	/*static const int win_width_ = 1280;
-	static const int win_height_ = 720;*/
 	static const XMINT2 SIZE_;
 
 	// ウィンドウサイズの半分
-	/*static const int window_center_x_ = win_width_ / 2;
-	static const int window_center_y_ = win_height_ / 2;*/
 	static const XMINT2 CENTER_;
 
 public:

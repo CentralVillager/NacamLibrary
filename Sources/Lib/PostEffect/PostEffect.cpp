@@ -2,8 +2,8 @@
 #include "../Win32App/Win32App.h"
 #include <d3dcompiler.h>
 #include "../Input/KeyboardInput.h"
-#include "../../App/Utility/Utility.h"
-#include "../../App/Debug/ImGuiManager.h"
+#include "../../App/Utility/NcmUtil.h"
+#include "../../App/Debug/NcmImGui.h"
 #include "../../Lib/PreDraw/PreDraw.h"
 #include "../DirectXBase/DirectXBase.h"
 

@@ -1,5 +1,5 @@
 #include "../Grid/GridRender.h"
-#include "../Utility/Utility.h"
+#include "../Utility/NcmUtil.h"
 
 Camera *GridRender::cam_ptr_ = nullptr;
 
@@ -22,16 +22,16 @@ void GridRender::Initialize(const UINT &grid_num, const UINT &offset, const XMFL
 	float z_pos = (origin_pos.z + (grid_num / 2) * offset) / 2;
 	for (UINT i = 0; i < grid_.size() / 2; i++)
 	{
-		grid_[i].SetVertPos(XMFLOAT3(offset * i + x_pos, 0.0f, -z_pos), (UINT)(Start));
-		grid_[i].SetVertPos(XMFLOAT3(offset * i + x_pos, 0.0f, z_pos), (UINT)(End));
+		grid_[i].SetVertPos(XMFLOAT3(offset * i + x_pos, origin_pos.y, -z_pos), (UINT)(Start));
+		grid_[i].SetVertPos(XMFLOAT3(offset * i + x_pos, origin_pos.y, z_pos), (UINT)(End));
 	}
 
 	// zŽ²‚É‘Î‚µ‚ÄxŽ²•ûŒü‚É“WŠJ
 	z_pos = (origin_pos.z - (grid_num / 2) * offset) / 2;
 	for (UINT i = 0; i < grid_.size() / 2; i++)
 	{
-		grid_[i + grid_.size() / 2].SetVertPos(XMFLOAT3(-x_pos, 0.0f, offset * i + z_pos), (UINT)(Start));
-		grid_[i + grid_.size() / 2].SetVertPos(XMFLOAT3(x_pos, 0.0f, offset * i + z_pos), (UINT)(End));
+		grid_[i + grid_.size() / 2].SetVertPos(XMFLOAT3(-x_pos, origin_pos.y, offset * i + z_pos), (UINT)(Start));
+		grid_[i + grid_.size() / 2].SetVertPos(XMFLOAT3(x_pos, origin_pos.y, offset * i + z_pos), (UINT)(End));
 	}
 }
 

@@ -170,10 +170,10 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Sources\App\Collision\Collision.cpp" />
     <ClCompile Include="Sources\App\Collision\CollisionPrimitive.cpp" />
-    <ClCompile Include="Sources\App\Debug\ImGuiManager.cpp" />
+    <ClCompile Include="Sources\App\Debug\NcmImGui.cpp" />
     <ClCompile Include="Sources\App\FpsManager\FPSManager.cpp" />
     <ClCompile Include="Sources\App\Grid\GridRender.cpp" />
-    <ClCompile Include="Sources\App\Math\Easing\Easing.cpp" />
+    <ClCompile Include="Sources\App\Math\Easing\NcmEasing.cpp" />
     <ClCompile Include="Sources\App\Number\Numbers.cpp" />
     <ClCompile Include="Sources\App\Particle\Emitter.cpp" />
     <ClCompile Include="Sources\App\Particle\EmittersList.cpp" />
@@ -199,7 +199,7 @@
     <ClCompile Include="Sources\App\Unique\Player\Player.cpp" />
     <ClCompile Include="Sources\App\Unique\Reticle\Reticle.cpp" />
     <ClCompile Include="Sources\App\Unique\WaveManager\WaveManager.cpp" />
-    <ClCompile Include="Sources\App\Utility\Utility.cpp" />
+    <ClCompile Include="Sources\App\Utility\NcmUtil.cpp" />
     <ClCompile Include="Sources\Lib\Audio\AudioManager.cpp" />
     <ClCompile Include="Sources\Lib\Camera\Camera.cpp" />
     <ClCompile Include="Sources\Lib\DirectXBase\DirectXBase.cpp" />
@@ -218,7 +218,7 @@
     <ClCompile Include="Sources\Lib\Pipeline\PipelineManager.cpp" />
     <ClCompile Include="Sources\Lib\PostEffect\PostEffect.cpp" />
     <ClCompile Include="Sources\Lib\PreDraw\PreDraw.cpp" />
-    <ClCompile Include="Sources\Lib\Sprite\Sprite.cpp" />
+    <ClCompile Include="Sources\Lib\Sprite\NcmSprite.cpp" />
     <ClCompile Include="Sources\Lib\Win32App\Win32App.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -233,10 +233,10 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Sources\App\Collision\Collision.h" />
     <ClInclude Include="Sources\App\Collision\CollisionPrimitive.h" />
-    <ClInclude Include="Sources\App\Debug\ImGuiManager.h" />
+    <ClInclude Include="Sources\App\Debug\NcmImGui.h" />
     <ClInclude Include="Sources\App\FpsManager\FPSManager.h" />
     <ClInclude Include="Sources\App\Grid\GridRender.h" />
-    <ClInclude Include="Sources\App\Math\Easing\Easing.h" />
+    <ClInclude Include="Sources\App\Math\Easing\NcmEasing.h" />
     <ClInclude Include="Sources\App\Number\Numbers.h" />
     <ClInclude Include="Sources\App\Particle\Emitter.h" />
     <ClInclude Include="Sources\App\Particle\EmittersList.h" />
@@ -264,7 +264,7 @@
     <ClInclude Include="Sources\App\Unique\Player\Player.h" />
     <ClInclude Include="Sources\App\Unique\Reticle\Reticle.h" />
     <ClInclude Include="Sources\App\Unique\WaveManager\WaveManager.h" />
-    <ClInclude Include="Sources\App\Utility\Utility.h" />
+    <ClInclude Include="Sources\App\Utility\NcmUtil.h" />
     <ClInclude Include="Sources\Lib\Audio\AudioManager.h" />
     <ClInclude Include="Sources\Lib\Camera\Camera.h" />
     <ClInclude Include="Sources\Lib\DirectXBase\DirectXBase.h" />
@@ -284,8 +284,9 @@
     <ClInclude Include="Sources\Lib\Pipeline\PipelineManager.h" />
     <ClInclude Include="Sources\Lib\PostEffect\PostEffect.h" />
     <ClInclude Include="Sources\Lib\PreDraw\PreDraw.h" />
-    <ClInclude Include="Sources\Lib\Sprite\Sprite.h" />
+    <ClInclude Include="Sources\Lib\Sprite\NcmSprite.h" />
     <ClInclude Include="Sources\Lib\Win32App\Win32App.h" />
+    <ClInclude Include="Sources\resource.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli" />
@@ -424,6 +425,10 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="NacamLibrary.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\Textures\icon.ico" />
+    <Image Include="resources\textures\icon1.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

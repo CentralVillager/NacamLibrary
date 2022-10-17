@@ -4,7 +4,7 @@
 #include "AbstractScene.h"
 #include "../Particle/Emitter.h"
 #include "../../Lib/Camera/Camera.h"
-#include "../../Lib/Sprite/Sprite.h"
+#include "../../Lib/Sprite/NcmSprite.h"
 #include "../../Lib/Model/Model.h"
 #include "../../Lib/Object3d/Object3d.h"
 

@@ -1,6 +1,6 @@
 #include "MissileManager.h"
 #include "../Sources/App/Collision/Collision.h"
-#include "../Sources/App/Utility/Utility.h"
+#include "../Sources/App/Utility/NcmUtil.h"
 
 using namespace DirectX;
 using namespace NcmUtill;
@@ -49,18 +49,6 @@ void MissileManager::DrawColl()
 
 void MissileManager::DebugDraw()
 {}
-
-auto MissileManager::MoveItr(UINT n)
-{
-	auto itr = missile_list_.begin();
-
-	for (UINT i = 0; i < n; i++)
-	{
-		itr++;
-	}
-
-	return itr;
-}
 
 const bool &MissileManager::GetIsValidity(UINT n)
 {

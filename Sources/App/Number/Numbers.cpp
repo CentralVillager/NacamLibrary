@@ -1,7 +1,7 @@
 #include "Numbers.h"
 #include <string>
 #include <cstring>
-#include "../Debug/ImGuiManager.h"
+#include "../Debug/NcmImGui.h"
 #include "../../Lib/Win32App/Win32App.h"
 
 std::array<int, Numbers::MAX_NUM_> Numbers::numbers_;
@@ -14,16 +14,16 @@ Numbers::~Numbers()
 
 void Numbers::LoadResources()
 {
-	numbers_[0] = Sprite::LoadTex(L"Resources/Textures/numbers/0.png");
-	numbers_[1] = Sprite::LoadTex(L"Resources/Textures/numbers/1.png");
-	numbers_[2] = Sprite::LoadTex(L"Resources/Textures/numbers/2.png");
-	numbers_[3] = Sprite::LoadTex(L"Resources/Textures/numbers/3.png");
-	numbers_[4] = Sprite::LoadTex(L"Resources/Textures/numbers/4.png");
-	numbers_[5] = Sprite::LoadTex(L"Resources/Textures/numbers/5.png");
-	numbers_[6] = Sprite::LoadTex(L"Resources/Textures/numbers/6.png");
-	numbers_[7] = Sprite::LoadTex(L"Resources/Textures/numbers/7.png");
-	numbers_[8] = Sprite::LoadTex(L"Resources/Textures/numbers/8.png");
-	numbers_[9] = Sprite::LoadTex(L"Resources/Textures/numbers/9.png");
+	numbers_[0] = NcmSprite::LoadTex(L"Resources/Textures/numbers/0.png");
+	numbers_[1] = NcmSprite::LoadTex(L"Resources/Textures/numbers/1.png");
+	numbers_[2] = NcmSprite::LoadTex(L"Resources/Textures/numbers/2.png");
+	numbers_[3] = NcmSprite::LoadTex(L"Resources/Textures/numbers/3.png");
+	numbers_[4] = NcmSprite::LoadTex(L"Resources/Textures/numbers/4.png");
+	numbers_[5] = NcmSprite::LoadTex(L"Resources/Textures/numbers/5.png");
+	numbers_[6] = NcmSprite::LoadTex(L"Resources/Textures/numbers/6.png");
+	numbers_[7] = NcmSprite::LoadTex(L"Resources/Textures/numbers/7.png");
+	numbers_[8] = NcmSprite::LoadTex(L"Resources/Textures/numbers/8.png");
+	numbers_[9] = NcmSprite::LoadTex(L"Resources/Textures/numbers/9.png");
 }
 
 void Numbers::LoadNumbers()
@@ -56,7 +56,7 @@ void Numbers::LoadNumbers()
 
 		DWORD r = GetLastError();
 
-		numbers_[i] = Sprite::LoadTex(w_path);
+		numbers_[i] = NcmSprite::LoadTex(w_path);
 	}
 }
 
@@ -74,7 +74,7 @@ void Numbers::DebugDraw()
 	ImGui::Dummy(ImVec2(10.0f, 10.0f));
 	ImGui::Text("Texture Config");
 
-	ImGuiManager::DragFloat2("Offset", offset_, 0.1f, 0.0f, 1000.0f);
+	NcmImGui::DragFloat2("Offset", offset_, 0.1f, 0.0f, 1000.0f);
 	ImGui::DragFloat("Tracking", &tracking_, 0.1f, -100.0f, 100.0f);
 }
 
@@ -82,12 +82,6 @@ void Numbers::DrawNumber(int number, float scale, HorizontalAlignment h_align, V
 {
 	using enum HorizontalAlignment;
 	using enum VerticalAlignment;
-
-	// スケールを変更
-	/*for (UINT i = 0; i < numbers_.size(); i++)
-	{
-		Sprite::SetScale(numbers_[i], scale);
-	}*/
 
 	// 数字を桁ごとに格納するためのコンテナ
 	std::vector<int> digit;
@@ -104,34 +98,34 @@ void Numbers::DrawNumber(int number, float scale, HorizontalAlignment h_align, V
 
 		for (UINT i = 0; i < digit.size(); i++)
 		{
-			Sprite::SetScale(numbers_[digit[i]], scale);
+			NcmSprite::SetScale(numbers_[digit[i]], scale);
 
 			// 数字テクスチャのサイズを取得
-			XMFLOAT2 size = Sprite::GetSize(numbers_[digit[i]]);
+			XMFLOAT2 size = NcmSprite::GetSize(numbers_[digit[i]]);
 
 			XMFLOAT2 final_pos{};
 			final_pos.x = size_stack;
 			final_pos.y = Win32App::SIZE_.y - size.y;
 
-			Sprite::DrawTex(numbers_[digit[i]],
+			NcmSprite::DrawTex(numbers_[digit[i]],
 				{ (final_pos.x + (i * tracking_)) + offset_.x, final_pos.y + offset_.y });
 
 			size_stack += size.x;
 
-			Sprite::ResetScale(numbers_[digit[i]], scale);
+			NcmSprite::ResetScale(numbers_[digit[i]], scale);
 		}
 	}
 
 	if (h_align == Right)
 	{
-		float size_stack = Win32App::SIZE_.x;
+		float size_stack = (float)(Win32App::SIZE_.x);
 
 		for (UINT i = 0; i < digit.size(); i++)
 		{
-			Sprite::SetScale(numbers_[digit[i]], scale);
+			NcmSprite::SetScale(numbers_[digit[i]], scale);
 
 			// 数字テクスチャのサイズを取得
-			XMFLOAT2 size = Sprite::GetSize(numbers_[digit[i]]);
+			XMFLOAT2 size = NcmSprite::GetSize(numbers_[digit[i]]);
 
 			size_stack -= size.x;
 
@@ -139,22 +133,16 @@ void Numbers::DrawNumber(int number, float scale, HorizontalAlignment h_align, V
 			final_pos.x = size_stack;
 			final_pos.y = Win32App::SIZE_.y - size.y;
 
-			Sprite::DrawTex(numbers_[digit[i]],
+			NcmSprite::DrawTex(numbers_[digit[i]],
 
 				{ (final_pos.x - (i * tracking_)) - offset_.x, final_pos.y - offset_.y });
 
-			Sprite::ResetScale(numbers_[digit[i]], scale);
+			NcmSprite::ResetScale(numbers_[digit[i]], scale);
 		}
 	}
-
-	// スケールを元に戻す
-	/*for (UINT i = 0; i < numbers_.size(); i++)
-	{
-		Sprite::ResetScale(numbers_[i], scale);
-	}*/
 }
 
-void Numbers::DivDigit(std::vector<int> *dist, const int &num)
+void Numbers::DivDigit(std::vector<int> *dist, const int num)
 {
 	for (int tmp = num; tmp > 0;)
 	{
@@ -163,6 +151,11 @@ void Numbers::DivDigit(std::vector<int> *dist, const int &num)
 
 		// 位を上げる
 		tmp /= 10;
+	}
+
+	if (num == 0)
+	{
+		dist->push_back(0);
 	}
 }
 

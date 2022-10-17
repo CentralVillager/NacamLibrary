@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 
-class Sprite
+class NcmSprite
 {
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	using XMINT2 = DirectX::XMINT2;

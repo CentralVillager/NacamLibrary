@@ -1,6 +1,6 @@
 #include "NacamLib.h"
 #include <wrl.h>
-#include "../Sprite/Sprite.h"
+#include "../Sprite/NcmSprite.h"
 #include "../Audio/AudioManager.h"
 #include "../Input/InputManager.h"
 #include "../Input/KeyboardInput.h"
@@ -11,11 +11,12 @@
 #include "../Fbx/FbxLoader.h"
 #include "../Fbx/FbxObject3d.h"
 #include "../DrawProc/DrawProc.h"
-#include "../../App/Debug/ImGuiManager.h"
+#include "../../App/Debug/NcmImGui.h"
 #include "../../App/Scene/SceneManager/SceneManager.h"
 #include "../../App/FpsManager/FPSManager.h"
 #include "../../App/Scene/AbstractScene.h"
 #include "../../App/Scene/TemporaryScene.h"
+#include "../Sources/App/Math/Easing/NcmEasing.h"
 
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
@@ -27,7 +28,7 @@ NacamLib::~NacamLib()
 {
 	ControllerInput::Finalize();
 	KeyboardInput::Finalize();
-	Sprite::TermSprite();
+	NcmSprite::TermSprite();
 }
 
 void NacamLib::NacamLib_Initialize(SceneName initial_scene_name)
@@ -95,7 +96,7 @@ void NacamLib::NacamLib_Draw()
 	FpsManager::ObserveFps();
 
 	/*-- ImGuiの描画前処理 --*/
-	ImGuiManager::PreDraw();
+	NcmImGui::PreDraw();
 
 	/*-- デバッグ描画 --*/
 	SceneManager::GetSceneStack().top()->DebugDraw();
@@ -103,7 +104,7 @@ void NacamLib::NacamLib_Draw()
 	SceneManager::DebugDraw();
 
 	/*-- ImGuiの描画 --*/
-	ImGuiManager::Draw(cmd_list_.Get());
+	NcmImGui::Draw(cmd_list_.Get());
 
 #endif
 
@@ -155,11 +156,12 @@ void NacamLib::GameObjectInitialize()
 	// Model, Object3d, Sprite, AudioMgr自体の初期化
 	Object3d::StaticInitialize(device_.Get(), cmd_list_.Get());
 	Model::StaticInitialize();
-	Sprite::StaticInitialize(device_.Get(), cmd_list_.Get());
+	NcmSprite::StaticInitialize(device_.Get(), cmd_list_.Get());
 	AudioManager::StaticInitialize();
-	//PrimitiveObject::StaticInitialize(device_.Get(), cmd_list_.Get());
 	Line::StaticInitialize();
 	IndirectObject3d::StaticInitialize(*pipeline_mgr_);
+
+	NcmEasing::StaticInit();
 
 	// FBXLoader初期化
 	FbxLoader::GetInstance()->Initialize(device_.Get());
@@ -173,7 +175,7 @@ void NacamLib::GameObjectInitialize()
 void NacamLib::ImGuiInitialize()
 {
 	// ImGui初期化
-	ImGuiManager::Initialize(device_.Get());
+	NcmImGui::Initialize(device_.Get());
 }
 
 void NacamLib::SceneInitialize(SceneName initial_scene_name)

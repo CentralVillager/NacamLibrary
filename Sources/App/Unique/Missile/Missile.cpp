@@ -1,5 +1,5 @@
 #include "Missile.h"
-#include "../Sources/App/Utility/Utility.h"
+#include "../Sources/App/Utility/NcmUtil.h"
 #include "../Sources/Lib/NacamLib/NacamLib.h"
 #include "../../../Lib/NacamError/NacamError.h"
 

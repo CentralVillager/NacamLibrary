@@ -78,9 +78,6 @@
     <Filter Include="Application\Debug\ImGui">
       <UniqueIdentifier>{aa5ddb75-53a3-4688-b68f-31386ade2c9a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Debug\ImGui\ImGuiManager">
-      <UniqueIdentifier>{b509433a-f11a-4bf4-b60b-f303f38b54ed}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application\Debug\ImGui\Include">
       <UniqueIdentifier>{a90f967d-a211-4a32-9830-e8397009090b}</UniqueIdentifier>
     </Filter>
@@ -177,6 +174,9 @@
     <Filter Include="Application\Unique\Reticle">
       <UniqueIdentifier>{35b2469b-5bad-44bc-9091-67fbb9b8581c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\Debug\ImGui\NcmImGui">
+      <UniqueIdentifier>{b509433a-f11a-4bf4-b60b-f303f38b54ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -209,11 +209,8 @@
     <ClCompile Include="Sources\App\Collision\CollisionPrimitive.cpp">
       <Filter>Application\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\App\Debug\ImGuiManager.cpp">
-      <Filter>Application\Debug\ImGui\ImGuiManager</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\App\Math\Easing\Easing.cpp">
-      <Filter>Application\NacamMath\Easing</Filter>
+    <ClCompile Include="Sources\App\Debug\NcmImGui.cpp">
+      <Filter>Application\Debug\ImGui\NcmImGui</Filter>
     </ClCompile>
     <ClCompile Include="Sources\App\FpsManager\FPSManager.cpp">
       <Filter>Application\FpsManager</Filter>
@@ -287,7 +284,7 @@
     <ClCompile Include="Sources\App\Unique\WaveManager\WaveManager.cpp">
       <Filter>Application\Unique\WaveManager</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\App\Utility\Utility.cpp">
+    <ClCompile Include="Sources\App\Utility\NcmUtil.cpp">
       <Filter>Application\Utility</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Lib\Audio\AudioManager.cpp">
@@ -347,7 +344,7 @@
     <ClCompile Include="Sources\Lib\PreDraw\PreDraw.cpp">
       <Filter>Library\PreDraw</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Lib\Sprite\Sprite.cpp">
+    <ClCompile Include="Sources\Lib\Sprite\NcmSprite.cpp">
       <Filter>Library\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Lib\Win32App\Win32App.cpp">
@@ -359,11 +356,11 @@
     <ClCompile Include="Sources\App\Unique\LockOnSystem\LockOnSystem.cpp">
       <Filter>Application\Unique\LockOnSystem</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\App\Math\Easing\NcmEasing.cpp">
+      <Filter>Application\NacamMath\Easing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="resource.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="imgui\imconfig.h">
       <Filter>Application\Debug\ImGui\Include</Filter>
     </ClInclude>
@@ -394,11 +391,8 @@
     <ClInclude Include="Sources\App\Collision\CollisionPrimitive.h">
       <Filter>Application\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\App\Debug\ImGuiManager.h">
-      <Filter>Application\Debug\ImGui\ImGuiManager</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Math\Easing\Easing.h">
-      <Filter>Application\NacamMath\Easing</Filter>
+    <ClInclude Include="Sources\App\Debug\NcmImGui.h">
+      <Filter>Application\Debug\ImGui\NcmImGui</Filter>
     </ClInclude>
     <ClInclude Include="Sources\App\FpsManager\FPSManager.h">
       <Filter>Application\FpsManager</Filter>
@@ -478,7 +472,7 @@
     <ClInclude Include="Sources\App\Singleton\Singleton.h">
       <Filter>Application\Utility\Singleton</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\App\Utility\Utility.h">
+    <ClInclude Include="Sources\App\Utility\NcmUtil.h">
       <Filter>Application\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Lib\Audio\AudioManager.h">
@@ -538,7 +532,7 @@
     <ClInclude Include="Sources\Lib\PreDraw\PreDraw.h">
       <Filter>Library\PreDraw</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Lib\Sprite\Sprite.h">
+    <ClInclude Include="Sources\Lib\Sprite\NcmSprite.h">
       <Filter>Library\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Lib\Win32App\Win32App.h">
@@ -552,6 +546,13 @@
     </ClInclude>
     <ClInclude Include="Sources\App\Unique\LockOnSystem\LockOnSystem.h">
       <Filter>Application\Unique\LockOnSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\resource.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Sources\App\Math\Easing\NcmEasing.h">
+      <Filter>Application\NacamMath\Easing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -643,5 +644,13 @@
     <ResourceCompile Include="NacamLibrary.rc">
       <Filter>リソース ファイル</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\textures\icon1.ico">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="Resources\Textures\icon.ico">
+      <Filter>リソース ファイル</Filter>
+    </Image>
   </ItemGroup>
 </Project>

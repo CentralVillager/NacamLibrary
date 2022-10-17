@@ -1,5 +1,5 @@
 #include "Particle.h"
-#include "../Debug/ImGuiManager.h"
+#include "../Debug/NcmImGui.h"
 
 Particle::Particle()
 {

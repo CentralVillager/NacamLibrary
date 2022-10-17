@@ -1,4 +1,4 @@
-#include "../Utility/Utility.h"
+#include "../Utility/NcmUtil.h"
 #include <random>
 
 using namespace DirectX;

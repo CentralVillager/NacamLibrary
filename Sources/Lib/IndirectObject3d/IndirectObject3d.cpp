@@ -2,8 +2,8 @@
 #include "../IndirectObject3d/IndirectObject3d.h"
 #include "../DirectXBase/DirectXBase.h"
 #include "../Input/KeyboardInput.h"
-#include "../../App/Utility/Utility.h"
-#include "../../App/Debug/ImGuiManager.h"
+#include "../../App/Utility/NcmUtil.h"
+#include "../../App/Debug/NcmImGui.h"
 
 #pragma comment(lib, "d3dcompiler.lib")
 

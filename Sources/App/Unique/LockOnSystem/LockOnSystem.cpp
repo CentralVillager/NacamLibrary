@@ -1,6 +1,6 @@
 #include "LockOnSystem.h"
 #include "../Player/Player.h"
-#include "../../Debug/ImGuiManager.h"
+#include "../../Debug/NcmImGui.h"
 
 using namespace DirectX;
 
@@ -26,16 +26,14 @@ void LockOnSystem::LoadResources()
 	}
 }
 
-void LockOnSystem::Initialize(Player *player, EnemiesList *enemies_ptr, UINT multi_tgt_n)
+void LockOnSystem::Initialize(Player *player, EnemiesList *enemies_ptr)
 {
 	player_ptr_ = player;
 	enemies_ptr_ = enemies_ptr;
 
-	current_tgt_num_ = multi_tgt_n;
-	multi_target_num_ = multi_tgt_n;
 	for (UINT i = 0; i < multi_target_num_; i++)
 	{
-		AddTargetNum();
+		//AddTargetNum();
 	}
 
 	numbers_->Initialize();
@@ -91,8 +89,6 @@ void LockOnSystem::ResetTargetNum()
 	markers_.clear();
 	tgt_datas_.clear();
 	current_tgt_num_ = 0;
-
-	AddTargetNum();
 }
 
 void LockOnSystem::CalcNearestTargets(const XMFLOAT3 &player_pos, EnemiesList &enemies)

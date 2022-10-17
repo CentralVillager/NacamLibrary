@@ -1,6 +1,6 @@
 #include "RepulsionDemoScene.h"
 #include "../../Collision/Collision.h"
-#include "../../Debug/ImGuiManager.h"
+#include "../../Debug/NcmImGui.h"
 #include "../../../Lib/Input/KeyboardInput.h"
 
 using namespace DirectX;

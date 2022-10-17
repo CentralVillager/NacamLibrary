@@ -1,6 +1,7 @@
 #include "Player.h"
-#include "../../Utility/Utility.h"
-#include "../../Debug/ImGuiManager.h"
+#include "../../Utility/NcmUtil.h"
+#include "../../Debug/NcmImGui.h"
+#include "../../Math/Easing/NcmEasing.h"
 #include "../../../Lib/Input/KeyboardInput.h"
 
 using namespace DirectX;
@@ -33,19 +34,38 @@ void Player::LoadResources()
 
 void Player::Initialize(MissileManager *mi_mgr, LockOnSystem *lockon_sys)
 {
+	// 他クラス情報を格納
 	mi_mgr_ = mi_mgr;
 	lockon_sys_ = lockon_sys;
 
+	// 描画データの初期化
 	object_->Initialize();
 	object_->SetModel(model_.get());
 	object_->SetPosition(XMFLOAT3(0, 0, 0));
 	object_->SetRotation(XMFLOAT3(0, 180.0f, 0));
 	object_->SetScale(1.0f);
-
 	sphere_obj_->Initialize();
 	sphere_obj_->SetModel(sphere_model_.get());
 
+	// コリジョンの更新
 	UpdateCollision();
+
+	// イージング関連の初期化
+	EaseArgs args;
+	args.init_value = 0.0f;
+	args.total_move = 45.0f;
+	args.ease_type = EaseType::OutCubic;
+	ease_rot_right_ = NcmEasing::RegisterEaseData(args);
+
+	args.init_value = 0.0f;
+	args.total_move = -45.0f;
+	args.ease_type = EaseType::OutCubic;
+	ease_rot_left_ = NcmEasing::RegisterEaseData(args);
+
+	args.init_value = 0.0f;
+	args.total_move = -45.0f;
+	args.ease_type = EaseType::OutCubic;
+	ease_reset_rot_ = NcmEasing::RegisterEaseData(args);
 }
 
 void Player::Finalize()
@@ -61,17 +81,16 @@ void Player::Update()
 	{
 		FireMissile();
 		lockon_sys_->ResetTargetNum();
+		count = 0;
 	}
 
 	object_->Update();
-	//lockon_sys_->Update();
 	UpdateCollision();
 }
 
 void Player::Draw()
 {
 	object_->Draw();
-	//lockon_sys_->Draw();
 }
 
 void Player::DrawColl()
@@ -83,6 +102,7 @@ void Player::DebugDraw()
 {
 	ImGui::Text("count : %d", count);
 	ImGui::DragInt("charge_time", &charge_time);
+	ImGui::Text("ease_value : %f", NcmEasing::GetValue(0));
 }
 
 void Player::FireMissile()
@@ -102,9 +122,6 @@ void Player::FireMissile()
 
 void Player::ChargeMissile()
 {
-	/*const UINT charge_time = 100;
-	static int count = 0;*/
-
 	count++;
 
 	if (count >= charge_time)
@@ -158,6 +175,52 @@ void Player::MoveXY(float speed)
 	}
 }
 
+void Player::MoveXZ(float speed)
+{
+	// WASDの入力を検知したら
+	//if (KeyboardInput::PushKey(DIK_W) || KeyboardInput::PushKey(DIK_S) || KeyboardInput::PushKey(DIK_D) || KeyboardInput::PushKey(DIK_A))
+	{
+		// 現在の位置を取得
+		XMFLOAT3 pos = object_->GetPosition();
+
+		// 前後移動
+		if (KeyboardInput::PushKey(DIK_W)) { pos.z += speed; }
+		else if (KeyboardInput::PushKey(DIK_S)) { pos.z -= speed; }
+
+		// 左右移動
+		if (KeyboardInput::PushKey(DIK_D))
+		{
+			pos.x += speed;
+			RotPoseRight();
+			is_released = false;
+		}
+		else if (KeyboardInput::PushKey(DIK_A))
+		{
+			pos.x -= speed;
+			RotPoseLeft();
+			is_released = false;
+		}
+
+		// 位置を更新
+		object_->SetPosition(pos);
+	}
+	if (KeyboardInput::ReleaseKey(DIK_A) || KeyboardInput::ReleaseKey(DIK_D))
+	{
+		is_released = true;
+		NcmEasing::ResetTime(ease_rot_right_);
+		NcmEasing::ResetTime(ease_rot_left_);
+	}
+
+	if (is_released)
+	{
+		ResetRotPose();
+	}
+	else
+	{
+		NcmEasing::ResetTime(ease_reset_rot_);
+	}
+}
+
 void Player::UpdateCollision()
 {
 	coll_.center = XMLoadFloat3(&object_->GetPosition());
@@ -166,4 +229,43 @@ void Player::UpdateCollision()
 	sphere_obj_->SetPosition(ToFloat3(coll_.center));
 	sphere_obj_->SetScale(coll_.radius);
 	sphere_obj_->Update();
+}
+
+void Player::RotPoseLeft()
+{
+	is_already_ = false;
+	NcmEasing::UpdateValue(ease_rot_left_);
+	object_->SetRotation(XMFLOAT3(0, 180.0f, NcmEasing::GetValue(ease_rot_left_)));
+}
+
+void Player::RotPoseRight()
+{
+	is_already_ = false;
+	NcmEasing::UpdateValue(ease_rot_right_);
+	object_->SetRotation(XMFLOAT3(0, 180.0f, NcmEasing::GetValue(ease_rot_right_)));
+}
+
+void Player::ResetRotPose()
+{
+	if (!is_already_)
+	{
+		float rot = object_->GetRotation().z;
+		NcmEasing::SetInitValue(ease_reset_rot_, rot);
+
+		// それが正なら
+		if (IsPlus(rot))
+		{
+			NcmEasing::SetTotalMove(ease_reset_rot_, -45.0f);
+		}
+		// それが負なら
+		else if (IsMinus(rot))
+		{
+			NcmEasing::SetTotalMove(ease_reset_rot_, 45.0f);
+		}
+
+		is_already_ = true;
+	}
+
+	NcmEasing::UpdateValue(ease_reset_rot_);
+	object_->SetRotation(XMFLOAT3(0, 180.0f, NcmEasing::GetValue(ease_reset_rot_)));
 }

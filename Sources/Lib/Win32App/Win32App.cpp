@@ -1,4 +1,5 @@
 #include "../Win32App/Win32App.h"
+#include "../Sources/resource.h"
 
 using namespace DirectX;
 
@@ -12,12 +13,15 @@ extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND, UINT, WPARAM, LPARAM);
 
 void Win32App::StaticInitialize()
 {
+	//IDI_MAINICON ""
+
 	// ウィンドウクラスの設定
 	w.cbSize = sizeof(WNDCLASSEX);
 	w.lpfnWndProc = static_cast<WNDPROC>(WindowProc);	// ウィンドウプロシージャを指定
 	w.lpszClassName = L"NacamLibrary";					// ウィンドウクラス名
 	w.hInstance = GetModuleHandle(nullptr);				// ウィンドウハンドル
 	w.hCursor = LoadCursor(NULL, IDC_ARROW);			// カーソル指定
+	w.hIcon = LoadIcon(w.hInstance, MAKEINTRESOURCE("MAINICON"));
 
 	RegisterClassEx(&w);								// ウィンドウクラスをOSに指定
 

@@ -5,7 +5,7 @@
 #include "../../App/Scene/AbstractScene.h"
 #include "../../Lib/DirectXBase/DirectXBase.h"
 #include "../../Lib/Camera/Camera.h"
-#include "../../Lib/Sprite/Sprite.h"
+#include "../../Lib/Sprite/NcmSprite.h"
 #include "../Grid/GridRender.h"
 #include "../Unique/Player/Player.h"
 #include "../Unique/Enemy/Enemy.h"
@@ -63,14 +63,17 @@ private:
 
 	bool use_keybind_ = true;
 	int key_bind_ = 0;
-	bool is_wire_ = false;
-	bool draw_dust_ = false;
+	bool is_wire_ = true;
+	bool draw_dust_ = true;
 	bool draw_coll_ = false;
 	bool draw_numbers_ = false;
 
 	bool is_result_ = false;
 
 	float ImGui_detection_range_ = 1000.0f;
+
+	static constexpr float SPEED_ = 2.0f;
+	int player_camera_speed_;
 
 public:
 

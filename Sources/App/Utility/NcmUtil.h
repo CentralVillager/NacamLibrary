@@ -94,11 +94,13 @@ namespace NcmUtill
 	/// <returns></returns>
 	inline static auto IteratorMover(auto itr, int n)
 	{
-		for (UINT i = 0; i < n; i++)
+		for (int i = 0; i < n; i++)
 		{
 			itr++;
 		}
 
 		return itr;
 	}
+
+#pragma endregion
 }

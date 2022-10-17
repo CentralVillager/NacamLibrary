@@ -1,7 +1,8 @@
 #pragma once
 #include "../Input/InputManager.h"
 
-class KeyboardInput final : public Singleton<KeyboardInput> {
+class KeyboardInput final : public Singleton<KeyboardInput>
+{
 	friend Singleton<KeyboardInput>;
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
@@ -12,8 +13,10 @@ private:
 	static ComPtr<IDirectInput8> dinput_;
 	static ComPtr<IDirectInputDevice8> dev_keyboard_;
 
-	static BYTE key_[256];
-	static BYTE old_key_[256];
+	static constexpr int MAX_KEY_NUM_ = 256;
+
+	static BYTE key_[MAX_KEY_NUM_];
+	static BYTE old_key_[MAX_KEY_NUM_];
 
 	static KeyboardInput *input_;
 

@@ -1,7 +1,7 @@
 #include "PostEffectDemoScene.h"
 #include "../../../Lib/DrawProc/DrawProc.h"
 #include "../../../Lib/Input/KeyboardInput.h"
-#include "../../Debug/ImGuiManager.h"
+#include "../../Debug/NcmImGui.h"
 
 PostEffectDemoScene::PostEffectDemoScene()
 {
@@ -16,7 +16,7 @@ PostEffectDemoScene::PostEffectDemoScene()
 	object_ = make_unique<Object3d>();
 
 	// ”wŒi‚Ì¶¬
-	back_ = Sprite::LoadTex(L"Resources/Textures/background.png");
+	back_ = NcmSprite::LoadTex(L"Resources/Textures/background.png");
 }
 
 PostEffectDemoScene::~PostEffectDemoScene()
@@ -62,7 +62,7 @@ void PostEffectDemoScene::Update()
 
 void PostEffectDemoScene::Draw()
 {
-	/*Sprite::PreDraw();
+	/*NcmSprite::PreDraw();
 	back_->Draw();
 	DrawProc::ClearDepthBuffer();*/
 

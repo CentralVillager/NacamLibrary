@@ -3,6 +3,7 @@
 #include "../../Lib/Input/KeyboardInput.h"
 #include "../Scene/SceneManager/SceneManager.h"
 #include "../Sources/App/Collision/Collision.h"
+#include "../Sources/App/Math/Easing/NcmEasing.h"
 
 MainScene::MainScene()
 {
@@ -21,8 +22,8 @@ MainScene::MainScene()
 	numbers_ = make_unique<Numbers>();
 
 	// テクスチャのロード
-	clear_ = Sprite::LoadTex(L"Resources/Textures/clear.png");
-	space_ = Sprite::LoadTex(L"Resources/Textures/space.png");
+	clear_ = NcmSprite::LoadTex(L"Resources/Textures/clear.png");
+	space_ = NcmSprite::LoadTex(L"Resources/Textures/space.png");
 
 	// 各リソースのロード
 	model_sky_dome_->LoadObjModel("Resources/SkyDome/", "skydome.obj", "skydome.mtl");
@@ -47,23 +48,25 @@ void MainScene::Initialize()
 	camera_->Initialize();
 	camera_->SetDistance(20.0f);
 	camera_->MoveCameraTrack(XMFLOAT3(0, 10.0f, 0));
-	camera_->MoveEye(XMFLOAT3(0, 10.0f, 0));
+	camera_->MoveEye(XMFLOAT3(0, 10.0f, -10.0f));
 	camera_->Update();
 
+	// 天球の初期化
 	sky_dome_->Initialize();
 	sky_dome_->SetModel(model_sky_dome_.get());
 	sky_dome_->SetScale(50.0f);
 	sky_dome_->Update();
 
-	lockon_sys_->Initialize(player_.get(), ene_list_.get(), 1);
+	// 各ゲームオブジェクトの初期化
+	lockon_sys_->Initialize(player_.get(), ene_list_.get());
 	missile_mgr_->Initialize(lockon_sys_.get());
 	player_->Initialize(missile_mgr_.get(), lockon_sys_.get());
-	grid_->Initialize(200, 10, XMFLOAT3(0, 0, 0));
+	grid_->Initialize(200, 10, XMFLOAT3(0, -20.0f, 0));
 	reticle_->Initialize();
 	numbers_->Initialize();
 	for (UINT i = 0; i < grid_floor_.size(); i++)
 	{
-		grid_floor_[i].Initialize(200, 10, XMFLOAT3(0, 0, i * 1000));
+		grid_floor_[i].Initialize(200, 10, XMFLOAT3(0, 0, (float)(i) * 1000));
 	}
 
 	// enemyの生成
@@ -82,13 +85,14 @@ void MainScene::Initialize()
 	p.use_life_ = false;
 	dust_->SetEmitterArgs(p);
 
-	Sprite::SetSize(clear_, { 1280, 720 });
+	// スプライトの初期化
+	NcmSprite::SetSize(clear_, { 1280, 720 });
 
 	XMINT2 pos = { Win32App::CENTER_.x, 650 };
-	XMFLOAT2 size = Sprite::GetSize(space_);
-	Sprite::SetPos(space_, pos);
-	Sprite::SetSize(space_, { size.x / 2, size.y / 2 });
-	Sprite::SetAnchorPoint(space_, { 0.5f, 0.5f });
+	XMFLOAT2 size = NcmSprite::GetSize(space_);
+	NcmSprite::SetPos(space_, pos);
+	NcmSprite::SetSize(space_, { size.x / 2, size.y / 2 });
+	NcmSprite::SetAnchorPoint(space_, { 0.5f, 0.5f });
 
 	// キーバインド機能を使用するか
 #ifdef _DEBUG
@@ -99,6 +103,12 @@ void MainScene::Initialize()
 #endif
 
 	is_result_ = false;
+
+	EaseArgs ease;
+	ease.ease_type = EaseType::OutCirc;
+	ease.init_value = 0.0f;
+	ease.total_move = SPEED_;
+	player_camera_speed_ = NcmEasing::RegisterEaseData(ease);
 }
 
 void MainScene::Finalize()
@@ -126,7 +136,32 @@ void MainScene::Update()
 				lockon_sys_->AddTargetNum();
 			}*/
 
-			player_->Move(1.0f);
+			/*if (KeyboardInput::PushKey(DIK_W) || KeyboardInput::PushKey(DIK_S) || KeyboardInput::PushKey(DIK_D) || KeyboardInput::PushKey(DIK_A))
+			{
+				NcmEasing::UpdateValue(player_camera_speed_);
+			}
+			else if (KeyboardInput::ReleaseKey(DIK_W) || KeyboardInput::ReleaseKey(DIK_S) || KeyboardInput::ReleaseKey(DIK_D) || KeyboardInput::ReleaseKey(DIK_A))
+			{
+				NcmEasing::ResetTime(player_camera_speed_);
+			}
+			else
+			{
+				NcmEasing::SetInitValue(player_camera_speed_, SPEED_);
+				NcmEasing::SetTotalMove(player_camera_speed_, -SPEED_ / 2);
+				NcmEasing::UpdateValue(player_camera_speed_);
+			}*/
+
+			if (KeyboardInput::PushKey(DIK_W) || KeyboardInput::PushKey(DIK_S) || KeyboardInput::PushKey(DIK_D) || KeyboardInput::PushKey(DIK_A))
+			{
+				NcmEasing::UpdateValue(player_camera_speed_);
+			}
+			else
+			{
+				NcmEasing::ResetTime(player_camera_speed_);
+			}
+
+			player_->MoveXZ(NcmEasing::GetValue(player_camera_speed_));
+			camera_->MoveXY(NcmEasing::GetValue(player_camera_speed_));
 		}
 		else if (key_bind_ == (int)(KeyBind::AddEnemy))
 		{
@@ -189,12 +224,10 @@ void MainScene::Update()
 		}
 	}
 
-	player_->MoveXY(1.0f);
-
-	for (auto &i : grid_floor_)
+	/*for (auto &i : grid_floor_)
 	{
 		i.MoveMinusZ();
-	}
+	}*/
 
 	// 各オブジェクト更新処理
 	player_->Update();
@@ -252,10 +285,10 @@ void MainScene::Draw()
 	{
 		if (CheckDoDisplay())
 		{
-			Sprite::DrawTex(space_);
+			NcmSprite::DrawTex(space_);
 		}
 
-		Sprite::DrawTex(clear_);
+		NcmSprite::DrawTex(clear_);
 	}
 
 	using enum HorizontalAlignment;
@@ -299,6 +332,8 @@ void MainScene::DebugDraw()
 	}
 
 	numbers_->DebugDraw();
+
+	camera_->DebugDraw();
 }
 
 void MainScene::CollisionProcess()

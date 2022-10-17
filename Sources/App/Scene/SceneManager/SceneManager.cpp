@@ -11,7 +11,7 @@
 #include "../Demo/RepulsionDemoScene.h"
 #include "../Demo/ExecuteIndirectDemoScene.h"
 #include "../Demo/MathDemoScene.h"
-#include "../../Debug/ImGuiManager.h"
+#include "../../Debug/NcmImGui.h"
 
 stack<shared_ptr<AbstractScene>> SceneManager::scene_stack_;
 std::array<SceneName, (int)(SceneManager::SceneState::StateNum)> SceneManager::scene_state_;

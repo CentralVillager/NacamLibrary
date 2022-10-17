@@ -1,6 +1,6 @@
 #include "../Line/Line.h"
 #include "../DirectXBase/DirectXBase.h"
-#include "../../App/Debug/ImGuiManager.h"
+#include "../../App/Debug/NcmImGui.h"
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
@@ -144,5 +144,5 @@ void Line::Draw()
 
 void Line::DebugDraw()
 {
-	ImGuiManager::DragFloat3("pos", vertices_data_[0].pos, 0.1f, -10.0f, 10.0f);
+	NcmImGui::DragFloat3("pos", vertices_data_[0].pos, 0.1f, -10.0f, 10.0f);
 }

@@ -1,5 +1,5 @@
 #include "MathDemoScene.h"
-#include "../../Math/Easing/Easing.h"
+#include "../../Math/Easing/NcmEasing.h"
 #include "../../Collision/CollisionPrimitive.h"
 #include "../../../Lib/PreDraw/PreDraw.h"
 #include "../../../Lib/Win32App/Win32App.h"
@@ -226,17 +226,17 @@ using namespace DirectX;
 //void MathDemoScene::DebugDraw() {
 //
 //	XMFLOAT3 pos = { obj_[0].pos.x, obj_[0].pos.y, 0};
-//	ImGuiManager::DragFloat3("pos", pos, 1.0f, -30.0f, 30.0f);
+//	NcmImGui::DragFloat3("pos", pos, 1.0f, -30.0f, 30.0f);
 //	obj_[0].pos.x = pos.x;
 //	obj_[0].pos.y = pos.y;
 //
 //	XMFLOAT3 pos1 = { obj_[1].pos.x, obj_[1].pos.y, 0};
-//	ImGuiManager::DragFloat3("pos1", pos1, 1.0f, -30.0f, 30.0f);
+//	NcmImGui::DragFloat3("pos1", pos1, 1.0f, -30.0f, 30.0f);
 //	obj_[1].pos.x = pos1.x;
 //	obj_[1].pos.y = pos1.y;
 //
 //	XMFLOAT3 pos2 = { obj_[2].pos.x, obj_[2].pos.y, 0 };
-//	ImGuiManager::DragFloat3("pos2", pos2, 1.0f, -30.0f, 30.0f);
+//	NcmImGui::DragFloat3("pos2", pos2, 1.0f, -30.0f, 30.0f);
 //	obj_[2].pos.x = pos2.x;
 //	obj_[2].pos.y = pos2.y;
 //}
@@ -382,5 +382,5 @@ void MathDemoScene::Draw() {
 
 void MathDemoScene::DebugDraw() {
 
-	//ImGuiManager::DragFloat3("pos", object_[0].GetPosition(),)
+	//NcmImGui::DragFloat3("pos", object_[0].GetPosition(),)
 }

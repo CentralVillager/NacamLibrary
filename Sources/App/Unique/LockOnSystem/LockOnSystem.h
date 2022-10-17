@@ -52,7 +52,7 @@ public:
 
 	static void LoadResources();
 
-	void Initialize(Player *player, EnemiesList *enemies_ptr, UINT multi_tgt_n);
+	void Initialize(Player *player, EnemiesList *enemies_ptr);
 	void Update();
 	void Draw();
 	void DrawNum();

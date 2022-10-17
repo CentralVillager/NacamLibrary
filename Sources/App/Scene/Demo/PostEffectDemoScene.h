@@ -6,7 +6,7 @@
 #include "../../../Lib/Model/Model.h"
 #include "../../../Lib/Object3d/Object3d.h"
 #include "../../../Lib/PostEffect/PostEffect.h"
-#include "../../../Lib/Sprite/Sprite.h"
+#include "../../../Lib/Sprite/NcmSprite.h"
 
 class PostEffectDemoScene : public AbstractScene
 {
@@ -28,7 +28,7 @@ private:
 	// ポストエフェクト
 	std::unique_ptr<PostEffect> post_effect_scene_;
 
-	//std::unique_ptr<Sprite> back_;
+	//std::unique_ptr<NcmSprite> back_;
 	int back_;
 
 	bool is_push_;
