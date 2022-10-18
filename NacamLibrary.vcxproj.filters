@@ -359,6 +359,9 @@
     <ClCompile Include="Sources\App\Math\Easing\NcmEasing.cpp">
       <Filter>Application\NacamMath\Easing</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\App\Unique\Bullet\Bullet.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -554,6 +557,7 @@
     <ClInclude Include="Sources\App\Math\Easing\NcmEasing.h">
       <Filter>Application\NacamMath\Easing</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\App\Unique\Bullet\Bullet.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">

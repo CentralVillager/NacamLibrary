@@ -1,17 +1,20 @@
 #include "Enemy.h"
 #include <cmath>
 #include "../Sources/App/Utility/NcmUtil.h"
+#include "../Player/Player.h"
 
 using namespace NcmUtill;
 
 std::unique_ptr<Model> Enemy::model_ = nullptr;
 std::unique_ptr<Model> Enemy::sphere_model_ = nullptr;
 int Enemy::id_counter_ = -1;
+Player *Enemy::player_ = nullptr;
 
 Enemy::Enemy()
 {
 	object_ = std::make_unique<Object3d>();
 	sphere_obj_ = std::make_shared<Object3d>();
+	bullet_ = std::make_shared<Bullet>();
 	id_counter_++;
 }
 
@@ -28,6 +31,13 @@ void Enemy::LoadResources()
 		sphere_model_ = std::make_unique<Model>();
 		sphere_model_->LoadObjModel("Resources/Ball/", "smooth_ball.obj", "smooth_ball.mtl");
 	}
+
+	Bullet::LoadResources();
+}
+
+void Enemy::ImportPtr(Player *player)
+{
+	player_ = player;
 }
 
 void Enemy::Initialize(const XMFLOAT3 &pos)
@@ -47,6 +57,8 @@ void Enemy::Initialize(const XMFLOAT3 &pos)
 	id_ = id_counter_;
 
 	circular_angle_ = 0.0f;
+
+	bullet_->Initialize(object_->GetPosition());
 }
 
 void Enemy::Finalize()
@@ -56,23 +68,30 @@ void Enemy::Update()
 {
 	RotY();
 	MoveHorizontally(0.5f, 100.0f);
+	AutoShot(30, player_->GetPos());
 	//MoveCircular();
 	object_->Update();
 	UpdateCollision();
+
+	bullet_->Update();
 }
 
 void Enemy::Draw()
 {
 	object_->Draw();
+	bullet_->Draw();
 }
 
 void Enemy::DrawColl()
 {
 	sphere_obj_->Draw();
+	bullet_->DrawColl();
 }
 
 void Enemy::DebugDraw()
-{}
+{
+	bullet_->DebugDraw();
+}
 
 void Enemy::RotY()
 {
@@ -121,6 +140,29 @@ void Enemy::MoveCircular()
 	{
 		circular_angle_ += 0.1f;
 		count = 10;
+	}
+}
+
+void Enemy::AutoShot(int interval, const XMFLOAT3 &pos)
+{
+	// 間隔が変更されていたら
+	if (shot_interval_ != interval)
+	{
+		// 間隔を更新する
+		shot_interval_ = interval;
+	}
+
+	static int count = shot_interval_;
+
+	count--;
+
+	// カウントが0以下になったら
+	if (IsZeroOrLess(count))
+	{
+		// 弾を発射する
+		bullet_->Fire(pos);
+		// カウントをリセットする
+		count = shot_interval_;
 	}
 }
 

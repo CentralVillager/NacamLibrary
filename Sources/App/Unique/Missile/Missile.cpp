@@ -146,7 +146,8 @@ void Missile::HomingTarget(const XMFLOAT3 &target_pos)
 	//XMVECTOR tgt_vec = XMLoadFloat3(&target_pos);
 
 	// ふたつの座標を結ぶベクトルを計算
-	XMVECTOR vec = {
+	XMVECTOR vec =
+	{
 		(ta_vec.m128_f32[0] - mi_vec.m128_f32[0]),
 		(ta_vec.m128_f32[1] - mi_vec.m128_f32[1]),
 		(ta_vec.m128_f32[2] - mi_vec.m128_f32[2])

@@ -4,6 +4,8 @@
 #include "Enemy.h"
 #include "../../Collision/CollisionPrimitive.h"
 
+class Player;
+
 class EnemiesList
 {
 	using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -11,6 +13,8 @@ class EnemiesList
 	static const int MAX_ENEMY_NUM_ = 20;
 
 	std::vector<Enemy> enemies_;
+
+	Player *player_;
 
 public:
 
@@ -26,6 +30,7 @@ public:
 	const size_t &GetSize() { return enemies_.size(); }
 	const int &GetID(UINT i) { return enemies_[i].GetID(); }
 
+	void Initialize(Player *player);
 	void Update();
 	void Draw();
 	void DebugDraw();

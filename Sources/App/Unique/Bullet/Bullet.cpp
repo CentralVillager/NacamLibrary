@@ -1,126 +1,127 @@
 #include "Bullet.h"
-#include "ImGuiManager.h"
+#include "../Sources/App/Utility/NcmUtil.h"
+#include "../../Debug/NcmImGui.h"
 
-std::unique_ptr<Model> Bullet::model_bullet_ = nullptr;
+using namespace DirectX;
+using namespace NcmUtill;
 
-void Bullet::InitializeModel() {
+std::unique_ptr<Model> Bullet::model_ = nullptr;
+std::unique_ptr<Model> Bullet::sphere_model_ = nullptr;
 
-	// 弾モデルの読み込み
-	model_bullet_ = make_unique<Model>();
-	model_bullet_->LoadObjModel("Resources/bullet/", "bullet.obj", "bullet.mtl");
+Bullet::Bullet()
+{
+	object_ = std::make_unique<Object3d>();
+	sphere_obj_ = std::make_unique<Object3d>();
 }
 
-void Bullet::Initialize(float speed, int life) {
+Bullet::~Bullet()
+{}
 
-	// 弾の初期化
-	bullet_ = make_shared<Object3d>();
-	bullet_->Initialize();
-	bullet_->SetModel(model_bullet_.get());
-	bullet_->SetRotation({ 0, 180.0f, 0 });
-	bullet_->SetScale({ 0.5f, 0.5f, 0.5f });
+void Bullet::LoadResources()
+{
+	// 他のクラスでも同じ処理をしている
 
-	speed_ = speed;
-	life_ = life;
-
-	// 当たり判定をセット
-	collision.width = 1.0f;
-	collision.height = 1.0f;
-	collision.depth = 3.0f;
-	collision.center = { bullet_->GetPosition() };
-	collision.near_left_upper = {
-		collision.center.x - collision.width / 2,
-		collision.center.y + collision.height / 2,
-		collision.center.z - collision.depth / 2
-	};
-	collision.near_right_downer = {
-		collision.near_left_upper.x + collision.width,
-		collision.near_left_upper.y - collision.height,
-		collision.near_left_upper.z
-	};
-	collision.far_left_upper = {
-		collision.near_left_upper.x,
-		collision.near_left_upper.y,
-		collision.near_left_upper.z + collision.depth
-	};
-	collision.far_right_downer = {
-		collision.near_right_downer.x,
-		collision.near_right_downer.y,
-		collision.near_right_downer.z + collision.depth
-	};
-}
-
-void Bullet::Finalize() {
-}
-
-void Bullet::Update() {
-
-	UpdateAABB();
-
-	// 寿命が尽きたら
-	if (life_ <= 0) {
-
-		// 殺す
-		is_alive_ = false;
+	if (!model_)
+	{
+		model_ = std::make_unique<Model>();
+		model_->LoadObjModel("Resources/bullet/", "bullet.obj", "bullet.mtl");
 	}
 
-	// 弾を前方に飛ばす 
-	MoveForward();
-
-	bullet_->Update();
+	if (!sphere_model_)
+	{
+		sphere_model_ = std::make_unique<Model>();
+		sphere_model_->LoadObjModel("Resources/Ball/", "smooth_ball.obj", "smooth_ball.mtl");
+	}
 }
 
-void Bullet::Draw() {
+void Bullet::Initialize(const XMFLOAT3 &pos)
+{
+	object_->Initialize();
+	object_->SetModel(model_.get());
+	object_->SetPosition(pos);
 
-	/*ImGui::Text("Bullet Debug");
-	ImGui::SliderFloat("bullet_speed", &speed_, 0, 50.0f);
-	ImGui::SliderInt("bullet_life", &life_, 0, 100);*/
-
-	bullet_->Draw();
+	sphere_obj_->Initialize();
+	sphere_obj_->SetModel(sphere_model_.get());
 }
 
-void Bullet::Generate(XMFLOAT3 pos, float speed, int life) {
+void Bullet::Update()
+{
+	if (is_dead_) { return; }
 
-	Initialize(speed, life);
-	bullet_->SetPosition(pos);
-	is_alive_ = true;
-}
-
-void Bullet::MoveForward() {
-
-	// 現在の位置を取得
-	XMFLOAT3 position = bullet_->GetPosition();
-
-	// 前進させる
-	position.z += speed_;
-
-	// 位置を反映
-	bullet_->SetPosition(position);
-
-	// 寿命を減らす
 	life_--;
+
+	pos_ = object_->GetPosition();
+
+	pos_.x += vel_.x;
+	pos_.y += vel_.y;
+	pos_.z += vel_.z;
+
+	object_->SetPosition(pos_);
+	object_->Update();
+	UpdateCollision();
+
+	if (IsZeroOrLess(life_))
+	{
+		//is_dead_ = true;
+	}
 }
 
-void Bullet::UpdateAABB() {
+void Bullet::Draw()
+{
+	if (is_dead_) { return; }
+	object_->Draw();
+}
 
-	collision.center = { bullet_->GetPosition() };
-	collision.near_left_upper = {
-		collision.center.x - collision.width / 2,
-		collision.center.y + collision.height / 2,
-		collision.center.z - collision.depth / 2
+void Bullet::DrawColl()
+{
+	if (is_dead_) { return; }
+	sphere_obj_->Draw();
+}
+
+void Bullet::DebugDraw()
+{
+	ImGui::Text("pos : (%f, %f, %f)", object_->GetPosition().x, object_->GetPosition().y, object_->GetPosition().z);
+}
+
+void Bullet::Fire(const XMFLOAT3 &dist)
+{
+	is_dead_ = false;
+
+	CalcAngle(dist);
+}
+
+void Bullet::CalcAngle(const XMFLOAT3 &dist)
+{
+	XMFLOAT3 pos = object_->GetPosition();
+
+	// XMVECTORに変換
+	XMVECTOR bl_vec = XMLoadFloat3(&object_->GetPosition());
+	XMVECTOR di_vec = XMLoadFloat3(&dist);
+
+	// ふたつの座標を結ぶベクトルを計算
+	XMVECTOR vec =
+	{
+		(di_vec.m128_f32[0] - bl_vec.m128_f32[0]),
+		(di_vec.m128_f32[1] - bl_vec.m128_f32[1]),
+		(di_vec.m128_f32[2] - bl_vec.m128_f32[2])
 	};
-	collision.near_right_downer = {
-		collision.near_left_upper.x + collision.width,
-		collision.near_left_upper.y - collision.height,
-		collision.near_left_upper.z
-	};
-	collision.far_left_upper = {
-		collision.near_left_upper.x,
-		collision.near_left_upper.y,
-		collision.near_left_upper.z + collision.depth
-	};
-	collision.far_right_downer = {
-		collision.near_right_downer.x,
-		collision.near_right_downer.y,
-		collision.near_right_downer.z + collision.depth
-	};
+
+	// 正規化
+	XMVECTOR norm_vec = XMVector3Normalize(vec);
+
+	XMStoreFloat3(&vel_, norm_vec);
+
+	vel_.x *= SPEED_;
+	vel_.y *= SPEED_;
+	vel_.z *= SPEED_;
+}
+
+void Bullet::UpdateCollision()
+{
+	coll_.center = XMLoadFloat3(&object_->GetPosition());
+	coll_.radius = COLL_RADIUS_;
+
+	sphere_obj_->SetPosition(ToFloat3(coll_.center));
+	sphere_obj_->SetScale(coll_.radius);
+	sphere_obj_->Update();
 }

@@ -1,6 +1,7 @@
 #include "EnemiesList.h"
 #include <algorithm>
 #include "../Sources/Lib/NacamError/NacamError.h"
+#include "../Player/Player.h"
 
 using namespace std;
 
@@ -11,6 +12,12 @@ EnemiesList::EnemiesList()
 
 EnemiesList::~EnemiesList()
 {}
+
+void EnemiesList::Initialize(Player *player)
+{
+	player_ = player;
+	Enemy::ImportPtr(player);
+}
 
 void EnemiesList::Update()
 {
@@ -37,7 +44,12 @@ void EnemiesList::Draw()
 }
 
 void EnemiesList::DebugDraw()
-{}
+{
+	for (auto &i : enemies_)
+	{
+		i.DebugDraw();
+	}
+}
 
 void EnemiesList::DrawColl()
 {

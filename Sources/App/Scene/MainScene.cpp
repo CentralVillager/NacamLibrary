@@ -58,6 +58,7 @@ void MainScene::Initialize()
 	sky_dome_->Update();
 
 	// 各ゲームオブジェクトの初期化
+	ene_list_->Initialize(player_.get());
 	lockon_sys_->Initialize(player_.get(), ene_list_.get());
 	missile_mgr_->Initialize(lockon_sys_.get());
 	player_->Initialize(missile_mgr_.get(), lockon_sys_.get());
@@ -334,6 +335,7 @@ void MainScene::DebugDraw()
 	numbers_->DebugDraw();
 
 	camera_->DebugDraw();
+	ene_list_->DebugDraw();
 }
 
 void MainScene::CollisionProcess()

@@ -82,6 +82,13 @@ namespace NcmUtill
 		return false;
 	}
 
+	inline static bool IsZeroOrLess(const int &num)
+	{
+		if (num <= 0) { return true; }
+
+		return false;
+	}
+
 #pragma endregion
 
 #pragma region Undifined
