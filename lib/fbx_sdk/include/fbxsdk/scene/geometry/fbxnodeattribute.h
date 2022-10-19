@@ -98,8 +98,8 @@ public:
       */
     virtual FbxNodeAttribute::EType GetAttributeType() const;
 
-	/** Return the node count using this attribute.
-	  * \return  The count of nodes with this attribute set.
+	/** Return the node count_ using this attribute.
+	  * \return  The count_ of nodes with this attribute set.
 	  */
 	int GetNodeCount() const;
 

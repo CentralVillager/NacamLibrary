@@ -1688,9 +1688,9 @@ public:
 	  */
     bool GetHaveLoadedEmbededFile() const;
 
-	/** Get the maximum byte count written
+	/** Get the maximum byte count_ written
 	  * \param pMemPtr The address of the memory file
-	  * \param[out] pSize Stores the maximum byte count written
+	  * \param[out] pSize Stores the maximum byte count_ written
 	  */
     void GetMemoryFileInfo(void** pMemPtr, size_t& pSize) const;
 

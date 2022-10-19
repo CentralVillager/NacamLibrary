@@ -294,7 +294,7 @@ public:
 		bool operator!=(const FbxBlob& pRHS) const;
 	//@}
 
-	//!Make a copy if the reference count > 1 (i.e. if the buffer is shared).
+	//!Make a copy if the reference count_ > 1 (i.e. if the buffer is shared).
 	void* Modify(); 
 
 	/**
@@ -524,7 +524,7 @@ private:
 * \return The size of this type in memory */
 FBXSDK_DLL size_t FbxTypeSizeOf(const EFbxType pType);
 
-/** Retrieve a type enumeration component count
+/** Retrieve a type enumeration component count_
 * \param pType The type enumeration
 * \return The number of component used by this type */
 FBXSDK_DLL size_t FbxTypeComponentCount(const EFbxType pType);

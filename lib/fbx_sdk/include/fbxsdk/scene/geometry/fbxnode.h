@@ -100,7 +100,7 @@ public:
 		FbxNode* RemoveChild(FbxNode* pNode);
 
 		/** Get the number of children nodes.
-		  * \param pRecursive If \c true the method will also count all the descendant children.
+		  * \param pRecursive If \c true the method will also count_ all the descendant children.
 		  * \return Total number of children for this node.
 		  */
 		int GetChildCount(bool pRecursive = false) const;
@@ -1176,7 +1176,7 @@ public:
 		  * \return The number of materials applied to this node.
 		  * \remarks If this node has an instanced node attribute, it is possible
 		  *          to have a material applied to this node more than once. The material
-		  *          count may not reflect the distinct material count.
+		  *          count_ may not reflect the distinct material count_.
 		  */
 		int GetMaterialCount() const;
 

@@ -10,10 +10,9 @@ std::unique_ptr<Model> Missile::model_ = nullptr;
 std::unique_ptr<Model> Missile::coll_model_ = nullptr;
 
 Missile::Missile()
+	: AbsUniqueObj(1.0f, 1.0f)
 {
-	object_ = std::make_unique<Object3d>();
 	emitter_ = std::make_unique<Emitter>();
-	sphere_obj_ = std::make_shared<Object3d>();
 }
 
 Missile::~Missile()
@@ -41,13 +40,9 @@ void Missile::Initialize(const MissileArgs &args, LockOnSystem *sys)
 	// ’l‚ð“ü—Í‚æ‚èÝ’è
 	mi_args_ = args;
 
-	object_->Initialize();
-	object_->SetModel(model_.get());
-	object_->SetPosition(XMFLOAT3(mi_args_.pos));
-	object_->SetRotation(XMFLOAT3(0, 180.0f, 0));
-
-	sphere_obj_->Initialize();
-	sphere_obj_->SetModel(coll_model_.get());
+	InitObj3d(model_.get(), coll_model_.get());
+	obj_->SetPosition(XMFLOAT3(mi_args_.pos));
+	obj_->SetRotation(XMFLOAT3(0, 180.0f, 0));
 
 	Emitter::EmitterArgs emi;
 	XMFLOAT3 temp = mi_args_.vel;
@@ -67,6 +62,9 @@ void Missile::Initialize(const MissileArgs &args, LockOnSystem *sys)
 	emitter_->SetEmitterArgs(emi);
 }
 
+void Missile::Initialize()
+{}
+
 void Missile::Finalize()
 {}
 
@@ -77,7 +75,7 @@ void Missile::Update()
 	if (mi_args_.life <= 0 && emitter_->NoticeCanTerminate())
 	{
 		// ŽE‚·
-		mi_args_.is_dead = true;
+		is_dead_ = true;
 		return;
 	}
 
@@ -90,8 +88,8 @@ void Missile::Update()
 	if (mi_args_.is_validity)
 	{
 		// XVˆ—‚ð‚·‚é
-		object_->Update();
-		UpdateCollision();
+		obj_->Update();
+		UpdateColl();
 	}
 
 	UpdateEmitter();
@@ -99,13 +97,13 @@ void Missile::Update()
 
 void Missile::Draw()
 {
-	if (mi_args_.is_validity) { object_->Draw(); }
+	if (mi_args_.is_validity) { obj_->Draw(); }
 	emitter_->Draw();
 }
 
 void Missile::DrawColl()
 {
-	if (mi_args_.is_validity) { sphere_obj_->Draw(); }
+	if (mi_args_.is_validity) { coll_obj_->Draw(); }
 }
 
 void Missile::DebugDraw()
@@ -113,20 +111,20 @@ void Missile::DebugDraw()
 
 void Missile::Activate()
 {
-	mi_args_.is_dead = false;
+	is_dead_ = false;
 	mi_args_.is_validity = true;
 }
 
 void Missile::MoveZ(float speed)
 {
-	XMFLOAT3 pos = object_->GetPosition();
+	XMFLOAT3 pos = obj_->GetPosition();
 	pos.z += mi_args_.vel.z;
-	object_->SetPosition(pos);
+	obj_->SetPosition(pos);
 }
 
 void Missile::HomingTarget(const XMFLOAT3 &target_pos)
 {
-	XMFLOAT3 pos = object_->GetPosition();
+	XMFLOAT3 pos = obj_->GetPosition();
 
 	static XMVECTOR old_len{};
 	const float speed = 3.0f;	// ‰¼
@@ -135,13 +133,13 @@ void Missile::HomingTarget(const XMFLOAT3 &target_pos)
 	{
 		mi_args_.init_straight_time_--;
 		pos.z += speed;
-		object_->SetPosition(pos);
+		obj_->SetPosition(pos);
 
 		return;
 	}
 
 	// XMVECTOR‚É•ÏŠ·
-	XMVECTOR mi_vec = XMLoadFloat3(&object_->GetPosition());
+	XMVECTOR mi_vec = XMLoadFloat3(&obj_->GetPosition());
 	XMVECTOR ta_vec = XMLoadFloat3(&mi_args_.tgt_pos);
 	//XMVECTOR tgt_vec = XMLoadFloat3(&target_pos);
 
@@ -176,7 +174,7 @@ void Missile::HomingTarget(const XMFLOAT3 &target_pos)
 	{
 		// ’¼i‚¾‚¯‚µ‚Ä
 		pos.z += speed;
-		object_->SetPosition(pos);
+		obj_->SetPosition(pos);
 
 		// ‚»‚ÌŒã‚Ì’Ç”öˆ—‚ðƒXƒLƒbƒv
 		return;
@@ -191,7 +189,7 @@ void Missile::HomingTarget(const XMFLOAT3 &target_pos)
 		pos.z += mi_args_.vel.z;
 
 		// ˆÊ’u‚ð”½‰f
-		object_->SetPosition(pos);
+		obj_->SetPosition(pos);
 
 		return;
 	}
@@ -231,7 +229,7 @@ void Missile::HomingTarget(const XMFLOAT3 &target_pos)
 	pos.z += mi_args_.vel.z;
 
 	// ˆÊ’u‚ð”½‰f
-	object_->SetPosition(pos);
+	obj_->SetPosition(pos);
 
 	/* -- ŠOÏ’Ç”ö -- */
 	// XMVECTOR‚É•ÏŠ·
@@ -273,7 +271,7 @@ void Missile::HomingTarget(const XMFLOAT3 &target_pos)
 void Missile::HomingTarget(EnemiesList &enemies)
 {
 	const float speed = 3.0f;	// ‰¼
-	XMFLOAT3 pos = object_->GetPosition();
+	XMFLOAT3 pos = obj_->GetPosition();
 
 	// “G‚ª‚¢‚È‚¢‚È‚ç
 	if (enemies.GetEnemies().size() <= 0)
@@ -296,7 +294,7 @@ void Missile::HomingTarget(EnemiesList &enemies)
 	}
 
 	// XMVECTOR‚É•ÏŠ·
-	XMVECTOR mi_vec = XMLoadFloat3(&object_->GetPosition());
+	XMVECTOR mi_vec = XMLoadFloat3(&obj_->GetPosition());
 
 	// ’Ç”ö‚µ‚½‚¢“G‚ÌID‚ª“ü‚Á‚Ä‚¢‚é—v‘f‚Ì“YŽš‚ðŒŸõ
 	int index = enemies.GetEnemyIndexWithID(mi_args_.tgt_id);
@@ -310,7 +308,7 @@ void Missile::HomingTarget(EnemiesList &enemies)
 		pos.z += mi_args_.vel.z;
 
 		// ˆÊ’u‚ð”½‰f
-		object_->SetPosition(pos);
+		obj_->SetPosition(pos);
 
 		// ‚»‚ÌŒã‚Ìˆ—‚ðƒXƒLƒbƒv
 		return;
@@ -349,7 +347,7 @@ void Missile::HomingTarget(EnemiesList &enemies)
 		pos.z += mi_args_.vel.z;
 
 		// ˆÊ’u‚ð”½‰f
-		object_->SetPosition(pos);
+		obj_->SetPosition(pos);
 
 		return;
 	}
@@ -384,7 +382,7 @@ void Missile::HomingTarget(EnemiesList &enemies)
 	pos.z += mi_args_.vel.z;
 
 	// ˆÊ’u‚ð”½‰f
-	object_->SetPosition(pos);
+	obj_->SetPosition(pos);
 }
 
 void Missile::TermEmitter()
@@ -392,18 +390,8 @@ void Missile::TermEmitter()
 	emitter_->PrepareTerminate();
 }
 
-void Missile::UpdateCollision()
-{
-	coll_.center = XMLoadFloat3(&object_->GetPosition());
-	coll_.radius = COLL_RADIUS_;
-
-	sphere_obj_->SetPosition(ToFloat3(coll_.center));
-	sphere_obj_->SetScale(coll_.radius);
-	sphere_obj_->Update();
-}
-
 void Missile::UpdateEmitter()
 {
-	emitter_->SetPosition(object_->GetPosition());
+	emitter_->SetPosition(obj_->GetPosition());
 	emitter_->GenerateParticle();
 }

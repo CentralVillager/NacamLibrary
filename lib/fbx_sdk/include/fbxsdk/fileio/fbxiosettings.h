@@ -219,7 +219,7 @@ public:
 		eKOR,			//!< Korean(Extended Wansung) - Korea 
 		eCHS,			//!< Chinese - PRC
 		ePTB,           //!< Portuguese - Brasil
-		eLanguageCount	//!< Total language count
+		eLanguageCount	//!< Total language count_
 	};
 
 	/** Add a property group under the root prop to be a direct child of IOSROOT

@@ -1063,7 +1063,7 @@ static void ShowDemoWindowWidgets()
 
         // Simplified one-liner Combo() using an array of const char*
         // This is not very useful (may obsolete): prefer using BeginCombo()/EndCombo() for full control.
-        static int item_current_3 = -1; // If the selection isn't within 0..count, Combo won't display a preview
+        static int item_current_3 = -1; // If the selection isn't within 0..count_, Combo won't display a preview
         ImGui::Combo("combo 3 (array)", &item_current_3, items, IM_ARRAYSIZE(items));
 
         // Simplified one-liner Combo() using an accessor function
@@ -1611,7 +1611,7 @@ static void ShowDemoWindowWidgets()
 
         // Use functions to generate output
         // FIXME: This is rather awkward because current plot API only pass in indices.
-        // We probably want an API passing floats and user provide sample rate/count.
+        // We probably want an API passing floats and user provide sample rate/count_.
         struct Funcs
         {
             static float Sin(void*, int i) { return sinf(i * 0.1f); }
@@ -5526,7 +5526,7 @@ static void ShowDemoWindowMisc()
             ImGui::Text(" - clicked double:");  for (int i = 0; i < count; i++) if (ImGui::IsMouseDoubleClicked(i)) { ImGui::SameLine(); ImGui::Text("b%d", i); }
             ImGui::Text(" - clicked triple:");  for (int i = 0; i < count; i++) if (ImGui::IsMouseTripleClicked(i)) { ImGui::SameLine(); ImGui::Text("b%d", i); }
             ImGui::Text(" - clicked count:");   for (int i = 0; i < count; i++) if (io.MouseClickedCount[i])        { ImGui::SameLine(); ImGui::Text("b%d (%d)", i, io.MouseClickedCount[i]); }
-            //ImGui::Text(" - last count:");    for (int i = 0; i < count; i++) if (io.MouseClickedLastCount[i])    { ImGui::SameLine(); ImGui::Text("b%d (%d)", i, io.MouseClickedLastCount[i]); }
+            //ImGui::Text(" - last count_:");    for (int i = 0; i < count_; i++) if (io.MouseClickedLastCount[i])    { ImGui::SameLine(); ImGui::Text("b%d (%d)", i, io.MouseClickedLastCount[i]); }
 
             ImGui::Text("Mouse released:");     for (int i = 0; i < count; i++) if (ImGui::IsMouseReleased(i))      { ImGui::SameLine(); ImGui::Text("b%d", i); }
             ImGui::Text("Mouse wheel: %.1f", io.MouseWheel);

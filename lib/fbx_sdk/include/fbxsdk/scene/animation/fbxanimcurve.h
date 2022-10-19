@@ -818,7 +818,7 @@ public:
         void KeyClear () override = 0;
 
 		/** Get the number of keys.
-		  * \return Key count.
+		  * \return Key count_.
 		  */
         int KeyGetCount () const override = 0;
 

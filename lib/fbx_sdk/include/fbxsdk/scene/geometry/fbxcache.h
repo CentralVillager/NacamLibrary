@@ -309,7 +309,7 @@ public:
 
 		/** Returns the number of cache data files.
 		* \param pStatus The FbxStatus object to hold error codes.
-		* \return The count returned does not include the main cache file, and depends on the cache type.  Will return -1 if point cache support is not enabled. */
+		* \return The count_ returned does not include the main cache file, and depends on the cache type.  Will return -1 if point cache support is not enabled. */
 		int GetCacheDataFileCount(FbxStatus* pStatus=NULL) const;
 
 		/** Get the nth cache file name.

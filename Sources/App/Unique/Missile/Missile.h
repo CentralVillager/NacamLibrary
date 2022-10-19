@@ -1,12 +1,8 @@
 #pragma once
-#include <memory>
-#include <DirectXMath.h>
-#include "../Sources/Lib/Object3d/Object3d.h"
-#include "../Sources/Lib/Model/Model.h"
 #include "../Sources/App/Particle/Emitter.h"
-#include "../../Collision/CollisionPrimitive.h"
 #include "../Enemy/EnemiesList.h"
 #include "../LockOnSystem/LockOnSystem.h"
+#include "../Abs/AbsUniqueObj.h"
 
 struct MissileArgs
 {
@@ -22,24 +18,28 @@ struct MissileArgs
 	float detection_range;
 	UINT init_straight_time_;
 	UINT life;
-	bool is_validity = false;
-	bool is_dead = true;
+	bool is_validity;
+
+	MissileArgs() :
+		pos(XMFLOAT3(0, 0, 0)),
+		vel(XMFLOAT3(0, 0, 0)),
+		acc(XMFLOAT3(0, 0, 0)),
+		tgt_pos(XMFLOAT3(0, 0, 0)),
+		tgt_id(0),
+		detection_range(0),
+		init_straight_time_(0),
+		life(0),
+		is_validity(false)
+	{}
 };
 
-class Missile
+class Missile : public AbsUniqueObj
 {
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMVECTOR = DirectX::XMVECTOR;
 
-	// 描画用データ
 	static std::unique_ptr<Model> model_;
 	static std::unique_ptr<Model> coll_model_;
-	std::unique_ptr<Object3d> object_;
-	std::shared_ptr<Object3d> sphere_obj_;
-
-	// 当たり判定
-	Sphere coll_;
-	const float COLL_RADIUS_ = 1.0f;
 
 	// エミッター
 	std::unique_ptr<Emitter> emitter_;
@@ -61,22 +61,19 @@ public:
 	static void LoadResources();
 
 	void Initialize(const MissileArgs &args, LockOnSystem *sys);
+	void Initialize() override;
 	void Finalize();
-	void Update();
-	void Draw();
-	void DrawColl();
-	void DebugDraw();
+	void Update() override;
+	void Draw() override;
+	void DrawColl() override;
+	void DebugDraw() override;
 
 public:
 
-	const Sphere &GetCollData() { return coll_; }
-	const XMFLOAT3 &GetPos() { return object_->GetPosition(); }
 	const bool &GetIsValidity() { return mi_args_.is_validity; }
 
 	void SetMissileLife(const int &life) { mi_args_.life = life; }
 	void SetTgtPos(const XMFLOAT3 pos) { mi_args_.tgt_pos = pos; }
-
-	const bool IsDead() { return mi_args_.is_dead == true; }
 
 	void Activate();
 	void InvalidateMissile() { mi_args_.is_validity = false; }
@@ -88,6 +85,5 @@ public:
 
 private:
 
-	void UpdateCollision();
 	void UpdateEmitter();
 };

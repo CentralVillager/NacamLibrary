@@ -5,11 +5,13 @@
 
 using namespace NcmUtill;
 
+std::unique_ptr<Model> Enemy::model_ = nullptr;
+std::unique_ptr<Model> Enemy::coll_model_ = nullptr;
 int Enemy::id_counter_ = -1;
 Player *Enemy::player_ = nullptr;
 
 Enemy::Enemy()
-	: AbsUniqueObj({ 0, 0, 0 }, 0.5f),
+	: AbsUniqueObj(0.5f, 2.0f),
 	id_(0),
 	count_(100),
 	circular_angle_(0.0f),
@@ -43,7 +45,7 @@ void Enemy::ImportPtr(Player *player)
 
 void Enemy::Initialize(const XMFLOAT3 &pos)
 {
-	InitializeObj();
+	InitObj3d(model_.get(), coll_model_.get());
 	obj_->SetPosition(pos);
 
 	is_dead_ = false;
@@ -68,7 +70,7 @@ void Enemy::Update()
 	AutoShot(30, player_->GetPos());
 	obj_->Update();
 	UpdateColl();
-	
+
 	bullet_->Update();
 }
 

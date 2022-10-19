@@ -44,10 +44,10 @@ public:
 	* \param pOtherQuery The given FbxQuery */
 	virtual bool IsEqual(FbxQuery* pOtherQuery) const;
 
-	//! Add one to ref count.
+	//! Add one to ref count_.
 	void Ref();
 
-	//! Minus one to ref count, if ref count is zero, delete this query object.
+	//! Minus one to ref count_, if ref count_ is zero, delete this query object.
 	void Unref();
 
 /*****************************************************************************************************************************

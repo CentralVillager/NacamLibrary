@@ -117,10 +117,10 @@ public:
 
     const static int sTypeTextureStartIndex = int(eTextureDiffuse);	//!< The start index of texture type layer elements. 
     const static int sTypeTextureEndIndex = int(eTypeCount) - 1;	//!< The end index of texture type layer elements.
-    const static int sTypeTextureCount = sTypeTextureEndIndex - sTypeTextureStartIndex + 1;	//!< The count of texture type layer elements.
+    const static int sTypeTextureCount = sTypeTextureEndIndex - sTypeTextureStartIndex + 1;	//!< The count_ of texture type layer elements.
     const static int sTypeNonTextureStartIndex = int(eNormal);		//!< The start index of non-texture type layer elements.
     const static int sTypeNonTextureEndIndex = int(eVisibility);	//!< The end index of non-texture type layer elements.
-    const static int sTypeNonTextureCount = sTypeNonTextureEndIndex - sTypeNonTextureStartIndex + 1;	//!< The count of non-texture type layer elements.
+    const static int sTypeNonTextureCount = sTypeNonTextureEndIndex - sTypeNonTextureStartIndex + 1;	//!< The count_ of non-texture type layer elements.
     static const char* const sTextureNames[];						//!< Array of names of texture type layer elements.
     static const char* const sTextureUVNames[];						//!< Array of names of UV layer elements.
     static const char* const sNonTextureNames[];					//!< Array of names of non-texture type layer elements.
@@ -238,7 +238,7 @@ public:
     void SetType(const FbxDataType* pType) { mType = pType; }
 	const FbxLayerContainer* GetOwner() const { return mOwner; }
 
-    // Reference count added in case of shared objects or corrupted files that uses the same object.
+    // Reference count_ added in case of shared objects or corrupted files that uses the same object.
     // This will prevent the deletion of an object that is stil used.
 	void IncRefCount() { mRefCount++; }
 	int  DecRefCount() { mRefCount--; if (mRefCount < 0) { mRefCount = 0; } return mRefCount; }
@@ -369,8 +369,8 @@ public:
 	  */
 	inline bool IsWriteLocked() const { return mWriteLock; };
 
-	/** Retrieves the read lock count.
-	  * \return           The read lock count.
+	/** Retrieves the read lock count_.
+	  * \return           The read lock count_.
 	  */
 	inline int  GetReadLockCount() const { return mReadLockCount; }
 	//@}
@@ -511,11 +511,11 @@ public:
 	  */
 	//@{
 
-    //! Returns the count of items in the data buffer.
+    //! Returns the count_ of items in the data buffer.
 	int		GetCount() const;
 
-    /** Sets the count of items in the data buffer.
-      * \param pCount               The count of items to be set.
+    /** Sets the count_ of items in the data buffer.
+      * \param pCount               The count_ of items to be set.
       */
 	void	SetCount(int pCount);
 
@@ -1710,9 +1710,9 @@ public:
 		}
 	}
 
-	/** Returns the direct array count for the attribute at pIndex
+	/** Returns the direct array count_ for the attribute at pIndex
 	 * \param pIndex     The attribute index
-	 * \return           The specified attribute's direct array count.
+	 * \return           The specified attribute's direct array count_.
 	 */
 	int GetArrayCount( int pIndex ) const 
 	{
@@ -1740,9 +1740,9 @@ public:
 	 */
 	int GetId() const { return mId; }
 
-	/** Returns this layer element's direct array count.
-	 * \return     The direct array count expressed as an int.
-     * \remarks    This count should be equal to the count of user data attributes.
+	/** Returns this layer element's direct array count_.
+	 * \return     The direct array count_ expressed as an int.
+     * \remarks    This count_ should be equal to the count_ of user data attributes.
 	 */
 	int GetDirectArrayCount() const { return GetDirectArray().GetCount(); }
 

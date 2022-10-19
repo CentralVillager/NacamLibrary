@@ -22,8 +22,8 @@
 
 /**  This class is a basic class to get the quantity of items.
   *  User processes the statistics raw data by deriving FbxStatistics class and overrides \c AddItem method.
-  *  When overriding \c AddItem method, User must store item's name and item's count by pair which means
-  *  The index of one item's name in array \c mItemName is the same as the index of this item's count in array \c mItemCount.
+  *  When overriding \c AddItem method, User must store item's name and item's count_ by pair which means
+  *  The index of one item's name in array \c mItemName is the same as the index of this item's count_ in array \c mItemCount.
   *
   * \code Here is a code snippet to show how it used.
   * //Define my own statistics class.
@@ -77,7 +77,7 @@ public:
     /** Get the statistics information by pair.
     * \param pNum	        The index of statistics data to be got.
     * \param pItemName		Output the item's name.
-    * \param pItemCount		Output the item's count. 
+    * \param pItemCount		Output the item's count_. 
     * \return				\c True if successful, \c False otherwise.
     */
     bool GetItemPair(int pNum, FbxString& pItemName, int& pItemCount) const;
@@ -90,7 +90,7 @@ public:
 protected:
   	/** virtual function to define the process of the incoming statistics data.
 	  * \param pItemName            The item's name
-      * \param pItemCount           The item's count.
+      * \param pItemCount           The item's count_.
       * \return                     False.
 	  */
     virtual bool AddItem(FbxString& /*pItemName*/, int /*pItemCount*/) { return false; };
@@ -98,7 +98,7 @@ protected:
     //! An array to store item's name.
     FbxArray<FbxString*> mItemName;
 
-	//! An array to store item's count.
+	//! An array to store item's count_.
     FbxArray<int> mItemCount;
 };
 

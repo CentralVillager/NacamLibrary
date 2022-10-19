@@ -243,7 +243,7 @@ public:
     * \param pIndex Position of element in the array.
     * \param pElement The new element.
     * \remark If the index is outside range, and outside capacity, this call has no effect. However, if index is
-    * within capacity range, element count is increased such that Size() will become pIndex + 1. */
+    * within capacity range, element count_ is increased such that Size() will become pIndex + 1. */
     inline void SetAt(const int pIndex, const T& pElement)
     {
         FBX_ASSERT_RETURN(pIndex >= 0 && pIndex < GetCapacity());
@@ -323,7 +323,7 @@ public:
 
     /** Remove a range of elements at the given position in the array.
     * \param pIndex Begin position of the elements to remove.
-    * \param pCount The count of elements to remove.
+    * \param pCount The count_ of elements to remove.
     * \return \c true if successful, otherwise \c false.
     * \remark This function re-use the memory already allocated */
     inline void RemoveRange(const int pIndex, const int pCount)
@@ -355,9 +355,9 @@ public:
     }
 
     /** Inserts or erases elements at the end such that Size() becomes pSize, increasing capacity if needed. Please use SetAt() to initialize any new elements.
-    * \param pSize The new count of elements to set the array to. Must be greater or equal to zero.
+    * \param pSize The new count_ of elements to set the array to. Must be greater or equal to zero.
     * \return \c true if the memory (re)allocation succeeded, \c false otherwise.
-    * \remark If the requested element count is less than or equal to the current count, elements are freed from memory. Otherwise, the array grows and elements are unchanged. */
+    * \remark If the requested element count_ is less than or equal to the current count_, elements are freed from memory. Otherwise, the array grows and elements are unchanged. */
     inline bool Resize(const int pSize)
     {
         if( pSize == GetSize() && GetSize() == GetCapacity() ) return true;

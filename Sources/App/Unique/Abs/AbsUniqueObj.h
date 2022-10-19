@@ -13,31 +13,29 @@ class AbsUniqueObj
 protected:
 
 	// 描画データ
-	static std::unique_ptr<Model> model_;
-	std::unique_ptr<Object3d> obj_;
+	std::shared_ptr<Object3d> obj_;
+	std::shared_ptr<Object3d> coll_obj_;
 
-	// 当たり判定描画データ
-	static std::unique_ptr<Model> coll_model_;
-	std::unique_ptr<Object3d> coll_obj_;
+	// 当たり判定
 	Sphere coll_;
-	float COLL_RADIUS_;
+	float coll_radius_;
 
-	XMFLOAT3 pos_;
+	// その他情報
 	float speed_;
 	bool is_dead_;
 
 public:
 
-	AbsUniqueObj(XMFLOAT3 pos, float speed);
+	AbsUniqueObj(float speed, float coll_radius);
 	virtual ~AbsUniqueObj() = default;
 
 public:
 
-	inline const XMFLOAT3 &GetPos() { return pos_; }
+	inline const XMFLOAT3 &GetPos() { return obj_->GetPosition(); }
 	inline const Sphere &GetCollData() { return coll_; }
 	inline const bool &IsDead() { return is_dead_ == true; }
 	inline const void Death() { is_dead_ = true; }
-	inline void SetPos(const XMFLOAT3 &pos) { pos_ = pos; }
+	inline void SetPos(const XMFLOAT3 &pos) { obj_->SetPosition(pos); }
 	inline void SetIsDead(bool b) { is_dead_ = b; }
 
 public:
@@ -47,6 +45,6 @@ public:
 	virtual void Draw() = 0;
 	virtual void DrawColl() = 0;
 	virtual void DebugDraw() = 0;
-	void InitializeObj();
+	void InitObj3d(Model *obj_model, Model *coll_model);
 	void UpdateColl();
 };

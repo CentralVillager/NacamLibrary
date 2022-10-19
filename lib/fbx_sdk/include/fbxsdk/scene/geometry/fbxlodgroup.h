@@ -179,7 +179,7 @@ public:
 
 	/** Get the number of elements in the threshold list.
 	  * In correct situations, the size of this list is one less than the LOD node
-	  * children objects count.
+	  * children objects count_.
 	  * \return The current size of the threshold list.
 	  */
 	int GetNumThresholds() const;
@@ -248,7 +248,7 @@ public:
 
 	/** Get the number of elements in the displayLevel list.
 	  * In correct situations, the size of this list equals the LOD node
-	  * children objects count.
+	  * children objects count_.
 	  * \return The current size of the displayLevel list.
 	  */
 	int GetNumDisplayLevels() const;

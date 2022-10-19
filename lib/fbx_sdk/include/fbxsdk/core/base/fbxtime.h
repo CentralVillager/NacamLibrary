@@ -114,7 +114,7 @@ public:
 
 		/** Time protocols enumaration
 		  * - \e eSMPTE				SMPTE EProtocol
-		  * - \e eFrameCount		Frame count
+		  * - \e eFrameCount		Frame count_
 		  * - \e eDefaultProtocol	Default protocol (initialized to eFRAMES)
 		  */
 		enum EProtocol {eSMPTE, eFrameCount, eDefaultProtocol};
@@ -273,13 +273,13 @@ public:
 
 		/** Get number of frames in time.
 		  * \param pTimeMode Time mode identifier.
-		  * \return Integer value representing the frame count.
+		  * \return Integer value representing the frame count_.
 		  */
 		FbxLongLong GetFrameCount(EMode pTimeMode=eDefaultMode) const;
 
 		/** Get precise number of frames in time, including fractions.
 		  * \param pTimeMode Time mode identifier.
-		  * \return Decimal value representing the frame count, including fractions.
+		  * \return Decimal value representing the frame count_, including fractions.
 		  */
 		FbxDouble GetFrameCountPrecise(EMode pTimeMode=eDefaultMode) const;
 

@@ -349,7 +349,7 @@ public:
 		//!Get plugins.
 		FbxArray<const FbxPlugin*> GetPlugins() const;
 
-		/** get plugins count
+		/** get plugins count_
 		  * \return The number of plugins.
 		  */
 		int GetPluginCount() const;
@@ -473,8 +473,8 @@ public:
       */
     static FbxString PrefixName(const char* pPrefix, const char* pName);
 
-	/** Get the count of document available in this manager
-	  * \return The count of document owned by this manager.
+	/** Get the count_ of document available in this manager
+	  * \return The count_ of document owned by this manager.
 	  */
 	int GetDocumentCount();
 

@@ -68,7 +68,7 @@ public:
 		//! End writing a polygon, it should be called after adding one polygon.
 		void EndPolygon();
 
-		/** Get the polygon count of this mesh.
+		/** Get the polygon count_ of this mesh.
 		* \return Return the number of polygons in the mesh. */
 		inline int GetPolygonCount() const { return mPolygons.GetCount(); }
 
@@ -187,7 +187,7 @@ public:
 		/** Remove the duplicated edges from the mesh. 
 		* This method will remove duplicated edges. It will not change any vertex and not change the mesh topology.
 		* \param pEdgeIndexList Index list of edges.
-		* \return the count of removed edges.
+		* \return the count_ of removed edges.
 		* \remark the edge index list must be ordered. The last one is the max. If the edge index is out of bounds, return -1. */
 		int RemoveDuplicatedEdges(FbxArray<int>& pEdgeIndexList);
     //@}
@@ -403,7 +403,7 @@ public:
 		* \param pStartVertexIndex The starting point of the edge.
 		* \param pEndVertexIndex The ending point of the edge.
 		* \param pReversed flag will be set to true if the reverse edge is found, false otherwise.
-		* \param pExistedEdgeCount legal edge count in mEdgeArray  
+		* \param pExistedEdgeCount legal edge count_ in mEdgeArray  
 		* \return -1 if no edge exists for the given pair of vertices. */
 		int GetMeshEdgeIndex(int pStartVertexIndex, int pEndVertexIndex, bool& pReversed, int pExistedEdgeCount=-1);
 
@@ -482,7 +482,7 @@ public:
 		* \param pEndVertexIndex The ending point of the edge.
 		* \param pCheckForDuplicates Set to true to check if the mesh already contains an edge with these two points.
 		*  Can be set to false to speed up this method, when the incoming edges are known to be consistent.
-		* \param pExistedEdgeCount the valid edge count that we have created in edge array. This parameter only works when pCheckForDuplicates is true.
+		* \param pExistedEdgeCount the valid edge count_ that we have created in edge array. This parameter only works when pCheckForDuplicates is true.
 		*			                 The default value is -1 which meaning current edge array has been fully filled with valid edges, i.e., 
 		*                          we will search the full edge array for the duplicated edge.
 		* \return Edge index of the edge, or -1 on failure (no face using these 2 points consecutively ), or -2 if edge/reverse edge already exists */

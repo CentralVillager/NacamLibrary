@@ -28,7 +28,7 @@ class FBXSDK_DLL FbxBitSet
 {
 public:
 	/** Constructor.
-	  * \param pInitialSize Initial bit array size in bit count (not in byte count!).
+	  * \param pInitialSize Initial bit array size in bit count_ (not in byte count_!).
 	  */
 	FbxBitSet(const FbxUInt pInitialSize=0);
 

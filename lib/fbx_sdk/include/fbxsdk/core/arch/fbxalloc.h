@@ -292,7 +292,7 @@ public:
 
 /** FbxSharedPtr class describes an object that stores a pointer to a single allocated object of type 
 * Type* that ensures that the object to which it points gets destroyed automatically when the control 
-* leaves a scope and the reference count is 0. */
+* leaves a scope and the reference count_ is 0. */
 class RefCount
 {
 public:

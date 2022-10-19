@@ -43,7 +43,7 @@ void DemoScene::Initialize()
 
 	EaseArgs ease;
 	ease.init_value = 0.0f;
-	ease.total_move = Win32App::SIZE_.y;
+	ease.total_move = (float)(Win32App::SIZE_.y);
 	ease_ = NcmEasing::RegisterEaseData(ease);
 
 	NcmSprite::SetAnchorPoint(texture_, { 0.0f, 0.5f });

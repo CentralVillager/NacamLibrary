@@ -175,8 +175,8 @@ public:
 		* \param pStringValue The given new value */
 		void InsertEnumValue(int pIndex, const char* pStringValue);
 
-		/** Get the enum count of enum list in property
-		* \return The enum count of enum list in property */
+		/** Get the enum count_ of enum list in property
+		* \return The enum count_ of enum list in property */
 		int GetEnumCount();
 
 		/** Set value at the given index of the enum list in the property.
@@ -294,10 +294,10 @@ public:
 		* \return If connect successfully, return true,otherwise, return false. */
 		bool ConnectSrc(const FbxPropertyHandle& pSrc, const FbxConnection::EType pType=FbxConnection::eDefault); 
 
-		/** Get source properties' count.
-		* \param pFilter    The filter used to get sub connection point. If it is not zero, return the source count of the sub connection point.
-		* Otherwise, return the src count of this property.
-		* \return The count of source properties */
+		/** Get source properties' count_.
+		* \param pFilter    The filter used to get sub connection point. If it is not zero, return the source count_ of the sub connection point.
+		* Otherwise, return the src count_ of this property.
+		* \return The count_ of source properties */
 		int GetSrcCount(FbxConnectionPointFilter* pFilter=0) const; 
 
 		/** Get source property with the given index.
@@ -323,10 +323,10 @@ public:
 		* \return If connect successfully, return true,otherwise, return false. */
 		bool ConnectDst(const FbxPropertyHandle& pDst, const FbxConnection::EType pType=FbxConnection::eDefault); 
 
-		/** Get destination properties' count.
-		* \param pFilter    The filter used to get sub connection point.If it is not zero,return the destination count of the sub connection point.
-		* Otherwise, return the destination count of this property.
-		* \return The count of destination properties */
+		/** Get destination properties' count_.
+		* \param pFilter    The filter used to get sub connection point.If it is not zero,return the destination count_ of the sub connection point.
+		* Otherwise, return the destination count_ of this property.
+		* \return The count_ of destination properties */
 		int GetDstCount(FbxConnectionPointFilter* pFilter=0) const; 
 
 		/** Get destination property with the given index.
@@ -556,8 +556,8 @@ public:
 		* \return If this property page is referenced by other pages, return true,otherwise,return false. */
 		bool IsReferencedBy(void) const;
 
-		/** Get the count of property pages which make reference to this property page.
-		* \return The count of property pages which make reference to this property page. */
+		/** Get the count_ of property pages which make reference to this property page.
+		* \return The count_ of property pages which make reference to this property page. */
 		int GetReferencedByCount(void) const;
 
 		/** According the given index,get the property page which make reference to this property page.

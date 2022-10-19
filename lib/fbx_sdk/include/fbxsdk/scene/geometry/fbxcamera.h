@@ -1834,7 +1834,7 @@ public:
       */
     FbxPropertyT<FbxBool>                         UseAccumulationBuffer;
 
-    /** This property handles the frame sampling count.
+    /** This property handles the frame sampling count_.
       *
       * To access this property do: FrameSamplingCount.Get().
       * To set this property do: FrameSamplingCount.Set(FbxInt).

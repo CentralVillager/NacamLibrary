@@ -160,7 +160,7 @@ public:
 
 	/** Find if any of the minimum or maximum active state are set.
 	  * \return If any component of the minimum or maximum active state are set, true is returned.
-	  * \remarks The global active state will not count when resolving this.
+	  * \remarks The global active state will not count_ when resolving this.
 	  */
 	bool GetAnyMinMaxActive() const;
 	

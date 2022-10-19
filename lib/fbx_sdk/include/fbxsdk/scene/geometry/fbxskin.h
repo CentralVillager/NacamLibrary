@@ -159,7 +159,7 @@ public:
 
 	/** Set the array size for the three arrays: the array of control point indices, the array of weights
 	* and the array of blend weights.
-	* \param pCount The new count.
+	* \param pCount The new count_.
 	*/
 	void SetControlPointIWCount(int pCount);
 

@@ -168,13 +168,13 @@ public:
           */
         EExtrapolationType GetPreExtrapolation() const { return mPreExtrapolation; }
         
-        /** Set pre-extrapolation count.
+        /** Set pre-extrapolation count_.
           * \param pCount Number of repetitions if pre-extrapolation mode is
           *       REPETITION or MIRROR_REPETITION.
           */
         void SetPreExtrapolationCount(unsigned long pCount);
         
-        /** Get pre-extrapolation count.
+        /** Get pre-extrapolation count_.
           * \return Number of repetitions if pre-extrapolation mode is
           *         REPETITION or MIRROR_REPETITION.
           */
@@ -190,13 +190,13 @@ public:
           */
         EExtrapolationType GetPostExtrapolation() const { return mPostExtrapolation; }
         
-        /** Set post-extrapolation count.
+        /** Set post-extrapolation count_.
           * \param pCount Number of repetitions if post-extrapolation mode is
           *               REPETITION or MIRROR_REPETITION.
           */
         void SetPostExtrapolationCount(unsigned long pCount);
             
-        /** Get post-extrapolation count.
+        /** Get post-extrapolation count_.
           * \return Number of repetitions if post-extrapolation mode is
           *         REPETITION or MIRROR_REPETITION.
           */

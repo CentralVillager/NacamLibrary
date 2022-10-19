@@ -42,10 +42,15 @@ namespace NcmUtill
 	/// </summary>
 	/// <param name="v"></param>
 	/// <returns></returns>
-	inline static const XMFLOAT3 &ToFloat3(const XMVECTOR &v)
-	{
-		return XMFLOAT3(v.m128_f32[0], v.m128_f32[1], v.m128_f32[2]);
-	}
+	//inline static const XMFLOAT3 &ToFloat3(const XMVECTOR &v)
+	//{
+	//	XMFLOAT3 ret;
+	//	ret.x = v.m128_f32[0];
+	//	ret.y = v.m128_f32[1];
+	//	ret.z = v.m128_f32[2];
+	//	//return XMFLOAT3(v.m128_f32[0], v.m128_f32[1], v.m128_f32[2]);
+	//	return ret;
+	//}
 
 #pragma endregion
 

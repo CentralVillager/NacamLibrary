@@ -814,17 +814,17 @@ public:
 		  */
 		bool ContentIsLoaded() const;
 
-		/** Decreases the content lock count of an object. If the content lock count of an object
+		/** Decreases the content lock count_ of an object. If the content lock count_ of an object
 		  * is greater than 0, the content of the object is considered locked.
 		  */
 		void ContentDecrementLockCount();
 
-		/** Increases the content lock count of an object. If the content lock count of an object
+		/** Increases the content lock count_ of an object. If the content lock count_ of an object
 		  * is greater than 0, the content of the object is considered locked.
 		  */
 		void ContentIncrementLockCount();
 
-		/** Judges if this object's content is locked. The content is considered locked if the content lock count
+		/** Judges if this object's content is locked. The content is considered locked if the content lock count_
 		  * is greater than 0
 		  * \return \c True if this object's content is locked, \c false otherwise.
 		  * \remarks A locked state prevents the object content from being unloaded from memory but
@@ -1006,7 +1006,7 @@ public:
 
 	//Basic comparison operator implementation. It simply compare property values between source and target.
 	//NOTE: If a property cannot be found on one of the object, the comparison fails (return false).
-	//Different classid will fail comparison as well as different property count. Reference properties are not compared.
+	//Different classid will fail comparison as well as different property count_. Reference properties are not compared.
 	bool operator==(const FbxObject& pObject);
 	bool operator!=(const FbxObject& pObject);
 

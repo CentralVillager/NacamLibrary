@@ -115,14 +115,14 @@ public:
 
     /** Returns multiplicity of U-dimension control points.
       * \return             Pointer to the array of multiplicity values.
-      * \remarks            The length of this vector is equal to the U count.
+      * \remarks            The length of this vector is equal to the U count_.
       *                     Its elements are set to 1 by default.
       */
     int* GetUMultiplicityVector() const;
 
     /** Returns multiplicity of V-dimension control points.
       * \return             Pointer to the array of multiplicity values.
-      * \remarks            The length of this vector is equal to the V count.
+      * \remarks            The length of this vector is equal to the V count_.
       *                     Its elements are set to 1 by default.
       */
     int* GetVMultiplicityVector() const;

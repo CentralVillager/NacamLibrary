@@ -284,7 +284,7 @@
     <ClInclude Include="Sources\Lib\Input\KeyboardInput.h" />
     <ClInclude Include="Sources\Lib\Line\Line.h" />
     <ClInclude Include="Sources\Lib\Model\Model.h" />
-    <ClInclude Include="Sources\Lib\NacamError.h" />
+    <ClInclude Include="Sources\Lib\NacamError\NacamError.h" />
     <ClInclude Include="Sources\Lib\NacamLib\NacamLib.h" />
     <ClInclude Include="Sources\Lib\Object3d\Object3d.h" />
     <ClInclude Include="Sources\Lib\Pipeline\PipelineManager.h" />

@@ -21,7 +21,7 @@ void Win32App::StaticInitialize()
 	w.lpszClassName = L"NacamLibrary";					// ウィンドウクラス名
 	w.hInstance = GetModuleHandle(nullptr);				// ウィンドウハンドル
 	w.hCursor = LoadCursor(NULL, IDC_ARROW);			// カーソル指定
-	w.hIcon = LoadIcon(w.hInstance, MAKEINTRESOURCE("MAINICON"));
+	//w.hIcon = LoadIcon(w.hInstance, MAKEINTRESOURCE("MAINICON"));
 
 	RegisterClassEx(&w);								// ウィンドウクラスをOSに指定
 

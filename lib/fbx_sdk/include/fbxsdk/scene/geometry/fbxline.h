@@ -26,9 +26,9 @@
 * To mark a point as end point, we add its index(of mPointArray) to mEndPointArray.
 * \nosubgrouping
 * Methods to initialize, set and access control points are provided in the FbxGeometryBase class.
-* To initialize control point count, please use FbxLine::InitControlPoints(int pCount).
+* To initialize control point count_, please use FbxLine::InitControlPoints(int pCount).
 * To set a control point, please use FbxLine::SetControlPointAt(const FbxVector4 &pCtrlPoint , int pIndex).
-* To get control point count, please use FbxLine::GetControlPointsCount().
+* To get control point count_, please use FbxLine::GetControlPointsCount().
 * To get a control point, please use FbxLine::GetControlPointAt(int pIndex). The pIndex could be returned by GetPointIndexAt(i).
 */
 class FBXSDK_DLL FbxLine : public FbxGeometry
@@ -62,7 +62,7 @@ public:
     inline FbxArray<int>* GetIndexArray() { return &mPointArray;}
 
     /** Sets index array(mPointArray) at a specified index.
-    * \param pValue     An index to a control point. Its range is from 0 to count of control point.
+    * \param pValue     An index to a control point. Its range is from 0 to count_ of control point.
     * \param pIndex     The specified index to mPointArray. Its range is from 0 to size of mPointArray.
     * \param pAsEndPoint Mark current point as end point or not. If pAsEndPoint is true, pIndex will be automatically added to mEndPointArray.
     * \return True on success, false on failure if pIndex is out of range.
@@ -76,7 +76,7 @@ public:
     int GetPointIndexAt(int pIndex) const;
 
     /** Adds a point to the index array (mPointArray).
-    * \param pValue The index to a control point. Its range is from 0 to count of control point.
+    * \param pValue The index to a control point. Its range is from 0 to count_ of control point.
     * \param pAsEndPoint Mark current point as end point or not. If pAsEndPoint is true, current point index will be automatically added to mEndPointArray.
     * \return True on success, false on failure if pValue is out of range.
     */
@@ -92,7 +92,7 @@ public:
     * \param pPointIndex The specified index to the point index array(mPointArray). Its range is from 0 to size of mPointArray.
     * \return True on success, false on failure if pPointIndex is out of range.
     * \remarks The point index in mEndPointArray should be incremental, otherwise, it will return false.
-    * To add pPointIndex, mEndPointArray will be automatically appended and resized. You never have to set count or resize for mEndPointArray.
+    * To add pPointIndex, mEndPointArray will be automatically appended and resized. You never have to set count_ or resize for mEndPointArray.
     * Below is the code sample:
     * \code
     * int lIndexCount = lLine->GetIndexArraySize();

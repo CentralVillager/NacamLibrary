@@ -35,10 +35,10 @@ FBXSDK_DLL FbxModule FbxModuleLoad(const char* pFilePath);
   */
 FBXSDK_DLL void* FbxModuleGetProc(FbxModule pModuleHandle, const char* pProcName);
 
-/** Frees the loaded module and, if necessary, decrements its reference count.
+/** Frees the loaded module and, if necessary, decrements its reference count_.
   * \param pModuleHandle A valid module handle.
   * \return \c true on success, \c false otherwise.
-  * \remark When the reference count reaches zero, the module is unloaded from the address space of the calling process and the handle is no longer valid.
+  * \remark When the reference count_ reaches zero, the module is unloaded from the address space of the calling process and the handle is no longer valid.
   */
 FBXSDK_DLL bool FbxModuleFree(FbxModule pModuleHandle);
 

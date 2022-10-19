@@ -69,13 +69,13 @@ public:
     //@{
         /** Returns the number of URLs that are stored in a property.
 		  * \param pProperty                The property. 
-          * \return                         The URL count.
+          * \return                         The URL count_.
           */
         static int     GetUrlCount(FbxProperty const &pProperty);
 
         /** Returns the number of URLs that are stored in a string.
 		  * \param pUrl                     The string.
-		  * \return                         The URL count.
+		  * \return                         The URL count_.
 		  */
 		 
         static int     GetUrlCount(FbxString const& pUrl);

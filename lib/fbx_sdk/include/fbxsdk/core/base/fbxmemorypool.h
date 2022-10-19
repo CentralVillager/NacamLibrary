@@ -25,7 +25,7 @@ class FBXSDK_DLL FbxMemoryPool
 public:
 	/** Memory pool constructor.
 	* \param pBlockSize		The size of one memory block.
-	* \param pBlockCount	The count of block that should be pre-allocated.
+	* \param pBlockCount	The count_ of block that should be pre-allocated.
 	* \param pResizable		Whether memory pool can grow if no block are availalbe upon calling Allocate.
 	* \param pConcurrent	Whether the pool supports concurrent allocation and release operations.
 	* \remark				All memory blocks must be released before the memory pool is destroyed, otherwise a memory leak will occur. */
@@ -34,7 +34,7 @@ public:
 	/** Memory pool destructor. Upon destruction, all memory blocks of the pool will be de-allocated. */
 	~FbxMemoryPool();
 
-	/** Free memory of all memory blocks from this memory pool, also effectively resetting the block count to zero.
+	/** Free memory of all memory blocks from this memory pool, also effectively resetting the block count_ to zero.
 	* \remark The block size and alignment/resize/concurrent support will remain unchanged. */
 	void Reset();
 

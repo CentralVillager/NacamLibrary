@@ -175,7 +175,7 @@ public:
 
 	/** Returns the number of file formats that can be exported.
 	  *	\return      The number of exportable formats.
-	  * \remarks     Multiple identifiers for the same format count as 
+	  * \remarks     Multiple identifiers for the same format count_ as 
 	  *              different file formats. For example, eFBX_BINARY, eFBX_ASCII and eFBX_ENCRYPTED
 	  *              are counted as three separate file formats.
 	  */

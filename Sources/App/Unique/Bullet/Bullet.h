@@ -6,6 +6,10 @@ class Bullet : public AbsUniqueObj
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMVECTOR = DirectX::XMVECTOR;
 
+	// モデルデータ
+	static std::unique_ptr<Model> model_;
+	static std::unique_ptr<Model> coll_model_;
+
 	XMFLOAT3 vel_{};
 	int life_ = 50;
 

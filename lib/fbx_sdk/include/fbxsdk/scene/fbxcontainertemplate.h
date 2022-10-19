@@ -52,8 +52,8 @@ public:
     */
     char* GetExtendTemplatePathAt(FbxUInt pIndex) const;
 
-    /** Get the count of extend template path.
-    * \return The count of extend template path.
+    /** Get the count_ of extend template path.
+    * \return The count_ of extend template path.
     */
     FbxUInt GetExtendTemplateCount() const;
 

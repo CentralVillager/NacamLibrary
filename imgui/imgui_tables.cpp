@@ -474,13 +474,13 @@ bool    ImGui::BeginTableEx(const char* name_, ImGuiID id, int columns_count, Im
     temp_data->LastTimeActive = (float)g.Time;
     table->MemoryCompacted = false;
 
-    // Setup memory buffer (clear data if columns count changed)
+    // Setup memory buffer (clear data if columns count_ changed)
     ImGuiTableColumn* old_columns_to_preserve = NULL;
     void* old_columns_raw_data = NULL;
     const int old_columns_count = table->Columns.size();
     if (old_columns_count != 0 && old_columns_count != columns_count)
     {
-        // Attempt to preserve width on column count change (#4046)
+        // Attempt to preserve width on column count_ change (#4046)
         old_columns_to_preserve = table->Columns.Data;
         old_columns_raw_data = table->RawData;
         table->RawData = NULL;
@@ -2308,7 +2308,7 @@ void ImGui::TableSetupDrawChannels(ImGuiTable* table)
 // based on its position (within frozen rows/columns groups or not).
 // At the end of the operation our 1-4 groups will each have a ImDrawCmd using the same ClipRect.
 // This function assume that each column are pointing to a distinct draw channel,
-// otherwise merge_group->ChannelsCount will not match set bit count of merge_group->ChannelsMask.
+// otherwise merge_group->ChannelsCount will not match set bit count_ of merge_group->ChannelsMask.
 //
 // Column channels will not be merged into one of the 1-4 groups in the following cases:
 // - The contents stray off its clipping rectangle (we only compare the MaxX value, not the MinX value).
@@ -3181,7 +3181,7 @@ ImGuiTableSettings* ImGui::TableGetBoundSettings(ImGuiTable* table)
         IM_ASSERT(settings->ID == table->ID);
         if (settings->ColumnsCountMax >= table->ColumnsCount)
             return settings; // OK
-        settings->ID = 0; // Invalidate storage, we won't fit because of a count change
+        settings->ID = 0; // Invalidate storage, we won't fit because of a count_ change
     }
     return NULL;
 }
@@ -3264,7 +3264,7 @@ void ImGui::TableLoadSettings(ImGuiTable* table)
         settings = TableSettingsFindByID(table->ID);
         if (settings == NULL)
             return;
-        if (settings->ColumnsCount != table->ColumnsCount) // Allow settings if columns count changed. We could otherwise decide to return...
+        if (settings->ColumnsCount != table->ColumnsCount) // Allow settings if columns count_ changed. We could otherwise decide to return...
             table->IsSettingsDirty = true;
         table->SettingsOffset = g.SettingsTables.offset_from_ptr(settings);
     }
@@ -3350,7 +3350,7 @@ static void* TableSettingsHandler_ReadOpen(ImGuiContext*, ImGuiSettingsHandler*,
             TableSettingsInit(settings, id, columns_count, settings->ColumnsCountMax); // Recycle
             return settings;
         }
-        settings->ID = 0; // Invalidate storage, we won't fit because of a count change
+        settings->ID = 0; // Invalidate storage, we won't fit because of a count_ change
     }
     return ImGui::TableSettingsCreate(id, columns_count);
 }
@@ -3851,7 +3851,7 @@ void ImGui::BeginColumns(const char* str_id, int columns_count, ImGuiOldColumnFl
     columns->OffMaxX = ImMax(ImMin(max_1, max_2) - window->Pos.x, columns->OffMinX + 1.0f);
     columns->LineMinY = columns->LineMaxY = window->DC.CursorPos.y;
 
-    // Clear data if columns count changed
+    // Clear data if columns count_ changed
     if (columns->Columns.Size != 0 && columns->Columns.Size != columns_count + 1)
         columns->Columns.resize(0);
 

@@ -109,8 +109,8 @@ public:
       */
     void AddPoleVectorObject(FbxObject* pObject, double pWeight = 100);
 
-    /** Retrieve the constraint source count.
-      * \return     Current constraint source count.
+    /** Retrieve the constraint source count_.
+      * \return     Current constraint source count_.
       */
     int GetConstraintPoleVectorCount() const;
 

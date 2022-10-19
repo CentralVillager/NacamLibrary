@@ -368,11 +368,11 @@
     <ClCompile Include="Sources\App\Unique\Bullet\Bullet.cpp">
       <Filter>Application\Unique\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\App\Unique\Bullet\BulletList.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\App\Unique\Abs\AbsUniqueObj.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>Application\Unique\AbstractUniqueObj</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Unique\Bullet\BulletList.cpp">
+      <Filter>Application\Unique\Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -553,9 +553,6 @@
     <ClInclude Include="Sources\Lib\Win32App\Win32App.h">
       <Filter>Library\Win32App</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Lib\NacamError.h">
-      <Filter>Library\NacamError</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\App\Unique\Reticle\Reticle.h">
       <Filter>Application\Unique\Reticle</Filter>
     </ClInclude>
@@ -572,8 +569,15 @@
     <ClInclude Include="Sources\App\Unique\Bullet\Bullet.h">
       <Filter>Application\Unique\Bullet</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Bullet\BulletList.h" />
-    <ClInclude Include="Sources\App\Unique\Abs\AbsUniqueObj.h" />
+    <ClInclude Include="Sources\App\Unique\Abs\AbsUniqueObj.h">
+      <Filter>Application\Unique\AbstractUniqueObj</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Unique\Bullet\BulletList.h">
+      <Filter>Application\Unique\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\NacamError\NacamError.h">
+      <Filter>Library\NacamError</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">

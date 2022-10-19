@@ -102,7 +102,7 @@ public:
 	  * \param pImage Pointer to the image data. A copy
 	  * of the image data will be made.
 	  *	\remarks This pointer must point to a buffer region
-	  * that is at least Width * Height * Component count
+	  * that is at least Width * Height * Component count_
 	  * bytes long. This pointer points to the upper left
 	  * corner of the image.
 	  * \remarks You must set the data format and the dimensions

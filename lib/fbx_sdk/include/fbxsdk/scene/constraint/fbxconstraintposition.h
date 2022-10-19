@@ -77,8 +77,8 @@ public:
       */
     bool RemoveConstraintSource(FbxObject* pObject);
 
-    /** Retrieve the constraint source count.
-      * \return Current constraint source count.
+    /** Retrieve the constraint source count_.
+      * \return Current constraint source count_.
       */
     int GetConstraintSourceCount() const override;
 

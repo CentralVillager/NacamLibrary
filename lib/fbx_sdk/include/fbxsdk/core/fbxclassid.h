@@ -119,16 +119,16 @@ public:
 	* \return The root property handle for this class. */
 	FbxPropertyHandle* GetRootClassDefaultPropertyHandle();
 
-	/** Increase the instance reference count for this class type.
-	* \return the new count of reference to this class after increment. */
+	/** Increase the instance reference count_ for this class type.
+	* \return the new count_ of reference to this class after increment. */
 	int ClassInstanceIncRef();
 
-	/** Decrease the instance reference count for this class type.
-	* \return the new count of reference to this class after decrement. */
+	/** Decrease the instance reference count_ for this class type.
+	* \return the new count_ of reference to this class after decrement. */
 	int ClassInstanceDecRef();
 	 
-	/** Retrieve the instance reference count for this class type.
-	* \return The reference count of this class type. */
+	/** Retrieve the instance reference count_ for this class type.
+	* \return The reference count_ of this class type. */
 	int GetInstanceRef();
 
 /*****************************************************************************************************************************

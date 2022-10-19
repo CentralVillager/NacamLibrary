@@ -109,7 +109,7 @@ public:
 
 
 	/** Set the array size for the control point indices
-	* \param pCount The new count.
+	* \param pCount The new count_.
 	*/
 	void SetControlPointIndicesCount(int pCount);
 

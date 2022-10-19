@@ -325,8 +325,8 @@ public:
 		mMap.Reserve(pSize);
 	}
 
-	/** Query the count of elements in the map.
-	* \return The count of elements. */
+	/** Query the count_ of elements in the map.
+	* \return The count_ of elements. */
 	inline int GetCount() const
 	{
 		return mMap.GetSize();

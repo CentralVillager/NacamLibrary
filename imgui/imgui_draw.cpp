@@ -566,7 +566,7 @@ void ImDrawList::_OnChangedVtxOffset()
 
 int ImDrawList::_CalcCircleAutoSegmentCount(float radius) const
 {
-    // Automatic segment count
+    // Automatic segment count_
     const int radius_idx = (int)(radius + 0.999999f); // ceil to never reduce accuracy
     if (radius_idx < IM_ARRAYSIZE(_Data->CircleSegmentCounts))
         return _Data->CircleSegmentCounts[radius_idx]; // Use cached value
@@ -1185,7 +1185,7 @@ void ImDrawList::PathArcTo(const ImVec2& center, float radius, float a_min, floa
         return;
     }
 
-    // Automatic segment count
+    // Automatic segment count_
     if (radius <= _Data->ArcFastRadiusCutoff)
     {
         const bool a_is_reverse = a_max < a_min;
@@ -1481,16 +1481,16 @@ void ImDrawList::AddCircle(const ImVec2& center, float radius, ImU32 col, int nu
 
     if (num_segments <= 0)
     {
-        // Use arc with automatic segment count
+        // Use arc with automatic segment count_
         _PathArcToFastEx(center, radius - 0.5f, 0, IM_DRAWLIST_ARCFAST_SAMPLE_MAX, 0);
         _Path.Size--;
     }
     else
     {
-        // Explicit segment count (still clamp to avoid drawing insanely tessellated shapes)
+        // Explicit segment count_ (still clamp to avoid drawing insanely tessellated shapes)
         num_segments = ImClamp(num_segments, 3, IM_DRAWLIST_CIRCLE_AUTO_SEGMENT_MAX);
 
-        // Because we are filling a closed shape we remove 1 from the count of segments/points
+        // Because we are filling a closed shape we remove 1 from the count_ of segments/points
         const float a_max = (IM_PI * 2.0f) * ((float)num_segments - 1.0f) / (float)num_segments;
         PathArcTo(center, radius - 0.5f, 0.0f, a_max, num_segments - 1);
     }
@@ -1505,16 +1505,16 @@ void ImDrawList::AddCircleFilled(const ImVec2& center, float radius, ImU32 col, 
 
     if (num_segments <= 0)
     {
-        // Use arc with automatic segment count
+        // Use arc with automatic segment count_
         _PathArcToFastEx(center, radius, 0, IM_DRAWLIST_ARCFAST_SAMPLE_MAX, 0);
         _Path.Size--;
     }
     else
     {
-        // Explicit segment count (still clamp to avoid drawing insanely tessellated shapes)
+        // Explicit segment count_ (still clamp to avoid drawing insanely tessellated shapes)
         num_segments = ImClamp(num_segments, 3, IM_DRAWLIST_CIRCLE_AUTO_SEGMENT_MAX);
 
-        // Because we are filling a closed shape we remove 1 from the count of segments/points
+        // Because we are filling a closed shape we remove 1 from the count_ of segments/points
         const float a_max = (IM_PI * 2.0f) * ((float)num_segments - 1.0f) / (float)num_segments;
         PathArcTo(center, radius, 0.0f, a_max, num_segments - 1);
     }
@@ -1528,7 +1528,7 @@ void ImDrawList::AddNgon(const ImVec2& center, float radius, ImU32 col, int num_
     if ((col & IM_COL32_A_MASK) == 0 || num_segments <= 2)
         return;
 
-    // Because we are filling a closed shape we remove 1 from the count of segments/points
+    // Because we are filling a closed shape we remove 1 from the count_ of segments/points
     const float a_max = (IM_PI * 2.0f) * ((float)num_segments - 1.0f) / (float)num_segments;
     PathArcTo(center, radius - 0.5f, 0.0f, a_max, num_segments - 1);
     PathStroke(col, ImDrawFlags_Closed, thickness);
@@ -1540,7 +1540,7 @@ void ImDrawList::AddNgonFilled(const ImVec2& center, float radius, ImU32 col, in
     if ((col & IM_COL32_A_MASK) == 0 || num_segments <= 2)
         return;
 
-    // Because we are filling a closed shape we remove 1 from the count of segments/points
+    // Because we are filling a closed shape we remove 1 from the count_ of segments/points
     const float a_max = (IM_PI * 2.0f) * ((float)num_segments - 1.0f) / (float)num_segments;
     PathArcTo(center, radius, 0.0f, a_max, num_segments - 1);
     PathFillConvex(col);
@@ -2308,7 +2308,7 @@ struct ImFontBuildSrcData
     const ImWchar*      SrcRanges;          // Ranges as requested by user (user is allowed to request too much, e.g. 0x0020..0xFFFF)
     int                 DstIndex;           // Index into atlas->Fonts[] and dst_tmp_array[]
     int                 GlyphsHighest;      // Highest requested codepoint
-    int                 GlyphsCount;        // Glyph count (excluding missing glyphs and glyphs already set by an earlier source font)
+    int                 GlyphsCount;        // Glyph count_ (excluding missing glyphs and glyphs already set by an earlier source font)
     ImBitVector         GlyphsSet;          // Glyph bit map (random access, 1-bit per codepoint. This will be a maximum of 8KB)
     ImVector<int>       GlyphsList;         // Glyph codepoints list (flattened version of GlyphsMap)
 };

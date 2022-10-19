@@ -1,34 +1,31 @@
 #include "AbsUniqueObj.h"
 #include "../../Utility/NcmUtil.h"
 
-std::unique_ptr<Model> AbsUniqueObj::model_ = nullptr;
-std::unique_ptr<Model> AbsUniqueObj::coll_model_ = nullptr;
-
-AbsUniqueObj::AbsUniqueObj(XMFLOAT3 pos, float speed)
+AbsUniqueObj::AbsUniqueObj(float speed, float coll_radius)
 	:
-	obj_(std::make_unique<Object3d>()),
-	coll_obj_(std::make_unique<Object3d>()),
-	COLL_RADIUS_(1.0f),
-	pos_(pos),
+	obj_(std::make_shared<Object3d>()),
+	coll_obj_(std::make_shared<Object3d>()),
+	coll_radius_(coll_radius),
 	speed_(speed),
 	is_dead_(true)
 {}
 
-void AbsUniqueObj::InitializeObj()
+void AbsUniqueObj::InitObj3d(Model *obj_model, Model *coll_model)
 {
 	obj_->Initialize();
-	obj_->SetModel(model_.get());
-
+	obj_->SetModel(obj_model);
 	coll_obj_->Initialize();
-	coll_obj_->SetModel(coll_model_.get());
+	coll_obj_->SetModel(coll_model);
 }
 
 void AbsUniqueObj::UpdateColl()
 {
 	coll_.center = DirectX::XMLoadFloat3(&obj_->GetPosition());
-	coll_.radius = COLL_RADIUS_;
+	coll_.radius = coll_radius_;
 
-	coll_obj_->SetPosition(NcmUtill::ToFloat3(coll_.center));
+	XMFLOAT3 dist;
+	DirectX::XMStoreFloat3(&dist, coll_.center);
+	coll_obj_->SetPosition(dist);
 	coll_obj_->SetScale(coll_.radius);
 	coll_obj_->Update();
 }

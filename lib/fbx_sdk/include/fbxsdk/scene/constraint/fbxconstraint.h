@@ -80,8 +80,8 @@ public:
       */
     virtual FbxObject* GetConstrainedObject() const { return NULL; }
 
-    /** Retrieve the count of constraint source.
-      * \return The count of constraint source.
+    /** Retrieve the count_ of constraint source.
+      * \return The count_ of constraint source.
       */
     virtual int GetConstraintSourceCount() const { return 0; }
 

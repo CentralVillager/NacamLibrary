@@ -4,7 +4,10 @@
 using namespace DirectX;
 using namespace NcmUtill;
 
-Bullet::Bullet() : AbsUniqueObj({0, 0, 0}, 3.0f)
+std::unique_ptr<Model> Bullet::model_ = nullptr;
+std::unique_ptr<Model> Bullet::coll_model_ = nullptr;
+
+Bullet::Bullet() : AbsUniqueObj(3.0f, 1.0f)
 {
 	obj_ = std::make_unique<Object3d>();
 	coll_obj_ = std::make_unique<Object3d>();
@@ -15,7 +18,7 @@ Bullet::~Bullet()
 
 void Bullet::LoadResources()
 {
-	// 他のクラスでも同じ処理をしている
+	// 他のクラスで同じリソースを多重ロードしている
 
 	if (!model_)
 	{
@@ -32,11 +35,7 @@ void Bullet::LoadResources()
 
 void Bullet::Initialize()
 {
-	obj_->Initialize();
-	obj_->SetModel(model_.get());
-
-	coll_obj_->Initialize();
-	coll_obj_->SetModel(coll_model_.get());
+	InitObj3d(model_.get(), coll_model_.get());
 }
 
 void Bullet::Update()
@@ -45,13 +44,14 @@ void Bullet::Update()
 
 	life_--;
 
-	pos_ = obj_->GetPosition();
+	XMFLOAT3 pos;
+	pos = obj_->GetPosition();
 
-	pos_.x += vel_.x;
-	pos_.y += vel_.y;
-	pos_.z += vel_.z;
+	pos.x += vel_.x;
+	pos.y += vel_.y;
+	pos.z += vel_.z;
 
-	obj_->SetPosition(pos_);
+	obj_->SetPosition(pos);
 	obj_->Update();
 	UpdateColl();
 
