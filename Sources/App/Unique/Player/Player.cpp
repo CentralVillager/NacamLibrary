@@ -9,7 +9,7 @@ using namespace Microsoft::WRL;
 using namespace NcmUtill;
 
 std::shared_ptr<Model> Player::model_ = nullptr;
-std::shared_ptr<Model> Player::sphere_model_ = nullptr;
+std::shared_ptr<Model> Player::coll_model_ = nullptr;
 
 Player::Player()
 {
@@ -27,8 +27,8 @@ void Player::LoadResources()
 		model_ = std::make_shared<Model>();
 		model_->LoadObjModel("Resources/low_fighter/", "new_low_fighter.obj", "new_low_fighter.mtl");
 
-		sphere_model_ = std::make_shared<Model>();
-		sphere_model_->LoadObjModel("Resources/Ball/", "smooth_ball.obj", "smooth_ball.mtl");
+		coll_model_ = std::make_shared<Model>();
+		coll_model_->LoadObjModel("Resources/Ball/", "smooth_ball.obj", "smooth_ball.mtl");
 	}
 }
 
@@ -45,7 +45,7 @@ void Player::Initialize(MissileManager *mi_mgr, LockOnSystem *lockon_sys)
 	object_->SetRotation(XMFLOAT3(0, 180.0f, 0));
 	object_->SetScale(1.0f);
 	sphere_obj_->Initialize();
-	sphere_obj_->SetModel(sphere_model_.get());
+	sphere_obj_->SetModel(coll_model_.get());
 
 	// コリジョンの更新
 	UpdateCollision();

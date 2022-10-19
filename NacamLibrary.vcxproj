@@ -191,7 +191,9 @@
     <ClCompile Include="Sources\App\Scene\SceneManager\SceneManager.cpp" />
     <ClCompile Include="Sources\App\Scene\TemporaryScene.cpp" />
     <ClCompile Include="Sources\App\Scene\TitleScene.cpp" />
+    <ClCompile Include="Sources\App\Unique\Abs\AbsUniqueObj.cpp" />
     <ClCompile Include="Sources\App\Unique\Bullet\Bullet.cpp" />
+    <ClCompile Include="Sources\App\Unique\Bullet\BulletList.cpp" />
     <ClCompile Include="Sources\App\Unique\Enemy\EnemiesList.cpp" />
     <ClCompile Include="Sources\App\Unique\Enemy\Enemy.cpp" />
     <ClCompile Include="Sources\App\Unique\LockOnSystem\LockOnSystem.cpp" />
@@ -242,7 +244,7 @@
     <ClInclude Include="Sources\App\Particle\Emitter.h" />
     <ClInclude Include="Sources\App\Particle\EmittersList.h" />
     <ClInclude Include="Sources\App\Particle\Particle.h" />
-    <ClInclude Include="Sources\App\Scene\AbstractScene.h" />
+    <ClInclude Include="Sources\App\Scene\AbsScene.h" />
     <ClInclude Include="Sources\App\Scene\Demo\DemoScene.h" />
     <ClInclude Include="Sources\App\Scene\Demo\ExecuteIndirectDemoScene.h" />
     <ClInclude Include="Sources\App\Scene\Demo\FrictionDemoScene.h" />
@@ -257,7 +259,9 @@
     <ClInclude Include="Sources\App\Scene\TemporaryScene.h" />
     <ClInclude Include="Sources\App\Scene\TitleScene.h" />
     <ClInclude Include="Sources\App\Singleton\Singleton.h" />
+    <ClInclude Include="Sources\App\Unique\Abs\AbsUniqueObj.h" />
     <ClInclude Include="Sources\App\Unique\Bullet\Bullet.h" />
+    <ClInclude Include="Sources\App\Unique\Bullet\BulletList.h" />
     <ClInclude Include="Sources\App\Unique\Enemy\EnemiesList.h" />
     <ClInclude Include="Sources\App\Unique\Enemy\Enemy.h" />
     <ClInclude Include="Sources\App\Unique\LockOnSystem\LockOnSystem.h" />

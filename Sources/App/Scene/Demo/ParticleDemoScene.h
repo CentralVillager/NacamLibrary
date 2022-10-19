@@ -3,11 +3,11 @@
 #include <wrl.h>
 #include <DirectXMath.h>
 #include <forward_list>
-#include "../AbstractScene.h"
+#include "../AbsScene.h"
 #include "../../Particle/Emitter.h"
 #include "../../../Lib/Camera/Camera.h"
 
-class ParticleDemoScene : public AbstractScene {
+class ParticleDemoScene : public AbsScene {
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 

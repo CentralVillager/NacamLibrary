@@ -26,7 +26,7 @@ public:
 	std::vector<Enemy> &GetEnemies() { return enemies_; }
 	const XMFLOAT3 &GetPos(UINT i) { return enemies_[i].GetPos(); }
 	const Sphere &GetCollData(UINT i) { return enemies_[i].GetCollData(); }
-	const bool &GetIsDead(UINT i) { return enemies_[i].GetIsDead(); }
+	const bool &GetIsDead(UINT i) { return enemies_[i].IsDead(); }
 	const size_t &GetSize() { return enemies_.size(); }
 	const int &GetID(UINT i) { return enemies_[i].GetID(); }
 

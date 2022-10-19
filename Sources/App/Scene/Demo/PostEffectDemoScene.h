@@ -1,14 +1,14 @@
 #pragma once
 #include <memory>
 #include <wrl.h>
-#include "../AbstractScene.h"
+#include "../AbsScene.h"
 #include "../../../Lib/Camera/Camera.h"
 #include "../../../Lib/Model/Model.h"
 #include "../../../Lib/Object3d/Object3d.h"
 #include "../../../Lib/PostEffect/PostEffect.h"
 #include "../../../Lib/Sprite/NcmSprite.h"
 
-class PostEffectDemoScene : public AbstractScene
+class PostEffectDemoScene : public AbsScene
 {
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 

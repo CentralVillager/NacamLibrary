@@ -1,17 +1,13 @@
 #include "Bullet.h"
 #include "../Sources/App/Utility/NcmUtil.h"
-#include "../../Debug/NcmImGui.h"
 
 using namespace DirectX;
 using namespace NcmUtill;
 
-std::unique_ptr<Model> Bullet::model_ = nullptr;
-std::unique_ptr<Model> Bullet::sphere_model_ = nullptr;
-
-Bullet::Bullet()
+Bullet::Bullet() : AbsUniqueObj({0, 0, 0}, 3.0f)
 {
-	object_ = std::make_unique<Object3d>();
-	sphere_obj_ = std::make_unique<Object3d>();
+	obj_ = std::make_unique<Object3d>();
+	coll_obj_ = std::make_unique<Object3d>();
 }
 
 Bullet::~Bullet()
@@ -27,21 +23,20 @@ void Bullet::LoadResources()
 		model_->LoadObjModel("Resources/bullet/", "bullet.obj", "bullet.mtl");
 	}
 
-	if (!sphere_model_)
+	if (!coll_model_)
 	{
-		sphere_model_ = std::make_unique<Model>();
-		sphere_model_->LoadObjModel("Resources/Ball/", "smooth_ball.obj", "smooth_ball.mtl");
+		coll_model_ = std::make_unique<Model>();
+		coll_model_->LoadObjModel("Resources/Ball/", "smooth_ball.obj", "smooth_ball.mtl");
 	}
 }
 
-void Bullet::Initialize(const XMFLOAT3 &pos)
+void Bullet::Initialize()
 {
-	object_->Initialize();
-	object_->SetModel(model_.get());
-	object_->SetPosition(pos);
+	obj_->Initialize();
+	obj_->SetModel(model_.get());
 
-	sphere_obj_->Initialize();
-	sphere_obj_->SetModel(sphere_model_.get());
+	coll_obj_->Initialize();
+	coll_obj_->SetModel(coll_model_.get());
 }
 
 void Bullet::Update()
@@ -50,15 +45,15 @@ void Bullet::Update()
 
 	life_--;
 
-	pos_ = object_->GetPosition();
+	pos_ = obj_->GetPosition();
 
 	pos_.x += vel_.x;
 	pos_.y += vel_.y;
 	pos_.z += vel_.z;
 
-	object_->SetPosition(pos_);
-	object_->Update();
-	UpdateCollision();
+	obj_->SetPosition(pos_);
+	obj_->Update();
+	UpdateColl();
 
 	if (IsZeroOrLess(life_))
 	{
@@ -69,18 +64,18 @@ void Bullet::Update()
 void Bullet::Draw()
 {
 	if (is_dead_) { return; }
-	object_->Draw();
+	obj_->Draw();
 }
 
 void Bullet::DrawColl()
 {
 	if (is_dead_) { return; }
-	sphere_obj_->Draw();
+	obj_->Draw();
 }
 
 void Bullet::DebugDraw()
 {
-	ImGui::Text("pos : (%f, %f, %f)", object_->GetPosition().x, object_->GetPosition().y, object_->GetPosition().z);
+	ImGui::Text("pos : (%f, %f, %f)", obj_->GetPosition().x, obj_->GetPosition().y, obj_->GetPosition().z);
 }
 
 void Bullet::Fire(const XMFLOAT3 &dist)
@@ -92,10 +87,10 @@ void Bullet::Fire(const XMFLOAT3 &dist)
 
 void Bullet::CalcAngle(const XMFLOAT3 &dist)
 {
-	XMFLOAT3 pos = object_->GetPosition();
+	XMFLOAT3 pos = obj_->GetPosition();
 
 	// XMVECTORに変換
-	XMVECTOR bl_vec = XMLoadFloat3(&object_->GetPosition());
+	XMVECTOR bl_vec = XMLoadFloat3(&obj_->GetPosition());
 	XMVECTOR di_vec = XMLoadFloat3(&dist);
 
 	// ふたつの座標を結ぶベクトルを計算
@@ -111,17 +106,7 @@ void Bullet::CalcAngle(const XMFLOAT3 &dist)
 
 	XMStoreFloat3(&vel_, norm_vec);
 
-	vel_.x *= SPEED_;
-	vel_.y *= SPEED_;
-	vel_.z *= SPEED_;
-}
-
-void Bullet::UpdateCollision()
-{
-	coll_.center = XMLoadFloat3(&object_->GetPosition());
-	coll_.radius = COLL_RADIUS_;
-
-	sphere_obj_->SetPosition(ToFloat3(coll_.center));
-	sphere_obj_->SetScale(coll_.radius);
-	sphere_obj_->Update();
+	vel_.x *= speed_;
+	vel_.y *= speed_;
+	vel_.z *= speed_;
 }

@@ -1,12 +1,12 @@
 #pragma once
 #include <memory>
 #include <wrl.h>
-#include "../AbstractScene.h"
+#include "../AbsScene.h"
 #include "../../../Lib/Camera/Camera.h"
 #include "../../../Lib/Model/Model.h"
 #include "../../../Lib/Object3d/Object3d.h"
 
-class GravityDemoScene : public AbstractScene {
+class GravityDemoScene : public AbsScene {
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 	ComPtr<ID3D12GraphicsCommandList> cmd_list_ = DirectXBase::GetInstance()->GetCommandList().Get();

@@ -1,9 +1,9 @@
 #pragma once
 #include <memory>
-#include "AbstractScene.h"
+#include "AbsScene.h"
 #include "../../Lib/Sprite/NcmSprite.h"
 
-class ResultScene : public AbstractScene
+class ResultScene : public AbsScene
 {
 	//std::unique_ptr<NcmSprite> result_;
 	int result_;

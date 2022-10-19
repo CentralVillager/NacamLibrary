@@ -36,9 +36,6 @@
     <Filter Include="Application\Scene">
       <UniqueIdentifier>{df96d19a-c6e7-4c8d-91d9-70b608a0eb38}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Scene\Abstract">
-      <UniqueIdentifier>{8ed16d1a-200c-4fe6-bd52-1c39aafa6687}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Library\Model">
       <UniqueIdentifier>{5480a6d3-20a9-46ef-b4c0-86323d6b2f10}</UniqueIdentifier>
     </Filter>
@@ -176,6 +173,15 @@
     </Filter>
     <Filter Include="Application\Debug\ImGui\NcmImGui">
       <UniqueIdentifier>{b509433a-f11a-4bf4-b60b-f303f38b54ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Unique\Bullet">
+      <UniqueIdentifier>{1ed62876-5c0c-4d66-8753-a83287fc0c47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Unique\AbstractUniqueObj">
+      <UniqueIdentifier>{b1dcbbc8-dd63-4c23-93b1-b5683ca0dbca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\AbsScene">
+      <UniqueIdentifier>{8ed16d1a-200c-4fe6-bd52-1c39aafa6687}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -360,6 +366,12 @@
       <Filter>Application\NacamMath\Easing</Filter>
     </ClCompile>
     <ClCompile Include="Sources\App\Unique\Bullet\Bullet.cpp">
+      <Filter>Application\Unique\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Unique\Bullet\BulletList.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Unique\Abs\AbsUniqueObj.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -412,8 +424,8 @@
     <ClInclude Include="Sources\App\Particle\Particle.h">
       <Filter>Application\Particle</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\App\Scene\AbstractScene.h">
-      <Filter>Application\Scene\Abstract</Filter>
+    <ClInclude Include="Sources\App\Scene\AbsScene.h">
+      <Filter>Application\Scene\AbsScene</Filter>
     </ClInclude>
     <ClInclude Include="Sources\App\Scene\Demo\DemoScene.h">
       <Filter>Application\Scene\Demo</Filter>
@@ -557,7 +569,11 @@
     <ClInclude Include="Sources\App\Math\Easing\NcmEasing.h">
       <Filter>Application\NacamMath\Easing</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Bullet\Bullet.h" />
+    <ClInclude Include="Sources\App\Unique\Bullet\Bullet.h">
+      <Filter>Application\Unique\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Unique\Bullet\BulletList.h" />
+    <ClInclude Include="Sources\App\Unique\Abs\AbsUniqueObj.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">

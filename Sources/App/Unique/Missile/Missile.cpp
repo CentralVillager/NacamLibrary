@@ -7,7 +7,7 @@ using namespace DirectX;
 using namespace NcmUtill;
 
 std::unique_ptr<Model> Missile::model_ = nullptr;
-std::unique_ptr<Model> Missile::sphere_model_ = nullptr;
+std::unique_ptr<Model> Missile::coll_model_ = nullptr;
 
 Missile::Missile()
 {
@@ -27,10 +27,10 @@ void Missile::LoadResources()
 		model_->LoadObjModel("Resources/bullet/", "bullet.obj", "bullet.mtl");
 	}
 
-	if (!sphere_model_)
+	if (!coll_model_)
 	{
-		sphere_model_ = std::make_unique<Model>();
-		sphere_model_->LoadObjModel("Resources/Ball/", "smooth_ball.obj", "smooth_ball.mtl");
+		coll_model_ = std::make_unique<Model>();
+		coll_model_->LoadObjModel("Resources/Ball/", "smooth_ball.obj", "smooth_ball.mtl");
 	}
 }
 
@@ -47,7 +47,7 @@ void Missile::Initialize(const MissileArgs &args, LockOnSystem *sys)
 	object_->SetRotation(XMFLOAT3(0, 180.0f, 0));
 
 	sphere_obj_->Initialize();
-	sphere_obj_->SetModel(sphere_model_.get());
+	sphere_obj_->SetModel(coll_model_.get());
 
 	Emitter::EmitterArgs emi;
 	XMFLOAT3 temp = mi_args_.vel;

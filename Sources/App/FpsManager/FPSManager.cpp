@@ -1,7 +1,7 @@
 #include "FPSManager.h"
 #include <thread>
 #include <chrono>
-#include "../Win32App/Win32App.h"
+#include "../../Lib/Win32App/Win32App.h"
 
 #pragma comment(lib, "winmm.lib")
 

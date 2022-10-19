@@ -1,14 +1,14 @@
 #pragma once
 #include <memory>
 #include <DirectXMath.h>
-#include "AbstractScene.h"
+#include "AbsScene.h"
 #include "../Particle/Emitter.h"
 #include "../../Lib/Camera/Camera.h"
 #include "../../Lib/Sprite/NcmSprite.h"
 #include "../../Lib/Model/Model.h"
 #include "../../Lib/Object3d/Object3d.h"
 
-class TitleScene : public AbstractScene
+class TitleScene : public AbsScene
 {
 	using XMINT2 = DirectX::XMINT2;
 	using XMFLOAT2 = DirectX::XMFLOAT2;

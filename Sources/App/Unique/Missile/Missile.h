@@ -33,7 +33,7 @@ class Missile
 
 	// 描画用データ
 	static std::unique_ptr<Model> model_;
-	static std::unique_ptr<Model> sphere_model_;
+	static std::unique_ptr<Model> coll_model_;
 	std::unique_ptr<Object3d> object_;
 	std::shared_ptr<Object3d> sphere_obj_;
 

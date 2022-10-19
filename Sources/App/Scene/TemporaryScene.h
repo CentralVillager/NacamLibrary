@@ -2,7 +2,7 @@
 #include <memory>
 #include <wrl.h>
 #include <DirectXMath.h>
-#include "../Scene/AbstractScene.h"
+#include "../Scene/AbsScene.h"
 #include "../Collision/CollisionPrimitive.h"
 #include "../Collision/Collision.h"
 #include "../Debug/DebugText.h"
@@ -13,7 +13,7 @@
 #include "../../Lib/Object3d/Object3d.h"
 #include "../../Lib/Audio/AudioManager.h"
 
-class TemporaryScene : public AbstractScene {
+class TemporaryScene : public AbsScene {
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 	ComPtr<ID3D12GraphicsCommandList> cmd_list_ = DirectXBase::GetInstance()->GetCommandList().Get();

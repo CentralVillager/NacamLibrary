@@ -2,7 +2,7 @@
 #include <stack>
 #include <memory>
 #include <array>
-#include "../AbstractScene.h"
+#include "../AbsScene.h"
 
 // 全シーン名
 enum class SceneName : unsigned int
@@ -32,13 +32,13 @@ class SceneManager
 	};
 
 	// シーンを溜めるためのスタック
-	static stack<shared_ptr<AbstractScene>> scene_stack_;
+	static stack<shared_ptr<AbsScene>> scene_stack_;
 
 	static std::array<SceneName, (int)(SceneState::StateNum)> scene_state_;
 
 public:
 
-	static const stack<shared_ptr<AbstractScene>> &GetSceneStack() { return scene_stack_; }
+	static const stack<shared_ptr<AbsScene>> &GetSceneStack() { return scene_stack_; }
 
 	/// <summary>
 	/// シーン切り替えの実行

@@ -14,7 +14,7 @@
 #include "../../App/Debug/NcmImGui.h"
 #include "../../App/Scene/SceneManager/SceneManager.h"
 #include "../../App/FpsManager/FPSManager.h"
-#include "../../App/Scene/AbstractScene.h"
+#include "../../App/Scene/AbsScene.h"
 #include "../../App/Scene/TemporaryScene.h"
 #include "../Sources/App/Math/Easing/NcmEasing.h"
 

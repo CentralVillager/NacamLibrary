@@ -2,12 +2,12 @@
 #include <memory>
 #include <wrl.h>
 #include <DirectXMath.h>
-#include "../AbstractScene.h"
+#include "../AbsScene.h"
 #include "../../../Lib/Camera/Camera.h"
 #include "../../../Lib/Fbx/FbxObject3d.h"
 #include "../../../Lib/Fbx/FbxModel.h"
 
-class DemoScene : public AbstractScene
+class DemoScene : public AbsScene
 {
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	using XMFLOAT2 = DirectX::XMFLOAT2;

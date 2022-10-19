@@ -5,16 +5,17 @@
 
 using namespace NcmUtill;
 
-std::unique_ptr<Model> Enemy::model_ = nullptr;
-std::unique_ptr<Model> Enemy::sphere_model_ = nullptr;
 int Enemy::id_counter_ = -1;
 Player *Enemy::player_ = nullptr;
 
 Enemy::Enemy()
+	: AbsUniqueObj({ 0, 0, 0 }, 0.5f),
+	id_(0),
+	count_(100),
+	circular_angle_(0.0f),
+	bullet_(std::make_shared<Bullet>()),
+	shot_interval_(0)
 {
-	object_ = std::make_unique<Object3d>();
-	sphere_obj_ = std::make_shared<Object3d>();
-	bullet_ = std::make_shared<Bullet>();
 	id_counter_++;
 }
 
@@ -28,8 +29,8 @@ void Enemy::LoadResources()
 		model_ = std::make_unique<Model>();
 		model_->LoadObjModel("Resources/enemy/", "enemy.obj", "enemy.mtl");
 
-		sphere_model_ = std::make_unique<Model>();
-		sphere_model_->LoadObjModel("Resources/Ball/", "smooth_ball.obj", "smooth_ball.mtl");
+		coll_model_ = std::make_unique<Model>();
+		coll_model_->LoadObjModel("Resources/Ball/", "smooth_ball.obj", "smooth_ball.mtl");
 	}
 
 	Bullet::LoadResources();
@@ -42,24 +43,20 @@ void Enemy::ImportPtr(Player *player)
 
 void Enemy::Initialize(const XMFLOAT3 &pos)
 {
-	object_->Initialize();
-	object_->SetModel(model_.get());
-	object_->SetPosition(pos);
-	object_->SetRotation(XMFLOAT3(0, 0, 0));
-	object_->SetScale(1.0f);
-
-	sphere_obj_->Initialize();
-	sphere_obj_->SetModel(sphere_model_.get());
-
-	UpdateCollision();
+	InitializeObj();
+	obj_->SetPosition(pos);
 
 	is_dead_ = false;
 	id_ = id_counter_;
 
 	circular_angle_ = 0.0f;
 
-	bullet_->Initialize(object_->GetPosition());
+	bullet_->Initialize();
+	bullet_->SetPos(pos);
 }
+
+void Enemy::Initialize()
+{}
 
 void Enemy::Finalize()
 {}
@@ -69,22 +66,21 @@ void Enemy::Update()
 	RotY();
 	MoveHorizontally(0.5f, 100.0f);
 	AutoShot(30, player_->GetPos());
-	//MoveCircular();
-	object_->Update();
-	UpdateCollision();
-
+	obj_->Update();
+	UpdateColl();
+	
 	bullet_->Update();
 }
 
 void Enemy::Draw()
 {
-	object_->Draw();
+	obj_->Draw();
 	bullet_->Draw();
 }
 
 void Enemy::DrawColl()
 {
-	sphere_obj_->Draw();
+	coll_obj_->Draw();
 	bullet_->DrawColl();
 }
 
@@ -95,18 +91,18 @@ void Enemy::DebugDraw()
 
 void Enemy::RotY()
 {
-	XMFLOAT3 rot = object_->GetRotation();
+	XMFLOAT3 rot = obj_->GetRotation();
 	rot.y += 1.0f;
-	object_->SetRotation(rot);
+	obj_->SetRotation(rot);
 }
 
 void Enemy::MoveHorizontally(const float &speed, const float &range)
 {
 	count_--;
 
-	XMFLOAT3 pos = object_->GetPosition();
+	XMFLOAT3 pos = obj_->GetPosition();
 	pos.x += speed_;
-	object_->SetPosition(pos);
+	obj_->SetPosition(pos);
 
 	if (IsZero(count_))
 	{
@@ -128,10 +124,10 @@ void Enemy::MoveCircular()
 		radius * sinf(circular_angle_)
 	};
 
-	XMFLOAT3 pos = object_->GetPosition();
+	XMFLOAT3 pos = obj_->GetPosition();
 	pos.x += speed.x;
 	pos.z += speed.z;
-	object_->SetPosition(pos);
+	obj_->SetPosition(pos);
 
 	static int count = 10;
 	count--;
@@ -164,14 +160,4 @@ void Enemy::AutoShot(int interval, const XMFLOAT3 &pos)
 		// カウントをリセットする
 		count = shot_interval_;
 	}
-}
-
-void Enemy::UpdateCollision()
-{
-	coll_.center = XMLoadFloat3(&object_->GetPosition());
-	coll_.radius = COLL_RADIUS_;
-
-	sphere_obj_->SetPosition(ToFloat3(coll_.center));
-	sphere_obj_->SetScale(coll_.radius);
-	sphere_obj_->Update();
 }

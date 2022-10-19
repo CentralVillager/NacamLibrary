@@ -13,7 +13,7 @@
 #include "../Demo/MathDemoScene.h"
 #include "../../Debug/NcmImGui.h"
 
-stack<shared_ptr<AbstractScene>> SceneManager::scene_stack_;
+stack<shared_ptr<AbsScene>> SceneManager::scene_stack_;
 std::array<SceneName, (int)(SceneManager::SceneState::StateNum)> SceneManager::scene_state_;
 
 void SceneManager::ExecuteSceneChange()

@@ -4,14 +4,14 @@
 #include <DirectXMath.h>
 #include <d3dx12.h>
 #include <vector>
-#include "../AbstractScene.h"
+#include "../AbsScene.h"
 #include "../../Particle/Emitter.h"
 #include "../../../Lib/Camera/Camera.h"
 #include "../../../Lib/Model/Model.h"
 #include "../../../Lib/Object3d/Object3d.h"
 #include "../../../Lib/IndirectObject3d/IndirectObject3d.h"
 
-class ExecuteIndirectDemoScene : public AbstractScene {
+class ExecuteIndirectDemoScene : public AbsScene {
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT2 = DirectX::XMFLOAT2;

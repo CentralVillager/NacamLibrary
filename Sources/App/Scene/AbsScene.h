@@ -1,12 +1,12 @@
 #pragma once
 #include "../Debug/NcmImGui.h"
 
-class AbstractScene {
-
+class AbsScene
+{
 public:
 
-	AbstractScene() = default;
-	virtual ~AbstractScene() = default;
+	AbsScene() = default;
+	virtual ~AbsScene() = default;
 
 	/// <summary>
 	/// 各シーンの持つオブジェクトの初期化処理

@@ -2,13 +2,13 @@
 #include <memory>
 #include <wrl.h>
 #include <DirectXMath.h>
-#include "../AbstractScene.h"
+#include "../AbsScene.h"
 #include "../../Collision/CollisionPrimitive.h"
 #include "../../../Lib/Camera/Camera.h"
 #include "../../../Lib/Model/Model.h"
 #include "../../../Lib/Object3d/Object3d.h"
 
-class RepulsionDemoScene : public AbstractScene {
+class RepulsionDemoScene : public AbsScene {
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 

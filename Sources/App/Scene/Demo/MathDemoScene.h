@@ -2,7 +2,7 @@
 #include <memory>
 #include <wrl.h>
 #include <array>
-#include "../AbstractScene.h"
+#include "../AbsScene.h"
 #include "../../Collision/CollisionPrimitive.h"
 #include "../../../Lib/Camera/Camera.h"
 #include "../../../Lib/Model/Model.h"
@@ -160,7 +160,7 @@
 //
 //};
 
-class MathDemoScene : public AbstractScene {
+class MathDemoScene : public AbsScene {
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 

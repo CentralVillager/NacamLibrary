@@ -25,7 +25,7 @@ void EnemiesList::Update()
 	{
 		enemies_[i].Update();
 
-		if (enemies_[i].GetIsDead())
+		if (enemies_[i].IsDead())
 		{
 			enemies_.erase(enemies_.begin() + i);
 		}
@@ -36,7 +36,7 @@ void EnemiesList::Draw()
 {
 	for (auto &i : enemies_)
 	{
-		if (!i.GetIsDead())
+		if (!i.IsDead())
 		{
 			i.Draw();
 		}
@@ -55,7 +55,7 @@ void EnemiesList::DrawColl()
 {
 	for (auto &i : enemies_)
 	{
-		if (!i.GetIsDead())
+		if (!i.IsDead())
 		{
 			i.DrawColl();
 		}

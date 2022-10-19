@@ -2,7 +2,7 @@
 #include <wrl.h>
 #include <memory>
 #include <DirectXMath.h>
-#include "../../App/Scene/AbstractScene.h"
+#include "../../App/Scene/AbsScene.h"
 #include "../../Lib/DirectXBase/DirectXBase.h"
 #include "../../Lib/Camera/Camera.h"
 #include "../../Lib/Sprite/NcmSprite.h"
@@ -16,7 +16,7 @@
 #include "../Unique/WaveManager/WaveManager.h"
 #include "../Number/Numbers.h"
 
-class MainScene : public AbstractScene
+class MainScene : public AbsScene
 {
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	using XMINT2 = DirectX::XMINT2;

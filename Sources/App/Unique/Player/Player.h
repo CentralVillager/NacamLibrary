@@ -14,7 +14,7 @@ class Player
 
 	// •`‰æƒf[ƒ^
 	static std::shared_ptr<Model> model_;
-	static std::shared_ptr<Model> sphere_model_;
+	static std::shared_ptr<Model> coll_model_;
 	std::shared_ptr<Object3d> object_;
 	std::shared_ptr<Object3d> sphere_obj_;
 

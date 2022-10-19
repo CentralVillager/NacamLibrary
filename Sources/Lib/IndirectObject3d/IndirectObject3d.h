@@ -4,7 +4,7 @@
 #include <d3dx12.h>
 #include <DirectXMath.h>
 #include <vector>
-#include "../../App/Scene/AbstractScene.h"
+#include "../../App/Scene/AbsScene.h"
 #include "../Camera/Camera.h"
 #include "../Sources/Lib/Model/Model.h"
 #include "../Pipeline/PipelineManager.h"
