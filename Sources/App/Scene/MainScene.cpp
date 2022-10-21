@@ -236,10 +236,10 @@ void MainScene::Update()
 	grid_->Update();
 	missile_mgr_->Update();
 	lockon_sys_->Update();
-	for (auto &i : grid_floor_)
+	/*for (auto &i : grid_floor_)
 	{
 		i.Update();
-	}
+	}*/
 
 	// ƒ~ƒTƒCƒ‹’Ç”öˆ—
 	missile_mgr_->HomingTarget(*ene_list_);

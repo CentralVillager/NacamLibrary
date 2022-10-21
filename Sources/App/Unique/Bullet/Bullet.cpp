@@ -7,11 +7,11 @@ using namespace NcmUtill;
 std::unique_ptr<Model> Bullet::model_ = nullptr;
 std::unique_ptr<Model> Bullet::coll_model_ = nullptr;
 
-Bullet::Bullet() : AbsUniqueObj(3.0f, 1.0f)
-{
-	obj_ = std::make_unique<Object3d>();
-	coll_obj_ = std::make_unique<Object3d>();
-}
+Bullet::Bullet() :
+	AbsUniqueObj(3.0f, 1.0f),
+	vel_(),
+	life_(50)
+{}
 
 Bullet::~Bullet()
 {}
@@ -57,7 +57,7 @@ void Bullet::Update()
 
 	if (IsZeroOrLess(life_))
 	{
-		//is_dead_ = true;
+		is_dead_ = true;
 	}
 }
 
@@ -78,10 +78,11 @@ void Bullet::DebugDraw()
 	ImGui::Text("pos : (%f, %f, %f)", obj_->GetPosition().x, obj_->GetPosition().y, obj_->GetPosition().z);
 }
 
-void Bullet::Fire(const XMFLOAT3 &dist)
+void Bullet::Fire(const XMFLOAT3 &src, const XMFLOAT3 &dist)
 {
 	is_dead_ = false;
 
+	obj_->SetPosition(src);
 	CalcAngle(dist);
 }
 

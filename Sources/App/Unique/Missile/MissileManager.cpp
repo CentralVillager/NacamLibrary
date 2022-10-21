@@ -5,10 +5,10 @@
 using namespace DirectX;
 using namespace NcmUtill;
 
-MissileManager::MissileManager()
-{
-	missile_list_.resize(0);
-}
+MissileManager::MissileManager() :
+	missile_list_(),
+	lockon_sys_(nullptr)
+{}
 
 MissileManager::~MissileManager()
 {}

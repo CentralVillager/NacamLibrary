@@ -11,7 +11,7 @@ class Bullet : public AbsUniqueObj
 	static std::unique_ptr<Model> coll_model_;
 
 	XMFLOAT3 vel_{};
-	int life_ = 50;
+	int life_;
 
 public:
 
@@ -30,6 +30,6 @@ public:
 
 public:
 
-	void Fire(const XMFLOAT3 &dist);
+	void Fire(const XMFLOAT3 &src, const XMFLOAT3 &dist);
 	void CalcAngle(const XMFLOAT3 &dist);
 };

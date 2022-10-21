@@ -5,10 +5,10 @@
 
 using namespace std;
 
-EnemiesList::EnemiesList()
-{
-	enemies_.resize(0);
-}
+EnemiesList::EnemiesList() :
+	enemies_(),
+	player_(nullptr)
+{}
 
 EnemiesList::~EnemiesList()
 {}
@@ -21,15 +21,12 @@ void EnemiesList::Initialize(Player *player)
 
 void EnemiesList::Update()
 {
-	for (UINT i = 0; i < enemies_.size(); i++)
+	for (auto &i : enemies_)
 	{
-		enemies_[i].Update();
-
-		if (enemies_[i].IsDead())
-		{
-			enemies_.erase(enemies_.begin() + i);
-		}
+		i.Update();
 	}
+
+	std::erase_if(enemies_, [](Enemy &x) { return x.IsDead(); });
 }
 
 void EnemiesList::Draw()

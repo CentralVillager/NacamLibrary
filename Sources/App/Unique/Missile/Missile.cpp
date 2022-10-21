@@ -10,10 +10,14 @@ std::unique_ptr<Model> Missile::model_ = nullptr;
 std::unique_ptr<Model> Missile::coll_model_ = nullptr;
 
 Missile::Missile()
-	: AbsUniqueObj(1.0f, 1.0f)
-{
-	emitter_ = std::make_unique<Emitter>();
-}
+	: AbsUniqueObj(1.0f, 1.0f),
+	emitter_(std::make_unique<Emitter>()),
+	mi_args_(),
+	min_dist_(),
+	rot_dead_zone_(),
+	tgt_index_(),
+	lockon_sys_(nullptr)
+{}
 
 Missile::~Missile()
 {}

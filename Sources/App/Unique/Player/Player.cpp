@@ -16,10 +16,10 @@ Player::Player()
 	mi_mgr_(nullptr),
 	lockon_sys_(nullptr),
 	charge_time_(40),
-	count_(0),
-	ease_rot_right_(-1),
-	ease_rot_left_(-1),
-	ease_reset_rot_(-1),
+	count_(),
+	ease_rot_right_(),
+	ease_rot_left_(),
+	ease_reset_rot_(),
 	is_already_(false),
 	is_released(false)
 {}

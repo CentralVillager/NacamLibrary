@@ -13,7 +13,6 @@ class EnemiesList
 	static const int MAX_ENEMY_NUM_ = 20;
 
 	std::vector<Enemy> enemies_;
-
 	Player *player_;
 
 public:

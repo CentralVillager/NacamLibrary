@@ -10,12 +10,12 @@ std::unique_ptr<Model> Enemy::coll_model_ = nullptr;
 int Enemy::id_counter_ = -1;
 Player *Enemy::player_ = nullptr;
 
-Enemy::Enemy()
-	: AbsUniqueObj(0.5f, 2.0f),
+Enemy::Enemy() :
+	AbsUniqueObj(0.5f, 2.0f),
 	id_(0),
 	count_(100),
 	circular_angle_(0.0f),
-	bullet_(std::make_shared<Bullet>()),
+	bullets_(std::make_shared<BulletList>()),
 	shot_interval_(0)
 {
 	id_counter_++;
@@ -52,9 +52,6 @@ void Enemy::Initialize(const XMFLOAT3 &pos)
 	id_ = id_counter_;
 
 	circular_angle_ = 0.0f;
-
-	bullet_->Initialize();
-	bullet_->SetPos(pos);
 }
 
 void Enemy::Initialize()
@@ -67,28 +64,31 @@ void Enemy::Update()
 {
 	RotY();
 	MoveHorizontally(0.5f, 100.0f);
-	AutoShot(30, player_->GetPos());
+	AutoShot(100, player_->GetPos());
 	obj_->Update();
 	UpdateColl();
 
-	bullet_->Update();
+	bullets_->Update();
 }
 
 void Enemy::Draw()
 {
 	obj_->Draw();
-	bullet_->Draw();
+	bullets_->Draw();
 }
 
 void Enemy::DrawColl()
 {
 	coll_obj_->Draw();
-	bullet_->DrawColl();
+	bullets_->DrawColl();
 }
 
 void Enemy::DebugDraw()
 {
-	bullet_->DebugDraw();
+	ImGui::Text("ID : %d", id_);
+	ImGui::Text("interval : %d", shot_interval_);
+	ImGui::Separator();
+	bullets_->DebugDraw();
 }
 
 void Enemy::RotY()
@@ -141,7 +141,7 @@ void Enemy::MoveCircular()
 	}
 }
 
-void Enemy::AutoShot(int interval, const XMFLOAT3 &pos)
+void Enemy::AutoShot(int interval, const XMFLOAT3 &dist)
 {
 	// 間隔が変更されていたら
 	if (shot_interval_ != interval)
@@ -158,7 +158,7 @@ void Enemy::AutoShot(int interval, const XMFLOAT3 &pos)
 	if (IsZeroOrLess(count))
 	{
 		// 弾を発射する
-		bullet_->Fire(pos);
+		bullets_->Fire(obj_->GetPosition(), dist);
 		// カウントをリセットする
 		count = shot_interval_;
 	}

@@ -23,8 +23,7 @@ class Enemy : public AbsUniqueObj
 
 	float circular_angle_;
 
-	//std::shared_ptr<BulletList> bullets_;
-	std::shared_ptr<Bullet> bullet_;
+	std::shared_ptr<BulletList> bullets_;
 	int shot_interval_;
 
 public:
@@ -53,5 +52,5 @@ public:
 	void MoveHorizontally(const float &speed, const float &range);
 	void MoveCircular();
 
-	void AutoShot(int interval, const XMFLOAT3 &pos);
+	void AutoShot(int interval, const XMFLOAT3 &dist);
 };
