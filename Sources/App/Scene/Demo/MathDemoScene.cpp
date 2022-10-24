@@ -31,13 +31,13 @@ using namespace DirectX;
 //
 //	object_->Initialize();
 //	object_->SetModel(model_.get());
-//	object_->SetPosition({ 0, 0, 0 });
+//	object_->SetPos({ 0, 0, 0 });
 //
-//	sphere_.center = XMLoadFloat3(&object_->GetPosition());
+//	sphere_.center = XMLoadFloat3(&object_->GetPos());
 //	sphere_.radius = object_->GetScale().x;
 //
 //	line_->Initialize();
-//	line_->SetPosition({ 5.0f, 0.0f, 0 });
+//	line_->SetPos({ 5.0f, 0.0f, 0 });
 //
 //	XMFLOAT3 temp = XMFLOAT3(0.0f, 10.0f, 0.0f);
 //	XMFLOAT3 temp2 = XMFLOAT3(10.0f, 0.0f, 0.0f);
@@ -62,9 +62,9 @@ using namespace DirectX;
 //
 //	if (KeyboardInput::PushKey(DIK_UP)) {
 //
-//		XMFLOAT3 pos = line_->GetPosition();
+//		XMFLOAT3 pos = line_->GetPos();
 //		pos.y += 0.5f;
-//		line_->SetPosition(pos);
+//		line_->SetPos(pos);
 //
 //		line_col_.start.m128_f32[1] += 0.5f;
 //		line_col_.end.m128_f32[1] += 0.5f;
@@ -72,9 +72,9 @@ using namespace DirectX;
 //
 //	if (KeyboardInput::PushKey(DIK_DOWN)) {
 //
-//		XMFLOAT3 pos = line_->GetPosition();
+//		XMFLOAT3 pos = line_->GetPos();
 //		pos.y -= 0.5f;
-//		line_->SetPosition(pos);
+//		line_->SetPos(pos);
 //
 //		line_col_.start.m128_f32[1] -= 0.5f;
 //		line_col_.end.m128_f32[1] -= 0.5f;
@@ -82,9 +82,9 @@ using namespace DirectX;
 //
 //	if (KeyboardInput::PushKey(DIK_RIGHT)) {
 //
-//		XMFLOAT3 pos = line_->GetPosition();
+//		XMFLOAT3 pos = line_->GetPos();
 //		pos.x += 0.5f;
-//		line_->SetPosition(pos);
+//		line_->SetPos(pos);
 //
 //		line_col_.start.m128_f32[0] += 0.5f;
 //		line_col_.end.m128_f32[0] += 0.5f;
@@ -92,9 +92,9 @@ using namespace DirectX;
 //
 //	if (KeyboardInput::PushKey(DIK_LEFT)) {
 //
-//		XMFLOAT3 pos = line_->GetPosition();
+//		XMFLOAT3 pos = line_->GetPos();
 //		pos.x -= 0.5f;
-//		line_->SetPosition(pos);
+//		line_->SetPos(pos);
 //
 //		line_col_.start.m128_f32[0] -= 0.5f;
 //		line_col_.end.m128_f32[0] -= 0.5f;
@@ -160,9 +160,9 @@ using namespace DirectX;
 //		i.SetModel(model_.get());
 //	}
 //
-//	object_[0].SetPosition({ 0, 5.0f, 0 });
-//	object_[1].SetPosition({ 0, -5.0f, 0 });
-//	object_[2].SetPosition({ 0, -10.0f, 0 });
+//	object_[0].SetPos({ 0, 5.0f, 0 });
+//	object_[1].SetPos({ 0, -5.0f, 0 });
+//	object_[2].SetPos({ 0, -10.0f, 0 });
 //
 //	obj_[0].stat = 2;
 //	obj_[0].pos.y = 10.0f;
@@ -203,9 +203,9 @@ using namespace DirectX;
 //		i.update();
 //	}
 //
-//	object_[0].SetPosition({ obj_[0].pos.x, obj_[0].pos.y, 0});
-//	object_[1].SetPosition({ obj_[1].pos.x, obj_[1].pos.y, 0});
-//	object_[2].SetPosition({ obj_[2].pos.x, obj_[2].pos.y, 0});
+//	object_[0].SetPos({ obj_[0].pos.x, obj_[0].pos.y, 0});
+//	object_[1].SetPos({ obj_[1].pos.x, obj_[1].pos.y, 0});
+//	object_[2].SetPos({ obj_[2].pos.x, obj_[2].pos.y, 0});
 //
 //	for (auto &i : object_) {
 //
@@ -324,8 +324,8 @@ void MathDemoScene::Initialize() {
 		i.SetModel(model_.get());
 	}
 
-	object_[0].SetPosition({ 0, 0.0f, 0 });
-	object_[1].SetPosition({ 0, 0.0f, 0 });
+	object_[0].SetPos({ 0, 0.0f, 0 });
+	object_[1].SetPos({ 0, 0.0f, 0 });
 	object_[1].SetScale(0.2f);
 
 	x = CLENGTH_ / 8.0f;
@@ -362,7 +362,7 @@ void MathDemoScene::Update() {
 	nx = cos(angle) * LENGTH_;
 	ny = sin(angle) * LENGTH_;
 
-	object_[0].SetPosition({ jiku_x + nx, jiku_y + ny, 0 });
+	object_[0].SetPos({ jiku_x + nx, jiku_y + ny, 0 });
 
 	for (auto &i : object_) {
 
@@ -382,5 +382,5 @@ void MathDemoScene::Draw() {
 
 void MathDemoScene::DebugDraw() {
 
-	//NcmImGui::DragFloat3("pos", object_[0].GetPosition(),)
+	//NcmImGui::DragFloat3("pos", object_[0].GetPos(),)
 }

@@ -7,12 +7,16 @@
 using namespace DirectX;
 using namespace Microsoft::WRL;
 using namespace NcmUtill;
+using namespace NcmMath;
 
 std::unique_ptr<Model> Player::model_ = nullptr;
 std::unique_ptr<Model> Player::coll_model_ = nullptr;
 
 Player::Player()
 	: AbsUniqueObj(1.0f, 2.0f),
+	is_invincible_(false),
+	taking_damage_trigger_(false),
+	hp_(),
 	mi_mgr_(nullptr),
 	lockon_sys_(nullptr),
 	charge_time_(40),
@@ -42,14 +46,18 @@ void Player::LoadResources()
 void Player::Initialize()
 {}
 
-void Player::Initialize(MissileManager *mi_mgr, LockOnSystem *lockon_sys)
+void Player::Initialize(MissileManager *mi_mgr, LockOnSystem *lockon_sys, XMFLOAT3 pos)
 {
+	is_dead_ = false;
+	hp_ = 3;
+
 	// 他クラス情報を格納
 	mi_mgr_ = mi_mgr;
 	lockon_sys_ = lockon_sys;
 
 	InitObj3d(model_.get(), coll_model_.get());
-	obj_->SetRotation(XMFLOAT3(0, 180.0f, 0));
+	obj_->SetPos(pos);
+	obj_->SetRot(XMFLOAT3(0, 180.0f, 0));
 
 	// コリジョンの更新
 	UpdateColl();
@@ -77,6 +85,11 @@ void Player::Finalize()
 
 void Player::Update()
 {
+	if (is_dead_)
+	{
+		return;
+	}
+
 	if (KeyboardInput::HoldKey(DIK_SPACE))
 	{
 		ChargeMissile();
@@ -88,13 +101,48 @@ void Player::Update()
 		count_ = 0;
 	}
 
+	if (IsZeroOrLess(hp_))
+	{
+		is_dead_ = true;
+	}
+
+	if (taking_damage_trigger_)
+	{
+		is_invincible_ = true;
+		taking_damage_trigger_ = false;
+	}
+
+	if (is_invincible_)
+	{
+		CountInvincibleTime();
+	}
+
 	obj_->Update();
 	UpdateColl();
 }
 
 void Player::Draw()
 {
-	obj_->Draw();
+	if (is_dead_)
+	{
+		return;
+	}
+
+	if (is_invincible_)
+	{
+		static uint32_t count = 0;
+		count++;
+
+		if (IsZero(count % 5))
+		{
+			obj_->Draw();
+			count = 0;
+		}
+	}
+	else
+	{
+		obj_->Draw();
+	}
 }
 
 void Player::DrawColl()
@@ -104,15 +152,16 @@ void Player::DrawColl()
 
 void Player::DebugDraw()
 {
+	ImGui::Text("HP : %d", hp_);
 	ImGui::Text("count : %d", count_);
+	ImGui::Checkbox("invi", &is_invincible_);
 	ImGui::DragInt("charge_time", &charge_time_);
-	ImGui::Text("ease_value : %f", NcmEasing::GetValue(0));
 }
 
 void Player::FireMissile()
 {
 	MissileArgs l_args{};
-	l_args.pos = obj_->GetPosition();
+	l_args.pos = obj_->GetPos();
 	l_args.vel = XMFLOAT3(0, 0, 1.0f);
 	l_args.acc = XMFLOAT3(0, 0, 0);
 	// tgt_pos はMissileManagerで設定
@@ -126,6 +175,11 @@ void Player::FireMissile()
 
 void Player::ChargeMissile()
 {
+	if (lockon_sys_->GetCurrentTgtNum() >= lockon_sys_->GetMaxTgtNum())
+	{
+		return;
+	}
+
 	count_++;
 
 	if (count_ >= charge_time_)
@@ -135,11 +189,34 @@ void Player::ChargeMissile()
 	}
 }
 
+void Player::TakeDamage()
+{
+	if (is_invincible_)
+	{
+		return;
+	}
+
+	hp_--;
+	taking_damage_trigger_ = true;
+}
+
+void Player::CountInvincibleTime()
+{
+	static uint32_t count = invincible_time_;
+	count--;
+
+	if (IsZeroOrLess(count))
+	{
+		is_invincible_ = false;
+		count = invincible_time_;
+	}
+}
+
 void Player::Move(float speed)
 {
 	if (KeyboardInput::PushKey(DIK_W) || KeyboardInput::PushKey(DIK_S) || KeyboardInput::PushKey(DIK_D) || KeyboardInput::PushKey(DIK_A) || KeyboardInput::PushKey(DIK_R) || KeyboardInput::PushKey(DIK_F))
 	{
-		XMFLOAT3 pos = obj_->GetPosition();
+		XMFLOAT3 pos = obj_->GetPos();
 
 		if (KeyboardInput::PushKey(DIK_W)) { pos.y += speed; }
 		else if (KeyboardInput::PushKey(DIK_S)) { pos.y -= speed; }
@@ -148,19 +225,19 @@ void Player::Move(float speed)
 		if (KeyboardInput::PushKey(DIK_R)) { pos.z += speed; }
 		else if (KeyboardInput::PushKey(DIK_F)) { pos.z -= speed; }
 
-		obj_->SetPosition(pos);
+		obj_->SetPos(pos);
 	}
 
 	if (KeyboardInput::PushKey(DIK_UP) || KeyboardInput::PushKey(DIK_DOWN) || KeyboardInput::PushKey(DIK_LEFT) || KeyboardInput::PushKey(DIK_RIGHT))
 	{
-		XMFLOAT3 rot = obj_->GetRotation();
+		XMFLOAT3 rot = obj_->GetRot();
 
 		if (KeyboardInput::PushKey(DIK_UP)) { rot.x -= speed; }
 		if (KeyboardInput::PushKey(DIK_DOWN)) { rot.x += speed; }
 		if (KeyboardInput::PushKey(DIK_LEFT)) { rot.z -= speed; }
 		if (KeyboardInput::PushKey(DIK_RIGHT)) { rot.z += speed; }
 
-		obj_->SetRotation(rot);
+		obj_->SetRot(rot);
 	}
 }
 
@@ -168,46 +245,43 @@ void Player::MoveXY(float speed)
 {
 	if (KeyboardInput::PushKey(DIK_W) || KeyboardInput::PushKey(DIK_S) || KeyboardInput::PushKey(DIK_D) || KeyboardInput::PushKey(DIK_A))
 	{
-		XMFLOAT3 pos = obj_->GetPosition();
+		XMFLOAT3 pos = obj_->GetPos();
 
 		if (KeyboardInput::PushKey(DIK_W)) { pos.y += speed; }
 		else if (KeyboardInput::PushKey(DIK_S)) { pos.y -= speed; }
 		if (KeyboardInput::PushKey(DIK_D)) { pos.x += speed; }
 		else if (KeyboardInput::PushKey(DIK_A)) { pos.x -= speed; }
 
-		obj_->SetPosition(pos);
+		obj_->SetPos(pos);
 	}
 }
 
 void Player::MoveXZ(float speed)
 {
-	// WASDの入力を検知したら
-	//if (KeyboardInput::PushKey(DIK_W) || KeyboardInput::PushKey(DIK_S) || KeyboardInput::PushKey(DIK_D) || KeyboardInput::PushKey(DIK_A))
+	// 現在の位置を取得
+	XMFLOAT3 pos = obj_->GetPos();
+
+	// 前後移動
+	if (KeyboardInput::PushKey(DIK_W)) { pos.z += speed; }
+	else if (KeyboardInput::PushKey(DIK_S)) { pos.z -= speed; }
+
+	// 左右移動
+	if (KeyboardInput::PushKey(DIK_D))
 	{
-		// 現在の位置を取得
-		XMFLOAT3 pos = obj_->GetPosition();
-
-		// 前後移動
-		if (KeyboardInput::PushKey(DIK_W)) { pos.z += speed; }
-		else if (KeyboardInput::PushKey(DIK_S)) { pos.z -= speed; }
-
-		// 左右移動
-		if (KeyboardInput::PushKey(DIK_D))
-		{
-			pos.x += speed;
-			RotPoseRight();
-			is_released = false;
-		}
-		else if (KeyboardInput::PushKey(DIK_A))
-		{
-			pos.x -= speed;
-			RotPoseLeft();
-			is_released = false;
-		}
-
-		// 位置を更新
-		obj_->SetPosition(pos);
+		pos.x += speed;
+		RotPoseRight();
+		is_released = false;
 	}
+	else if (KeyboardInput::PushKey(DIK_A))
+	{
+		pos.x -= speed;
+		RotPoseLeft();
+		is_released = false;
+	}
+
+	// 位置を更新
+	obj_->SetPos(pos);
+
 	if (KeyboardInput::ReleaseKey(DIK_A) || KeyboardInput::ReleaseKey(DIK_D))
 	{
 		is_released = true;
@@ -229,21 +303,21 @@ void Player::RotPoseLeft()
 {
 	is_already_ = false;
 	NcmEasing::UpdateValue(ease_rot_left_);
-	obj_->SetRotation(XMFLOAT3(0, 180.0f, NcmEasing::GetValue(ease_rot_left_)));
+	obj_->SetRot(XMFLOAT3(0, 180.0f, NcmEasing::GetValue(ease_rot_left_)));
 }
 
 void Player::RotPoseRight()
 {
 	is_already_ = false;
 	NcmEasing::UpdateValue(ease_rot_right_);
-	obj_->SetRotation(XMFLOAT3(0, 180.0f, NcmEasing::GetValue(ease_rot_right_)));
+	obj_->SetRot(XMFLOAT3(0, 180.0f, NcmEasing::GetValue(ease_rot_right_)));
 }
 
 void Player::ResetRotPose()
 {
 	if (!is_already_)
 	{
-		float rot = obj_->GetRotation().z;
+		float rot = obj_->GetRot().z;
 		NcmEasing::SetInitValue(ease_reset_rot_, rot);
 
 		// それが正なら
@@ -261,5 +335,5 @@ void Player::ResetRotPose()
 	}
 
 	NcmEasing::UpdateValue(ease_reset_rot_);
-	obj_->SetRotation(XMFLOAT3(0, 180.0f, NcmEasing::GetValue(ease_reset_rot_)));
+	obj_->SetRot(XMFLOAT3(0, 180.0f, NcmEasing::GetValue(ease_reset_rot_)));
 }

@@ -34,16 +34,16 @@ void RepulsionDemoScene::Initialize() {
 	ball1_->Initialize();
 	ball1_->SetModel(model_.get());
 	ball1_->SetScale({ 1.0f, 1.0f, 1.0f });
-	ball1_->SetPosition({ -10.0f, 0, 0 });
+	ball1_->SetPos({ -10.0f, 0, 0 });
 
 	ball2_->Initialize();
 	ball2_->SetModel(model_.get());
 	ball2_->SetScale({ 2.0f, 2.0f, 2.0f });
-	ball2_->SetPosition({ 10.0f, 0, 0 });
+	ball2_->SetPos({ 10.0f, 0, 0 });
 
 	// float3 -> vector
-	sphere1_.center = XMLoadFloat3(&ball1_->GetPosition());
-	sphere2_.center = XMLoadFloat3(&ball2_->GetPosition());
+	sphere1_.center = XMLoadFloat3(&ball1_->GetPos());
+	sphere2_.center = XMLoadFloat3(&ball2_->GetPos());
 
 	// 当たり判定の半径を設定
 	sphere1_.radius = 1.0f;
@@ -80,23 +80,23 @@ void RepulsionDemoScene::Update() {
 	}
 
 	// 位置を更新
-	XMFLOAT3 pos = ball1_->GetPosition();
+	XMFLOAT3 pos = ball1_->GetPos();
 	pos.x += petus1_;
-	ball1_->SetPosition(pos);
+	ball1_->SetPos(pos);
 
-	pos = ball2_->GetPosition();
+	pos = ball2_->GetPos();
 	pos.x += petus2_;
-	ball2_->SetPosition(pos);
+	ball2_->SetPos(pos);
 
 	// 当たり判定を更新
-	sphere1_.center = XMLoadFloat3(&ball1_->GetPosition());
-	sphere2_.center = XMLoadFloat3(&ball2_->GetPosition());
+	sphere1_.center = XMLoadFloat3(&ball1_->GetPos());
+	sphere2_.center = XMLoadFloat3(&ball2_->GetPos());
 
 	// リセット
 	if (KeyboardInput::TriggerKey(DIK_SPACE)) {
 
-		ball1_->SetPosition({ -10.0f, 0, 0 });
-		ball2_->SetPosition({ 10.0f, 0, 0 });
+		ball1_->SetPos({ -10.0f, 0, 0 });
+		ball2_->SetPos({ 10.0f, 0, 0 });
 
 		velocity1_ = 0.1f;
 		velocity2_ = -0.1f;

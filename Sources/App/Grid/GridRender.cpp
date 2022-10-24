@@ -58,9 +58,9 @@ void GridRender::MoveMinusZ()
 {
 	/*for (UINT i = 0; i < grid_.size(); i++)
 	{
-		float pos_z = grid_[i].GetPosition().z;
+		float pos_z = grid_[i].GetPos().z;
 		pos_z -= 0.5f;
-		grid_[i].SetPosition(XMFLOAT3(0, 0, pos_z));
+		grid_[i].SetPos(XMFLOAT3(0, 0, pos_z));
 	}*/
 
 	for (auto &i : grid_)

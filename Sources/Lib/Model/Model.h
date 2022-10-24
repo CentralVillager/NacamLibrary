@@ -9,25 +9,25 @@
 #include <unordered_map>
 #include "../DirectXBase/DirectXBase.h"
 
-class Model {
-	// Microsoft::WRL::を省略
+class Model
+{
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-	// DirectX::を省略
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public:
-	// 頂点データ
-	struct VertexData {
+
+	struct VertexData
+	{
 		XMFLOAT3 position;	// xyz座標
 		XMFLOAT3 normal;	// 法線ベクトル
 		XMFLOAT2 uv;		// uv座標
 	};
 
-	// マテリアルデータ
-	struct MaterialData {
+	struct MaterialData
+	{
 		std::string name_;				// マテリアル名
 		XMFLOAT3 ambient;				// アンビエント影響度
 		XMFLOAT3 diffuse;				// ディフューズ影響度
@@ -35,8 +35,8 @@ public:
 		float alpha;					// アルファ
 		std::string texture_file_name;	// テクスチャファイル名
 
-		// コンストラクタ
-		MaterialData() {
+		MaterialData()
+		{
 			ambient = { 0.3f, 0.3f, 0.3f };
 			diffuse = { 0.0f, 0.0f, 0.0f };
 			specular = { 0.0f, 0.0f, 0.0f };
@@ -44,8 +44,8 @@ public:
 		}
 	}material_data_;
 
-	// マテリアル定数バッファ用データ構造体
-	struct MaterialConstBufferData {
+	struct MaterialConstBufferData
+	{
 		XMFLOAT3 ambient;	// アンビエント係数
 		float pad1;			// パディング
 		XMFLOAT3 diffuse;	// ディフューズ係数
@@ -56,8 +56,8 @@ public:
 		float pad[52];
 	};
 
-	// テクスチャ
-	struct TextureData {
+	struct TextureData
+	{
 		// テクスチャバッファ
 		ComPtr<ID3D12Resource> texture_buffer;
 		// マテリアル用の定数バッファ
@@ -74,6 +74,7 @@ public:
 	std::unordered_map<unsigned short, std::vector<unsigned short>> smooth_data_;
 
 private:
+
 	static DirectXBase *dx_base_;
 	static ComPtr<ID3D12Device> device_;
 	// デスクリプタサイズ
@@ -95,6 +96,7 @@ private:
 	std::vector<unsigned short> indices_;
 
 public:
+
 	Model();
 
 	MaterialData &GetMaterialData() { return material_data_; }

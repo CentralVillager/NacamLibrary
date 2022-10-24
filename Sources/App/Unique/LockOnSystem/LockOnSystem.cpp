@@ -4,15 +4,16 @@
 
 using namespace DirectX;
 
-UINT LockOnSystem::current_tgt_num_ = 0;
+uint32_t LockOnSystem::current_tgt_num_ = 0;
 std::unique_ptr<Model> LockOnSystem::model_ = nullptr;
 
-LockOnSystem::LockOnSystem()
-{
-	tgt_datas_.resize(0);
-	markers_.resize(0);
-	numbers_ = std::make_unique<Numbers>();
-}
+LockOnSystem::LockOnSystem() :
+	markers_(),
+	tgt_datas_(),
+	player_ptr_(),
+	enemies_ptr_(),
+	numbers_(std::make_unique<Numbers>())
+{}
 
 LockOnSystem::~LockOnSystem()
 {}
@@ -31,11 +32,6 @@ void LockOnSystem::Initialize(Player *player, EnemiesList *enemies_ptr)
 	player_ptr_ = player;
 	enemies_ptr_ = enemies_ptr;
 
-	for (UINT i = 0; i < multi_target_num_; i++)
-	{
-		//AddTargetNum();
-	}
-
 	numbers_->Initialize();
 }
 
@@ -46,7 +42,7 @@ void LockOnSystem::Update()
 	auto itr = tgt_datas_.begin();
 	for (auto &i : markers_)
 	{
-		i.SetPosition({ itr->pos.x, itr->pos.y + 2.0f, itr->pos.z });
+		i.SetPos({ itr->pos.x, itr->pos.y + 2.0f, itr->pos.z });
 		i.Update();
 		itr++;
 	}
@@ -75,6 +71,11 @@ void LockOnSystem::DebugDraw()
 
 void LockOnSystem::AddTargetNum()
 {
+	if (current_tgt_num_ >= max_tgt_num_)
+	{
+		return;
+	}
+
 	markers_.emplace_back();
 	markers_.back().Initialize();
 	markers_.back().SetModel(model_.get());
@@ -95,13 +96,6 @@ void LockOnSystem::CalcNearestTargets(const XMFLOAT3 &player_pos, EnemiesList &e
 {
 	// 仮初期化
 	float nearest_dist = 1000000.0f;
-
-	// 敵がいないなら
-	if (enemies.GetEnemies().size() <= 0)
-	{
-		// 正面奥にターゲットを置く
-		tgt_datas_[0].pos = XMFLOAT3(0, 0, -100.0f);
-	}
 
 	// ソート用コンテナ
 	std::vector<TargetData> dist_sort;

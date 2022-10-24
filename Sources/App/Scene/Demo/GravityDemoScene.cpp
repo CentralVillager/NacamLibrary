@@ -32,7 +32,7 @@ void GravityDemoScene::Initialize() {
 	object_->Initialize();
 	object_->SetModel(model_.get());
 	object_->SetScale({ 0.01f, 0.01f, 0.01f });
-	object_->SetPosition({ 0, 10.0f, 0 });
+	object_->SetPos({ 0, 10.0f, 0 });
 }
 
 void GravityDemoScene::Finalize() {
@@ -41,7 +41,7 @@ void GravityDemoScene::Finalize() {
 void GravityDemoScene::Update() {
 
 	// 現在の位置を取得
-	pos_ = object_->GetPosition().y;
+	pos_ = object_->GetPos().y;
 
 	// 待機するか
 	if (!Wait()) {
@@ -63,7 +63,7 @@ void GravityDemoScene::Draw() {
 
 void GravityDemoScene::DebugDraw() {
 
-	ImGui::Text("pos.y = %f", object_->GetPosition().y);
+	ImGui::Text("pos.y = %f", object_->GetPos().y);
 	ImGui::Text("G = %f", g_);
 	ImGui::Text("velocity = %f", velocity_);
 	ImGui::Text("frame_count = %d", frame_count_);
@@ -82,7 +82,7 @@ void GravityDemoScene::Fall() {
 	pos_ += -velocity_;
 
 	// 位置をセット
-	object_->SetPosition({ 0, pos_, 0 });
+	object_->SetPos({ 0, pos_, 0 });
 }
 
 bool GravityDemoScene::Wait() {
@@ -101,7 +101,7 @@ bool GravityDemoScene::Wait() {
 
 			// 位置と速度をリセット
 			pos_ = 10.0f;
-			object_->SetPosition({ 0, pos_, 0 });
+			object_->SetPos({ 0, pos_, 0 });
 			velocity_ = 0;
 		}
 

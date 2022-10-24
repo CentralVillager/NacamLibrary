@@ -52,13 +52,13 @@ void MissileManager::DebugDraw()
 
 const bool &MissileManager::GetIsValidity(UINT n)
 {
-	auto itr = IteratorMover(missile_list_.begin(), n);
+	auto itr = MoveIterator(missile_list_.begin(), n);
 	return itr->GetIsValidity();
 }
 
 const Sphere &MissileManager::GetCollData(UINT n)
 {
-	auto itr = IteratorMover(missile_list_.begin(), n);
+	auto itr = MoveIterator(missile_list_.begin(), n);
 	return itr->GetCollData();
 }
 
@@ -102,7 +102,7 @@ void MissileManager::HomingTarget(EnemiesList &enemies)
 
 void MissileManager::Death(UINT n)
 {
-	auto itr = IteratorMover(missile_list_.begin(), n);
+	auto itr = MoveIterator(missile_list_.begin(), n);
 
 	itr->TermEmitter();
 	itr->SetMissileLife(0);

@@ -56,6 +56,6 @@ void BulletList::CalcAngle(const XMFLOAT3 &dist)
 {
 	for (auto &i : bullets_)
 	{
-		i.CalcAngle(dist);
+		i.CalcVelocity(dist);
 	}
 }

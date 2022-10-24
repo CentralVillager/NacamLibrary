@@ -3,6 +3,7 @@
 
 using namespace DirectX;
 using namespace NcmUtill;
+using namespace NcmMath;
 
 std::unique_ptr<Model> Bullet::model_ = nullptr;
 std::unique_ptr<Model> Bullet::coll_model_ = nullptr;
@@ -10,7 +11,8 @@ std::unique_ptr<Model> Bullet::coll_model_ = nullptr;
 Bullet::Bullet() :
 	AbsUniqueObj(3.0f, 1.0f),
 	vel_(),
-	life_(50)
+	life_(500),
+	angle_()
 {}
 
 Bullet::~Bullet()
@@ -45,13 +47,13 @@ void Bullet::Update()
 	life_--;
 
 	XMFLOAT3 pos;
-	pos = obj_->GetPosition();
+	pos = obj_->GetPos();
 
 	pos.x += vel_.x;
 	pos.y += vel_.y;
 	pos.z += vel_.z;
 
-	obj_->SetPosition(pos);
+	obj_->SetPos(pos);
 	obj_->Update();
 	UpdateColl();
 
@@ -75,23 +77,21 @@ void Bullet::DrawColl()
 
 void Bullet::DebugDraw()
 {
-	ImGui::Text("pos : (%f, %f, %f)", obj_->GetPosition().x, obj_->GetPosition().y, obj_->GetPosition().z);
+	ImGui::Text("pos : (%f, %f, %f)", obj_->GetPos().x, obj_->GetPos().y, obj_->GetPos().z);
 }
 
 void Bullet::Fire(const XMFLOAT3 &src, const XMFLOAT3 &dist)
 {
 	is_dead_ = false;
 
-	obj_->SetPosition(src);
-	CalcAngle(dist);
+	obj_->SetPos(src);
+	CalcVelocity(dist);
 }
 
-void Bullet::CalcAngle(const XMFLOAT3 &dist)
+void Bullet::CalcVelocity(const XMFLOAT3 &dist)
 {
-	XMFLOAT3 pos = obj_->GetPosition();
-
 	// XMVECTORに変換
-	XMVECTOR bl_vec = XMLoadFloat3(&obj_->GetPosition());
+	XMVECTOR bl_vec = XMLoadFloat3(&obj_->GetPos());
 	XMVECTOR di_vec = XMLoadFloat3(&dist);
 
 	// ふたつの座標を結ぶベクトルを計算
@@ -110,4 +110,9 @@ void Bullet::CalcAngle(const XMFLOAT3 &dist)
 	vel_.x *= speed_;
 	vel_.y *= speed_;
 	vel_.z *= speed_;
+
+	// 進行方向へ回頭させる
+	XMFLOAT3 rot = obj_->GetRot();
+	rot.y = LookAt(vec);
+	obj_->SetRot(rot);
 }

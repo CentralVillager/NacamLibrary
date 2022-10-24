@@ -1,5 +1,6 @@
 #pragma once
 #include <DirectXMath.h>
+#include <limits>
 
 namespace NcmUtill
 {
@@ -36,21 +37,6 @@ namespace NcmUtill
 	{
 		return value_of_256 / 256.0f;
 	}
-
-	/// <summary>
-	/// XMVECTORの値をXMFLOAT3に変換します。
-	/// </summary>
-	/// <param name="v"></param>
-	/// <returns></returns>
-	//inline static const XMFLOAT3 &ToFloat3(const XMVECTOR &v)
-	//{
-	//	XMFLOAT3 ret;
-	//	ret.x = v.m128_f32[0];
-	//	ret.y = v.m128_f32[1];
-	//	ret.z = v.m128_f32[2];
-	//	//return XMFLOAT3(v.m128_f32[0], v.m128_f32[1], v.m128_f32[2]);
-	//	return ret;
-	//}
 
 #pragma endregion
 
@@ -104,7 +90,7 @@ namespace NcmUtill
 	/// <param name="itr"></param>
 	/// <param name="n"></param>
 	/// <returns></returns>
-	inline static auto IteratorMover(auto itr, int n)
+	inline static auto MoveIterator(auto itr, int n)
 	{
 		for (int i = 0; i < n; i++)
 		{
@@ -115,4 +101,67 @@ namespace NcmUtill
 	}
 
 #pragma endregion
+}
+
+namespace NcmMath
+{
+	/// <summary>
+	/// 円周率
+	/// </summary>
+	static constexpr float NcmPI = 3.14159265358979f;
+
+	/// <summary>
+	/// 弧度を度数へ変換します。
+	/// </summary>
+	/// <param name="radian"></param>
+	static void ToDegree(float *radian)
+	{
+		*radian *= (180.0f / NcmPI);
+	}
+
+	/// <summary>
+	/// 方向ベクトルから回転角を求めます。
+	/// </summary>
+	/// <param name="src">向かせたいオブジェクトのベクトル</param>
+	/// <param name="dist">向きたい方向のベクトル</param>
+	/// <returns></returns>
+	static float LookAt(const DirectX::XMVECTOR &src, const DirectX::XMVECTOR &dist)
+	{
+		// 方向ベクトルを求める
+		DirectX::XMVECTOR vec =
+		{
+			(src.m128_f32[0] - dist.m128_f32[0]),
+			(src.m128_f32[1] - dist.m128_f32[1]),
+			(src.m128_f32[2] - dist.m128_f32[2])
+		};
+
+		// 角度を求める
+		float angle = (float)(atan2(vec.m128_f32[0], vec.m128_f32[2]));
+
+		// 度数に変換
+		ToDegree(&angle);
+
+		return angle + NcmPI;
+	}
+
+	/// <summary>
+	/// 方向ベクトルから回転角を求めます。
+	/// </summary>
+	/// <param name="vec">計算済みの方向ベクトル</param>
+	/// <returns></returns>
+	static float LookAt(const DirectX::XMVECTOR &vec)
+	{
+		// 角度を求める
+		float angle = (float)(atan2(vec.m128_f32[0], vec.m128_f32[2]));
+
+		// 度数に変換
+		ToDegree(&angle);
+
+		return angle + NcmPI;
+	}
+
+	inline float GetSinWave(const int count, float time)
+	{
+		return (float)(sin(NcmPI * 2.0f / (float)(count) * time));
+	}
 }

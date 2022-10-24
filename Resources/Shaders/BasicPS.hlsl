@@ -26,7 +26,7 @@ struct PSOutput
 PSOutput main(VSOutput input)
 {
    PSOutput output;
-   float3 light = normalize(float3(0, 0, 1));
+   float3 light = normalize(float3(0, -1, 0));
    //float3 light = normalize(float3(1, -1, 1)); // ‰E‰º‰œŒü‚«‚Ìƒ‰ƒCƒg
    float light_diffuse = saturate(dot(-light, input.normal));
    float brightness = light_diffuse + 0.3f;

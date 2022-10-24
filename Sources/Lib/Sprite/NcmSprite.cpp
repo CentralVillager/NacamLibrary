@@ -110,7 +110,7 @@ int NcmSprite::LoadTex(const wchar_t *filename)
 		CD3DX12_CPU_DESCRIPTOR_HANDLE(desc_heap_->GetCPUDescriptorHandleForHeapStart(), count_for_array, desc_handle_incre_size_)
 	);
 
-	GenerateDrawData(count_for_array);
+	GenerateDrawData(count_for_array, filename);
 
 	return count_for_array;
 }
@@ -158,7 +158,7 @@ void NcmSprite::DrawTex(const int handle, const XMFLOAT2 &pos, const float scale
 	SetSize(handle, { sprite_hub_[handle].size_.x / scale, sprite_hub_[handle].size_.y / scale });
 }
 
-void NcmSprite::GenerateDrawData(const int handle)
+void NcmSprite::GenerateDrawData(const int handle, const wchar_t *filename)
 {
 	HRESULT result = S_FALSE;
 
@@ -212,6 +212,7 @@ void NcmSprite::GenerateDrawData(const int handle)
 
 	// éØï ópÇ…ä«óù
 	sprite_hub_.back().handle = handle;
+	sprite_hub_.back().file_path = filename;
 }
 
 void NcmSprite::TransferVertices(DrawData *itr)

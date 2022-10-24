@@ -12,18 +12,24 @@ class Player : public AbsUniqueObj
 	static std::unique_ptr<Model> model_;
 	static std::unique_ptr<Model> coll_model_;
 
+	static constexpr uint32_t invincible_time_ = 80;
+
+	bool is_invincible_;
+	bool taking_damage_trigger_;
+	uint32_t hp_;
+
 	// 他クラス情報
 	MissileManager *mi_mgr_;
 	LockOnSystem *lockon_sys_;
 
 	// ミサイル発射関連
-	int charge_time_;
-	int count_;
+	int32_t charge_time_;
+	int32_t count_;
 
 	// イージング用変数
-	int ease_rot_right_;
-	int ease_rot_left_;
-	int ease_reset_rot_;
+	int32_t ease_rot_right_;
+	int32_t ease_rot_left_;
+	int32_t ease_reset_rot_;
 
 	bool is_already_;
 	bool is_released;
@@ -37,8 +43,13 @@ public:
 
 	static void LoadResources();
 
+	inline const bool &GetIsInvincible() { return is_invincible_; }
+	inline const uint32_t &GetHp() { return hp_; }
+	inline const int32_t &GetChargeCount() { return count_; }
+	inline const int32_t &GetMaxChargeTime() { return charge_time_; }
+
 	void Initialize() override;
-	void Initialize(MissileManager *mi_mgr, LockOnSystem *lockon_sys);
+	void Initialize(MissileManager *mi_mgr, LockOnSystem *lockon_sys, XMFLOAT3 pos);
 	void Finalize();
 	void Update() override;
 	void Draw() override;
@@ -49,6 +60,8 @@ public:
 
 	void FireMissile();
 	void ChargeMissile();
+	void TakeDamage();
+	void CountInvincibleTime();
 	void Move(float speed);
 	void MoveXY(float speed);
 	void MoveXZ(float speed);

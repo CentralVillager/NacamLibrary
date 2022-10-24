@@ -26,6 +26,9 @@ class Enemy : public AbsUniqueObj
 	std::shared_ptr<BulletList> bullets_;
 	int shot_interval_;
 
+	int32_t cycle = 100;
+	float length = 100.0f;
+
 public:
 
 	Enemy();
@@ -37,6 +40,7 @@ public:
 	static void ImportPtr(Player *player);
 
 	const int &GetID() { return id_; }
+	const std::shared_ptr<BulletList> &GetBulletList() { return bullets_; }
 
 	void Initialize(const XMFLOAT3 &pos);
 	void Initialize() override;

@@ -17,6 +17,7 @@ public:
 
 public:
 
+	inline std::vector<Bullet> &GetBullets() { return bullets_; }
 	inline void SetPos(const XMFLOAT3 &pos) { init_pos_ = pos; }
 
 	void Initialize();

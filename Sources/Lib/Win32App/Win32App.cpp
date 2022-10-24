@@ -6,8 +6,6 @@ using namespace DirectX;
 WNDCLASSEX Win32App::w{};
 HWND Win32App::hwnd;
 RECT Win32App::wrc;
-const XMINT2 Win32App::SIZE_ = { 1280, 720 };
-const XMINT2 Win32App::CENTER_ = { SIZE_.x / 2, SIZE_.y / 2 };
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND, UINT, WPARAM, LPARAM);
 

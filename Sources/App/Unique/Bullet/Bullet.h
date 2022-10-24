@@ -12,6 +12,7 @@ class Bullet : public AbsUniqueObj
 
 	XMFLOAT3 vel_{};
 	int life_;
+	float angle_;
 
 public:
 
@@ -31,5 +32,5 @@ public:
 public:
 
 	void Fire(const XMFLOAT3 &src, const XMFLOAT3 &dist);
-	void CalcAngle(const XMFLOAT3 &dist);
+	void CalcVelocity(const XMFLOAT3 &dist);
 };

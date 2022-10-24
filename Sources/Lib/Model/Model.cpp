@@ -8,21 +8,24 @@ DirectXBase *Model::dx_base_;
 ComPtr<ID3D12Device> Model::device_;
 UINT Model::descriptor_handle_increment_size_;
 
-Model::Model() {
-}
+Model::Model()
+{}
 
-void Model::StaticInitialize() {
+void Model::StaticInitialize()
+{
 	dx_base_ = DirectXBase::GetInstance();
 	device_ = dx_base_->GetDevice().Get();
 }
 
-void Model::LoadObjModel(const std::string &directory_path, const std::string &file_name, const std::string &material_name) {
+void Model::LoadObjModel(const std::string &directory_path, const std::string &file_name, const std::string &material_name)
+{
 	InitializeDescriptorHeap();
 	LoadModel(directory_path, file_name);
 	LoadMaterial(directory_path, material_name);
 }
 
-void Model::InitializeDescriptorHeap() {
+void Model::InitializeDescriptorHeap()
+{
 	HRESULT result = S_FALSE;
 
 	// デスクリプタヒープを生成	
@@ -31,7 +34,8 @@ void Model::InitializeDescriptorHeap() {
 	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;//シェーダから見えるように
 	descHeapDesc.NumDescriptors = 1; // シェーダーリソースビュー1つ
 	result = device_->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descriptor_heap_));//生成
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		assert(0);
 	}
 
@@ -39,7 +43,8 @@ void Model::InitializeDescriptorHeap() {
 	descriptor_handle_increment_size_ = device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 }
 
-void Model::LoadModel(const std::string &directoryPath, const std::string &filename) {
+void Model::LoadModel(const std::string &directoryPath, const std::string &filename)
+{
 	HRESULT result = S_FALSE;
 
 	// ファイルストリーム
@@ -47,7 +52,8 @@ void Model::LoadModel(const std::string &directoryPath, const std::string &filen
 	// objファイルを開く
 	file.open(directoryPath + filename);
 	// ファイルオープン失敗をチェック
-	if (file.fail()) {
+	if (file.fail())
+	{
 		assert(0);
 	}
 
@@ -60,7 +66,8 @@ void Model::LoadModel(const std::string &directoryPath, const std::string &filen
 
 	// 1行ずつ読み込む
 	string line;
-	while (getline(file, line)) {
+	while (getline(file, line))
+	{
 		// 1行分の文字列をストリームに変換して解析しやすくする
 		std::istringstream line_stream(line);
 
@@ -69,7 +76,8 @@ void Model::LoadModel(const std::string &directoryPath, const std::string &filen
 		getline(line_stream, key, ' ');
 
 		// 先頭文字列がmtllibならマテリアル
-		if (key == "mtl") {
+		if (key == "mtl")
+		{
 			// マテリアルのファイル名読み込み
 			string filename;
 			line_stream >> filename;
@@ -78,7 +86,8 @@ void Model::LoadModel(const std::string &directoryPath, const std::string &filen
 		}
 
 		// 先頭文字列が	vなら頂点座標
-		if (key == "v") {
+		if (key == "v")
+		{
 			// X,Y,Z座標読み込み
 			XMFLOAT3 position{};
 			line_stream >> position.x;
@@ -95,7 +104,8 @@ void Model::LoadModel(const std::string &directoryPath, const std::string &filen
 		}
 
 		// 先頭文字列が	vtならテクスチャ
-		if (key == "vt") {
+		if (key == "vt")
+		{
 			// U,V成分読み込み
 			XMFLOAT2 texcoord{};
 			line_stream >> texcoord.x;
@@ -107,7 +117,8 @@ void Model::LoadModel(const std::string &directoryPath, const std::string &filen
 		}
 
 		// 先頭文字列がvnならベクトル
-		if (key == "vn") {
+		if (key == "vn")
+		{
 			// x,y,z成分読み込み
 			XMFLOAT3 normal{};
 			line_stream >> normal.x;
@@ -119,10 +130,12 @@ void Model::LoadModel(const std::string &directoryPath, const std::string &filen
 		}
 
 		// 先頭文字がfならポリゴン（三角形）
-		if (key == "f") {
+		if (key == "f")
+		{
 			// 半角スペース区切りで行の続きを読み込む
 			string index_string;
-			while (getline(line_stream, index_string, ' ')) {
+			while (getline(line_stream, index_string, ' '))
+			{
 				// 頂点インデックス1個分の文字列をストリームに変換して解析しやすくする
 				std::istringstream index_stream(index_string);
 				unsigned short index_position, index_normal, index_texcoord;
@@ -163,7 +176,8 @@ void Model::LoadModel(const std::string &directoryPath, const std::string &filen
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&vertex_buffer_));
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		assert(0);
 		return;
 	}
@@ -176,7 +190,8 @@ void Model::LoadModel(const std::string &directoryPath, const std::string &filen
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&index_buffer_));
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		assert(0);
 		return;
 	}
@@ -184,7 +199,8 @@ void Model::LoadModel(const std::string &directoryPath, const std::string &filen
 	// 頂点バッファへのデータ転送
 	VertexData *vert_map = nullptr;
 	result = vertex_buffer_->Map(0, nullptr, reinterpret_cast<void **>(&vert_map));
-	if (SUCCEEDED(result)) {
+	if (SUCCEEDED(result))
+	{
 		std::copy(vertices_.begin(), vertices_.end(), vert_map);
 		vertex_buffer_->Unmap(0, nullptr);
 	}
@@ -192,7 +208,8 @@ void Model::LoadModel(const std::string &directoryPath, const std::string &filen
 	// インデックスバッファへのデータ転送
 	unsigned short *indexMap = nullptr;
 	result = index_buffer_->Map(0, nullptr, reinterpret_cast<void **>(&indexMap));
-	if (SUCCEEDED(result)) {
+	if (SUCCEEDED(result))
+	{
 		// 全インデックスに対して
 		std::copy(indices_.begin(), indices_.end(), indexMap);
 		index_buffer_->Unmap(0, nullptr);
@@ -209,7 +226,8 @@ void Model::LoadModel(const std::string &directoryPath, const std::string &filen
 	index_buffer_view_.SizeInBytes = sizeIB;
 }
 
-bool Model::LoadTexture(const std::string &directoryPath, const std::string &filename) {
+bool Model::LoadTexture(const std::string &directoryPath, const std::string &filename)
+{
 	HRESULT result = S_FALSE;
 
 	// WICテクスチャのロード
@@ -222,11 +240,12 @@ bool Model::LoadTexture(const std::string &directoryPath, const std::string &fil
 	// ユニコード文字列に変換する
 	wchar_t w_filepath[128];
 	int iBufferSize = MultiByteToWideChar(CP_ACP, 0, filepath.c_str(),
-										  -1, w_filepath, _countof(w_filepath));
+		-1, w_filepath, _countof(w_filepath));
 
 	result = LoadFromWICFile(w_filepath, WIC_FLAGS_NONE, &metadata, scratchImg);
 
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		return result;
 	}
 
@@ -249,7 +268,8 @@ bool Model::LoadTexture(const std::string &directoryPath, const std::string &fil
 		D3D12_RESOURCE_STATE_GENERIC_READ, // テクスチャ用指定
 		nullptr,
 		IID_PPV_ARGS(&tex_data_.texture_buffer));
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		return result;
 	}
 
@@ -261,7 +281,8 @@ bool Model::LoadTexture(const std::string &directoryPath, const std::string &fil
 		(UINT)img->rowPitch,  // 1ラインサイズ
 		(UINT)img->slicePitch // 1枚サイズ
 	);
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		return result;
 	}
 
@@ -281,26 +302,29 @@ bool Model::LoadTexture(const std::string &directoryPath, const std::string &fil
 	srvDesc.Texture2D.MipLevels = 1;
 
 	dx_base_->GetDevice()->CreateShaderResourceView(tex_data_.texture_buffer.Get(), //ビューと関連付けるバッファ
-													&srvDesc, //テクスチャ設定情報
-													tex_data_.cpu_desc_handle_SRV
+		&srvDesc, //テクスチャ設定情報
+		tex_data_.cpu_desc_handle_SRV
 	);
 
 	return true;
 }
 
-void Model::LoadMaterial(const std::string &directoryPath, const std::string &filename) {
+void Model::LoadMaterial(const std::string &directoryPath, const std::string &filename)
+{
 	// ファイルストリーム
 	std::ifstream file;
 	// マテリアルファイルを開く
 	file.open(directoryPath + filename);
 	// ファイルオープン失敗をチェック
-	if (file.fail()) {
+	if (file.fail())
+	{
 		assert(0);
 	}
 
 	// 一行ずつ読み込む
 	string line;
-	while (getline(file, line)) {
+	while (getline(file, line))
+	{
 		// 一行分の文字列をストリームに変換
 		std::istringstream line_stream(line);
 
@@ -309,39 +333,45 @@ void Model::LoadMaterial(const std::string &directoryPath, const std::string &fi
 		getline(line_stream, key, ' ');
 
 		// 先頭のタブ文字は無視する
-		if (key[0] == '\t') {
+		if (key[0] == '\t')
+		{
 			key.erase(key.begin());	// 先頭の文字を削除
 		}
 
 		// 先頭文字列がnewmtlならマテリアル名
-		if (key == "newmtl") {
+		if (key == "newmtl")
+		{
 			// マテリアル名読み込み
 			line_stream >> material_data_.name_;
 		}
 
 		// 先頭文字列がKaならアンビエント色
-		if (key == "Ka") {
+		if (key == "Ka")
+		{
 			line_stream >> material_data_.ambient.x;
 			line_stream >> material_data_.ambient.y;
 			line_stream >> material_data_.ambient.z;
 		}
 
 		// 先頭文字列がKdならディフューズ色
-		if (key == "Kd") {
+		if (key == "Kd")
+		{
 			line_stream >> material_data_.diffuse.x;
 			line_stream >> material_data_.diffuse.y;
 			line_stream >> material_data_.diffuse.z;
 		}
 
 		// 先頭文字列がKsならスペキュラー色
-		if (key == "Ks") {
+		if (key == "Ks")
+		{
 			line_stream >> material_data_.specular.x;
 			line_stream >> material_data_.specular.y;
 			line_stream >> material_data_.specular.z;
 		}
 
 		// 先頭文字列がmap_Kdならテクスチャファイル名
-		if (key == "map_Kd") {
+		if (key == "map_Kd")
+		{
 			// テクスチャのファイル名読み込み
 			line_stream >> material_data_.texture_file_name;
 			// テクスチャ読み込み

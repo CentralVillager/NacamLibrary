@@ -28,7 +28,7 @@ void FrictionDemoScene::Initialize() {
 	object_->Initialize();
 	object_->SetModel(model_.get());
 	object_->SetScale({ 0.01f, 0.01f, 0.01f });
-	object_->SetPosition({ 0, 10.0f, 0 });
+	object_->SetPos({ 0, 10.0f, 0 });
 }
 
 void FrictionDemoScene::Finalize() {

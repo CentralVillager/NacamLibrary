@@ -183,6 +183,9 @@
     <Filter Include="Application\Scene\AbsScene">
       <UniqueIdentifier>{8ed16d1a-200c-4fe6-bd52-1c39aafa6687}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\UI">
+      <UniqueIdentifier>{04c28156-58fa-41fa-bb79-046763cf8775}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -373,6 +376,9 @@
     </ClCompile>
     <ClCompile Include="Sources\App\Unique\Bullet\BulletList.cpp">
       <Filter>Application\Unique\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Ui\NcmUi.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -578,6 +584,7 @@
     <ClInclude Include="Sources\Lib\NacamError\NacamError.h">
       <Filter>Library\NacamError</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\App\Ui\NcmUi.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">

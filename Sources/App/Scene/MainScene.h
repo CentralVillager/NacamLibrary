@@ -15,6 +15,7 @@
 #include "../Unique/LockOnSystem/LockOnSystem.h"
 #include "../Unique/WaveManager/WaveManager.h"
 #include "../Number/Numbers.h"
+#include "../Ui/NcmUi.h"
 
 class MainScene : public AbsScene
 {
@@ -41,6 +42,9 @@ public:
 private:
 
 	static constexpr UINT GRID_NUM_ = 3;
+	static constexpr float SPEED_ = 2.0f;
+	static constexpr XMFLOAT3 init_pos_ = XMFLOAT3(0, 0, -200.0f);
+	static constexpr XMFLOAT3 cam_init_pos_ = XMFLOAT3(0, 10.0f, init_pos_.z);
 
 private:
 
@@ -57,22 +61,25 @@ private:
 	std::unique_ptr<Reticle> reticle_;
 	std::unique_ptr<LockOnSystem> lockon_sys_;
 	std::unique_ptr<Numbers> numbers_;
+	std::unique_ptr<NcmUi> ui_;
 	int texture_;
 	int clear_;
+	int over_;
 	int space_;
 
-	bool use_keybind_ = true;
-	int key_bind_ = 0;
-	bool is_wire_ = true;
-	bool draw_dust_ = true;
-	bool draw_coll_ = false;
-	bool draw_numbers_ = false;
+	bool do_debug_;
+	int key_bind_;
+	bool is_wire_;
+	bool draw_dust_;
+	bool draw_coll_;
+	bool draw_numbers_;
 
-	bool is_result_ = false;
+	bool is_clear_;
+	bool is_failed_;
 
-	float ImGui_detection_range_ = 1000.0f;
+	float ImGui_detection_range_;
+	XMFLOAT2 ImGui_Ui_pos_;
 
-	static constexpr float SPEED_ = 2.0f;
 	int player_camera_speed_;
 
 public:

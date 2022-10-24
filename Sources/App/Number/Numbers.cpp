@@ -6,7 +6,9 @@
 
 std::array<int, Numbers::MAX_NUM_> Numbers::numbers_;
 
-Numbers::Numbers()
+Numbers::Numbers() :
+	offset_(),
+	tracking_()
 {}
 
 Numbers::~Numbers()
@@ -134,7 +136,6 @@ void Numbers::DrawNumber(int number, float scale, HorizontalAlignment h_align, V
 			final_pos.y = Win32App::SIZE_.y - size.y;
 
 			NcmSprite::DrawTex(numbers_[digit[i]],
-
 				{ (final_pos.x - (i * tracking_)) - offset_.x, final_pos.y - offset_.y });
 
 			NcmSprite::ResetScale(numbers_[digit[i]], scale);

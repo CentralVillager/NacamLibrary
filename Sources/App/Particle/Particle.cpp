@@ -52,7 +52,7 @@ void Particle::Update()
 	particle_->scale_ = particle_->s_scale_ + (particle_->e_scale_ - particle_->s_scale_) / f;
 
 	//	最終的な位置をセット
-	object_->SetPosition(particle_->position_);
+	object_->SetPos(particle_->position_);
 	object_->SetScale(particle_->scale_);
 	object_->Update();
 }

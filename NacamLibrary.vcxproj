@@ -191,6 +191,7 @@
     <ClCompile Include="Sources\App\Scene\SceneManager\SceneManager.cpp" />
     <ClCompile Include="Sources\App\Scene\TemporaryScene.cpp" />
     <ClCompile Include="Sources\App\Scene\TitleScene.cpp" />
+    <ClCompile Include="Sources\App\Ui\NcmUi.cpp" />
     <ClCompile Include="Sources\App\Unique\Abs\AbsUniqueObj.cpp" />
     <ClCompile Include="Sources\App\Unique\Bullet\Bullet.cpp" />
     <ClCompile Include="Sources\App\Unique\Bullet\BulletList.cpp" />
@@ -259,6 +260,7 @@
     <ClInclude Include="Sources\App\Scene\TemporaryScene.h" />
     <ClInclude Include="Sources\App\Scene\TitleScene.h" />
     <ClInclude Include="Sources\App\Singleton\Singleton.h" />
+    <ClInclude Include="Sources\App\Ui\NcmUi.h" />
     <ClInclude Include="Sources\App\Unique\Abs\AbsUniqueObj.h" />
     <ClInclude Include="Sources\App\Unique\Bullet\Bullet.h" />
     <ClInclude Include="Sources\App\Unique\Bullet\BulletList.h" />

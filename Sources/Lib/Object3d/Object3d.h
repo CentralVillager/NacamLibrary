@@ -119,11 +119,11 @@ public:
 	void Draw();
 
 	/*-- アクセッサ群 --*/
-	inline const XMFLOAT3 &GetPosition() { return position_; }
-	inline const XMFLOAT3 &GetRotation() { return rotation_; }
+	inline const XMFLOAT3 &GetPos() { return position_; }
+	inline const XMFLOAT3 &GetRot() { return rotation_; }
 	inline const XMFLOAT3 &GetScale() { return scale_; }
-	inline void SetPosition(XMFLOAT3 position) { position_ = position; }
-	inline void SetRotation(XMFLOAT3 rotation) { rotation_ = rotation; }
+	inline void SetPos(XMFLOAT3 position) { position_ = position; }
+	inline void SetRot(XMFLOAT3 rotation) { rotation_ = rotation; }
 	inline void SetScale(XMFLOAT3 scale) { scale_ = scale; };
 	inline void SetScale(float scale) { scale_.x = scale_.y = scale_.z = scale; };
 

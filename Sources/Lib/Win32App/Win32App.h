@@ -7,6 +7,7 @@ class Win32App final : public Singleton<Win32App>
 {
 	friend Singleton<Win32App>;
 	using XMINT2 = DirectX::XMINT2;
+	using XMFLOAT2 = DirectX::XMFLOAT2;
 
 	static WNDCLASSEX w;	// ウィンドウクラス
 	static HWND hwnd;		// ウィンドウオブジェクト
@@ -15,10 +16,12 @@ class Win32App final : public Singleton<Win32App>
 public:
 
 	// ウィンドウサイズ
-	static const XMINT2 SIZE_;
+	static constexpr XMINT2 SIZE_ = { 1280, 720 };
+	static constexpr XMFLOAT2 FSIZE_ = { 1280.0f, 720.0f };
 
 	// ウィンドウサイズの半分
-	static const XMINT2 CENTER_;
+	static constexpr XMINT2 CENTER_ = { SIZE_.x / 2, SIZE_.y / 2 };
+	static constexpr XMFLOAT2 FCENTER_ = { FSIZE_.x / 2.0f, FSIZE_.y / 2.0f };
 
 public:
 

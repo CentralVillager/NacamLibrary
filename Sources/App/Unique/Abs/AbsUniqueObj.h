@@ -31,11 +31,11 @@ public:
 
 public:
 
-	inline const XMFLOAT3 &GetPos() { return obj_->GetPosition(); }
+	inline const XMFLOAT3 &GetPos() { return obj_->GetPos(); }
 	inline const Sphere &GetCollData() { return coll_; }
 	inline const bool &IsDead() { return is_dead_ == true; }
 	inline const void Death() { is_dead_ = true; }
-	inline void SetPos(const XMFLOAT3 &pos) { obj_->SetPosition(pos); }
+	inline void SetPos(const XMFLOAT3 &pos) { obj_->SetPos(pos); }
 	inline void SetIsDead(bool b) { is_dead_ = b; }
 
 public:

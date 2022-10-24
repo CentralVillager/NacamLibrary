@@ -21,20 +21,19 @@ public:
 	{
 		float dist;
 		XMFLOAT3 pos;
-		UINT id;
+		uint32_t id;
 	};
 
 private:
 
 	// 現在のロックオン可能最大数
-	static UINT current_tgt_num_;
+	static uint32_t current_tgt_num_;
+	static constexpr uint32_t max_tgt_num_ = 4;
 
 private:
 
 	static std::unique_ptr<Model> model_;
 	std::vector<Object3d> markers_;
-
-	UINT multi_target_num_;
 
 	std::vector<TargetData> tgt_datas_;
 
@@ -62,6 +61,8 @@ public:
 
 	inline const TargetData &GetTgtData(int i) { return tgt_datas_[i]; }
 	inline const std::vector<TargetData> &GetTgtData() { return tgt_datas_; }
+	inline static const uint32_t &GetCurrentTgtNum() { return current_tgt_num_; }
+	inline static const uint32_t &GetMaxTgtNum() { return max_tgt_num_; }
 
 public:
 

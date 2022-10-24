@@ -36,9 +36,9 @@ void ParticleDemoScene::Initialize() {
 
 	sky_dome_->Initialize();
 	sky_dome_->SetModel(model_sky_dome_.get());
-	sky_dome_->SetPosition({ 0, 0, 0 });
+	sky_dome_->SetPos({ 0, 0, 0 });
 	sky_dome_->SetScale({ 1.0f, 1.0f, 1.0f });
-	sky_dome_->SetRotation({ 0.0f, 0, 0 });
+	sky_dome_->SetRot({ 0.0f, 0, 0 });
 	sky_dome_->Update();
 
 	Emitter::LoadResources();

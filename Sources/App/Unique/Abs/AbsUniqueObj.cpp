@@ -20,12 +20,12 @@ void AbsUniqueObj::InitObj3d(Model *obj_model, Model *coll_model)
 
 void AbsUniqueObj::UpdateColl()
 {
-	coll_.center = DirectX::XMLoadFloat3(&obj_->GetPosition());
+	coll_.center = DirectX::XMLoadFloat3(&obj_->GetPos());
 	coll_.radius = coll_radius_;
 
 	XMFLOAT3 dist;
 	DirectX::XMStoreFloat3(&dist, coll_.center);
-	coll_obj_->SetPosition(dist);
+	coll_obj_->SetPos(dist);
 	coll_obj_->SetScale(coll_.radius);
 	coll_obj_->Update();
 }

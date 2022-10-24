@@ -2,8 +2,10 @@
 #include <cmath>
 #include "../Sources/App/Utility/NcmUtil.h"
 #include "../Player/Player.h"
+#include "../../../Lib/PreDraw/PreDraw.h"
 
 using namespace NcmUtill;
+using namespace NcmMath;
 
 std::unique_ptr<Model> Enemy::model_ = nullptr;
 std::unique_ptr<Model> Enemy::coll_model_ = nullptr;
@@ -46,7 +48,7 @@ void Enemy::ImportPtr(Player *player)
 void Enemy::Initialize(const XMFLOAT3 &pos)
 {
 	InitObj3d(model_.get(), coll_model_.get());
-	obj_->SetPosition(pos);
+	obj_->SetPos(pos);
 
 	is_dead_ = false;
 	id_ = id_counter_;
@@ -64,7 +66,7 @@ void Enemy::Update()
 {
 	RotY();
 	MoveHorizontally(0.5f, 100.0f);
-	AutoShot(100, player_->GetPos());
+	AutoShot(200, player_->GetPos());
 	obj_->Update();
 	UpdateColl();
 
@@ -73,8 +75,13 @@ void Enemy::Update()
 
 void Enemy::Draw()
 {
+	PreDraw::PreRender(PipelineName::Object3d_WireFrame);
 	obj_->Draw();
+
+	PreDraw::PreRender(PipelineName::Object3d);
 	bullets_->Draw();
+
+	PreDraw::PreRender(PipelineName::Object3d_WireFrame);
 }
 
 void Enemy::DrawColl()
@@ -87,24 +94,29 @@ void Enemy::DebugDraw()
 {
 	ImGui::Text("ID : %d", id_);
 	ImGui::Text("interval : %d", shot_interval_);
+	ImGui::DragInt("cycle", &cycle, 1, 1, 10000);
+	ImGui::DragFloat("length", &length, 1.0f, 0.0f, 100.0f);
 	ImGui::Separator();
 	bullets_->DebugDraw();
 }
 
 void Enemy::RotY()
 {
-	XMFLOAT3 rot = obj_->GetRotation();
+	XMFLOAT3 rot = obj_->GetRot();
 	rot.y += 1.0f;
-	obj_->SetRotation(rot);
+	obj_->SetRot(rot);
 }
 
 void Enemy::MoveHorizontally(const float &speed, const float &range)
 {
 	count_--;
 
-	XMFLOAT3 pos = obj_->GetPosition();
-	pos.x += speed_;
-	obj_->SetPosition(pos);
+	XMFLOAT3 pos = obj_->GetPos();
+	static int t = 0;
+	t++;
+	float sin = GetSinWave(2000, t);
+	pos.x += sin;
+	obj_->SetPos(pos);
 
 	if (IsZero(count_))
 	{
@@ -126,10 +138,10 @@ void Enemy::MoveCircular()
 		radius * sinf(circular_angle_)
 	};
 
-	XMFLOAT3 pos = obj_->GetPosition();
+	XMFLOAT3 pos = obj_->GetPos();
 	pos.x += speed.x;
 	pos.z += speed.z;
-	obj_->SetPosition(pos);
+	obj_->SetPos(pos);
 
 	static int count = 10;
 	count--;
@@ -158,7 +170,7 @@ void Enemy::AutoShot(int interval, const XMFLOAT3 &dist)
 	if (IsZeroOrLess(count))
 	{
 		// 弾を発射する
-		bullets_->Fire(obj_->GetPosition(), dist);
+		bullets_->Fire(obj_->GetPos(), dist);
 		// カウントをリセットする
 		count = shot_interval_;
 	}

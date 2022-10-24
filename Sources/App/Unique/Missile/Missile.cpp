@@ -5,6 +5,7 @@
 
 using namespace DirectX;
 using namespace NcmUtill;
+using namespace NcmMath;
 
 std::unique_ptr<Model> Missile::model_ = nullptr;
 std::unique_ptr<Model> Missile::coll_model_ = nullptr;
@@ -45,8 +46,7 @@ void Missile::Initialize(const MissileArgs &args, LockOnSystem *sys)
 	mi_args_ = args;
 
 	InitObj3d(model_.get(), coll_model_.get());
-	obj_->SetPosition(XMFLOAT3(mi_args_.pos));
-	obj_->SetRotation(XMFLOAT3(0, 180.0f, 0));
+	obj_->SetPos(XMFLOAT3(mi_args_.pos));
 
 	Emitter::EmitterArgs emi;
 	XMFLOAT3 temp = mi_args_.vel;
@@ -121,14 +121,14 @@ void Missile::Activate()
 
 void Missile::MoveZ(float speed)
 {
-	XMFLOAT3 pos = obj_->GetPosition();
+	XMFLOAT3 pos = obj_->GetPos();
 	pos.z += mi_args_.vel.z;
-	obj_->SetPosition(pos);
+	obj_->SetPos(pos);
 }
 
 void Missile::HomingTarget(const XMFLOAT3 &target_pos)
 {
-	XMFLOAT3 pos = obj_->GetPosition();
+	XMFLOAT3 pos = obj_->GetPos();
 
 	static XMVECTOR old_len{};
 	const float speed = 3.0f;	// 仮
@@ -137,13 +137,13 @@ void Missile::HomingTarget(const XMFLOAT3 &target_pos)
 	{
 		mi_args_.init_straight_time_--;
 		pos.z += speed;
-		obj_->SetPosition(pos);
+		obj_->SetPos(pos);
 
 		return;
 	}
 
 	// XMVECTORに変換
-	XMVECTOR mi_vec = XMLoadFloat3(&obj_->GetPosition());
+	XMVECTOR mi_vec = XMLoadFloat3(&obj_->GetPos());
 	XMVECTOR ta_vec = XMLoadFloat3(&mi_args_.tgt_pos);
 	//XMVECTOR tgt_vec = XMLoadFloat3(&target_pos);
 
@@ -167,7 +167,7 @@ void Missile::HomingTarget(const XMFLOAT3 &target_pos)
 	//	pos.z += mi_args_.vel.z;
 
 	//	// 位置を反映
-	//	object_->SetPosition(pos);
+	//	object_->SetPos(pos);
 
 	//	// その後の追尾処理をスキップ
 	//	return;
@@ -178,7 +178,7 @@ void Missile::HomingTarget(const XMFLOAT3 &target_pos)
 	{
 		// 直進だけして
 		pos.z += speed;
-		obj_->SetPosition(pos);
+		obj_->SetPos(pos);
 
 		// その後の追尾処理をスキップ
 		return;
@@ -193,7 +193,7 @@ void Missile::HomingTarget(const XMFLOAT3 &target_pos)
 		pos.z += mi_args_.vel.z;
 
 		// 位置を反映
-		obj_->SetPosition(pos);
+		obj_->SetPos(pos);
 
 		return;
 	}
@@ -233,11 +233,11 @@ void Missile::HomingTarget(const XMFLOAT3 &target_pos)
 	pos.z += mi_args_.vel.z;
 
 	// 位置を反映
-	obj_->SetPosition(pos);
+	obj_->SetPos(pos);
 
 	/* -- 外積追尾 -- */
 	// XMVECTORに変換
-	//XMVECTOR mi_vec = XMLoadFloat3(&object_->GetPosition());
+	//XMVECTOR mi_vec = XMLoadFloat3(&object_->GetPos());
 	//XMVECTOR tgt_vec = XMLoadFloat3(&target_pos);
 
 	//// ふたつの座標を結ぶベクトルを計算
@@ -269,13 +269,13 @@ void Missile::HomingTarget(const XMFLOAT3 &target_pos)
 	//pos.z += norm_vec.m128_f32[2];
 
 	//// 位置を反映
-	//object_->SetPosition(pos);
+	//object_->SetPos(pos);
 }
 
 void Missile::HomingTarget(EnemiesList &enemies)
 {
 	const float speed = 3.0f;	// 仮
-	XMFLOAT3 pos = obj_->GetPosition();
+	XMFLOAT3 pos = obj_->GetPos();
 
 	// 敵がいないなら
 	if (enemies.GetEnemies().size() <= 0)
@@ -298,7 +298,7 @@ void Missile::HomingTarget(EnemiesList &enemies)
 	}
 
 	// XMVECTORに変換
-	XMVECTOR mi_vec = XMLoadFloat3(&obj_->GetPosition());
+	XMVECTOR mi_vec = XMLoadFloat3(&obj_->GetPos());
 
 	// 追尾したい敵のIDが入っている要素の添字を検索
 	int index = enemies.GetEnemyIndexWithID(mi_args_.tgt_id);
@@ -312,7 +312,7 @@ void Missile::HomingTarget(EnemiesList &enemies)
 		pos.z += mi_args_.vel.z;
 
 		// 位置を反映
-		obj_->SetPosition(pos);
+		obj_->SetPos(pos);
 
 		// その後の処理をスキップ
 		return;
@@ -351,7 +351,7 @@ void Missile::HomingTarget(EnemiesList &enemies)
 		pos.z += mi_args_.vel.z;
 
 		// 位置を反映
-		obj_->SetPosition(pos);
+		obj_->SetPos(pos);
 
 		return;
 	}
@@ -386,7 +386,11 @@ void Missile::HomingTarget(EnemiesList &enemies)
 	pos.z += mi_args_.vel.z;
 
 	// 位置を反映
-	obj_->SetPosition(pos);
+	obj_->SetPos(pos);
+
+	XMFLOAT3 rot = obj_->GetRot();
+	rot.y = LookAt(vec);
+	obj_->SetRot(rot);
 }
 
 void Missile::TermEmitter()
@@ -396,6 +400,6 @@ void Missile::TermEmitter()
 
 void Missile::UpdateEmitter()
 {
-	emitter_->SetPosition(obj_->GetPosition());
+	emitter_->SetPosition(obj_->GetPos());
 	emitter_->GenerateParticle();
 }

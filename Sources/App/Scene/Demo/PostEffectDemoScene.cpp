@@ -34,7 +34,7 @@ void PostEffectDemoScene::Initialize()
 	object_->Initialize();
 	object_->SetModel(model_.get());
 	object_->SetScale(1.0f);
-	object_->SetPosition({ 0, 0, 0 });
+	object_->SetPos({ 0, 0, 0 });
 
 	is_push_ = false;
 }
@@ -78,9 +78,9 @@ void PostEffectDemoScene::DebugDraw()
 
 void PostEffectDemoScene::RollY()
 {
-	float rotation = object_->GetRotation().y;
+	float rotation = object_->GetRot().y;
 
 	rotation += 1.0f;
 
-	object_->SetRotation({ 0, rotation, 0 });
+	object_->SetRot({ 0, rotation, 0 });
 }

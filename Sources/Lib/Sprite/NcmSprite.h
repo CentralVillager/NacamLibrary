@@ -43,7 +43,8 @@ private:
 	/// </summary>
 	struct DrawData
 	{
-		int handle = 0;
+		int32_t handle = 0;
+		const wchar_t *file_path;
 
 		ComPtr<ID3D12Resource> vertex_buffer_;
 		ComPtr<ID3D12Resource> const_buffer_;
@@ -162,6 +163,6 @@ public:
 
 private:
 
-	static void GenerateDrawData(const int handle);
+	static void GenerateDrawData(const int handle, const wchar_t *filename);
 	static void TransferVertices(DrawData *itr);
 };

@@ -4,25 +4,43 @@
 #include "../Scene/SceneManager/SceneManager.h"
 #include "../Sources/App/Collision/Collision.h"
 #include "../Sources/App/Math/Easing/NcmEasing.h"
+#include "../Utility/NcmUtil.h"
 
-MainScene::MainScene()
+using namespace NcmUtill;
+
+MainScene::MainScene() :
+	camera_(std::make_unique<Camera>()),
+	player_(std::make_unique<Player>()),
+	enemy_(std::make_unique<Enemy>()),
+	ene_list_(std::make_unique<EnemiesList>()),
+	grid_(std::make_unique<GridRender>()),
+	missile_mgr_(std::make_unique<MissileManager>()),
+	dust_(make_unique<Emitter>()),
+	sky_dome_(make_unique<Object3d>()),
+	model_sky_dome_(make_unique<Model>()),
+	reticle_(make_unique<Reticle>()),
+	lockon_sys_(make_unique<LockOnSystem>()),
+	numbers_(make_unique<Numbers>()),
+	ui_(make_unique<NcmUi>()),
+	texture_(),
+	clear_(),
+	over_(),
+	space_(),
+	do_debug_(true),
+	key_bind_(0),
+	is_wire_(true),
+	draw_dust_(true),
+	draw_coll_(false),
+	draw_numbers_(false),
+	is_clear_(false),
+	is_failed_(false),
+	ImGui_detection_range_(1000.0f),
+	ImGui_Ui_pos_(Win32App::FCENTER_),
+	player_camera_speed_()
 {
-	// 各オブジェクトの生成
-	camera_ = std::make_unique<Camera>();
-	player_ = std::make_unique<Player>();
-	enemy_ = std::make_unique<Enemy>();
-	ene_list_ = std::make_unique<EnemiesList>();
-	grid_ = std::make_unique<GridRender>();
-	missile_mgr_ = std::make_unique<MissileManager>();
-	dust_ = make_unique<Emitter>();
-	sky_dome_ = make_unique<Object3d>();
-	model_sky_dome_ = make_unique<Model>();
-	reticle_ = make_unique<Reticle>();
-	lockon_sys_ = make_unique<LockOnSystem>();
-	numbers_ = make_unique<Numbers>();
-
 	// テクスチャのロード
 	clear_ = NcmSprite::LoadTex(L"Resources/Textures/clear.png");
+	over_ = NcmSprite::LoadTex(L"Resources/Textures/SC/over.png");
 	space_ = NcmSprite::LoadTex(L"Resources/Textures/space.png");
 
 	// 各リソースのロード
@@ -33,7 +51,7 @@ MainScene::MainScene()
 	Missile::LoadResources();
 	Reticle::LoadResources();
 	LockOnSystem::LoadResources();
-	Numbers::LoadResources();
+	NcmUi::LoadResources();
 }
 
 MainScene::~MainScene()
@@ -47,7 +65,9 @@ void MainScene::Initialize()
 	// カメラの初期化
 	camera_->Initialize();
 	camera_->SetDistance(20.0f);
-	camera_->MoveCameraTrack(XMFLOAT3(0, 10.0f, 0));
+	camera_->MoveCameraTrack(XMFLOAT3(0, 10.0f, cam_init_pos_.z));
+	//camera_->MoveCameraTrack(XMFLOAT3(0, 10.0f, -10.0f));
+	//camera_->MoveEye(cam_init_pos_);
 	camera_->MoveEye(XMFLOAT3(0, 10.0f, -10.0f));
 	camera_->Update();
 
@@ -61,14 +81,14 @@ void MainScene::Initialize()
 	ene_list_->Initialize(player_.get());
 	lockon_sys_->Initialize(player_.get(), ene_list_.get());
 	missile_mgr_->Initialize(lockon_sys_.get());
-	player_->Initialize(missile_mgr_.get(), lockon_sys_.get());
+	player_->Initialize(missile_mgr_.get(), lockon_sys_.get(), init_pos_);
 	grid_->Initialize(200, 10, XMFLOAT3(0, -20.0f, 0));
 	reticle_->Initialize();
 	numbers_->Initialize();
-	for (UINT i = 0; i < grid_floor_.size(); i++)
+	/*for (UINT i = 0; i < grid_floor_.size(); i++)
 	{
 		grid_floor_[i].Initialize(200, 10, XMFLOAT3(0, 0, (float)(i) * 1000));
-	}
+	}*/
 
 	// enemyの生成
 	ene_list_->AddTemplateSet();
@@ -87,7 +107,8 @@ void MainScene::Initialize()
 	dust_->SetEmitterArgs(p);
 
 	// スプライトの初期化
-	NcmSprite::SetSize(clear_, { 1280, 720 });
+	NcmSprite::SetSize(clear_, { 1280.0f, 720.0f });
+	NcmSprite::SetSize(over_, { 1280.0f, 720.0f });
 
 	XMINT2 pos = { Win32App::CENTER_.x, 650 };
 	XMFLOAT2 size = NcmSprite::GetSize(space_);
@@ -97,13 +118,13 @@ void MainScene::Initialize()
 
 	// キーバインド機能を使用するか
 #ifdef _DEBUG
-	use_keybind_ = true;
+	do_debug_ = true;
 	key_bind_ = (int)(KeyBind::Player);
 #else
-	use_keybind_ = false;
+	do_debug_ = false;
 #endif
 
-	is_result_ = false;
+	is_clear_ = false;
 
 	EaseArgs ease;
 	ease.ease_type = EaseType::OutCirc;
@@ -117,7 +138,7 @@ void MainScene::Finalize()
 
 void MainScene::Update()
 {
-	if (use_keybind_)
+	if (do_debug_)
 	{
 		// キーバインドごとの操作
 		if (key_bind_ == (int)(KeyBind::Camera))
@@ -126,32 +147,6 @@ void MainScene::Update()
 		}
 		else if (key_bind_ == (int)(KeyBind::Player))
 		{
-			// ミサイルの発射
-			/*if (KeyboardInput::TriggerKey(DIK_SPACE))
-			{
-				player_->FireMissile();
-			}
-
-			if (KeyboardInput::TriggerKey(DIK_T))
-			{
-				lockon_sys_->AddTargetNum();
-			}*/
-
-			/*if (KeyboardInput::PushKey(DIK_W) || KeyboardInput::PushKey(DIK_S) || KeyboardInput::PushKey(DIK_D) || KeyboardInput::PushKey(DIK_A))
-			{
-				NcmEasing::UpdateValue(player_camera_speed_);
-			}
-			else if (KeyboardInput::ReleaseKey(DIK_W) || KeyboardInput::ReleaseKey(DIK_S) || KeyboardInput::ReleaseKey(DIK_D) || KeyboardInput::ReleaseKey(DIK_A))
-			{
-				NcmEasing::ResetTime(player_camera_speed_);
-			}
-			else
-			{
-				NcmEasing::SetInitValue(player_camera_speed_, SPEED_);
-				NcmEasing::SetTotalMove(player_camera_speed_, -SPEED_ / 2);
-				NcmEasing::UpdateValue(player_camera_speed_);
-			}*/
-
 			if (KeyboardInput::PushKey(DIK_W) || KeyboardInput::PushKey(DIK_S) || KeyboardInput::PushKey(DIK_D) || KeyboardInput::PushKey(DIK_A))
 			{
 				NcmEasing::UpdateValue(player_camera_speed_);
@@ -176,9 +171,9 @@ void MainScene::Update()
 		if (KeyboardInput::TriggerKey(DIK_2))
 		{
 			//camera_->MoveCameraTrack(XMFLOAT3(0, 10.0f, 0));
-			camera_->SetEye(XMFLOAT3(0, 20.0f, -20.0f));
-			camera_->SetTarget(XMFLOAT3(0, 10.0f, 0));
-			player_->Initialize(missile_mgr_.get(), lockon_sys_.get());
+			camera_->SetEye(XMFLOAT3(0, 10.0f, -10.0f));
+			//camera_->SetTarget(cam_init_pos_);
+			player_->Initialize(missile_mgr_.get(), lockon_sys_.get(), init_pos_);
 		}
 
 		// キーアサインの変更
@@ -196,28 +191,29 @@ void MainScene::Update()
 		// 強制シーン遷移
 		if (KeyboardInput::TriggerKey(DIK_0))
 		{
+			is_clear_ = true;
 			SceneManager::SetNextScene(SceneName::RESULT);
 		}
 	}
-	else if (!use_keybind_)
+	else if (!do_debug_)
 	{
-		// ミサイル発射
-		/*if (KeyboardInput::TriggerKey(DIK_SPACE))
+		if (KeyboardInput::PushKey(DIK_W) || KeyboardInput::PushKey(DIK_S) || KeyboardInput::PushKey(DIK_D) || KeyboardInput::PushKey(DIK_A))
 		{
-			player_->FireMissile();
-		}*/
-	}
+			NcmEasing::UpdateValue(player_camera_speed_);
+		}
+		else
+		{
+			NcmEasing::ResetTime(player_camera_speed_);
+		}
 
-	// 強制リザルト
-	if (KeyboardInput::TriggerKey(DIK_0))
-	{
-		is_result_ = true;
+		player_->MoveXZ(NcmEasing::GetValue(player_camera_speed_));
+		camera_->MoveXY(NcmEasing::GetValue(player_camera_speed_));
 	}
 
 	// クリア遷移
 	if (ene_list_->NoticeEmpty())
 	{
-		is_result_ = true;
+		is_clear_ = true;
 
 		if (KeyboardInput::TriggerKey(DIK_SPACE))
 		{
@@ -225,10 +221,16 @@ void MainScene::Update()
 		}
 	}
 
-	/*for (auto &i : grid_floor_)
+	// ゲームオーバー遷移
+	if (IsZeroOrLess(player_->GetHp()))
 	{
-		i.MoveMinusZ();
-	}*/
+		is_failed_ = true;
+
+		if (KeyboardInput::TriggerKey(DIK_SPACE))
+		{
+			SceneManager::SetNextScene(SceneName::TITLE);
+		}
+	}
 
 	// 各オブジェクト更新処理
 	player_->Update();
@@ -250,6 +252,8 @@ void MainScene::Update()
 	// 塵描画他
 	if (draw_dust_) { dust_->GenerateParticle(); }
 	sky_dome_->Update();
+
+	NcmUi::CalcBarSize(player_->GetChargeCount(), player_->GetMaxChargeTime());
 }
 
 void MainScene::Draw()
@@ -270,7 +274,7 @@ void MainScene::Draw()
 	lockon_sys_->Draw();
 	if (draw_dust_) { dust_->Draw(); }
 
-	if (!is_wire_) { PreDraw::PreRender(Object3d); }
+	if (is_wire_) { PreDraw::PreRender(Object3d); }
 	sky_dome_->Draw();
 
 	if (draw_coll_)
@@ -282,7 +286,7 @@ void MainScene::Draw()
 	}
 
 	PreDraw::PreRender(Sprite);
-	if (is_result_)
+	if (is_clear_)
 	{
 		if (CheckDoDisplay())
 		{
@@ -291,10 +295,19 @@ void MainScene::Draw()
 
 		NcmSprite::DrawTex(clear_);
 	}
+	else if (is_failed_)
+	{
+		if (CheckDoDisplay())
+		{
+			NcmSprite::DrawTex(space_);
+		}
 
-	using enum HorizontalAlignment;
-	using enum VerticalAlignment;
-	lockon_sys_->DrawNum();
+		NcmSprite::DrawTex(over_);
+	}
+
+	NcmUi::DrawMissileNumSet(LockOnSystem::GetCurrentTgtNum());
+	NcmUi::DrawHp(player_->GetHp(), 30.0f);
+	NcmUi::DrawSpace();
 }
 
 void MainScene::DebugDraw()
@@ -335,7 +348,9 @@ void MainScene::DebugDraw()
 	numbers_->DebugDraw();
 
 	camera_->DebugDraw();
-	ene_list_->DebugDraw();
+	//ene_list_->DebugDraw();
+
+	NcmImGui::DragFloat2("UI_pos", ImGui_Ui_pos_, 1.0f, 0.0f, 1280.0f);
 }
 
 void MainScene::CollisionProcess()
@@ -352,6 +367,21 @@ void MainScene::CollisionProcess()
 					ene_list_->Death(i);
 					missile_mgr_->Death(j);
 				}
+			}
+		}
+	}
+
+	for (UINT i = 0; i < ene_list_->GetEnemies().size(); i++)
+	{
+		std::vector<Bullet> *bullets = &ene_list_->GetEnemies()[i].GetBulletList()->GetBullets();
+
+		for (UINT j = 0; j < bullets->size(); j++)
+		{
+			if (Collision::CheckSphere2Sphere(player_->GetCollData(),
+				MoveIterator(bullets->begin(), j)->GetCollData()))
+			{
+				player_->TakeDamage();
+				MoveIterator(bullets->begin(), j)->Death();
 			}
 		}
 	}
