@@ -186,6 +186,9 @@
     <Filter Include="Application\UI">
       <UniqueIdentifier>{04c28156-58fa-41fa-bb79-046763cf8775}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\Unique\UltimateManager">
+      <UniqueIdentifier>{5d34942f-6775-45cc-9426-50d7e9261d7c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -379,6 +382,9 @@
     </ClCompile>
     <ClCompile Include="Sources\App\Ui\NcmUi.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Unique\Ultimate\UltimateManager.cpp">
+      <Filter>Application\Unique\UltimateManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -585,6 +591,9 @@
       <Filter>Library\NacamError</Filter>
     </ClInclude>
     <ClInclude Include="Sources\App\Ui\NcmUi.h" />
+    <ClInclude Include="Sources\App\Unique\Ultimate\UltimateManager.h">
+      <Filter>Application\Unique\UltimateManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">

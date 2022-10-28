@@ -21,14 +21,15 @@ private:
 
 	// FBXオブジェクト
 	//std::unique_ptr<FbxObject3d> fbx_obj_;
-	FbxObject3d *fbx_obj_;
+	//FbxObject3d *fbx_obj_;
 
 	//// FBXモデル
 	//std::unique_ptr<FbxModel> fbx_model_;
-	FbxModel *fbx_model_;
+	//FbxModel *fbx_model_;s
 
 	int texture_;
 	int ease_;
+	int test_;
 
 	bool b = true;
 

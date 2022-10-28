@@ -16,6 +16,7 @@
 #include "../Unique/WaveManager/WaveManager.h"
 #include "../Number/Numbers.h"
 #include "../Ui/NcmUi.h"
+#include "../../App/Unique/Ultimate/UltimateManager.h"
 
 class MainScene : public AbsScene
 {
@@ -62,6 +63,7 @@ private:
 	std::unique_ptr<LockOnSystem> lockon_sys_;
 	std::unique_ptr<Numbers> numbers_;
 	std::unique_ptr<NcmUi> ui_;
+	std::unique_ptr<UltimateManager> ult_;
 	int texture_;
 	int clear_;
 	int over_;

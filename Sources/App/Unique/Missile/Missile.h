@@ -49,7 +49,7 @@ class Missile : public AbsUniqueObj
 
 	UINT tgt_index_;
 
-	LockOnSystem *lockon_sys_;
+	LockOnSystem *p_lockon_sys_;
 
 public:
 

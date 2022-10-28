@@ -48,6 +48,7 @@ void NacamLib::NacamLib_Initialize(SceneName initial_scene_name)
 void NacamLib::NacamLib_Finalize()
 {
 	FbxLoader::GetInstance()->Finalize();
+	NcmImGui::Term();
 
 	UnregisterClass(Win32App::GetW().lpszClassName, Win32App::GetW().hInstance);
 
@@ -91,9 +92,6 @@ void NacamLib::NacamLib_Draw()
 
 	// デバッグ時描画
 #ifdef _DEBUG
-
-	/*-- タイトルバーに現fps数を描画 --*/
-	FpsManager::ObserveFps();
 
 	/*-- ImGuiの描画前処理 --*/
 	NcmImGui::PreDraw();

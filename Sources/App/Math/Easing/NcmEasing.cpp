@@ -5,8 +5,8 @@
 // 参考サイト
 // https://easings.net/ja
 
-std::list<EaseArgs> NcmEasing::easing_datas_;
-std::array<NcmEasing::EaseFunc, (size_t)(EaseType::MaxEaseNum)> NcmEasing::ease_types_;
+std::list<NcmEaseDesc> NcmEasing::easing_datas_;
+std::array<NcmEasing::EaseFunc, (size_t)(NcmEaseType::MaxEaseNum)> NcmEasing::ease_types_;
 int NcmEasing::handle_counter_ = 0;
 
 NcmEasing::NcmEasing()
@@ -19,30 +19,30 @@ NcmEasing::~NcmEasing()
 
 void NcmEasing::StaticInit()
 {
-	ease_types_[(int)(EaseType::Lerp)] = Lerp;
-	ease_types_[(int)(EaseType::InQuad)] = InQuad;
-	ease_types_[(int)(EaseType::InCubic)] = InCubic;
-	ease_types_[(int)(EaseType::InQuart)] = InQuart;
-	ease_types_[(int)(EaseType::InQuint)] = InQuint;
-	ease_types_[(int)(EaseType::InSine)] = InSine;
-	ease_types_[(int)(EaseType::InCirc)] = InCirc;
-	ease_types_[(int)(EaseType::InExpo)] = InExpo;
-	ease_types_[(int)(EaseType::InBack)] = InBack;
-	ease_types_[(int)(EaseType::InElastic)] = InElastic;
-	ease_types_[(int)(EaseType::InBounce)] = InBounce;
-	ease_types_[(int)(EaseType::OutQuad)] = OutQuad;
-	ease_types_[(int)(EaseType::OutCubic)] = OutCubic;
-	ease_types_[(int)(EaseType::OutQuart)] = OutQuart;
-	ease_types_[(int)(EaseType::OutQuint)] = OutQuint;
-	ease_types_[(int)(EaseType::OutSine)] = OutSine;
-	ease_types_[(int)(EaseType::OutCirc)] = OutCirc;
-	ease_types_[(int)(EaseType::OutExpo)] = OutExpo;
-	ease_types_[(int)(EaseType::OutBack)] = OutBack;
-	ease_types_[(int)(EaseType::OutElastic)] = OutElastic;
-	ease_types_[(int)(EaseType::OutBounce)] = OutBounce;
+	ease_types_[(int)(NcmEaseType::Lerp)] = Lerp;
+	ease_types_[(int)(NcmEaseType::InQuad)] = InQuad;
+	ease_types_[(int)(NcmEaseType::InCubic)] = InCubic;
+	ease_types_[(int)(NcmEaseType::InQuart)] = InQuart;
+	ease_types_[(int)(NcmEaseType::InQuint)] = InQuint;
+	ease_types_[(int)(NcmEaseType::InSine)] = InSine;
+	ease_types_[(int)(NcmEaseType::InCirc)] = InCirc;
+	ease_types_[(int)(NcmEaseType::InExpo)] = InExpo;
+	ease_types_[(int)(NcmEaseType::InBack)] = InBack;
+	ease_types_[(int)(NcmEaseType::InElastic)] = InElastic;
+	ease_types_[(int)(NcmEaseType::InBounce)] = InBounce;
+	ease_types_[(int)(NcmEaseType::OutQuad)] = OutQuad;
+	ease_types_[(int)(NcmEaseType::OutCubic)] = OutCubic;
+	ease_types_[(int)(NcmEaseType::OutQuart)] = OutQuart;
+	ease_types_[(int)(NcmEaseType::OutQuint)] = OutQuint;
+	ease_types_[(int)(NcmEaseType::OutSine)] = OutSine;
+	ease_types_[(int)(NcmEaseType::OutCirc)] = OutCirc;
+	ease_types_[(int)(NcmEaseType::OutExpo)] = OutExpo;
+	ease_types_[(int)(NcmEaseType::OutBack)] = OutBack;
+	ease_types_[(int)(NcmEaseType::OutElastic)] = OutElastic;
+	ease_types_[(int)(NcmEaseType::OutBounce)] = OutBounce;
 }
 
-EaseArgs *NcmEasing::SearchValue(int handle)
+NcmEaseDesc *NcmEasing::SearchValue(int handle)
 {
 	for (auto &i : easing_datas_)
 	{
@@ -55,7 +55,7 @@ EaseArgs *NcmEasing::SearchValue(int handle)
 	return nullptr;
 }
 
-int NcmEasing::RegisterEaseData(const EaseArgs &args)
+int NcmEasing::RegisterEaseData(const NcmEaseDesc &args)
 {
 	easing_datas_.emplace_back();
 	easing_datas_.back().handle = handle_counter_;
@@ -115,7 +115,7 @@ void NcmEasing::SetTotalMove(int handle, float v)
 	args->total_move = v;
 }
 
-float NcmEasing::MakeEase(float *param, const EaseArgs &ease_args)
+float NcmEasing::MakeEase(float *param, const NcmEaseDesc &ease_args)
 {
 	return *param = ease_args.init_value + ease_args.total_move * ease_args.ease_value;
 }

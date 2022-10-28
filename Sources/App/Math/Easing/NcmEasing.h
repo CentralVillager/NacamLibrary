@@ -2,7 +2,9 @@
 #include <list>
 #include <array>
 
-enum class EaseType
+typedef uint32_t ncm_handle;
+
+enum class NcmEaseType
 {
 	Lerp,
 
@@ -31,19 +33,19 @@ enum class EaseType
 	MaxEaseNum
 };
 
-struct EaseArgs
+struct NcmEaseDesc
 {
-	// 識別用ハンドル
-	int handle;
-	// 変化量
-	float t;
-
 	// 初期値
 	float init_value = 0.0f;
 	// 総移動量
 	float total_move = 0.0f;
 	// イージングの仕方
-	EaseType ease_type;
+	NcmEaseType ease_type;
+
+	// 識別用ハンドル
+	int handle;
+	// 変化量
+	float t;
 	// イージング関数の戻り値の格納先
 	float ease_value = 0.0f;
 };
@@ -51,13 +53,13 @@ struct EaseArgs
 class NcmEasing
 {
 	// イージングに必要なデータ
-	static std::list<EaseArgs> easing_datas_;
+	static std::list<NcmEaseDesc> easing_datas_;
 
 	// 関数ポインタ
 	typedef float (*EaseFunc)(const float v);
 
 	// イージング関数の格納先
-	static std::array<EaseFunc, (size_t)(EaseType::MaxEaseNum)> ease_types_;
+	static std::array<EaseFunc, (size_t)(NcmEaseType::MaxEaseNum)> ease_types_;
 
 	static constexpr float PI_ = 3.14159265358979f;
 	static int handle_counter_;
@@ -70,7 +72,7 @@ public:
 
 public:
 
-	static int RegisterEaseData(const EaseArgs &args);
+	static int RegisterEaseData(const NcmEaseDesc &args);
 
 	static void UpdateValue(int handle);
 	static void ResetTime();
@@ -83,9 +85,9 @@ public:
 
 private:
 
-	static EaseArgs *SearchValue(int handle);
+	static NcmEaseDesc *SearchValue(int handle);
 
-	static float MakeEase(float *param, const EaseArgs &ease_args);
+	static float MakeEase(float *param, const NcmEaseDesc &ease_args);
 	static inline void ConvertRate(float *t, float rate = 0.1f, float max = 1.0f)
 	{
 		if (*t >= max)

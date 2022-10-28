@@ -202,6 +202,7 @@
     <ClCompile Include="Sources\App\Unique\Missile\MissileManager.cpp" />
     <ClCompile Include="Sources\App\Unique\Player\Player.cpp" />
     <ClCompile Include="Sources\App\Unique\Reticle\Reticle.cpp" />
+    <ClCompile Include="Sources\App\Unique\Ultimate\UltimateManager.cpp" />
     <ClCompile Include="Sources\App\Unique\WaveManager\WaveManager.cpp" />
     <ClCompile Include="Sources\App\Utility\NcmUtil.cpp" />
     <ClCompile Include="Sources\Lib\Audio\AudioManager.cpp" />
@@ -271,6 +272,7 @@
     <ClInclude Include="Sources\App\Unique\Missile\MissileManager.h" />
     <ClInclude Include="Sources\App\Unique\Player\Player.h" />
     <ClInclude Include="Sources\App\Unique\Reticle\Reticle.h" />
+    <ClInclude Include="Sources\App\Unique\Ultimate\UltimateManager.h" />
     <ClInclude Include="Sources\App\Unique\WaveManager\WaveManager.h" />
     <ClInclude Include="Sources\App\Utility\NcmUtil.h" />
     <ClInclude Include="Sources\Lib\Audio\AudioManager.h" />

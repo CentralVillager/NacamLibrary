@@ -145,17 +145,13 @@ void NcmSprite::DrawTex(const int handle)
 	cmd_list_->DrawInstanced(4, 1, 0, 0);
 }
 
-void NcmSprite::DrawTex(const int handle, const XMFLOAT2 &pos, const float scale)
+void NcmSprite::DrawTex(const int handle, const XMFLOAT2 &pos)
 {
 	// Trans‚ğİ’è
 	SetPos(handle, pos);
-	SetSize(handle, { sprite_hub_[handle].size_.x * scale, sprite_hub_[handle].size_.y * scale });
 
 	// •`‰æ
 	DrawTex(handle);
-
-	// •ÏX‚µ‚Ä‚¢‚½size‚ğŒ³‚É–ß‚·
-	SetSize(handle, { sprite_hub_[handle].size_.x / scale, sprite_hub_[handle].size_.y / scale });
 }
 
 void NcmSprite::GenerateDrawData(const int handle, const wchar_t *filename)

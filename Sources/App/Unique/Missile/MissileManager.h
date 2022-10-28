@@ -15,7 +15,7 @@ class MissileManager
 
 	std::list<Missile> missile_list_;
 
-	LockOnSystem *lockon_sys_;
+	LockOnSystem *p_lockon_sys_;
 
 public:
 
@@ -38,11 +38,12 @@ public:
 	const Sphere &GetCollData(UINT n);
 
 	void Fire(const MissileArgs &args);
-	void FireMultiMissile(const MissileArgs &args);
+	void FireMultiMissile(const MissileArgs &args, uint32_t num);
+	void FireChargeMissile(const MissileArgs &args);
+	void FireUltimateMissile(const MissileArgs &args, uint32_t launched);
 	void HomingTarget(XMFLOAT3 target_pos);
 	void HomingTarget(EnemiesList &enemies);
 	void Death(UINT n);
-	bool CalcCollision(const Sphere &enemy);
 
 private:
 

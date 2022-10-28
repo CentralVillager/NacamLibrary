@@ -16,9 +16,10 @@ Player::Player()
 	: AbsUniqueObj(1.0f, 2.0f),
 	is_invincible_(false),
 	taking_damage_trigger_(false),
+	is_triggering_ult_(false),
 	hp_(),
-	mi_mgr_(nullptr),
-	lockon_sys_(nullptr),
+	p_mi_mgr_(nullptr),
+	p_lockon_sys_(nullptr),
 	charge_time_(40),
 	count_(),
 	ease_rot_right_(),
@@ -46,14 +47,15 @@ void Player::LoadResources()
 void Player::Initialize()
 {}
 
-void Player::Initialize(MissileManager *mi_mgr, LockOnSystem *lockon_sys, XMFLOAT3 pos)
+void Player::Initialize(MissileManager *mi_mgr, LockOnSystem *lockon_sys, UltimateManager *ult, XMFLOAT3 pos)
 {
 	is_dead_ = false;
 	hp_ = 3;
 
 	// 他クラス情報を格納
-	mi_mgr_ = mi_mgr;
-	lockon_sys_ = lockon_sys;
+	p_mi_mgr_ = mi_mgr;
+	p_lockon_sys_ = lockon_sys;
+	p_ult_ = ult;
 
 	InitObj3d(model_.get(), coll_model_.get());
 	obj_->SetPos(pos);
@@ -63,20 +65,20 @@ void Player::Initialize(MissileManager *mi_mgr, LockOnSystem *lockon_sys, XMFLOA
 	UpdateColl();
 
 	// イージング関連の初期化
-	EaseArgs args;
+	NcmEaseDesc args;
 	args.init_value = 0.0f;
 	args.total_move = 45.0f;
-	args.ease_type = EaseType::OutCubic;
+	args.ease_type = NcmEaseType::OutCubic;
 	ease_rot_right_ = NcmEasing::RegisterEaseData(args);
 
 	args.init_value = 0.0f;
 	args.total_move = -45.0f;
-	args.ease_type = EaseType::OutCubic;
+	args.ease_type = NcmEaseType::OutCubic;
 	ease_rot_left_ = NcmEasing::RegisterEaseData(args);
 
 	args.init_value = 0.0f;
 	args.total_move = -45.0f;
-	args.ease_type = EaseType::OutCubic;
+	args.ease_type = NcmEaseType::OutCubic;
 	ease_reset_rot_ = NcmEasing::RegisterEaseData(args);
 }
 
@@ -85,35 +87,68 @@ void Player::Finalize()
 
 void Player::Update()
 {
+	// 死んだら
 	if (is_dead_)
 	{
+		// 以降の処理をスルー
 		return;
 	}
 
+	// スペース長押しで
 	if (KeyboardInput::HoldKey(DIK_SPACE))
 	{
+		// ミサイルをチャージ
 		ChargeMissile();
 	}
+	// 離して
 	else if (KeyboardInput::ReleaseKey(DIK_SPACE))
 	{
-		FireMissile();
-		lockon_sys_->ResetTargetNum();
+		// ミサイルを発射
+		FireChargeMissile();
+		p_lockon_sys_->ResetTargetNum();
 		count_ = 0;
 	}
 
+	// Qで
+	if (KeyboardInput::ReleaseKey(DIK_Q))
+	{
+		// ウルトが溜まっていなかったら
+		if (!p_ult_->NoticeFullCharged())
+		{
+			// スルーする
+			return;
+		}
+
+		// ウルトを発動する
+		p_ult_->TriggeringUlt();
+		FireUltimateMissile();
+		is_triggering_ult_ = true;
+	}
+
+	if (is_triggering_ult_)
+	{
+		FireUltimateMissile();
+	}
+
+	// HPが0以下なら
 	if (IsZeroOrLess(hp_))
 	{
+		// 死亡
 		is_dead_ = true;
 	}
 
+	// ダメージを受けたら
 	if (taking_damage_trigger_)
 	{
+		// 無敵にする
 		is_invincible_ = true;
 		taking_damage_trigger_ = false;
 	}
 
+	// 無敵なら
 	if (is_invincible_)
 	{
+		// 残り無敵時間を更新する
 		CountInvincibleTime();
 	}
 
@@ -158,24 +193,75 @@ void Player::DebugDraw()
 	ImGui::DragInt("charge_time", &charge_time_);
 }
 
-void Player::FireMissile()
+void Player::FireMultiMissile()
 {
 	MissileArgs l_args{};
 	l_args.pos = obj_->GetPos();
 	l_args.vel = XMFLOAT3(0, 0, 1.0f);
-	l_args.acc = XMFLOAT3(0, 0, 0);
+	//l_args.acc = XMFLOAT3(0, -1.0f, 0);
+	// acc はMissileManagerで設定
 	// tgt_pos はMissileManagerで設定
 	// tgt_index はMissileManagerで設定
 	l_args.detection_range = 1000.0f;
 	l_args.init_straight_time_ = 0;
 	l_args.life = 100;
 
-	mi_mgr_->FireMultiMissile(l_args);
+	p_mi_mgr_->FireMultiMissile(l_args, 4);
+}
+
+void Player::FireChargeMissile()
+{
+	MissileArgs l_args{};
+	l_args.pos = obj_->GetPos();
+	l_args.vel = XMFLOAT3(0, 0, 1.0f);
+	//l_args.acc = XMFLOAT3(0, -1.0f, 0);
+	// acc はMissileManagerで設定
+	// tgt_pos はMissileManagerで設定
+	// tgt_index はMissileManagerで設定
+	l_args.detection_range = 1000.0f;
+	l_args.init_straight_time_ = 0;
+	l_args.life = 100;
+
+	p_mi_mgr_->FireChargeMissile(l_args);
+}
+
+void Player::FireUltimateMissile()
+{
+	static const uint32_t DELAY = 3;
+	static uint32_t count = 1;
+	static uint32_t launched = 0;
+	count--;
+
+	if (IsZeroOrLess(count))
+	{
+		MissileArgs l_args{};
+		l_args.pos = obj_->GetPos();
+		l_args.vel = XMFLOAT3(0, 0, 1.0f);
+		//l_args.acc = XMFLOAT3(0, -1.0f, 0);
+		// acc はMissileManagerで設定
+		// tgt_pos はMissileManagerで設定
+		// tgt_index はMissileManagerで設定
+		l_args.detection_range = 1000.0f;
+		l_args.init_straight_time_ = 0;
+		l_args.life = 100;
+
+		launched++;
+
+		p_mi_mgr_->FireUltimateMissile(l_args, launched);
+		count = DELAY;
+	}
+
+	if (launched >= 20)
+	{
+		is_triggering_ult_ = false;
+		launched = 0;
+		count = 1;
+	}
 }
 
 void Player::ChargeMissile()
 {
-	if (lockon_sys_->GetCurrentTgtNum() >= lockon_sys_->GetMaxTgtNum())
+	if (p_lockon_sys_->GetCurrentTgtNum() >= p_lockon_sys_->GetMaxTgtNum())
 	{
 		return;
 	}
@@ -184,7 +270,7 @@ void Player::ChargeMissile()
 
 	if (count_ >= charge_time_)
 	{
-		lockon_sys_->AddTargetNum();
+		p_lockon_sys_->AddTargetNum();
 		count_ = 0;
 	}
 }

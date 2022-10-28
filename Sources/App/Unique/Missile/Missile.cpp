@@ -17,7 +17,7 @@ Missile::Missile()
 	min_dist_(),
 	rot_dead_zone_(),
 	tgt_index_(),
-	lockon_sys_(nullptr)
+	p_lockon_sys_(nullptr)
 {}
 
 Missile::~Missile()
@@ -40,7 +40,7 @@ void Missile::LoadResources()
 
 void Missile::Initialize(const MissileArgs &args, LockOnSystem *sys)
 {
-	lockon_sys_ = sys;
+	p_lockon_sys_ = sys;
 
 	// 値を入力より設定
 	mi_args_ = args;
@@ -55,7 +55,12 @@ void Missile::Initialize(const MissileArgs &args, LockOnSystem *sys)
 	temp.z -= temp.z;
 	emi.particle.position_ = mi_args_.pos;
 	emi.particle.velocity_ = temp;
-	emi.particle.accel_ = { 0, 0, 0 };
+	temp = mi_args_.acc;
+	temp.x -= temp.x;
+	temp.y -= temp.y;
+	temp.z -= temp.z;
+	emi.particle.accel_ = temp;
+	//emi.particle.accel_ = { 0, 0, 0 };
 	emi.particle.life_ = mi_args_.life;
 	emi.particle.s_scale_ = 1.0f;
 	emi.pos_rand_ = { 0.0f, 0.0f, 0.0f };
@@ -111,7 +116,10 @@ void Missile::DrawColl()
 }
 
 void Missile::DebugDraw()
-{}
+{
+	ImGui::Text("vel : (%f, %f, %f)", mi_args_.vel.x, mi_args_.vel.y, mi_args_.vel.z);
+	ImGui::Text("acc : (%f, %f, %f)", mi_args_.acc.x, mi_args_.acc.y, mi_args_.acc.z);
+}
 
 void Missile::Activate()
 {
@@ -370,15 +378,22 @@ void Missile::HomingTarget(EnemiesList &enemies)
 		norm_vec.m128_f32[2] - mi_norm_vec.m128_f32[2]
 	};
 
+	//differ = XMVector3Normalize(differ);
+
 	// 回頭角度を適用
-	differ.m128_f32[0] /= rot_dead_zone_;
+	/*differ.m128_f32[0] /= rot_dead_zone_;
 	differ.m128_f32[1] /= rot_dead_zone_;
-	differ.m128_f32[2] /= rot_dead_zone_;
+	differ.m128_f32[2] /= rot_dead_zone_;*/
+
+	mi_args_.vel.x += mi_args_.acc.x;
+	mi_args_.vel.y += mi_args_.acc.y;
+	mi_args_.vel.z += mi_args_.acc.z;
 
 	// 速度を加算
 	mi_args_.vel.x += differ.m128_f32[0] * speed;
 	mi_args_.vel.y += differ.m128_f32[1] * speed;
-	mi_args_.vel.z = speed;
+	mi_args_.vel.z += differ.m128_f32[2] * speed;
+	//mi_args_.vel.z = speed;
 
 	// 位置を更新
 	pos.x += mi_args_.vel.x;
@@ -389,6 +404,7 @@ void Missile::HomingTarget(EnemiesList &enemies)
 	obj_->SetPos(pos);
 
 	XMFLOAT3 rot = obj_->GetRot();
+	//rot.y = LookAt(mi_args_.vel);
 	rot.y = LookAt(vec);
 	obj_->SetRot(rot);
 }

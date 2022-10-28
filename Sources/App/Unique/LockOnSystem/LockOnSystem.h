@@ -2,11 +2,13 @@
 #include <memory>
 #include <DirectXMath.h>
 #include <vector>
+#include <list>
 #include <algorithm>
 #include "../Sources/Lib/Model/Model.h"
 #include "../Sources/Lib/Object3d/Object3d.h"
 #include "../Enemy/EnemiesList.h"
 #include "../Sources/App/Number/Numbers.h"
+#include "../../Utility/NcmUtil.h"
 
 class Player;
 
@@ -28,7 +30,7 @@ private:
 
 	// 現在のロックオン可能最大数
 	static uint32_t current_tgt_num_;
-	static constexpr uint32_t max_tgt_num_ = 4;
+	static uint32_t max_tgt_num_;
 
 private:
 
@@ -36,6 +38,7 @@ private:
 	std::vector<Object3d> markers_;
 
 	std::vector<TargetData> tgt_datas_;
+	std::list<TargetData> tgt_list_;
 
 	Player *player_ptr_;
 	EnemiesList *enemies_ptr_;
@@ -61,8 +64,11 @@ public:
 
 	inline const TargetData &GetTgtData(int i) { return tgt_datas_[i]; }
 	inline const std::vector<TargetData> &GetTgtData() { return tgt_datas_; }
+	inline const std::list<TargetData> &GetTgtList() { return tgt_list_; }
 	inline static const uint32_t &GetCurrentTgtNum() { return current_tgt_num_; }
-	inline static const uint32_t &GetMaxTgtNum() { return max_tgt_num_; }
+	const uint32_t &GetMaxTgtNum();
+
+	inline static const void SetMaxTgtNum(uint32_t n) { max_tgt_num_ = n; }
 
 public:
 

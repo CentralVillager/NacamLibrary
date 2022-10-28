@@ -11,6 +11,16 @@ int32_t NcmUi::count_;
 XMFLOAT2 NcmUi::bar_size_;
 float NcmUi::bottom_pos_;
 std::array<int, 3> NcmUi::hp_;
+ncm_handle NcmUi::ease_;
+
+void NcmUi::Initialize()
+{
+	NcmEaseDesc desc{};
+	desc.ease_type = NcmEaseType::OutCubic;
+	desc.init_value = 0.0f;
+	desc.total_move = 10.0f;
+	ease_ = NcmEasing::RegisterEaseData(desc);
+}
 
 void NcmUi::LoadResources()
 {
@@ -44,9 +54,9 @@ void NcmUi::Draw(std::string name)
 	NcmSprite::DrawTex(ui_hub_[name]);
 }
 
-void NcmUi::Draw(std::string name, XMFLOAT2 pos, float scale)
+void NcmUi::Draw(std::string name, XMFLOAT2 pos)
 {
-	NcmSprite::DrawTex(ui_hub_[name], pos, scale);
+	NcmSprite::DrawTex(ui_hub_[name], pos);
 }
 
 void NcmUi::DrawMissileNumSet(int32_t num)

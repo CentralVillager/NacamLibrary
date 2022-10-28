@@ -22,6 +22,7 @@ MainScene::MainScene() :
 	lockon_sys_(make_unique<LockOnSystem>()),
 	numbers_(make_unique<Numbers>()),
 	ui_(make_unique<NcmUi>()),
+	ult_(make_unique<UltimateManager>()),
 	texture_(),
 	clear_(),
 	over_(),
@@ -52,6 +53,7 @@ MainScene::MainScene() :
 	Reticle::LoadResources();
 	LockOnSystem::LoadResources();
 	NcmUi::LoadResources();
+	ult_->LoadResources();
 }
 
 MainScene::~MainScene()
@@ -81,7 +83,7 @@ void MainScene::Initialize()
 	ene_list_->Initialize(player_.get());
 	lockon_sys_->Initialize(player_.get(), ene_list_.get());
 	missile_mgr_->Initialize(lockon_sys_.get());
-	player_->Initialize(missile_mgr_.get(), lockon_sys_.get(), init_pos_);
+	player_->Initialize(missile_mgr_.get(), lockon_sys_.get(), ult_.get(), init_pos_);
 	grid_->Initialize(200, 10, XMFLOAT3(0, -20.0f, 0));
 	reticle_->Initialize();
 	numbers_->Initialize();
@@ -126,11 +128,13 @@ void MainScene::Initialize()
 
 	is_clear_ = false;
 
-	EaseArgs ease;
-	ease.ease_type = EaseType::OutCirc;
+	NcmEaseDesc ease;
+	ease.ease_type = NcmEaseType::OutCirc;
 	ease.init_value = 0.0f;
 	ease.total_move = SPEED_;
 	player_camera_speed_ = NcmEasing::RegisterEaseData(ease);
+
+	NcmUi::Initialize();
 }
 
 void MainScene::Finalize()
@@ -173,7 +177,7 @@ void MainScene::Update()
 			//camera_->MoveCameraTrack(XMFLOAT3(0, 10.0f, 0));
 			camera_->SetEye(XMFLOAT3(0, 10.0f, -10.0f));
 			//camera_->SetTarget(cam_init_pos_);
-			player_->Initialize(missile_mgr_.get(), lockon_sys_.get(), init_pos_);
+			player_->Initialize(missile_mgr_.get(), lockon_sys_.get(), ult_.get(), init_pos_);
 		}
 
 		// キーアサインの変更
@@ -308,6 +312,7 @@ void MainScene::Draw()
 	NcmUi::DrawMissileNumSet(LockOnSystem::GetCurrentTgtNum());
 	NcmUi::DrawHp(player_->GetHp(), 30.0f);
 	NcmUi::DrawSpace();
+	ult_->DrawUi();
 }
 
 void MainScene::DebugDraw()
@@ -351,10 +356,12 @@ void MainScene::DebugDraw()
 	//ene_list_->DebugDraw();
 
 	NcmImGui::DragFloat2("UI_pos", ImGui_Ui_pos_, 1.0f, 0.0f, 1280.0f);
+	ult_->DebugDraw();
 }
 
 void MainScene::CollisionProcess()
 {
+	// 敵とミサイル
 	for (UINT i = 0; i < ene_list_->GetEnemies().size(); i++)
 	{
 		for (UINT j = 0; j < missile_mgr_->GetMissileList().size(); j++)
@@ -366,11 +373,13 @@ void MainScene::CollisionProcess()
 				{
 					ene_list_->Death(i);
 					missile_mgr_->Death(j);
+					ult_->AddUltValue(20);
 				}
 			}
 		}
 	}
 
+	// 自機と敵弾
 	for (UINT i = 0; i < ene_list_->GetEnemies().size(); i++)
 	{
 		std::vector<Bullet> *bullets = &ene_list_->GetEnemies()[i].GetBulletList()->GetBullets();
@@ -382,6 +391,7 @@ void MainScene::CollisionProcess()
 			{
 				player_->TakeDamage();
 				MoveIterator(bullets->begin(), j)->Death();
+				ult_->AddUltValue(30);
 			}
 		}
 	}

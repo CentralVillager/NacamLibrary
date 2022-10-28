@@ -6,6 +6,7 @@
 #include <array>
 #include "../Number/Numbers.h"
 #include "../../Lib/Sprite/NcmSprite.h"
+#include "../../App/Math/Easing/NcmEasing.h"
 
 class NcmUi
 {
@@ -19,12 +20,15 @@ class NcmUi
 
 	static std::array<int, 3> hp_;
 
+	static ncm_handle ease_;
+
 public:
 
+	static void Initialize();
 	static void LoadResources();
 	static int GetHandle(std::string name);
 	static void Draw(std::string name);
-	static void Draw(std::string name, XMFLOAT2 pos, float scale = 1.0f);
+	static void Draw(std::string name, XMFLOAT2 pos);
 
 public:
 

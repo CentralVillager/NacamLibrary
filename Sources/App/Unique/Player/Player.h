@@ -3,6 +3,7 @@
 #include "../Missile/MissileManager.h"
 #include "../LockOnSystem/LockOnSystem.h"
 #include "../Abs/AbsUniqueObj.h"
+#include "../Ultimate/UltimateManager.h"
 
 class Player : public AbsUniqueObj
 {
@@ -16,11 +17,13 @@ class Player : public AbsUniqueObj
 
 	bool is_invincible_;
 	bool taking_damage_trigger_;
+	bool is_triggering_ult_;
 	uint32_t hp_;
 
 	// 他クラス情報
-	MissileManager *mi_mgr_;
-	LockOnSystem *lockon_sys_;
+	MissileManager *p_mi_mgr_;
+	LockOnSystem *p_lockon_sys_;
+	UltimateManager *p_ult_;
 
 	// ミサイル発射関連
 	int32_t charge_time_;
@@ -44,12 +47,13 @@ public:
 	static void LoadResources();
 
 	inline const bool &GetIsInvincible() { return is_invincible_; }
+	inline const bool &GetIsTriggeringUlt() { return is_triggering_ult_; }
 	inline const uint32_t &GetHp() { return hp_; }
 	inline const int32_t &GetChargeCount() { return count_; }
 	inline const int32_t &GetMaxChargeTime() { return charge_time_; }
 
 	void Initialize() override;
-	void Initialize(MissileManager *mi_mgr, LockOnSystem *lockon_sys, XMFLOAT3 pos);
+	void Initialize(MissileManager *mi_mgr, LockOnSystem *lockon_sys, UltimateManager *ult, XMFLOAT3 pos);
 	void Finalize();
 	void Update() override;
 	void Draw() override;
@@ -58,7 +62,9 @@ public:
 
 public:
 
-	void FireMissile();
+	void FireMultiMissile();
+	void FireChargeMissile();
+	void FireUltimateMissile();
 	void ChargeMissile();
 	void TakeDamage();
 	void CountInvincibleTime();

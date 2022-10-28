@@ -17,11 +17,12 @@ DemoScene::DemoScene()
 	/*fbx_model_ = make_unique<FbxModel>();
 
 	fbx_model_ = FbxLoader::GetInstance()->LoadModelFromFile("boneTest");*/
-	fbx_model_ = FbxLoader::GetInstance()->LoadModelFromFile("boneTest");
+	//fbx_model_ = FbxLoader::GetInstance()->LoadModelFromFile("boneTest");
 
-	fbx_obj_ = new FbxObject3d();
+	//fbx_obj_ = new FbxObject3d();
 
 	texture_ = NcmSprite::LoadTex(L"Resources/Textures/effect1.png");
+	test_ = NcmSprite::LoadTex(L"Resources/TExtures/Temp/orenge_texture.png");
 }
 
 DemoScene::~DemoScene()
@@ -33,21 +34,25 @@ void DemoScene::Initialize()
 	camera_->Initialize();
 	camera_->SetDistance(20.0f);
 	camera_->MoveCameraTrack({ 0, 5.0f, 0 });
-	FbxObject3d::SetCamera(camera_.get());
+	//FbxObject3d::SetCamera(camera_.get());
 
-	// FBXオブジェクトデータの初期化
-	fbx_obj_->Initialize();
-	fbx_obj_->SetModel(fbx_model_);
-	fbx_obj_->SetScale({ 1.0f, 1.0f, 1.0f });
-	fbx_obj_->SetPosition({ 0, 0, 0 });
+	//// FBXオブジェクトデータの初期化
+	//fbx_obj_->Initialize();
+	//fbx_obj_->SetModel(fbx_model_);
+	//fbx_obj_->SetScale({ 1.0f, 1.0f, 1.0f });
+	//fbx_obj_->SetPosition({ 0, 0, 0 });
 
-	EaseArgs ease;
+	NcmEaseDesc ease;
 	ease.init_value = 0.0f;
 	ease.total_move = (float)(Win32App::SIZE_.y);
+	ease.ease_type = NcmEaseType::OutCubic;
 	ease_ = NcmEasing::RegisterEaseData(ease);
 
 	NcmSprite::SetAnchorPoint(texture_, { 0.0f, 0.5f });
 	NcmSprite::SetPos(texture_, XMFLOAT2(0.0f, (float)(Win32App::CENTER_.y)));
+
+	NcmSprite::SetAnchorPoint(test_, { 0.5f, 0.5f });
+	NcmSprite::SetPos(test_, Win32App::FCENTER_);
 }
 
 void DemoScene::Finalize()
@@ -56,13 +61,13 @@ void DemoScene::Finalize()
 void DemoScene::Update()
 {
 	// 回転処理
-	float rotation_y = fbx_obj_->GetRotation().y;
-	rotation_y += 1.0f;
-	fbx_obj_->SetRotation({ 0, rotation_y, 0 });
+	//float rotation_y = fbx_obj_->GetRotation().y;
+	//rotation_y += 1.0f;
+	//fbx_obj_->SetRotation({ 0, rotation_y, 0 });
 
-	// 更新
-	fbx_obj_->PlayAnimation(0, true);
-	fbx_obj_->Update();
+	//// 更新
+	//fbx_obj_->PlayAnimation(0, true);
+	//fbx_obj_->Update();
 
 	if (KeyboardInput::TriggerKey(DIK_SPACE))
 	{
@@ -93,6 +98,7 @@ void DemoScene::Draw()
 	using enum PipelineName;
 	PreDraw::PreRender(Sprite);
 	NcmSprite::DrawTex(texture_);
+	NcmSprite::DrawTex(test_, Win32App::FCENTER_);
 }
 
 void DemoScene::DebugDraw()

@@ -117,7 +117,7 @@ public:
 	/// </summary>
 	/// <param name="handle"></param>
 	static void DrawTex(const int handle);
-	static void DrawTex(const int handle, const XMFLOAT2 &pos, const float scale = 1.0f);
+	static void DrawTex(const int handle, const XMFLOAT2 &pos);
 
 public:
 
