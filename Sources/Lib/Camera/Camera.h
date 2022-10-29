@@ -65,12 +65,14 @@ public:
 	const XMFLOAT3 &GetEye() { return eye_; }
 	const XMFLOAT3 &GetTarget() { return target_; }
 	const float &GetDistance() { return distance_; }
+	const float &GetFOV() { return fov_; }
 	void SetMatView(const XMMATRIX &mat_view) { mat_view_ = mat_view; }
 	void SetMatProjection(const XMMATRIX &mat_projection) { mat_projection_ = mat_projection; }
 	void SetEye(const XMFLOAT3 &eye) { eye_ = eye; }
 	void SetTarget(const XMFLOAT3 &target) { target_ = target; }
 	void SetUp(const XMFLOAT3 &up) { up_vec_ = up; }
 	void SetDistance(const float &distence) { distance_ = distence; }
+	void SetFOV(float fov) { fov_ = fov; }
 
 	/// <summary>
 	/// èâä˙âª

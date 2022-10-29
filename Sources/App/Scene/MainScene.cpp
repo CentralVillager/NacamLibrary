@@ -37,7 +37,8 @@ MainScene::MainScene() :
 	is_failed_(false),
 	ImGui_detection_range_(1000.0f),
 	ImGui_Ui_pos_(Win32App::FCENTER_),
-	player_camera_speed_()
+	player_camera_speed_(),
+	fov_acc_value_()
 {
 	// テクスチャのロード
 	clear_ = NcmSprite::LoadTex(L"Resources/Textures/clear.png");
@@ -134,6 +135,16 @@ void MainScene::Initialize()
 	ease.total_move = SPEED_;
 	player_camera_speed_ = NcmEasing::RegisterEaseData(ease);
 
+	ease.ease_type = NcmEaseType::OutCubic;
+	ease.init_value = normal_fov_;
+	ease.total_move = accel_fov_ - normal_fov_;
+	fov_acc_value_ = NcmEasing::RegisterEaseData(ease);
+
+	ease.ease_type = NcmEaseType::OutCubic;
+	ease.init_value = accel_fov_;
+	ease.total_move = normal_fov_ - accel_fov_;
+	fov_dec_value_ = NcmEasing::RegisterEaseData(ease);
+
 	NcmUi::Initialize();
 }
 
@@ -154,10 +165,25 @@ void MainScene::Update()
 			if (KeyboardInput::PushKey(DIK_W) || KeyboardInput::PushKey(DIK_S) || KeyboardInput::PushKey(DIK_D) || KeyboardInput::PushKey(DIK_A))
 			{
 				NcmEasing::UpdateValue(player_camera_speed_);
+
+				if (KeyboardInput::PushKey(DIK_W))
+				{
+					NcmEasing::UpdateValue(fov_acc_value_);
+					float fov = camera_->GetFOV();
+					fov = NcmEasing::GetValue(fov_acc_value_);
+					camera_->SetFOV(fov);
+					NcmEasing::ResetTime(fov_dec_value_);
+				}
 			}
 			else
 			{
 				NcmEasing::ResetTime(player_camera_speed_);
+
+				NcmEasing::UpdateValue(fov_dec_value_);
+				float fov = camera_->GetFOV();
+				fov = NcmEasing::GetValue(fov_dec_value_);
+				camera_->SetFOV(fov);
+				NcmEasing::ResetTime(fov_acc_value_);
 			}
 
 			player_->MoveXZ(NcmEasing::GetValue(player_camera_speed_));

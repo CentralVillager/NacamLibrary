@@ -84,6 +84,11 @@ private:
 
 	int player_camera_speed_;
 
+	static constexpr float normal_fov_ = 60.0f;
+	static constexpr float accel_fov_ = 70.0f;
+	uint32_t fov_acc_value_;
+	uint32_t fov_dec_value_;
+
 public:
 
 	MainScene();
