@@ -69,13 +69,6 @@ void TitleScene::Update()
 		SceneManager::SetNextScene(SceneName::MAIN);
 	}
 
-	if (KeyboardInput::PushKey(DIK_DOWN))
-	{
-		XMFLOAT2 pos = NcmSprite::GetPos(title_);
-		pos.y += 1.0f;
-		NcmSprite::SetPos(title_, pos);
-	}
-
 	camera_->BasicCameraMoveTrack(1.0f);
 	sky_dome_->Update();
 	emitter_->GenerateParticle();

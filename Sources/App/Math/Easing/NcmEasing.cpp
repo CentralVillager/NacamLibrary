@@ -7,7 +7,7 @@
 
 std::list<NcmEaseDesc> NcmEasing::easing_datas_;
 std::array<NcmEasing::EaseFunc, (size_t)(NcmEaseType::MaxEaseNum)> NcmEasing::ease_types_;
-int NcmEasing::handle_counter_ = 0;
+ncm_ehandle NcmEasing::handle_counter_ = 0;
 
 NcmEasing::NcmEasing()
 {}
@@ -55,18 +55,26 @@ NcmEaseDesc *NcmEasing::SearchValue(int handle)
 	return nullptr;
 }
 
-int NcmEasing::RegisterEaseData(const NcmEaseDesc &args)
+ncm_ehandle NcmEasing::RegisterEaseData(const NcmEaseDesc &args)
 {
-	easing_datas_.emplace_back();
+	easing_datas_.emplace_back(NcmEaseDesc());
+	easing_datas_.back() = args;
 	easing_datas_.back().handle = handle_counter_;
-	easing_datas_.back().t = 0;
-	easing_datas_.back().init_value = args.init_value;
-	easing_datas_.back().total_move = args.total_move;
-	easing_datas_.back().ease_type = args.ease_type;
 
 	handle_counter_++;
 
 	return easing_datas_.back().handle;
+}
+
+void NcmEasing::DeleteEaseData(ncm_ehandle handle)
+{
+	for (auto i = easing_datas_.begin(); i != easing_datas_.end();)
+	{
+		if (i->handle == handle)
+		{
+			easing_datas_.erase(i);
+		}
+	}
 }
 
 void NcmEasing::UpdateValue(int handle)
@@ -74,7 +82,8 @@ void NcmEasing::UpdateValue(int handle)
 	// ハンドルに対応するEaseArgsを持ってくる
 	auto args = SearchValue(handle);
 	// tを計算
-	ConvertRate(&args->t, 0.05f, 1.0f);
+	ConvertRate(&args->t, args->t_rate, args->t_max);
+	//ConvertRate(&args->t, 0.05f, 1.0f);
 	// 該当のイージング関数を適用
 	EaseFunc ease_func = ease_types_[(int)(args->ease_type)];
 	// イージング量を計算

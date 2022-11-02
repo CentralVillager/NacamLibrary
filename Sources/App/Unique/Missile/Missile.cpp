@@ -81,14 +81,14 @@ void Missile::Update()
 {
 	// 自然消滅
 	// 寿命が尽きた && エミッターの終了準備が出来た
-	if (mi_args_.life <= 0 && emitter_->NoticeCanTerminate())
+	if (IsZeroOrLess(mi_args_.life) && emitter_->NoticeCanTerminate())
 	{
 		// 殺す
 		is_dead_ = true;
 		return;
 	}
 
-	if (mi_args_.life > 0)
+	if (!IsZero(mi_args_.life))
 	{
 		mi_args_.life--;
 	}
@@ -117,6 +117,7 @@ void Missile::DrawColl()
 
 void Missile::DebugDraw()
 {
+	ImGui::Checkbox("validity", &mi_args_.is_validity);
 	ImGui::Text("vel : (%f, %f, %f)", mi_args_.vel.x, mi_args_.vel.y, mi_args_.vel.z);
 	ImGui::Text("acc : (%f, %f, %f)", mi_args_.acc.x, mi_args_.acc.y, mi_args_.acc.z);
 }
@@ -404,8 +405,7 @@ void Missile::HomingTarget(EnemiesList &enemies)
 	obj_->SetPos(pos);
 
 	XMFLOAT3 rot = obj_->GetRot();
-	//rot.y = LookAt(mi_args_.vel);
-	rot.y = LookAt(vec);
+	rot = LookAt(mi_args_.vel);
 	obj_->SetRot(rot);
 }
 

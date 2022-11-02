@@ -189,6 +189,9 @@
     <Filter Include="Application\Unique\UltimateManager">
       <UniqueIdentifier>{5d34942f-6775-45cc-9426-50d7e9261d7c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\Debug\NcmDebug">
+      <UniqueIdentifier>{67ee7b5e-9efb-4f0c-91d4-aee989315f32}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -385,6 +388,9 @@
     </ClCompile>
     <ClCompile Include="Sources\App\Unique\Ultimate\UltimateManager.cpp">
       <Filter>Application\Unique\UltimateManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Debug\NcmDebug.cpp">
+      <Filter>Application\Debug\NcmDebug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -593,6 +599,9 @@
     <ClInclude Include="Sources\App\Ui\NcmUi.h" />
     <ClInclude Include="Sources\App\Unique\Ultimate\UltimateManager.h">
       <Filter>Application\Unique\UltimateManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Debug\NcmDebug.h">
+      <Filter>Application\Debug\NcmDebug</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

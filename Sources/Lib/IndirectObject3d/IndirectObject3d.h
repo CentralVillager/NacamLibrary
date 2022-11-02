@@ -9,7 +9,8 @@
 #include "../Sources/Lib/Model/Model.h"
 #include "../Pipeline/PipelineManager.h"
 
-class IndirectObject3d {
+class IndirectObject3d
+{
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -23,15 +24,15 @@ private:
 	static const UINT resource_count_ = all_particle_num_ * frame_count_;
 	static const UINT command_size_per_frame_;
 
-	struct Vertex {
-
+	struct Vertex
+	{
 		XMFLOAT3 position;
 		XMFLOAT3 normal;
 		XMFLOAT2 uv;
 	};
 
-	struct ConstBufferData {
-
+	struct ConstBufferData
+	{
 		XMFLOAT3 position_;	// 位置
 		float pad1_;
 		XMFLOAT3 velocity_;	// 速度
@@ -41,14 +42,15 @@ private:
 		//XMMATRIX matrix_;	// 行列
 	};
 
-	struct MatrixConstBufferData {
+	struct MatrixConstBufferData
+	{
 		XMMATRIX mat;	//   64byte
 		float pad[48];	// + 48 * 4byte = 256byte
 	};
 
 	// ExecuteIndirect に使用するコマンドシグネチャと一致させるためのデータ構造
-	struct IndirectCommand {
-
+	struct IndirectCommand
+	{
 		D3D12_GPU_VIRTUAL_ADDRESS matrix_cbv_;
 		D3D12_GPU_VIRTUAL_ADDRESS material_cbv_;
 		D3D12_DRAW_ARGUMENTS draw_arguments_;	// DrawIndexedInstancedの場合は使う型が違う
@@ -121,8 +123,8 @@ public:
 	void DebugDraw();
 
 	inline void SetPosition(const XMFLOAT3 &position) { position_ = position; }
-	inline void SetScale(const float &scale) {
-
+	inline void SetScale(const float &scale)
+	{
 		scale_.x = scale;
 		scale_.y = scale;
 		scale_.z = scale;

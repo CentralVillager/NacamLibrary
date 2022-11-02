@@ -6,20 +6,20 @@
 
 enum class HorizontalAlignment
 {
-	Left,
-	Right
+	Left, Center, Right
 };
 
 enum class VerticalAlignment
 {
 	Top,
-	Center,
+	Middle,
 	Bottom
 };
 
 class Numbers
 {
 	using XMFLOAT2 = DirectX::XMFLOAT2;
+	using XMFLOAT4 = DirectX::XMFLOAT4;
 
 public:
 
@@ -30,9 +30,13 @@ private:
 
 	static constexpr UINT MAX_NUM_ = 10;
 	static std::array<int, MAX_NUM_> numbers_;
+	static std::array<int, MAX_NUM_> dupli_numbers_;
 
+	float dead_line_size_;
 	XMFLOAT2 offset_;
 	float tracking_;
+
+	float digit_width_;
 
 public:
 
@@ -49,8 +53,11 @@ public:
 
 	void DrawNumber(int number, float scale, HorizontalAlignment h_align, VerticalAlignment v_align);
 
+	float GetDigitsWidth() { return digit_width_; }
+	float GetDeadLineSize() { return dead_line_size_; }
+
 private:
 
-	void DivDigit(std::vector<int> *dist, const int num);
+	bool DivDigit(std::vector<int> *dist, const int num);
 	void SortDigitWithAlign(std::vector<int> *dist, const HorizontalAlignment &align);
 };

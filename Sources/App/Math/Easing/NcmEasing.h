@@ -2,7 +2,7 @@
 #include <list>
 #include <array>
 
-typedef uint32_t ncm_handle;
+typedef uint32_t ncm_ehandle;
 
 enum class NcmEaseType
 {
@@ -41,13 +41,26 @@ struct NcmEaseDesc
 	float total_move = 0.0f;
 	// イージングの仕方
 	NcmEaseType ease_type;
+	float t_rate;
+	float t_max = 1.0f;
 
 	// 識別用ハンドル
-	int handle;
+	ncm_ehandle handle;
 	// 変化量
 	float t;
 	// イージング関数の戻り値の格納先
 	float ease_value = 0.0f;
+
+	NcmEaseDesc() :
+		init_value(),
+		total_move(),
+		ease_type(),
+		t_rate(),
+		t_max(1.0f),
+		handle(),
+		t(),
+		ease_value()
+	{}
 };
 
 class NcmEasing
@@ -62,7 +75,7 @@ class NcmEasing
 	static std::array<EaseFunc, (size_t)(NcmEaseType::MaxEaseNum)> ease_types_;
 
 	static constexpr float PI_ = 3.14159265358979f;
-	static int handle_counter_;
+	static ncm_ehandle handle_counter_;
 
 public:
 
@@ -72,7 +85,8 @@ public:
 
 public:
 
-	static int RegisterEaseData(const NcmEaseDesc &args);
+	static ncm_ehandle RegisterEaseData(const NcmEaseDesc &args);
+	static void DeleteEaseData(ncm_ehandle handle);
 
 	static void UpdateValue(int handle);
 	static void ResetTime();

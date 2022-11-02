@@ -160,17 +160,22 @@ namespace NcmMath
 		return angle + NcmPI;
 	}
 
-	static float LookAt(const DirectX::XMFLOAT3 &vec)
+	static DirectX::XMFLOAT3 LookAt(const DirectX::XMFLOAT3 &vec)
 	{
 		DirectX::XMVECTOR l_vec = DirectX::XMLoadFloat3(&vec);
 
 		// äpìxÇãÅÇﬂÇÈ
-		float angle = (float)(atan2(l_vec.m128_f32[0], l_vec.m128_f32[2]));
+		DirectX::XMFLOAT3 angle;
+		angle.x = (float)(atan2(l_vec.m128_f32[1], l_vec.m128_f32[2]));
+		angle.y = (float)(atan2(l_vec.m128_f32[0], l_vec.m128_f32[2]));
+		angle.z = (float)(atan2(l_vec.m128_f32[0], l_vec.m128_f32[1]));
 
 		// ìxêîÇ…ïœä∑
-		ToDegree(&angle);
+		ToDegree(&angle.x);
+		ToDegree(&angle.y);
+		ToDegree(&angle.z);
 
-		return angle + NcmPI;
+		return DirectX::XMFLOAT3(angle.x + NcmPI, angle.y + NcmPI, angle.z + NcmPI);
 	}
 
 	inline float GetSinWave(const int count, float time)

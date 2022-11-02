@@ -17,29 +17,29 @@ ComPtr<ID3D12GraphicsCommandList> IndirectObject3d::command_list_ = nullptr;
 Camera *IndirectObject3d::camera_ = nullptr;
 PipelineManager *IndirectObject3d::p_mgr_ = nullptr;
 
-IndirectObject3d::IndirectObject3d() {
-
+IndirectObject3d::IndirectObject3d()
+{
 	const_buffer_data_.resize(all_particle_num_);
 	matrix_const_buffer_data_.resize(all_particle_num_);
 	material_const_buffer_data_.resize(all_particle_num_);
 
-	if (!model_) {
-
+	if (!model_)
+	{
 		// モデルデータの生成
 		model_ = make_unique<Model>();
 		model_->LoadObjModel("Resources/Ball/", "smooth_ball.obj", "smooth_ball.mtl");
 	}
 }
 
-IndirectObject3d::~IndirectObject3d() {
-}
+IndirectObject3d::~IndirectObject3d()
+{}
 
-void IndirectObject3d::CreateVertexBuffer() {
-
+void IndirectObject3d::CreateVertexBuffer()
+{
 	HRESULT result;
 
-	Vertex triangle_vertices[] = {
-
+	Vertex triangle_vertices[] =
+	{
 		{{0.0f, 0.5f, 0.0f}, {0, 0, 0}, {0, 0}},
 		{{0.5f, -0.5f, 0.0f}, {0, 0, 0}, {0, 0}},
 		{{-0.5f, -0.5f, 0.0f}, {0, 0, 0}, {0, 0}},
@@ -59,7 +59,8 @@ void IndirectObject3d::CreateVertexBuffer() {
 
 	Vertex *vert_map = nullptr;
 	result = vertex_buffer_->Map(0, nullptr, reinterpret_cast<void **>(&vert_map));
-	if (SUCCEEDED(result)) {
+	if (SUCCEEDED(result))
+	{
 		std::memcpy(vert_map, triangle_vertices, sizeof(Vertex) * 3);
 		vertex_buffer_->Unmap(0, nullptr);
 	}
@@ -70,8 +71,8 @@ void IndirectObject3d::CreateVertexBuffer() {
 	vb_view_.SizeInBytes = sizeof(triangle_vertices);
 }
 
-void IndirectObject3d::CreateDescriptorHeap() {
-
+void IndirectObject3d::CreateDescriptorHeap()
+{
 	HRESULT result = S_FALSE;
 
 	// デスクリプタヒープを作成
@@ -97,8 +98,8 @@ void IndirectObject3d::CreateDescriptorHeap() {
 	srv_desc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;
 
 	CD3DX12_CPU_DESCRIPTOR_HANDLE cbv_srv_handle(descriptor_heap_->GetCPUDescriptorHandleForHeapStart(), 0, descriptor_heap_size_);
-	for (UINT frame = 0; frame < frame_count_; frame++) {
-
+	for (UINT frame = 0; frame < frame_count_; frame++)
+	{
 		//srv_desc.Buffer.FirstElement = all_particle_num_;
 		srv_desc.Buffer.FirstElement = frame * all_particle_num_;
 		device_->CreateShaderResourceView(material_const_buffer_.Get(), &srv_desc, cbv_srv_handle);
@@ -106,8 +107,8 @@ void IndirectObject3d::CreateDescriptorHeap() {
 	}
 }
 
-void IndirectObject3d::CreateConstantBuffer() {
-
+void IndirectObject3d::CreateConstantBuffer()
+{
 	HRESULT result;
 
 	//const UINT const_buffer_data_size = sizeof(ConstBufferData);
@@ -131,8 +132,8 @@ void IndirectObject3d::CreateConstantBuffer() {
 		IID_PPV_ARGS(&material_const_buffer_));
 	matrix_const_buffer_->SetName(L"MaterialConstBuffer");
 
-	for (UINT i = 0; i < all_particle_num_; i++) {
-
+	for (UINT i = 0; i < all_particle_num_; i++)
+	{
 		material_const_buffer_data_[i].ambient = model_->GetMaterialData().ambient;
 		material_const_buffer_data_[i].diffuse = model_->GetMaterialData().diffuse;
 		material_const_buffer_data_[i].specular = model_->GetMaterialData().specular;
@@ -148,8 +149,8 @@ void IndirectObject3d::CreateConstantBuffer() {
 	TransferConstantBafferData();
 }
 
-void IndirectObject3d::CreateCommandSignature() {
-
+void IndirectObject3d::CreateCommandSignature()
+{
 	HRESULT result = S_FALSE;
 
 	D3D12_INDIRECT_ARGUMENT_DESC argument_desc[3]{};
@@ -170,8 +171,8 @@ void IndirectObject3d::CreateCommandSignature() {
 	//result = device_->CreateCommandSignature(&command_signature_desc, root_signature_.Get(), IID_PPV_ARGS(&command_signature_));
 }
 
-void IndirectObject3d::CreateCommandBuffer() {
-
+void IndirectObject3d::CreateCommandBuffer()
+{
 	// 公式サンプルから引用----------------------------------------------------------------
 	// 注意: ComPtr は CPU オブジェクトですが、これらのリソースは、
 	// それらを参照するコマンドリストが GPU 上で実行を終了するまで、
@@ -217,9 +218,10 @@ void IndirectObject3d::CreateCommandBuffer() {
 	UINT command_index = 0;
 	UINT vertex_count = (UINT)(model_->GetVertices().size());
 
-	for (UINT frame = 0; frame < frame_count_; frame++) {
-		for (UINT n = 0; n < all_particle_num_; n++) {
-
+	for (UINT frame = 0; frame < frame_count_; frame++)
+	{
+		for (UINT n = 0; n < all_particle_num_; n++)
+		{
 			commands[command_index].matrix_cbv_ = matrix_gpu_address;
 			commands[command_index].material_cbv_ = material_gpu_address;
 
@@ -262,8 +264,8 @@ void IndirectObject3d::CreateCommandBuffer() {
 
 	CD3DX12_CPU_DESCRIPTOR_HANDLE commands_handle(descriptor_heap_->GetCPUDescriptorHandleForHeapStart(), 1, descriptor_heap_size_);
 
-	for (UINT frame = 0; frame < frame_count_; frame++) {
-
+	for (UINT frame = 0; frame < frame_count_; frame++)
+	{
 		//srv_desc.Buffer.FirstElement = all_particle_num_;
 		srv_desc.Buffer.FirstElement = frame * all_particle_num_;
 		device_->CreateShaderResourceView(command_buffer_.Get(), &srv_desc, commands_handle);
@@ -271,8 +273,8 @@ void IndirectObject3d::CreateCommandBuffer() {
 	}
 }
 
-void IndirectObject3d::TransferConstantBafferData() {
-
+void IndirectObject3d::TransferConstantBafferData()
+{
 	HRESULT result;
 
 	Model::MaterialConstBufferData *material_const_map = nullptr;
@@ -286,13 +288,13 @@ void IndirectObject3d::TransferConstantBafferData() {
 	matrix_const_buffer_->Unmap(0, nullptr);
 }
 
-void IndirectObject3d::StaticInitialize(const PipelineManager &p_mgr) {
-
+void IndirectObject3d::StaticInitialize(const PipelineManager &p_mgr)
+{
 	*p_mgr_ = p_mgr;
 }
 
-void IndirectObject3d::Initialize() {
-
+void IndirectObject3d::Initialize()
+{
 	device_ = DirectXBase::GetInstance()->GetDevice().Get();
 	command_list_ = DirectXBase::GetInstance()->GetCommandList().Get();
 
@@ -322,7 +324,8 @@ void IndirectObject3d::Initialize() {
 	const XMMATRIX &mat_view_ = camera_->GetMatView();
 	const XMMATRIX &mat_projection = camera_->GetMatProjection();
 
-	for (UINT i = 0; i < all_particle_num_; i++) {
+	for (UINT i = 0; i < all_particle_num_; i++)
+	{
 		position_ = NcmUtill::GenerateRandom({ -1.0f, -1.0f, -1.0f }, { 1.0f, 1.0f, 1.0f });
 		matTrans = XMMatrixTranslation(position_.x, position_.y, position_.z);
 		mat_world_ *= matTrans;
@@ -332,11 +335,11 @@ void IndirectObject3d::Initialize() {
 	TransferConstantBafferData();
 }
 
-void IndirectObject3d::Finalize() {
-}
+void IndirectObject3d::Finalize()
+{}
 
-void IndirectObject3d::Update() {
-
+void IndirectObject3d::Update()
+{
 	XMMATRIX matScale, matRot, matTrans;
 
 	// スケール、回転、平行移動行列の計算
@@ -356,9 +359,10 @@ void IndirectObject3d::Update() {
 	const XMMATRIX &mat_view_ = camera_->GetMatView();
 	const XMMATRIX &mat_projection = camera_->GetMatProjection();
 
-	if (is_push_) {
-
-		for (UINT i = 0; i < all_particle_num_; i++) {
+	if (is_push_)
+	{
+		for (UINT i = 0; i < all_particle_num_; i++)
+		{
 			position_ = NcmUtill::GenerateRandom({ -1.0f, -1.0f, -1.0f }, { 1.0f, 1.0f, 1.0f });
 			matTrans = XMMatrixTranslation(position_.x, position_.y, position_.z);
 			mat_world_ *= matTrans;
@@ -369,8 +373,8 @@ void IndirectObject3d::Update() {
 	TransferConstantBafferData();
 }
 
-void IndirectObject3d::Draw() {
-
+void IndirectObject3d::Draw()
+{
 	// 頂点バッファの設定
 	//command_list_->IASetVertexBuffers(0, 1, &model_->GetVBView());
 	command_list_->IASetVertexBuffers(0, 1, &vb_view_);
@@ -388,8 +392,8 @@ void IndirectObject3d::Draw() {
 	// シェーダリソースビューをセット
 	//command_list_->SetGraphicsRootDescriptorTable(2, model_->GetGpuDescHandleSRV());
 
-	D3D12_RESOURCE_BARRIER barrier[] = {
-
+	D3D12_RESOURCE_BARRIER barrier[] =
+	{
 		CD3DX12_RESOURCE_BARRIER::Transition(
 			command_buffer_.Get(),
 			D3D12_RESOURCE_STATE_COPY_DEST,
@@ -414,7 +418,7 @@ void IndirectObject3d::Draw() {
 	command_list_->ResourceBarrier(_countof(barrier), barrier);
 }
 
-void IndirectObject3d::DebugDraw() {
-
+void IndirectObject3d::DebugDraw()
+{
 	ImGui::Text("SPACE : SetPosition");
 }

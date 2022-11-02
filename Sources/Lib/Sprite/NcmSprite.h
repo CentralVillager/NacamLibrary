@@ -5,6 +5,8 @@
 #include <vector>
 #include <string>
 
+typedef uint32_t ncm_thandle;
+
 class NcmSprite
 {
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
@@ -43,7 +45,7 @@ private:
 	/// </summary>
 	struct DrawData
 	{
-		int32_t handle = 0;
+		ncm_thandle handle = 0;
 		const wchar_t *file_path;
 
 		ComPtr<ID3D12Resource> vertex_buffer_;
@@ -55,6 +57,7 @@ private:
 		XMFLOAT2 position_{};
 		float rotation_ = 0.0f;
 		XMFLOAT2 size_ = { 100.0f, 100.0f };
+		float scale_ = 1.0f;
 		XMFLOAT2 anchorpoint_ = { 0, 0 };
 
 		bool is_flip_x_ = false;
@@ -110,52 +113,54 @@ public:
 	/// </summary>
 	/// <param name="filename"></param>
 	/// <returns></returns>
-	static int LoadTex(const wchar_t *filename);
+	static ncm_thandle LoadTex(const wchar_t *filename);
 
 	/// <summary>
 	/// ‰æ‘œ‚Ì•`‰æ
 	/// </summary>
 	/// <param name="handle"></param>
-	static void DrawTex(const int handle);
-	static void DrawTex(const int handle, const XMFLOAT2 &pos);
+	static void DrawTex(const ncm_thandle handle);
+	static void DrawTex(const ncm_thandle handle, const XMFLOAT2 &pos);
 
 public:
 
-	static inline const XMFLOAT2 &GetPos(const int handle) { return sprite_hub_[handle].position_; }
-	static inline const XMFLOAT2 &GetSize(const int handle) { return sprite_hub_[handle].size_; }
+	static inline const XMFLOAT2 &GetPos(const ncm_thandle handle) { return sprite_hub_[handle].position_; }
+	static inline const XMFLOAT2 &GetSize(const ncm_thandle handle) { return sprite_hub_[handle].size_; }
 
-	static inline void SetPos(const int handle, const XMINT2 &pos)
+	static inline void SetPos(const ncm_thandle handle, const XMINT2 &pos)
 	{
 		sprite_hub_[handle].position_ = { (float)(pos.x), (float)(pos.y) };
 		TransferVertices(&sprite_hub_[handle]);
 	}
-	static inline void SetPos(const int handle, const XMFLOAT2 &pos)
+	static inline void SetPos(const ncm_thandle handle, const XMFLOAT2 &pos)
 	{
 		sprite_hub_[handle].position_ = pos;
 		TransferVertices(&sprite_hub_[handle]);
 	}
-	static inline void SetSize(const int handle, const XMFLOAT2 &size)
+	static inline void SetSize(const ncm_thandle handle, const XMFLOAT2 &size)
 	{
 		sprite_hub_[handle].size_ = size;
 		TransferVertices(&sprite_hub_[handle]);
 	}
-	static inline void SetScale(const int handle, const float scale)
+	static inline void SetScale(const ncm_thandle handle, const float scale)
 	{
+		if (sprite_hub_[handle].scale_ == scale)
+		{
+			return;
+		}
+
 		XMFLOAT2 size = sprite_hub_[handle].size_;
+		size.x /= sprite_hub_[handle].scale_;
+		size.y /= sprite_hub_[handle].scale_;
+
+		sprite_hub_[handle].scale_ = scale;
+
 		size.x *= scale;
 		size.y *= scale;
 		sprite_hub_[handle].size_ = size;
 		TransferVertices(&sprite_hub_[handle]);
 	}
-	static inline void ResetScale(const int handle, const float scale)
-	{
-		XMFLOAT2 size = sprite_hub_[handle].size_;
-		size.x /= scale;
-		size.y /= scale;
-		sprite_hub_[handle].size_ = size;
-		TransferVertices(&sprite_hub_[handle]);
-	}
-	static inline void SetAnchorPoint(const int handle, const XMFLOAT2 &anchor_point)
+	static inline void SetAnchorPoint(const ncm_thandle handle, const XMFLOAT2 &anchor_point)
 	{
 		sprite_hub_[handle].anchorpoint_ = anchor_point;
 		TransferVertices(&sprite_hub_[handle]);
@@ -163,6 +168,6 @@ public:
 
 private:
 
-	static void GenerateDrawData(const int handle, const wchar_t *filename);
+	static void GenerateDrawData(const ncm_thandle handle, const wchar_t *filename);
 	static void TransferVertices(DrawData *itr);
 };

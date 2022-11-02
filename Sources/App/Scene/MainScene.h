@@ -69,7 +69,6 @@ private:
 	int over_;
 	int space_;
 
-	bool do_debug_;
 	int key_bind_;
 	bool is_wire_;
 	bool draw_dust_;

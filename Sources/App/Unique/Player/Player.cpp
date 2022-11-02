@@ -2,6 +2,7 @@
 #include "../../Utility/NcmUtil.h"
 #include "../../Debug/NcmImGui.h"
 #include "../../Math/Easing/NcmEasing.h"
+#include "../../Debug/NcmDebug.h"
 #include "../../../Lib/Input/KeyboardInput.h"
 
 using namespace DirectX;
@@ -69,16 +70,19 @@ void Player::Initialize(MissileManager *mi_mgr, LockOnSystem *lockon_sys, Ultima
 	args.init_value = 0.0f;
 	args.total_move = 45.0f;
 	args.ease_type = NcmEaseType::OutCubic;
+	args.t_rate = 0.05f;
 	ease_rot_right_ = NcmEasing::RegisterEaseData(args);
 
 	args.init_value = 0.0f;
 	args.total_move = -45.0f;
 	args.ease_type = NcmEaseType::OutCubic;
+	args.t_rate = 0.05f;
 	ease_rot_left_ = NcmEasing::RegisterEaseData(args);
 
 	args.init_value = 0.0f;
 	args.total_move = -45.0f;
 	args.ease_type = NcmEaseType::OutCubic;
+	args.t_rate = 0.05f;
 	ease_reset_rot_ = NcmEasing::RegisterEaseData(args);
 }
 
@@ -115,8 +119,16 @@ void Player::Update()
 		// ウルトが溜まっていなかったら
 		if (!p_ult_->NoticeFullCharged())
 		{
-			// スルーする
-			return;
+			// デバッグモードなら
+			if (NcmDebug::GetInstance()->IsDebug())
+			{
+				// 強制的に発動する
+				p_ult_->TriggeringUlt();
+			}
+			else
+			{
+				return;
+			}
 		}
 
 		// ウルトを発動する

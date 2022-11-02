@@ -11,7 +11,7 @@ int32_t NcmUi::count_;
 XMFLOAT2 NcmUi::bar_size_;
 float NcmUi::bottom_pos_;
 std::array<int, 3> NcmUi::hp_;
-ncm_handle NcmUi::ease_;
+ncm_ehandle NcmUi::ease_;
 
 void NcmUi::Initialize()
 {
@@ -19,6 +19,7 @@ void NcmUi::Initialize()
 	desc.ease_type = NcmEaseType::OutCubic;
 	desc.init_value = 0.0f;
 	desc.total_move = 10.0f;
+	desc.t_rate = 0.05f;
 	ease_ = NcmEasing::RegisterEaseData(desc);
 }
 

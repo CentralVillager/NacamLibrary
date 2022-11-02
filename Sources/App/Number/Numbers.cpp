@@ -1,14 +1,18 @@
 #include "Numbers.h"
 #include <string>
 #include <cstring>
+#include <algorithm>
 #include "../Debug/NcmImGui.h"
 #include "../../Lib/Win32App/Win32App.h"
 
 std::array<int, Numbers::MAX_NUM_> Numbers::numbers_;
+std::array<int, Numbers::MAX_NUM_> Numbers::dupli_numbers_;
 
 Numbers::Numbers() :
-	offset_(),
-	tracking_()
+	dead_line_size_(30.0f),
+	offset_({ 30.0f, 30.0f }),
+	tracking_(),
+	digit_width_()
 {}
 
 Numbers::~Numbers()
@@ -26,6 +30,17 @@ void Numbers::LoadResources()
 	numbers_[7] = NcmSprite::LoadTex(L"Resources/Textures/numbers/7.png");
 	numbers_[8] = NcmSprite::LoadTex(L"Resources/Textures/numbers/8.png");
 	numbers_[9] = NcmSprite::LoadTex(L"Resources/Textures/numbers/9.png");
+
+	dupli_numbers_[0] = NcmSprite::LoadTex(L"Resources/Textures/numbers/0.png");
+	dupli_numbers_[1] = NcmSprite::LoadTex(L"Resources/Textures/numbers/1.png");
+	dupli_numbers_[2] = NcmSprite::LoadTex(L"Resources/Textures/numbers/2.png");
+	dupli_numbers_[3] = NcmSprite::LoadTex(L"Resources/Textures/numbers/3.png");
+	dupli_numbers_[4] = NcmSprite::LoadTex(L"Resources/Textures/numbers/4.png");
+	dupli_numbers_[5] = NcmSprite::LoadTex(L"Resources/Textures/numbers/5.png");
+	dupli_numbers_[6] = NcmSprite::LoadTex(L"Resources/Textures/numbers/6.png");
+	dupli_numbers_[7] = NcmSprite::LoadTex(L"Resources/Textures/numbers/7.png");
+	dupli_numbers_[8] = NcmSprite::LoadTex(L"Resources/Textures/numbers/8.png");
+	dupli_numbers_[9] = NcmSprite::LoadTex(L"Resources/Textures/numbers/9.png");
 }
 
 void Numbers::LoadNumbers()
@@ -88,8 +103,10 @@ void Numbers::DrawNumber(int number, float scale, HorizontalAlignment h_align, V
 	// 数字を桁ごとに格納するためのコンテナ
 	std::vector<int> digit;
 
+	bool is_done = false;
+
 	// 桁ごとに分割
-	DivDigit(&digit, number);
+	bool is_unique = DivDigit(&digit, number);
 
 	// 揃え場所によって配列内順序を変更
 	SortDigitWithAlign(&digit, h_align);
@@ -110,11 +127,57 @@ void Numbers::DrawNumber(int number, float scale, HorizontalAlignment h_align, V
 			final_pos.y = Win32App::SIZE_.y - size.y;
 
 			NcmSprite::DrawTex(numbers_[digit[i]],
-				{ (final_pos.x + (i * tracking_)) + offset_.x, final_pos.y + offset_.y });
+				{ (final_pos.x + (i * tracking_)) + dead_line_size_, final_pos.y + dead_line_size_ });
 
 			size_stack += size.x;
 
-			NcmSprite::ResetScale(numbers_[digit[i]], scale);
+			if (!is_unique && !is_done)
+			{
+				NcmSprite::DrawTex(dupli_numbers_[digit[i]],
+					{ (final_pos.x + (i * tracking_)) + dead_line_size_, final_pos.y + dead_line_size_ });
+				is_done = true;
+			}
+		}
+	}
+
+	if (h_align == Center)
+	{
+		digit_width_ = 0;
+
+		// 描画したい数の合計サイズを取得
+		for (UINT i = 0; i < digit.size(); i++)
+		{
+			NcmSprite::SetScale(numbers_[digit[i]], scale);
+			NcmSprite::SetScale(dupli_numbers_[digit[i]], scale);
+			digit_width_ += NcmSprite::GetSize(numbers_[digit[i]]).x;
+		}
+
+		// 描画開始位置を算出
+		float start_draw_point = Win32App::FCENTER_.x - (digit_width_ / 2);
+		float size_stack = start_draw_point;
+
+		for (UINT i = 0; i < digit.size(); i++)
+		{
+			// 数字テクスチャのサイズを取得
+			XMFLOAT2 size = NcmSprite::GetSize(numbers_[digit[i]]);
+			NcmSprite::SetAnchorPoint(numbers_[digit[i]], { 0, 1.0f });
+			NcmSprite::SetAnchorPoint(dupli_numbers_[digit[i]], { 0, 1.0f });
+
+			XMFLOAT2 final_pos{};
+			final_pos.x = size_stack;
+			final_pos.y = Win32App::SIZE_.y - dead_line_size_;
+
+			NcmSprite::DrawTex(numbers_[digit[i]],
+				{ (final_pos.x + (i * tracking_)), final_pos.y });
+
+			size_stack += size.x;
+
+			if (!is_unique && !is_done)
+			{
+				NcmSprite::DrawTex(dupli_numbers_[digit[i]],
+					{ (final_pos.x + (i * tracking_)), final_pos.y });
+				is_done = true;
+			}
 		}
 	}
 
@@ -136,36 +199,46 @@ void Numbers::DrawNumber(int number, float scale, HorizontalAlignment h_align, V
 			final_pos.y = Win32App::SIZE_.y - size.y;
 
 			NcmSprite::DrawTex(numbers_[digit[i]],
-				{ (final_pos.x - (i * tracking_)) - offset_.x, final_pos.y - offset_.y });
-
-			NcmSprite::ResetScale(numbers_[digit[i]], scale);
+				{ (final_pos.x - (i * tracking_)) - dead_line_size_, final_pos.y - dead_line_size_ });
 		}
 	}
 }
 
-void Numbers::DivDigit(std::vector<int> *dist, const int num)
+bool Numbers::DivDigit(std::vector<int> *dist, const int num)
 {
 	for (int tmp = num; tmp > 0;)
 	{
 		// 右から桁ごとに格納
-		dist->push_back(tmp % 10);
+		dist->emplace_back(tmp % 10);
 
 		// 位を上げる
 		tmp /= 10;
 	}
 
+	// その桁の数字が0なら
 	if (num == 0)
 	{
-		dist->push_back(0);
+		// 0を入れる
+		dist->emplace_back(0);
 	}
+
+	// 重複確認用
+	std::vector<int> temp = *dist;
+	// 重複範囲のイテレータを取得
+	auto itr = std::unique(temp.begin(), temp.end());
+	// その範囲を削除
+	temp.erase(itr, temp.end());
+
+	// 削除前と後を比較
+	return std::equal(dist->begin(), dist->end(), temp.begin(), temp.end());
 }
 
 void Numbers::SortDigitWithAlign(std::vector<int> *dist, const HorizontalAlignment &align)
 {
 	using enum HorizontalAlignment;
 
-	// 左揃えなら
-	if (align == Left)
+	// 左揃え || 中央揃えなら
+	if (align == Left || align == Center)
 	{
 		// 並びが自然になるように変換
 		std::reverse(dist->begin(), dist->end());

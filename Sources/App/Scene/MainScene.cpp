@@ -5,6 +5,7 @@
 #include "../Sources/App/Collision/Collision.h"
 #include "../Sources/App/Math/Easing/NcmEasing.h"
 #include "../Utility/NcmUtil.h"
+#include "../Debug/NcmDebug.h"
 
 using namespace NcmUtill;
 
@@ -27,7 +28,6 @@ MainScene::MainScene() :
 	clear_(),
 	over_(),
 	space_(),
-	do_debug_(true),
 	key_bind_(0),
 	is_wire_(true),
 	draw_dust_(true),
@@ -88,6 +88,7 @@ void MainScene::Initialize()
 	grid_->Initialize(200, 10, XMFLOAT3(0, -20.0f, 0));
 	reticle_->Initialize();
 	numbers_->Initialize();
+	ult_->Initialize();
 	/*for (UINT i = 0; i < grid_floor_.size(); i++)
 	{
 		grid_floor_[i].Initialize(200, 10, XMFLOAT3(0, 0, (float)(i) * 1000));
@@ -121,10 +122,10 @@ void MainScene::Initialize()
 
 	// キーバインド機能を使用するか
 #ifdef _DEBUG
-	do_debug_ = true;
+	NcmDebug::GetInstance()->SetDebugMode(true);
 	key_bind_ = (int)(KeyBind::Player);
 #else
-	do_debug_ = false;
+	NcmDebug::GetInstance()->SetDebugMode(false);
 #endif
 
 	is_clear_ = false;
@@ -133,16 +134,19 @@ void MainScene::Initialize()
 	ease.ease_type = NcmEaseType::OutCirc;
 	ease.init_value = 0.0f;
 	ease.total_move = SPEED_;
+	ease.t_rate = 0.05f;
 	player_camera_speed_ = NcmEasing::RegisterEaseData(ease);
 
 	ease.ease_type = NcmEaseType::OutCubic;
 	ease.init_value = normal_fov_;
 	ease.total_move = accel_fov_ - normal_fov_;
+	ease.t_rate = 0.05f;
 	fov_acc_value_ = NcmEasing::RegisterEaseData(ease);
 
 	ease.ease_type = NcmEaseType::OutCubic;
 	ease.init_value = accel_fov_;
 	ease.total_move = normal_fov_ - accel_fov_;
+	ease.t_rate = 0.05f;
 	fov_dec_value_ = NcmEasing::RegisterEaseData(ease);
 
 	NcmUi::Initialize();
@@ -153,7 +157,8 @@ void MainScene::Finalize()
 
 void MainScene::Update()
 {
-	if (do_debug_)
+	if (NcmDebug::GetInstance()->IsDebug())
+		//if (do_debug_)
 	{
 		// キーバインドごとの操作
 		if (key_bind_ == (int)(KeyBind::Camera))
@@ -162,32 +167,6 @@ void MainScene::Update()
 		}
 		else if (key_bind_ == (int)(KeyBind::Player))
 		{
-			if (KeyboardInput::PushKey(DIK_W) || KeyboardInput::PushKey(DIK_S) || KeyboardInput::PushKey(DIK_D) || KeyboardInput::PushKey(DIK_A))
-			{
-				NcmEasing::UpdateValue(player_camera_speed_);
-
-				if (KeyboardInput::PushKey(DIK_W))
-				{
-					NcmEasing::UpdateValue(fov_acc_value_);
-					float fov = camera_->GetFOV();
-					fov = NcmEasing::GetValue(fov_acc_value_);
-					camera_->SetFOV(fov);
-					NcmEasing::ResetTime(fov_dec_value_);
-				}
-			}
-			else
-			{
-				NcmEasing::ResetTime(player_camera_speed_);
-
-				NcmEasing::UpdateValue(fov_dec_value_);
-				float fov = camera_->GetFOV();
-				fov = NcmEasing::GetValue(fov_dec_value_);
-				camera_->SetFOV(fov);
-				NcmEasing::ResetTime(fov_acc_value_);
-			}
-
-			player_->MoveXZ(NcmEasing::GetValue(player_camera_speed_));
-			camera_->MoveXY(NcmEasing::GetValue(player_camera_speed_));
 		}
 		else if (key_bind_ == (int)(KeyBind::AddEnemy))
 		{
@@ -225,20 +204,34 @@ void MainScene::Update()
 			SceneManager::SetNextScene(SceneName::RESULT);
 		}
 	}
-	else if (!do_debug_)
-	{
-		if (KeyboardInput::PushKey(DIK_W) || KeyboardInput::PushKey(DIK_S) || KeyboardInput::PushKey(DIK_D) || KeyboardInput::PushKey(DIK_A))
-		{
-			NcmEasing::UpdateValue(player_camera_speed_);
-		}
-		else
-		{
-			NcmEasing::ResetTime(player_camera_speed_);
-		}
 
-		player_->MoveXZ(NcmEasing::GetValue(player_camera_speed_));
-		camera_->MoveXY(NcmEasing::GetValue(player_camera_speed_));
+	// プレイヤー操作
+	if (KeyboardInput::PushKey(DIK_W) || KeyboardInput::PushKey(DIK_S) || KeyboardInput::PushKey(DIK_D) || KeyboardInput::PushKey(DIK_A))
+	{
+		NcmEasing::UpdateValue(player_camera_speed_);
+
+		if (KeyboardInput::PushKey(DIK_W))
+		{
+			NcmEasing::UpdateValue(fov_acc_value_);
+			float fov = camera_->GetFOV();
+			fov = NcmEasing::GetValue(fov_acc_value_);
+			camera_->SetFOV(fov);
+			NcmEasing::ResetTime(fov_dec_value_);
+		}
 	}
+	else
+	{
+		NcmEasing::ResetTime(player_camera_speed_);
+
+		NcmEasing::UpdateValue(fov_dec_value_);
+		float fov = camera_->GetFOV();
+		fov = NcmEasing::GetValue(fov_dec_value_);
+		camera_->SetFOV(fov);
+		NcmEasing::ResetTime(fov_acc_value_);
+	}
+
+	player_->MoveXZ(NcmEasing::GetValue(player_camera_speed_));
+	camera_->MoveXY(NcmEasing::GetValue(player_camera_speed_));
 
 	// クリア遷移
 	if (ene_list_->NoticeEmpty())
@@ -268,6 +261,7 @@ void MainScene::Update()
 	grid_->Update();
 	missile_mgr_->Update();
 	lockon_sys_->Update();
+	ult_->Update();
 	/*for (auto &i : grid_floor_)
 	{
 		i.Update();
@@ -297,6 +291,7 @@ void MainScene::Draw()
 	}*/
 	grid_->Draw();
 
+	//PreDraw::PreRender(Object3d);
 	PreDraw::PreRender(Object3d_WireFrame);
 	player_->Draw();
 	ene_list_->Draw();
@@ -337,12 +332,16 @@ void MainScene::Draw()
 
 	NcmUi::DrawMissileNumSet(LockOnSystem::GetCurrentTgtNum());
 	NcmUi::DrawHp(player_->GetHp(), 30.0f);
-	NcmUi::DrawSpace();
+	//NcmUi::DrawSpace();
 	ult_->DrawUi();
 }
 
 void MainScene::DebugDraw()
 {
+	bool debug = NcmDebug::GetInstance()->IsDebug();
+	ImGui::Checkbox("DebugMode?", &debug);
+	NcmDebug::GetInstance()->SetDebugMode(debug);
+
 	player_->DebugDraw();
 	lockon_sys_->DebugDraw();
 

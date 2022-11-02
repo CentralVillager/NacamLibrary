@@ -46,7 +46,7 @@ void NcmSprite::StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList
 	assert(SUCCEEDED(result));
 }
 
-int NcmSprite::LoadTex(const wchar_t *filename)
+ncm_thandle NcmSprite::LoadTex(const wchar_t *filename)
 {
 	handle_counter_++;
 	int32_t count_for_array = handle_counter_ - 1;
@@ -98,9 +98,9 @@ int NcmSprite::LoadTex(const wchar_t *filename)
 
 	// シェーダリソースビュー作成
 	D3D12_SHADER_RESOURCE_VIEW_DESC srv_desc{}; // 設定構造体
-	D3D12_RESOURCE_DESC resDesc = tex_buff_[count_for_array]->GetDesc();
+	D3D12_RESOURCE_DESC res_desc = tex_buff_[count_for_array]->GetDesc();
 
-	srv_desc.Format = resDesc.Format;
+	srv_desc.Format = res_desc.Format;
 	srv_desc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 	srv_desc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
 	srv_desc.Texture2D.MipLevels = 1;
@@ -115,7 +115,7 @@ int NcmSprite::LoadTex(const wchar_t *filename)
 	return count_for_array;
 }
 
-void NcmSprite::DrawTex(const int handle)
+void NcmSprite::DrawTex(const ncm_thandle handle)
 {
 	// ワールド行列の更新
 	sprite_hub_[handle].mat_world_ = XMMatrixIdentity();
@@ -145,7 +145,7 @@ void NcmSprite::DrawTex(const int handle)
 	cmd_list_->DrawInstanced(4, 1, 0, 0);
 }
 
-void NcmSprite::DrawTex(const int handle, const XMFLOAT2 &pos)
+void NcmSprite::DrawTex(const ncm_thandle handle, const XMFLOAT2 &pos)
 {
 	// Transを設定
 	SetPos(handle, pos);
@@ -154,7 +154,7 @@ void NcmSprite::DrawTex(const int handle, const XMFLOAT2 &pos)
 	DrawTex(handle);
 }
 
-void NcmSprite::GenerateDrawData(const int handle, const wchar_t *filename)
+void NcmSprite::GenerateDrawData(const ncm_thandle handle, const wchar_t *filename)
 {
 	HRESULT result = S_FALSE;
 
@@ -206,6 +206,8 @@ void NcmSprite::GenerateDrawData(const int handle, const wchar_t *filename)
 		sprite_hub_.back().const_buffer_->Unmap(0, nullptr);
 	}
 
+	sprite_hub_.back().scale_ = 1.0f;
+
 	// 識別用に管理
 	sprite_hub_.back().handle = handle;
 	sprite_hub_.back().file_path = filename;
@@ -252,18 +254,18 @@ void NcmSprite::TransferVertices(DrawData *itr)
 		float tex_top = itr->tex_base_.y / res_desc.Height;
 		float tex_bottom = (itr->tex_base_.y + itr->tex_size_.y) / res_desc.Height;
 
-		vertices[LB].uv = { tex_left,	tex_bottom }; // 左下
-		vertices[LT].uv = { tex_left,	tex_top }; // 左上
-		vertices[RB].uv = { tex_right,	tex_bottom }; // 右下
-		vertices[RT].uv = { tex_right,	tex_top }; // 右上
+		vertices[LB].uv = { tex_left,	tex_bottom };	// 左下
+		vertices[LT].uv = { tex_left,	tex_top };		// 左上
+		vertices[RB].uv = { tex_right,	tex_bottom };	// 右下
+		vertices[RT].uv = { tex_right,	tex_top };		// 右上
 	}
 
 	// 頂点バッファへのデータ転送
-	VertexPosUv *vertMap = nullptr;
-	result = itr->vertex_buffer_->Map(0, nullptr, (void **)&vertMap);
+	VertexPosUv *vert_map = nullptr;
+	result = itr->vertex_buffer_->Map(0, nullptr, (void **)&vert_map);
 	if (SUCCEEDED(result))
 	{
-		memcpy(vertMap, vertices, sizeof(vertices));
+		memcpy(vert_map, vertices, sizeof(vertices));
 		itr->vertex_buffer_->Unmap(0, nullptr);
 	}
 }

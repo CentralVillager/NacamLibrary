@@ -20,7 +20,7 @@ class NcmUi
 
 	static std::array<int, 3> hp_;
 
-	static ncm_handle ease_;
+	static ncm_ehandle ease_;
 
 public:
 
