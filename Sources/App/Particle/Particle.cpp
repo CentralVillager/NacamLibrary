@@ -1,20 +1,19 @@
 #include "Particle.h"
 #include "../Debug/NcmImGui.h"
+#include "../../Lib/PreDraw/PreDraw.h"
+#include "../../Lib/Sprite/NcmSprite.h"
 
-Particle::Particle()
-{
-	object_ = std::make_unique<Object3d>();
-	particle_ = std::make_shared<ParticleMember>();
-}
+Particle::Particle() :
+	object_(std::make_unique<Object3d>()),
+	particle_(std::make_shared<ParticleDesc>()),
+	plate_(std::make_unique<PlatePoly>())
+{}
 
 Particle::~Particle()
 {}
 
-void Particle::Initialize(Model *model, const ParticleMember &particle)
+void Particle::Initialize(Model *model, const ParticleDesc &particle)
 {
-	object_->SetModel(model);
-	object_->Initialize();
-
 	particle_->position_ = particle.position_;
 	particle_->velocity_ = particle.velocity_;
 	particle_->accel_ = particle.accel_;
@@ -22,6 +21,12 @@ void Particle::Initialize(Model *model, const ParticleMember &particle)
 	particle_->e_scale_ = particle.e_scale_;
 	particle_->life_ = particle.life_;
 	particle_->is_dead_ = false;
+	particle_->tex_handle_ = particle.tex_handle_;
+
+	object_->SetModel(model);
+	object_->Initialize();
+	plate_->Initialize();
+	plate_->SetTexHandle(particle_->tex_handle_);
 }
 
 void Particle::Finalize()
@@ -55,12 +60,19 @@ void Particle::Update()
 	object_->SetPos(particle_->position_);
 	object_->SetScale(particle_->scale_);
 	object_->Update();
+	/*plate_->SetPos(particle_->position_);
+	plate_->SetScale(particle_->scale_);
+	plate_->Update();*/
 }
 
 void Particle::Draw()
 {
+	PreDraw::PreRender(PipelineName::Object3d_WireFrame);	// ‰¼
 	// •`‰æ
 	object_->Draw();
+
+	//PreDraw::PreRender(PipelineName::PlatePoly);
+	//plate_->Draw();
 }
 
 void Particle::DebugDraw()

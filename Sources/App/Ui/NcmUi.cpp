@@ -13,6 +13,17 @@ float NcmUi::bottom_pos_;
 std::array<int, 3> NcmUi::hp_;
 ncm_ehandle NcmUi::ease_;
 
+NcmUi::NcmUi()
+{}
+
+NcmUi::~NcmUi()
+{
+	if (!ui_hub_.empty())
+	{
+		ui_hub_.clear();
+	}
+}
+
 void NcmUi::Initialize()
 {
 	NcmEaseDesc desc{};

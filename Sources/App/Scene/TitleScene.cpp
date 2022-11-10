@@ -29,7 +29,9 @@ TitleScene::TitleScene()
 }
 
 TitleScene::~TitleScene()
-{}
+{
+	NcmSprite::TermSprite();
+}
 
 void TitleScene::Initialize()
 {
@@ -43,7 +45,7 @@ void TitleScene::Initialize()
 
 	Emitter::LoadResources();
 
-	Emitter::EmitterArgs p;
+	EmitterDesc p;
 	p.particle.position_ = { 0.0f, 0.0f, 500.0f };
 	p.particle.velocity_ = { 0.0f, 0.0f, -10.0f };
 	p.particle.accel_ = { 0.001f, 0.001f, 0 };
@@ -53,7 +55,7 @@ void TitleScene::Initialize()
 	p.vel_rand_ = { 0.1f, 0.1f, 0.1f };
 	p.gene_num_ = 1;
 	p.use_life_ = false;
-	emitter_->SetEmitterArgs(p);
+	emitter_->SetEmitterDesc(p);
 
 	XMINT2 pos = { Win32App::CENTER_.x, 650 };
 	NcmSprite::SetPos(space_, pos);

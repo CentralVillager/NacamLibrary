@@ -46,7 +46,7 @@ void ParticleDemoScene::Initialize() {
 	mode_ = MODE::MONO;
 
 	// エミッターの初期化
-	Emitter::EmitterArgs p;
+	EmitterDesc p;
 	p.particle.position_ = { 0.0f, 0.0f, 10.0f };
 	p.particle.velocity_ = { 0.0f, 0.0f, 0.0f };
 	p.particle.accel_ = { 0, 0.001f, 0 };
@@ -56,7 +56,7 @@ void ParticleDemoScene::Initialize() {
 	p.vel_rand_ = { 0.1f, 0.1f, 0.1f };
 	p.gene_num_ = 1;
 	p.use_life_ = false;
-	emitter_1_->SetEmitterArgs(p);
+	emitter_1_->SetEmitterDesc(p);
 
 	p.particle.position_ = { 10.0f, 0.0f, -50.0f };
 	p.particle.velocity_ = { 0.0f, 0.0f, -1.0f };
@@ -67,7 +67,7 @@ void ParticleDemoScene::Initialize() {
 	p.vel_rand_ = { 0.1f, 0.1f, 0.1f };
 	p.gene_num_ = 1;
 	p.use_life_ = false;
-	contrail_1_->SetEmitterArgs(p);
+	contrail_1_->SetEmitterDesc(p);
 
 	p.particle.position_ = { -10.0f, 0.0f, -50.0f };
 	p.particle.velocity_ = { 0.0f, 0.0f, -1.0f };
@@ -78,7 +78,7 @@ void ParticleDemoScene::Initialize() {
 	p.vel_rand_ = { 0.1f, 0.1f, 0.1f };
 	p.gene_num_ = 1;
 	p.use_life_ = false;
-	contrail_2_->SetEmitterArgs(p);
+	contrail_2_->SetEmitterDesc(p);
 
 	emitter_life_ = 100;
 
@@ -91,7 +91,7 @@ void ParticleDemoScene::Initialize() {
 	p.vel_rand_ = { 0.1f, 0.1f, 0.1f };
 	p.gene_num_ = 1;
 	p.use_life_ = false;
-	dust_->SetEmitterArgs(p);
+	dust_->SetEmitterDesc(p);
 }
 
 void ParticleDemoScene::Finalize() {
@@ -161,7 +161,7 @@ void ParticleDemoScene::Update() {
 			contrails_1_.emplace_front();
 			Emitter *emitter = &contrails_1_.front();
 
-			Emitter::EmitterArgs p;
+			EmitterDesc p;
 			p.particle.position_ = { 10.0f, 0.0f, -50.0f };
 			p.particle.velocity_ = { 0.0f, 0.f, -1.0f };
 			p.particle.accel_ = { 0, 0, 0 };
@@ -172,7 +172,7 @@ void ParticleDemoScene::Update() {
 			p.gene_num_ = 1;
 			p.use_life_ = true;
 			p.life_ = emitter_life_;
-			emitter->SetEmitterArgs(p);
+			emitter->SetEmitterDesc(p);
 
 			contrails_1_.emplace_front();
 			emitter = &contrails_1_.front();
@@ -186,7 +186,7 @@ void ParticleDemoScene::Update() {
 			p.gene_num_ = 1;
 			p.use_life_ = true;
 			p.life_ = emitter_life_;
-			emitter->SetEmitterArgs(p);
+			emitter->SetEmitterDesc(p);
 		}
 
 		for (auto &i : contrails_1_) {
@@ -323,7 +323,7 @@ void ParticleDemoScene::DebugDraw() {
 
 void ParticleDemoScene::ResetParam() {
 
-	Emitter::EmitterArgs p;
+	EmitterDesc p;
 	p.particle.position_ = { 0.0f, 0.0f, 10.0f };
 	p.particle.velocity_ = { 0.0f, 0.0f, 0.0f };
 	p.particle.accel_ = { 0, 0.001f, 0 };
@@ -333,7 +333,7 @@ void ParticleDemoScene::ResetParam() {
 	p.vel_rand_ = { 0.1f, 0.1f, 0.1f };
 	p.gene_num_ = 1;
 	p.use_life_ = false;
-	emitter_1_->SetEmitterArgs(p);
+	emitter_1_->SetEmitterDesc(p);
 }
 
 void ParticleDemoScene::ResetPos() {

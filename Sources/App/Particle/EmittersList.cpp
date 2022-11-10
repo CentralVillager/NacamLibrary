@@ -30,8 +30,8 @@ void EmittersList::Draw()
 void EmittersList::DebugDraw()
 {}
 
-void EmittersList::Add(const Emitter::EmitterArgs &args)
+void EmittersList::Add(const EmitterDesc &args)
 {
 	emitters_.emplace_front();
-	emitters_.front().SetEmitterArgs(args);
+	emitters_.front().SetEmitterDesc(args);
 }

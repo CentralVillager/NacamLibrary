@@ -104,7 +104,6 @@ private:
 
 	void CreateVertexBuffer();
 	void CreateDescriptorHeap();
-	void CreateGraphicsPipeline();
 	void CreateConstantBuffer();
 	void CreateCommandSignature();
 	void CreateCommandBuffer();

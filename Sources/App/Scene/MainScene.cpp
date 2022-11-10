@@ -38,7 +38,8 @@ MainScene::MainScene() :
 	ImGui_detection_range_(1000.0f),
 	ImGui_Ui_pos_(Win32App::FCENTER_),
 	player_camera_speed_(),
-	fov_acc_value_()
+	fov_acc_value_(),
+	fov_dec_value_()
 {
 	// テクスチャのロード
 	clear_ = NcmSprite::LoadTex(L"Resources/Textures/clear.png");
@@ -47,6 +48,7 @@ MainScene::MainScene() :
 
 	// 各リソースのロード
 	model_sky_dome_->LoadObjModel("Resources/SkyDome/", "skydome.obj", "skydome.mtl");
+
 	Player::LoadResources();
 	Enemy::LoadResources();
 	Emitter::LoadResources();
@@ -54,16 +56,19 @@ MainScene::MainScene() :
 	Reticle::LoadResources();
 	LockOnSystem::LoadResources();
 	NcmUi::LoadResources();
-	ult_->LoadResources();
+	UltimateManager::LoadResources();
 }
 
 MainScene::~MainScene()
-{}
+{
+	NcmSprite::TermSprite();
+}
 
 void MainScene::Initialize()
 {
 	Object3d::SetCamera(camera_.get());
 	GridRender::SetCamera(camera_.get());
+	PlatePoly::SetCamera(camera_.get());
 
 	// カメラの初期化
 	camera_->Initialize();
@@ -85,20 +90,20 @@ void MainScene::Initialize()
 	lockon_sys_->Initialize(player_.get(), ene_list_.get());
 	missile_mgr_->Initialize(lockon_sys_.get());
 	player_->Initialize(missile_mgr_.get(), lockon_sys_.get(), ult_.get(), init_pos_);
-	grid_->Initialize(200, 10, XMFLOAT3(0, -20.0f, 0));
+	//grid_->Initialize(200, 10, XMFLOAT3(0, -20.0f, 0));
 	reticle_->Initialize();
 	numbers_->Initialize();
 	ult_->Initialize();
-	/*for (UINT i = 0; i < grid_floor_.size(); i++)
+	for (UINT i = 0; i < grid_floor_.size(); i++)
 	{
 		grid_floor_[i].Initialize(200, 10, XMFLOAT3(0, 0, (float)(i) * 1000));
-	}*/
+	}
 
 	// enemyの生成
 	ene_list_->AddTemplateSet();
 
 	// 塵エミッターの生成
-	Emitter::EmitterArgs p;
+	EmitterDesc p;
 	p.particle.position_ = { 0.0f, 0.0f, 0.0f };
 	p.particle.velocity_ = { 0.0f, 0.0f, 0.0f };
 	p.particle.accel_ = { 0, 0.001f, 0 };
@@ -108,7 +113,7 @@ void MainScene::Initialize()
 	p.vel_rand_ = { 0.1f, 0.1f, 0.1f };
 	p.gene_num_ = 1;
 	p.use_life_ = false;
-	dust_->SetEmitterArgs(p);
+	dust_->SetEmitterDesc(p);
 
 	// スプライトの初期化
 	NcmSprite::SetSize(clear_, { 1280.0f, 720.0f });
@@ -119,6 +124,11 @@ void MainScene::Initialize()
 	NcmSprite::SetPos(space_, pos);
 	NcmSprite::SetSize(space_, { size.x / 2, size.y / 2 });
 	NcmSprite::SetAnchorPoint(space_, { 0.5f, 0.5f });
+
+	// チートモードをONにする
+	// ・自機の無敵
+	// ・ULTの即時発射
+	NcmDebug::GetInstance()->SetCheatMode(false);
 
 	// キーバインド機能を使用するか
 #ifdef _DEBUG
@@ -157,8 +167,7 @@ void MainScene::Finalize()
 
 void MainScene::Update()
 {
-	if (NcmDebug::GetInstance()->IsDebug())
-		//if (do_debug_)
+	if (NcmDebug::GetInstance()->IsDebugMode())
 	{
 		// キーバインドごとの操作
 		if (key_bind_ == (int)(KeyBind::Camera))
@@ -258,14 +267,15 @@ void MainScene::Update()
 	// 各オブジェクト更新処理
 	player_->Update();
 	ene_list_->Update();
-	grid_->Update();
+	//grid_->Update();
 	missile_mgr_->Update();
 	lockon_sys_->Update();
 	ult_->Update();
-	/*for (auto &i : grid_floor_)
+	for (auto &i : grid_floor_)
 	{
+		i.MoveMinusZ();
 		i.Update();
-	}*/
+	}
 
 	// ミサイル追尾処理
 	missile_mgr_->HomingTarget(*ene_list_);
@@ -278,6 +288,14 @@ void MainScene::Update()
 	sky_dome_->Update();
 
 	NcmUi::CalcBarSize(player_->GetChargeCount(), player_->GetMaxChargeTime());
+
+	// C が押されたら
+	if (KeyboardInput::TriggerKey(DIK_C))
+	{
+		// モードを切り替える
+		bool mode = NcmDebug::GetInstance()->IsCheatMode();
+		NcmDebug::GetInstance()->SetCheatMode(!mode);
+	}
 }
 
 void MainScene::Draw()
@@ -285,11 +303,11 @@ void MainScene::Draw()
 	using enum PipelineName;
 
 	PreDraw::PreRender(Line);
-	/*for (auto &i : grid_floor_)
+	for (auto &i : grid_floor_)
 	{
 		i.Draw();
-	}*/
-	grid_->Draw();
+	}
+	//grid_->Draw();
 
 	//PreDraw::PreRender(Object3d);
 	PreDraw::PreRender(Object3d_WireFrame);
@@ -338,7 +356,7 @@ void MainScene::Draw()
 
 void MainScene::DebugDraw()
 {
-	bool debug = NcmDebug::GetInstance()->IsDebug();
+	bool debug = NcmDebug::GetInstance()->IsDebugMode();
 	ImGui::Checkbox("DebugMode?", &debug);
 	NcmDebug::GetInstance()->SetDebugMode(debug);
 

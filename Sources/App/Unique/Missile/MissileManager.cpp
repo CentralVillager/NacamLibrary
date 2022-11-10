@@ -106,8 +106,8 @@ void MissileManager::FireChargeMissile(const MissileArgs &args)
 	{
 		// ‰Á‘¬“x‚ðƒ‰ƒ“ƒ_ƒ€‚ÉÝ’è
 		//XMFLOAT3 rand = GenerateRandom(XMFLOAT3(-1.0f, -1.0f, 0), XMFLOAT3(1.0f, 1.0f, 0));
-		XMFLOAT3 rand = { 0, -1.0f, 0 };
-		l_args.acc = rand;
+		//XMFLOAT3 rand = { 0, -1.0f, 0 };
+		//l_args.acc = rand;
 
 		auto itr = MoveIterator(p_lockon_sys_->GetTgtList().begin(), i);
 
@@ -132,7 +132,7 @@ void MissileManager::FireUltimateMissile(const MissileArgs &args, uint32_t launc
 	//XMFLOAT3 rand = { 0, -1.0f, 0 };
 	l_args.acc = rand;
 
-	if (p_lockon_sys_->GetMaxTgtNum() < launched)
+	if (p_lockon_sys_->GetMaxTgtNum() <= launched)
 	{
 		launched = p_lockon_sys_->GetMaxTgtNum() - 1;
 	}

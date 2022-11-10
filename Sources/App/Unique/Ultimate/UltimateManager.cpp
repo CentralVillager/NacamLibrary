@@ -20,6 +20,7 @@ UltimateManager::~UltimateManager()
 void UltimateManager::LoadResources()
 {
 	using enum UltTex;
+
 	ult_tex_hub_[(int)(u)] = NcmSprite::LoadTex(L"Resources/Textures/ultimate/u.png");
 	ult_tex_hub_[(int)(l)] = NcmSprite::LoadTex(L"Resources/Textures/ultimate/l.png");
 	ult_tex_hub_[(int)(t)] = NcmSprite::LoadTex(L"Resources/Textures/ultimate/t.png");

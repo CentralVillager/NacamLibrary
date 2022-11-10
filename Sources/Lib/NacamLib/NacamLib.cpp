@@ -17,6 +17,8 @@
 #include "../../App/Scene/AbsScene.h"
 #include "../../App/Scene/TemporaryScene.h"
 #include "../Sources/App/Math/Easing/NcmEasing.h"
+#include "../Point/Point.h"
+#include "../PlatePoly/PlatePoly.h"
 
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
@@ -133,6 +135,8 @@ void NacamLib::PipelineInitialize()
 	pipeline_mgr_->GeneratePipeline(PipelineName::IndirectObject3d);
 	pipeline_mgr_->GeneratePipeline(PipelineName::IndirectObject3d_WireFrame);
 	pipeline_mgr_->GeneratePipeline(PipelineName::Line);
+	pipeline_mgr_->GeneratePipeline(PipelineName::Point);
+	pipeline_mgr_->GeneratePipeline(PipelineName::PlatePoly);
 	pipeline_mgr_->GeneratePipeline(PipelineName::Sprite);
 	pipeline_mgr_->GeneratePipeline(PipelineName::PostEffect);
 	pipeline_mgr_->GeneratePipeline(PipelineName::AverageBlur);
@@ -158,6 +162,8 @@ void NacamLib::GameObjectInitialize()
 	AudioManager::StaticInitialize();
 	Line::StaticInitialize();
 	IndirectObject3d::StaticInitialize(*pipeline_mgr_);
+	Point::StaticInitialize(device_.Get(), cmd_list_.Get());
+	PlatePoly::StaticInitialize(device_.Get(), cmd_list_.Get());
 
 	NcmEasing::StaticInit();
 

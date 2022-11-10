@@ -7,6 +7,7 @@
 class Camera
 {
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMMATRIX = DirectX::XMMATRIX;
 
@@ -21,37 +22,30 @@ private:
 
 	// 定数バッファ
 	ComPtr<ID3D12Resource> matrix_const_buffer_;
-
 	// ワールド行列
 	XMMATRIX mat_world_;
-
 	// ビュー行列
 	XMMATRIX mat_view_;
-
 	// 射影行列
 	XMMATRIX mat_projection_;
-
+	// ビルボード行列
+	XMMATRIX mat_billborad_;
+	// Y軸周りビルボード行列
+	XMMATRIX mat_billborad_y_;
 	// 視点座標
 	XMFLOAT3 eye_;
-
 	// 注視点座標
 	XMFLOAT3 target_;
-
 	// 上方向ベクトル
 	XMFLOAT3 up_vec_;
-
-	// カメラ角度
-	float angle_;
-
+	// カメラ回転角度
+	XMFLOAT2 angle_;
 	// カメラ距離
 	float distance_;
-
 	// アスペクト比
 	float aspect_ratio_;
-
 	// 親行列のポインタ
 	XMMATRIX *parent_mat_;
-
 	// 視野角
 	float fov_;
 
@@ -62,6 +56,8 @@ public:
 	// アクセッサ
 	const XMMATRIX &GetMatView() { return mat_view_; }
 	const XMMATRIX &GetMatProjection() { return mat_projection_; }
+	const XMMATRIX &GetMatBillboard() { return mat_billborad_; }
+	const XMMATRIX &GetMatBillboardY() { return mat_billborad_y_; }
 	const XMFLOAT3 &GetEye() { return eye_; }
 	const XMFLOAT3 &GetTarget() { return target_; }
 	const float &GetDistance() { return distance_; }
@@ -96,6 +92,8 @@ public:
 	void BasicCameraMove(float speed);
 
 	void MoveXY(float speed);
+
+	void TestCameraMove(float speed);
 
 	/// <summary>
 	/// カメラ位置のリセット

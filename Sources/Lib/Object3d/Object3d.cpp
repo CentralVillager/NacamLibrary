@@ -45,6 +45,7 @@ bool Object3d::InitializeDescriptorHeap()
 	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;//シェーダから見えるように
 	descHeapDesc.NumDescriptors = 1; // シェーダーリソースビュー1つ
 	result = device->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeap));//生成
+	descHeap->SetName(L"Object3dDescriptorHeap");
 	if (FAILED(result))
 	{
 		assert(0);

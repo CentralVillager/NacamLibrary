@@ -19,6 +19,7 @@ std::vector<NcmSprite::DrawData> NcmSprite::sprite_hub_;
 void NcmSprite::TermSprite()
 {
 	sprite_hub_.clear();
+	handle_counter_ = 0;
 }
 
 void NcmSprite::StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList *cmd_list)
@@ -105,12 +106,17 @@ ncm_thandle NcmSprite::LoadTex(const wchar_t *filename)
 	srv_desc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
 	srv_desc.Texture2D.MipLevels = 1;
 
-	device_->CreateShaderResourceView(tex_buff_[count_for_array].Get(), //ビューと関連付けるバッファ
-		&srv_desc, //テクスチャ設定情報
-		CD3DX12_CPU_DESCRIPTOR_HANDLE(desc_heap_->GetCPUDescriptorHandleForHeapStart(), count_for_array, desc_handle_incre_size_)
-	);
+	//device_->CreateShaderResourceView(tex_buff_[count_for_array].Get(), //ビューと関連付けるバッファ
+	//	&srv_desc, //テクスチャ設定情報
+	//	CD3DX12_CPU_DESCRIPTOR_HANDLE(desc_heap_->GetCPUDescriptorHandleForHeapStart(), count_for_array, desc_handle_incre_size_)
+	//);
 
 	GenerateDrawData(count_for_array, filename);
+
+	device_->CreateShaderResourceView(tex_buff_[count_for_array].Get(), //ビューと関連付けるバッファ
+		&srv_desc, //テクスチャ設定情報
+		sprite_hub_[count_for_array].cpu_desc_handle_srv_
+	);
 
 	return count_for_array;
 }
@@ -160,6 +166,10 @@ void NcmSprite::GenerateDrawData(const ncm_thandle handle, const wchar_t *filena
 
 	// 要素を構築
 	sprite_hub_.emplace_back();
+
+	// デスクリプタハンドルを取得
+	sprite_hub_.back().cpu_desc_handle_srv_ = CD3DX12_CPU_DESCRIPTOR_HANDLE(desc_heap_->GetCPUDescriptorHandleForHeapStart(), handle, desc_handle_incre_size_);
+	sprite_hub_.back().gpu_desc_handle_srv_ = CD3DX12_GPU_DESCRIPTOR_HANDLE(desc_heap_->GetGPUDescriptorHandleForHeapStart(), handle, desc_handle_incre_size_);
 
 	// 頂点バッファ生成
 	result = device_->CreateCommittedResource(

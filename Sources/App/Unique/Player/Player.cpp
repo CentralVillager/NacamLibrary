@@ -21,6 +21,7 @@ Player::Player()
 	hp_(),
 	p_mi_mgr_(nullptr),
 	p_lockon_sys_(nullptr),
+	p_ult_(nullptr),
 	charge_time_(40),
 	count_(),
 	ease_rot_right_(),
@@ -119,8 +120,8 @@ void Player::Update()
 		// ウルトが溜まっていなかったら
 		if (!p_ult_->NoticeFullCharged())
 		{
-			// デバッグモードなら
-			if (NcmDebug::GetInstance()->IsDebug())
+			// チートモードなら
+			if (NcmDebug::GetInstance()->IsCheatMode())
 			{
 				// 強制的に発動する
 				p_ult_->TriggeringUlt();
@@ -232,7 +233,7 @@ void Player::FireChargeMissile()
 	// tgt_index はMissileManagerで設定
 	l_args.detection_range = 1000.0f;
 	l_args.init_straight_time_ = 0;
-	l_args.life = 100;
+	l_args.life = 140;
 
 	p_mi_mgr_->FireChargeMissile(l_args);
 }
@@ -255,7 +256,7 @@ void Player::FireUltimateMissile()
 		// tgt_index はMissileManagerで設定
 		l_args.detection_range = 1000.0f;
 		l_args.init_straight_time_ = 0;
-		l_args.life = 100;
+		l_args.life = 140;
 
 		launched++;
 
@@ -289,7 +290,7 @@ void Player::ChargeMissile()
 
 void Player::TakeDamage()
 {
-	if (is_invincible_)
+	if (is_invincible_ || NcmDebug::GetInstance()->IsCheatMode())
 	{
 		return;
 	}

@@ -22,5 +22,5 @@ public:
 
 public:
 
-	void Add(const Emitter::EmitterArgs &args);
+	void Add(const EmitterDesc &args);
 };

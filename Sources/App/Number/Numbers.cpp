@@ -104,12 +104,15 @@ void Numbers::DrawNumber(int number, float scale, HorizontalAlignment h_align, V
 	std::vector<int> digit;
 
 	bool is_done = false;
+	bool is_hundred = false;
 
 	// 桁ごとに分割
 	bool is_unique = DivDigit(&digit, number);
 
 	// 揃え場所によって配列内順序を変更
 	SortDigitWithAlign(&digit, h_align);
+
+	if (digit.size() == 3) { is_hundred = true; }
 
 	if (h_align == Left)
 	{
@@ -172,11 +175,21 @@ void Numbers::DrawNumber(int number, float scale, HorizontalAlignment h_align, V
 
 			size_stack += size.x;
 
+			// 重複時の応急処置
 			if (!is_unique && !is_done)
 			{
-				NcmSprite::DrawTex(dupli_numbers_[digit[i]],
-					{ (final_pos.x + (i * tracking_)), final_pos.y });
-				is_done = true;
+				if (!is_hundred)
+				{
+					NcmSprite::DrawTex(dupli_numbers_[digit[i]],
+						{ (final_pos.x + (i * tracking_)), final_pos.y });
+					is_done = true;
+					is_hundred = true;
+				}
+
+				if (is_hundred)
+				{
+					is_hundred = false;
+				}
 			}
 		}
 	}

@@ -222,6 +222,8 @@
     <ClCompile Include="Sources\Lib\NacamLib\NacamLib.cpp" />
     <ClCompile Include="Sources\Lib\Object3d\Object3d.cpp" />
     <ClCompile Include="Sources\Lib\Pipeline\PipelineManager.cpp" />
+    <ClCompile Include="Sources\Lib\PlatePoly\PlatePoly.cpp" />
+    <ClCompile Include="Sources\Lib\Point\Point.cpp" />
     <ClCompile Include="Sources\Lib\PostEffect\PostEffect.cpp" />
     <ClCompile Include="Sources\Lib\PreDraw\PreDraw.cpp" />
     <ClCompile Include="Sources\Lib\Sprite\NcmSprite.cpp" />
@@ -294,6 +296,8 @@
     <ClInclude Include="Sources\Lib\NacamLib\NacamLib.h" />
     <ClInclude Include="Sources\Lib\Object3d\Object3d.h" />
     <ClInclude Include="Sources\Lib\Pipeline\PipelineManager.h" />
+    <ClInclude Include="Sources\Lib\PlatePoly\PlatePoly.h" />
+    <ClInclude Include="Sources\Lib\Point\Point.h" />
     <ClInclude Include="Sources\Lib\PostEffect\PostEffect.h" />
     <ClInclude Include="Sources\Lib\PreDraw\PreDraw.h" />
     <ClInclude Include="Sources\Lib\Sprite\NcmSprite.h" />
@@ -305,7 +309,8 @@
     <None Include="Resources\Shaders\FBX.hlsli" />
     <None Include="Resources\Shaders\Indirect.hlsli" />
     <None Include="Resources\Shaders\Line.hlsli" />
-    <None Include="Resources\Shaders\Particle.hlsli" />
+    <None Include="Resources\Shaders\PlatePoly.hlsli" />
+    <None Include="Resources\Shaders\Point.hlsli" />
     <None Include="Resources\Shaders\PostEffect.hlsli" />
     <None Include="Resources\Shaders\Primitive.hlsli" />
     <None Include="Resources\Shaders\Sprite.hlsli" />
@@ -375,19 +380,35 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\Shaders\ParticleGS.hlsl">
+    <FxCompile Include="Resources\Shaders\PlatePolyPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\PlatePolyVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\PointGS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\Shaders\ParticlePS.hlsl">
+    <FxCompile Include="Resources\Shaders\PointPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\Shaders\ParticleVS.hlsl">
+    <FxCompile Include="Resources\Shaders\PointVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>

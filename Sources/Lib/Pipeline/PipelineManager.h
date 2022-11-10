@@ -14,9 +14,9 @@ enum class PipelineName
 	Object3d_WireFrame,
 	IndirectObject3d,
 	IndirectObject3d_WireFrame,
-
 	Line,
-
+	Point,
+	PlatePoly,
 	Sprite,
 
 	//Primitive,
@@ -48,6 +48,7 @@ struct PipelineConfigs
 	LPCWSTR CS_name;
 	D3D12_FILL_MODE fill_mode;
 	std::vector<D3D12_INPUT_ELEMENT_DESC> input_layout;
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipeline;
 	D3D12_PRIMITIVE_TOPOLOGY_TYPE primitive_topology_type;
 	D3D_PRIMITIVE_TOPOLOGY primitive_topology;
 	UINT num_render_targets;

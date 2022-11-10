@@ -48,19 +48,20 @@ void Missile::Initialize(const MissileArgs &args, LockOnSystem *sys)
 	InitObj3d(model_.get(), coll_model_.get());
 	obj_->SetPos(XMFLOAT3(mi_args_.pos));
 
-	Emitter::EmitterArgs emi;
+	EmitterDesc emi{};
+	emi.particle.position_ = mi_args_.pos;
+	// エミッター用にミサイルの速度を反転して提供
 	XMFLOAT3 temp = mi_args_.vel;
 	temp.x -= temp.x;
 	temp.y -= temp.y;
 	temp.z -= temp.z;
-	emi.particle.position_ = mi_args_.pos;
 	emi.particle.velocity_ = temp;
+	// エミッター用にミサイルの加速度を反転して提供
 	temp = mi_args_.acc;
 	temp.x -= temp.x;
 	temp.y -= temp.y;
 	temp.z -= temp.z;
 	emi.particle.accel_ = temp;
-	//emi.particle.accel_ = { 0, 0, 0 };
 	emi.particle.life_ = mi_args_.life;
 	emi.particle.s_scale_ = 1.0f;
 	emi.pos_rand_ = { 0.0f, 0.0f, 0.0f };
@@ -68,7 +69,7 @@ void Missile::Initialize(const MissileArgs &args, LockOnSystem *sys)
 	emi.gene_num_ = 1;
 	emi.use_life_ = true;
 	emi.life_ = mi_args_.life;
-	emitter_->SetEmitterArgs(emi);
+	emitter_->SetEmitterDesc(emi);
 }
 
 void Missile::Initialize()
@@ -79,17 +80,25 @@ void Missile::Finalize()
 
 void Missile::Update()
 {
-	// 自然消滅
-	// 寿命が尽きた && エミッターの終了準備が出来た
-	if (IsZeroOrLess(mi_args_.life) && emitter_->NoticeCanTerminate())
+	// 寿命が尽きたら
+	if (IsZeroOrLess(mi_args_.life))
 	{
-		// 殺す
-		is_dead_ = true;
-		return;
+		// ミサイルを無効にする
+		mi_args_.is_validity = false;
+
+		// エミッターの終了準備が出来たら
+		if (emitter_->NoticeCanTerminate())
+		{
+			// 殺す
+			is_dead_ = true;
+			return;
+		}
 	}
 
+	// まだ寿命があるなら
 	if (!IsZero(mi_args_.life))
 	{
+		// 寿命を減らす
 		mi_args_.life--;
 	}
 
@@ -404,9 +413,9 @@ void Missile::HomingTarget(EnemiesList &enemies)
 	// 位置を反映
 	obj_->SetPos(pos);
 
-	XMFLOAT3 rot = obj_->GetRot();
-	rot = LookAt(mi_args_.vel);
-	obj_->SetRot(rot);
+	/*XMFLOAT3 rot = obj_->GetRot();
+	rot = LookAt(mi_args_.vel);*/
+	obj_->SetRot(LookAt(mi_args_.vel));
 }
 
 void Missile::TermEmitter()

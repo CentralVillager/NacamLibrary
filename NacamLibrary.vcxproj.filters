@@ -192,6 +192,12 @@
     <Filter Include="Application\Debug\NcmDebug">
       <UniqueIdentifier>{67ee7b5e-9efb-4f0c-91d4-aee989315f32}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Library\Point">
+      <UniqueIdentifier>{aab71361-fd97-412f-96b7-b15187a550c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\PlatePoly">
+      <UniqueIdentifier>{18b28dbf-63e4-48f2-b4f5-8239ae3afc19}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -391,6 +397,12 @@
     </ClCompile>
     <ClCompile Include="Sources\App\Debug\NcmDebug.cpp">
       <Filter>Application\Debug\NcmDebug</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\Point\Point.cpp">
+      <Filter>Library\Point</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\PlatePoly\PlatePoly.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -603,15 +615,16 @@
     <ClInclude Include="Sources\App\Debug\NcmDebug.h">
       <Filter>Application\Debug\NcmDebug</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Lib\Point\Point.h">
+      <Filter>Library\Point</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\PlatePoly\PlatePoly.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">
       <Filter>シェーダファイル</Filter>
     </None>
     <None Include="Resources\Shaders\Sprite.hlsli">
-      <Filter>シェーダファイル</Filter>
-    </None>
-    <None Include="Resources\Shaders\Particle.hlsli">
       <Filter>シェーダファイル</Filter>
     </None>
     <None Include="Resources\Shaders\FBX.hlsli">
@@ -629,6 +642,12 @@
     <None Include="Resources\Shaders\Line.hlsli">
       <Filter>シェーダファイル</Filter>
     </None>
+    <None Include="Resources\Shaders\PlatePoly.hlsli">
+      <Filter>シェーダファイル</Filter>
+    </None>
+    <None Include="Resources\Shaders\Point.hlsli">
+      <Filter>シェーダファイル</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\BasicPS.hlsl">
@@ -641,15 +660,6 @@
       <Filter>シェーダファイル</Filter>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\SpriteVS.hlsl">
-      <Filter>シェーダファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ParticleGS.hlsl">
-      <Filter>シェーダファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ParticlePS.hlsl">
-      <Filter>シェーダファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ParticleVS.hlsl">
       <Filter>シェーダファイル</Filter>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\FBXVS.hlsl">
@@ -686,6 +696,21 @@
       <Filter>シェーダファイル</Filter>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\LinePS.hlsl">
+      <Filter>シェーダファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\PlatePolyPS.hlsl">
+      <Filter>シェーダファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\PlatePolyVS.hlsl">
+      <Filter>シェーダファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\PointGS.hlsl">
+      <Filter>シェーダファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\PointPS.hlsl">
+      <Filter>シェーダファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\PointVS.hlsl">
       <Filter>シェーダファイル</Filter>
     </FxCompile>
   </ItemGroup>

@@ -1,6 +1,7 @@
 #pragma once
 #include <wrl.h>
 #include <d3d12.h>
+#include <d3dx12.h>
 #include <DirectXMath.h>
 #include <vector>
 #include <string>
@@ -52,6 +53,9 @@ private:
 		ComPtr<ID3D12Resource> const_buffer_;
 		D3D12_VERTEX_BUFFER_VIEW vb_view_{};
 		XMMATRIX mat_world_{};
+
+		CD3DX12_CPU_DESCRIPTOR_HANDLE cpu_desc_handle_srv_;
+		CD3DX12_GPU_DESCRIPTOR_HANDLE gpu_desc_handle_srv_;
 
 		XMFLOAT4 color_ = { 1, 1, 1, 1 };
 		XMFLOAT2 position_{};
@@ -124,6 +128,7 @@ public:
 
 public:
 
+	static inline const DrawData &GetDrawData(const ncm_thandle handle) { return sprite_hub_[handle]; }
 	static inline const XMFLOAT2 &GetPos(const ncm_thandle handle) { return sprite_hub_[handle].position_; }
 	static inline const XMFLOAT2 &GetSize(const ncm_thandle handle) { return sprite_hub_[handle].size_; }
 

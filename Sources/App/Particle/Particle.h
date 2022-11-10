@@ -3,9 +3,11 @@
 #include "../../Lib/Object3d/Object3d.h"
 #include "../../Lib/Model/Model.h"
 #include "../../Lib/IndirectObject3d/IndirectObject3d.h"
+#include "../../Lib/PlatePoly/PlatePoly.h"
+#include "../../Lib/Sprite/NcmSprite.h"
 
 // パーティクル一粒の構成要素
-struct ParticleMember
+struct ParticleDesc
 {
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 
@@ -27,6 +29,8 @@ struct ParticleMember
 	bool is_dead_ = false;
 	// 現在フレーム
 	int frame_ = 0;
+	// テクスチャハンドル
+	ncm_thandle tex_handle_;
 };
 
 class Particle
@@ -34,7 +38,9 @@ class Particle
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 
 	std::unique_ptr<Object3d> object_;
-	std::shared_ptr<ParticleMember> particle_;
+	std::shared_ptr<ParticleDesc> particle_;
+
+	std::unique_ptr<PlatePoly> plate_;
 
 public:
 
@@ -43,14 +49,14 @@ public:
 
 public:
 
-	void Initialize(Model *model, const ParticleMember &particle);
+	void Initialize(Model *model, const ParticleDesc &particle);
 	void Finalize();
 	void Update();
 	void Draw();
 	void DebugDraw();
 
 	inline const bool &GetIsDead() { return particle_->is_dead_; }
-	inline void SetParticleValue(const ParticleMember &p) { *particle_ = p; }
+	inline void SetParticleValue(const ParticleDesc &p) { *particle_ = p; }
 };
 
 const DirectX::XMFLOAT3 operator+(const DirectX::XMFLOAT3 &lhs, const DirectX::XMFLOAT3 &rhs);

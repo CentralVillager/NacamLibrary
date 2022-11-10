@@ -30,6 +30,7 @@ void PipelineManager::GeneratePipeline(const PipelineName &p_name)
 	HRESULT result = S_FALSE;
 	ComPtr<ID3DBlob> vs_blob;		// 頂点シェーダオブジェクト
 	ComPtr<ID3DBlob> ps_blob;		// ピクセルシェーダオブジェクト
+	ComPtr<ID3DBlob> gs_blob;		// ジオメトリシェーダオブジェクト
 	ComPtr<ID3DBlob> error_blob;	// エラーオブジェクト
 
 	// 頂点シェーダの読み込みとコンパイル
@@ -68,10 +69,32 @@ void PipelineManager::GeneratePipeline(const PipelineName &p_name)
 		exit(1);
 	}
 
+	if (configs_[(int)(p_name)].GS_name)
+	{
+		// ジオメトリシェーダの読み込みとコンパイル
+		result = D3DCompileFromFile(configs_[(int)(p_name)].GS_name, nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE,
+			"main", "gs_5_0", D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, 0, &gs_blob, &error_blob);
+
+		if (FAILED(result))
+		{
+			// errorBlobからエラー内容をstring型にコピー
+			std::string errstr;
+			errstr.resize(error_blob->GetBufferSize());
+
+			std::copy_n((char *)error_blob->GetBufferPointer(), error_blob->GetBufferSize(), errstr.begin());
+			errstr += "\n";
+
+			// エラー内容を出力ウィンドウに表示
+			OutputDebugStringA(errstr.c_str());
+			exit(1);
+		}
+	}
+
 	// グラフィックスパイプラインの流れを設定
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC gpipeline{};
 	gpipeline.VS = CD3DX12_SHADER_BYTECODE(vs_blob.Get());
 	gpipeline.PS = CD3DX12_SHADER_BYTECODE(ps_blob.Get());
+	if (configs_[(int)(p_name)].GS_name){ gpipeline.GS = CD3DX12_SHADER_BYTECODE(gs_blob.Get()); }
 
 	// サンプルマスク
 	gpipeline.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // 標準設定
@@ -81,6 +104,7 @@ void PipelineManager::GeneratePipeline(const PipelineName &p_name)
 
 	// デプスステンシルステート
 	gpipeline.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
+	if (configs_[(int)(p_name)].GS_name) { gpipeline.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO; }
 
 	// レンダーターゲットのブレンド設定
 	D3D12_RENDER_TARGET_BLEND_DESC blend_desc{};
@@ -258,14 +282,63 @@ void PipelineManager::SetTemplateConfigs()
 	};
 	configs_[(int)(p_name)].primitive_topology_type = D3D12_PRIMITIVE_TOPOLOGY_TYPE_LINE;
 	configs_[(int)(p_name)].primitive_topology = D3D_PRIMITIVE_TOPOLOGY_LINESTRIP;
-	configs_[(int)(p_name)].num_render_targets = 1;
-	configs_[(int)(p_name)].rtv_formats.resize(1);
+	configs_[(int)(p_name)].num_render_targets = 2;
+	configs_[(int)(p_name)].rtv_formats.resize(2);
 	configs_[(int)(p_name)].rtv_formats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+	configs_[(int)(p_name)].rtv_formats[1] = DXGI_FORMAT_R8G8B8A8_UNORM;
 	configs_[(int)(p_name)].desc_range.resize(1);
 	configs_[(int)(p_name)].desc_range[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
 	configs_[(int)(p_name)].root_parameter.resize(2);
 	configs_[(int)(p_name)].root_parameter[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 	configs_[(int)(p_name)].root_parameter[1].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
+
+	// Point
+	p_name = Point;
+	configs_[(int)(p_name)].VS_name = L"Resources/shaders/PointVS.hlsl";
+	configs_[(int)(p_name)].PS_name = L"Resources/shaders/PointPS.hlsl";
+	configs_[(int)(p_name)].GS_name = L"Resources/shaders/PointGS.hlsl";
+	configs_[(int)(p_name)].fill_mode = D3D12_FILL_MODE_WIREFRAME;
+	configs_[(int)(p_name)].input_layout.resize(2);
+	configs_[(int)(p_name)].input_layout =
+	{
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
+	};
+	configs_[(int)(p_name)].primitive_topology_type = D3D12_PRIMITIVE_TOPOLOGY_TYPE_POINT;
+	configs_[(int)(p_name)].primitive_topology = D3D_PRIMITIVE_TOPOLOGY_POINTLIST;
+	configs_[(int)(p_name)].num_render_targets = 2;
+	configs_[(int)(p_name)].rtv_formats.resize(2);
+	configs_[(int)(p_name)].rtv_formats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+	configs_[(int)(p_name)].rtv_formats[1] = DXGI_FORMAT_R8G8B8A8_UNORM;
+	configs_[(int)(p_name)].desc_range.resize(1);
+	configs_[(int)(p_name)].desc_range[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
+	configs_[(int)(p_name)].root_parameter.resize(2);
+	configs_[(int)(p_name)].root_parameter[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
+	configs_[(int)(p_name)].root_parameter[1].InitAsDescriptorTable(1, &configs_[(int)(p_name)].desc_range[0], D3D12_SHADER_VISIBILITY_ALL);
+
+	// PlatePoly
+	p_name = PlatePoly;
+	configs_[(int)(p_name)].VS_name = L"Resources/shaders/PlatePolyVS.hlsl";
+	configs_[(int)(p_name)].PS_name = L"Resources/shaders/PlatePolyPS.hlsl";
+	configs_[(int)(p_name)].fill_mode = D3D12_FILL_MODE_SOLID;
+	configs_[(int)(p_name)].input_layout.resize(3);
+	configs_[(int)(p_name)].input_layout =
+	{
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{ "NORMAL", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
+	};
+	configs_[(int)(p_name)].primitive_topology_type = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+	configs_[(int)(p_name)].primitive_topology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
+	configs_[(int)(p_name)].num_render_targets = 2;
+	configs_[(int)(p_name)].rtv_formats.resize(2);
+	configs_[(int)(p_name)].rtv_formats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+	configs_[(int)(p_name)].rtv_formats[1] = DXGI_FORMAT_R8G8B8A8_UNORM;
+	configs_[(int)(p_name)].desc_range.resize(1);
+	configs_[(int)(p_name)].desc_range[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
+	configs_[(int)(p_name)].root_parameter.resize(2);
+	configs_[(int)(p_name)].root_parameter[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
+	configs_[(int)(p_name)].root_parameter[1].InitAsDescriptorTable(1, &configs_[(int)(p_name)].desc_range[0], D3D12_SHADER_VISIBILITY_ALL);
 
 	// Sprite
 	p_name = Sprite;
@@ -280,9 +353,10 @@ void PipelineManager::SetTemplateConfigs()
 	};
 	configs_[(int)(p_name)].primitive_topology_type = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	configs_[(int)(p_name)].primitive_topology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
-	configs_[(int)(p_name)].num_render_targets = 1;
-	configs_[(int)(p_name)].rtv_formats.resize(1);
+	configs_[(int)(p_name)].num_render_targets = 2;
+	configs_[(int)(p_name)].rtv_formats.resize(2);
 	configs_[(int)(p_name)].rtv_formats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+	configs_[(int)(p_name)].rtv_formats[1] = DXGI_FORMAT_R8G8B8A8_UNORM;
 	configs_[(int)(p_name)].desc_range.resize(1);
 	configs_[(int)(p_name)].desc_range[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
 	configs_[(int)(p_name)].root_parameter.resize(2);
@@ -302,9 +376,10 @@ void PipelineManager::SetTemplateConfigs()
 	};
 	configs_[(int)(p_name)].primitive_topology_type = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	configs_[(int)(p_name)].primitive_topology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	configs_[(int)(p_name)].num_render_targets = 1;
-	configs_[(int)(p_name)].rtv_formats.resize(1);
+	configs_[(int)(p_name)].num_render_targets = 2;
+	configs_[(int)(p_name)].rtv_formats.resize(2);
 	configs_[(int)(p_name)].rtv_formats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+	configs_[(int)(p_name)].rtv_formats[1] = DXGI_FORMAT_R8G8B8A8_UNORM;
 	configs_[(int)(p_name)].desc_range.resize(2);
 	configs_[(int)(p_name)].desc_range[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
 	configs_[(int)(p_name)].desc_range[1].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1);
@@ -327,8 +402,9 @@ void PipelineManager::SetTemplateConfigs()
 	configs_[(int)(p_name)].primitive_topology_type = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	configs_[(int)(p_name)].primitive_topology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	configs_[(int)(p_name)].num_render_targets = 1;
-	configs_[(int)(p_name)].rtv_formats.resize(1);
+	configs_[(int)(p_name)].rtv_formats.resize(2);
 	configs_[(int)(p_name)].rtv_formats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+	configs_[(int)(p_name)].rtv_formats[1] = DXGI_FORMAT_R8G8B8A8_UNORM;
 	configs_[(int)(p_name)].desc_range.resize(2);
 	configs_[(int)(p_name)].desc_range[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
 	configs_[(int)(p_name)].desc_range[1].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1);
@@ -350,9 +426,10 @@ void PipelineManager::SetTemplateConfigs()
 	};
 	configs_[(int)(p_name)].primitive_topology_type = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	configs_[(int)(p_name)].primitive_topology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	configs_[(int)(p_name)].num_render_targets = 1;
-	configs_[(int)(p_name)].rtv_formats.resize(1);
+	configs_[(int)(p_name)].num_render_targets = 2;
+	configs_[(int)(p_name)].rtv_formats.resize(2);
 	configs_[(int)(p_name)].rtv_formats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+	configs_[(int)(p_name)].rtv_formats[1] = DXGI_FORMAT_R8G8B8A8_UNORM;
 	configs_[(int)(p_name)].desc_range.resize(2);
 	configs_[(int)(p_name)].desc_range[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
 	configs_[(int)(p_name)].desc_range[1].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1);

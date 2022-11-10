@@ -12,6 +12,7 @@ Reticle::~Reticle()
 void Reticle::LoadResources()
 {
 	//NcmSprite::LoadTexture((int)(TexNum::Reticle), L"Resources/Textures/reticle.png");
+
 	reticle_ = NcmSprite::LoadTex(L"Resources/Textures/reticle.png");
 }
 

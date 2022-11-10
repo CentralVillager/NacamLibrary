@@ -24,6 +24,11 @@ class NcmUi
 
 public:
 
+	NcmUi();
+	~NcmUi();
+
+public:
+
 	static void Initialize();
 	static void LoadResources();
 	static int GetHandle(std::string name);

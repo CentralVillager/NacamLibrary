@@ -7,6 +7,7 @@
 #include "../Sources/Lib/Input/KeyboardInput.h"
 
 using namespace std;
+using namespace DirectX;
 
 DemoScene::DemoScene()
 {
@@ -22,7 +23,13 @@ DemoScene::DemoScene()
 	//fbx_obj_ = new FbxObject3d();
 
 	texture_ = NcmSprite::LoadTex(L"Resources/Textures/effect1.png");
-	test_ = NcmSprite::LoadTex(L"Resources/TExtures/Temp/orenge_texture.png");
+	test_ = NcmSprite::LoadTex(L"Resources/Textures/Temp/orenge_texture.png");
+
+	point_ = make_unique<Point>();
+	poly_ = make_unique<PlatePoly>();
+
+	grid_ = make_unique<GridRender>();
+	ugrid_ = make_unique<GridRender>();
 }
 
 DemoScene::~DemoScene()
@@ -53,6 +60,14 @@ void DemoScene::Initialize()
 
 	NcmSprite::SetAnchorPoint(test_, { 0.5f, 0.5f });
 	NcmSprite::SetPos(test_, Win32App::FCENTER_);
+
+	PlatePoly::SetCamera(camera_.get());
+	poly_->Initialize();
+	//poly_->SetTexSRVs(texture_);
+
+	GridRender::SetCamera(camera_.get());
+	grid_->Initialize(200, 10, XMFLOAT3(0, -20.0f, 0));
+	ugrid_->Initialize(200, 10, XMFLOAT3(0, +50.0f, 0));
 }
 
 void DemoScene::Finalize()
@@ -89,6 +104,28 @@ void DemoScene::Update()
 	NcmEasing::UpdateValue(ease_);
 
 	NcmSprite::SetPos(texture_, XMFLOAT2(NcmEasing::GetValue(ease_), (float)(Win32App::CENTER_.y)));
+
+	float speed = 0.5f;
+
+	/*if (KeyboardInput::PushKey(DIK_W) || KeyboardInput::PushKey(DIK_S) || KeyboardInput::PushKey(DIK_D) || KeyboardInput::PushKey(DIK_A) || KeyboardInput::PushKey(DIK_R) || KeyboardInput::PushKey(DIK_F))
+	{
+		XMFLOAT3 pos = poly_->GetPos();
+
+		if (KeyboardInput::PushKey(DIK_W)) { pos.y += speed; }
+		else if (KeyboardInput::PushKey(DIK_S)) { pos.y -= speed; }
+		if (KeyboardInput::PushKey(DIK_D)) { pos.x += speed; }
+		else if (KeyboardInput::PushKey(DIK_A)) { pos.x -= speed; }
+		if (KeyboardInput::PushKey(DIK_R)) { pos.z += speed; }
+		else if (KeyboardInput::PushKey(DIK_F)) { pos.z -= speed; }
+
+		poly_->SetPos(pos);
+	}*/
+
+	camera_->TestCameraMove(1.0f);
+	camera_->Update();
+	poly_->Update();
+	grid_->Update();
+	ugrid_->Update();
 }
 
 void DemoScene::Draw()
@@ -96,10 +133,21 @@ void DemoScene::Draw()
 	//fbx_obj_->Draw(cmd_list_.Get());
 
 	using enum PipelineName;
+
+	PreDraw::PreRender(Line);
+	grid_->Draw();
+	ugrid_->Draw();
+
 	PreDraw::PreRender(Sprite);
-	NcmSprite::DrawTex(texture_);
-	NcmSprite::DrawTex(test_, Win32App::FCENTER_);
+	/*NcmSprite::DrawTex(texture_);
+	NcmSprite::DrawTex(test_, Win32App::FCENTER_);*/
+
+	PreDraw::PreRender(PlatePoly);
+	poly_->Draw();
 }
 
 void DemoScene::DebugDraw()
-{}
+{
+	camera_->DebugDraw();
+}
+;

@@ -6,6 +6,9 @@
 #include "../../../Lib/Camera/Camera.h"
 #include "../../../Lib/Fbx/FbxObject3d.h"
 #include "../../../Lib/Fbx/FbxModel.h"
+#include "../../../Lib/Point/Point.h"
+#include "../../../Lib/PlatePoly/PlatePoly.h"
+#include "../../Grid/GridRender.h"
 
 class DemoScene : public AbsScene
 {
@@ -32,6 +35,12 @@ private:
 	int test_;
 
 	bool b = true;
+
+	std::unique_ptr<GridRender> grid_;
+	std::unique_ptr<GridRender> ugrid_;
+
+	std::unique_ptr<Point> point_;
+	std::unique_ptr<PlatePoly> poly_;
 
 public:
 

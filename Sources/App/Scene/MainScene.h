@@ -17,6 +17,7 @@
 #include "../Number/Numbers.h"
 #include "../Ui/NcmUi.h"
 #include "../../App/Unique/Ultimate/UltimateManager.h"
+#include "../../Lib/PlatePoly/PlatePoly.h"
 
 class MainScene : public AbsScene
 {
@@ -44,7 +45,7 @@ private:
 
 	static constexpr UINT GRID_NUM_ = 3;
 	static constexpr float SPEED_ = 2.0f;
-	static constexpr XMFLOAT3 init_pos_ = XMFLOAT3(0, 0, -200.0f);
+	static constexpr XMFLOAT3 init_pos_ = XMFLOAT3(0, 0, -500.0f);
 	static constexpr XMFLOAT3 cam_init_pos_ = XMFLOAT3(0, 10.0f, init_pos_.z);
 
 private:

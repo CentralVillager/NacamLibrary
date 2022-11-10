@@ -162,20 +162,27 @@ namespace NcmMath
 
 	static DirectX::XMFLOAT3 LookAt(const DirectX::XMFLOAT3 &vec)
 	{
-		DirectX::XMVECTOR l_vec = DirectX::XMLoadFloat3(&vec);
+		using namespace DirectX;
+
+		XMVECTOR l_vec = XMLoadFloat3(&vec);
 
 		// äpìxÇãÅÇﬂÇÈ
-		DirectX::XMFLOAT3 angle;
+		XMFLOAT3 angle;
 		angle.x = (float)(atan2(l_vec.m128_f32[1], l_vec.m128_f32[2]));
 		angle.y = (float)(atan2(l_vec.m128_f32[0], l_vec.m128_f32[2]));
 		angle.z = (float)(atan2(l_vec.m128_f32[0], l_vec.m128_f32[1]));
 
 		// ìxêîÇ…ïœä∑
-		ToDegree(&angle.x);
+		/*ToDegree(&angle.x);
 		ToDegree(&angle.y);
-		ToDegree(&angle.z);
+		ToDegree(&angle.z);*/
 
-		return DirectX::XMFLOAT3(angle.x + NcmPI, angle.y + NcmPI, angle.z + NcmPI);
+		XMFLOAT3 degrees{};
+		degrees.x = XMConvertToDegrees(angle.x);
+		degrees.y = XMConvertToDegrees(angle.y);
+		degrees.z = XMConvertToDegrees(angle.z);
+
+		return XMFLOAT3(degrees.x + NcmPI, degrees.y + NcmPI, degrees.z + NcmPI);
 	}
 
 	inline float GetSinWave(const int count, float time)
