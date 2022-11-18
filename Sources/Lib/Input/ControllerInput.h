@@ -18,7 +18,8 @@
 #define DIB_DOWN	18
 #define DIB_LEFT	27
 
-class ControllerInput final : public Singleton<ControllerInput> {
+class ControllerInput final : public Singleton<ControllerInput>
+{
 	friend Singleton<ControllerInput>;
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
@@ -42,7 +43,8 @@ public:
 	/// <summary>
 	/// 左右スティックの判別用
 	/// </summary>
-	enum class StickType {
+	enum class StickType
+	{
 		RIGHT,
 		LEFT
 	};
@@ -50,7 +52,8 @@ public:
 	/// <summary>
 	/// アナログスティックの向いている方向
 	/// </summary>
-	enum class StickWay {
+	enum class StickWay
+	{
 		UP,
 		DOWN,
 		RIGHT,

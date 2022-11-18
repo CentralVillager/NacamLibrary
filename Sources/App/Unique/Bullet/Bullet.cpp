@@ -1,5 +1,6 @@
 #include "Bullet.h"
 #include "../Sources/App/Utility/NcmUtil.h"
+#include "../Sources/App/Math/NcmMath.h"
 
 using namespace DirectX;
 using namespace NcmUtill;

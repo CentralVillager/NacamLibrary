@@ -4,6 +4,7 @@
 #include "../../Math/Easing/NcmEasing.h"
 #include "../../Debug/NcmDebug.h"
 #include "../../../Lib/Input/KeyboardInput.h"
+#include "../Sources/App/Math/NcmMath.h"
 
 using namespace DirectX;
 using namespace Microsoft::WRL;

@@ -2,6 +2,7 @@
 #include "../Sources/App/Utility/NcmUtil.h"
 #include "../Sources/Lib/NacamLib/NacamLib.h"
 #include "../../../Lib/NacamError/NacamError.h"
+#include "../Sources/App/Math/NcmMath.h"
 
 using namespace DirectX;
 using namespace NcmUtill;
@@ -11,7 +12,7 @@ std::unique_ptr<Model> Missile::model_ = nullptr;
 std::unique_ptr<Model> Missile::coll_model_ = nullptr;
 
 Missile::Missile()
-	: AbsUniqueObj(1.0f, 1.0f),
+	: AbsUniqueObj(3.0f, 1.0f),
 	emitter_(std::make_unique<Emitter>()),
 	mi_args_(),
 	min_dist_(),
@@ -415,6 +416,69 @@ void Missile::HomingTarget(EnemiesList &enemies)
 
 	/*XMFLOAT3 rot = obj_->GetRot();
 	rot = LookAt(mi_args_.vel);*/
+	obj_->SetRot(LookAt(mi_args_.vel));
+}
+
+void Missile::TestHomingTarget(EnemiesList &enemies)
+{
+	// 位置を取得
+	XMFLOAT3 pos = obj_->GetPos();
+
+	// 追尾したい敵の添字を検索
+	int index = enemies.GetEnemyIndexWithID(mi_args_.tgt_id);
+
+	// 居なかったら
+	if (index == (int)(NacamError::NonDetected))
+	{
+		// 以前の速度をそのまま加算
+		pos.x *= mi_args_.vel.x;
+		pos.y *= mi_args_.vel.y;
+		pos.z *= mi_args_.vel.z;
+
+		// 位置を反映
+		obj_->SetPos(pos);
+
+		// その後の処理をスキップ
+		return;
+	}
+
+	// 判明した添字をもとに敵の位置を特定
+	XMVECTOR tgt_vec = XMLoadFloat3(&enemies.GetPos(index));
+
+	// ミサイルのベクトルをXMVECTORに変換
+	XMVECTOR mi_vec = XMLoadFloat3(&obj_->GetPos());
+
+	// ふたつの座標を結ぶベクトルを計算
+	XMVECTOR vec = tgt_vec - mi_vec;
+
+	// 正規化
+	XMVECTOR dist_vec = XMVector3Normalize(vec);
+
+	{
+		// 現ベクトルと回頭先ベクトルとの差分を取る
+		XMVECTOR differ_vec = dist_vec - mi_vec;
+
+		// 正規化
+		XMVECTOR norm_vec = XMVector3Normalize(differ_vec);
+	}
+
+	// 速度を乗算
+	dist_vec.m128_f32[0] *= speed_;
+	dist_vec.m128_f32[1] *= speed_;
+	dist_vec.m128_f32[2] *= speed_;
+
+	// その値を格納
+	XMStoreFloat3(&mi_args_.vel, dist_vec);
+
+	// 速度を加算
+	pos.x += mi_args_.vel.x;
+	pos.y += mi_args_.vel.y;
+	pos.z += mi_args_.vel.z;
+
+	// 位置を更新 
+	obj_->SetPos(pos);
+
+	// 回転角を更新
 	obj_->SetRot(LookAt(mi_args_.vel));
 }
 

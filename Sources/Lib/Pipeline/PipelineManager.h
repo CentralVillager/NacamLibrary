@@ -42,6 +42,7 @@ struct PipelineSet
 /// </summary>
 struct PipelineConfigs
 {
+	LPCWSTR pipeline_name;
 	LPCWSTR VS_name;
 	LPCWSTR PS_name;
 	LPCWSTR GS_name;

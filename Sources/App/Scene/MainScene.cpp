@@ -90,14 +90,14 @@ void MainScene::Initialize()
 	lockon_sys_->Initialize(player_.get(), ene_list_.get());
 	missile_mgr_->Initialize(lockon_sys_.get());
 	player_->Initialize(missile_mgr_.get(), lockon_sys_.get(), ult_.get(), init_pos_);
-	//grid_->Initialize(200, 10, XMFLOAT3(0, -20.0f, 0));
+	grid_->Initialize(200, 10, XMFLOAT3(0, -20.0f, 0));
 	reticle_->Initialize();
 	numbers_->Initialize();
 	ult_->Initialize();
-	for (UINT i = 0; i < grid_floor_.size(); i++)
+	/*for (UINT i = 0; i < grid_floor_.size(); i++)
 	{
 		grid_floor_[i].Initialize(200, 10, XMFLOAT3(0, 0, (float)(i) * 1000));
-	}
+	}*/
 
 	// enemyの生成
 	ene_list_->AddTemplateSet();
@@ -265,17 +265,18 @@ void MainScene::Update()
 	}
 
 	// 各オブジェクト更新処理
+	camera_->Update();
 	player_->Update();
 	ene_list_->Update();
-	//grid_->Update();
+	grid_->Update();
 	missile_mgr_->Update();
 	lockon_sys_->Update();
 	ult_->Update();
-	for (auto &i : grid_floor_)
+	/*for (auto &i : grid_floor_)
 	{
 		i.MoveMinusZ();
 		i.Update();
-	}
+	}*/
 
 	// ミサイル追尾処理
 	missile_mgr_->HomingTarget(*ene_list_);
@@ -303,11 +304,11 @@ void MainScene::Draw()
 	using enum PipelineName;
 
 	PreDraw::PreRender(Line);
-	for (auto &i : grid_floor_)
+	/*for (auto &i : grid_floor_)
 	{
 		i.Draw();
-	}
-	//grid_->Draw();
+	}*/
+	grid_->Draw();
 
 	//PreDraw::PreRender(Object3d);
 	PreDraw::PreRender(Object3d_WireFrame);
@@ -464,6 +465,4 @@ bool MainScene::CheckDoDisplay()
 
 		return false;
 	}
-
-	return false;
 }

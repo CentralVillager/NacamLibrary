@@ -162,6 +162,7 @@ void MissileManager::HomingTarget(EnemiesList &enemies)
 	for (auto &i : missile_list_)
 	{
 		i.HomingTarget(enemies);
+		//i.TestHomingTarget(enemies);
 	}
 }
 

@@ -59,16 +59,16 @@ void Camera::Update()
 
 	HRESULT result = S_FALSE;
 
-	//XMMATRIX mat_rot, mat_trans;
-	//mat_rot = XMMatrixIdentity();
-	//mat_rot *= XMMatrixRotationZ(XMConvertToRadians(0));
-	//mat_rot *= XMMatrixRotationX(XMConvertToRadians(0));
-	//mat_rot *= XMMatrixRotationY(XMConvertToRadians(10.0f));
-	//mat_trans = XMMatrixTranslation(100.0f, 0, 0);
+	/*XMMATRIX mat_rot, mat_trans;
+	mat_rot = XMMatrixIdentity();
+	mat_rot *= XMMatrixRotationZ(XMConvertToRadians(0));
+	mat_rot *= XMMatrixRotationX(XMConvertToRadians(0));
+	mat_rot *= XMMatrixRotationY(XMConvertToRadians(10.0f));
+	mat_trans = XMMatrixTranslation(100.0f, 0, 0);*/
 
 	//mat_world_ = XMMatrixIdentity();
-	////XMMATRIX mat_rot = XMMatrixTranspose(mat_view_);
-	//mat_world_ *= mat_rot;
+	//XMMATRIX mat_rot = XMMatrixTranspose(mat_view_);
+	//mat_world_ *= mat_rot_;
 	//mat_world_ *= mat_trans;
 
 	MatrixConstBufferData *matrix_const_map = nullptr;
@@ -96,7 +96,7 @@ void Camera::BasicCameraMoveTrack(float speed)
 	if (KeyboardInput::PushKey(DIK_LEFT)) { MoveEye({ +speed, 0.0f, 0.0f }); }
 	if (KeyboardInput::PushKey(DIK_RIGHT)) { MoveEye({ -speed, 0.0f, 0.0f }); }
 
-	Update();
+	//Update();
 }
 
 void Camera::BasicCameraMove(float speed)
@@ -113,7 +113,7 @@ void Camera::BasicCameraMove(float speed)
 		else if (KeyboardInput::PushKey(DIK_F)) { MoveCameraTrack({ 0.0f, 0.0f, -speed }); }
 	}
 
-	Update();
+	//Update();
 }
 
 void Camera::MoveXY(float speed)
@@ -127,14 +127,14 @@ void Camera::MoveXY(float speed)
 		else if (KeyboardInput::PushKey(DIK_A)) { MoveCameraTrack({ -speed, 0.0f, 0.0f }); }
 	}
 
-	Update();
+	//Update();
 }
 
 void Camera::TestCameraMove(float speed)
 {
 	if (KeyboardInput::PushKey(DIK_W) || KeyboardInput::PushKey(DIK_S) || KeyboardInput::PushKey(DIK_D) || KeyboardInput::PushKey(DIK_A) || KeyboardInput::PushKey(DIK_R) || KeyboardInput::PushKey(DIK_F))
 	{
-		if (KeyboardInput::PushKey(DIK_W)) { MoveCameraTrack({ 0.0f, +speed, 0.0f }); }
+		/*if (KeyboardInput::PushKey(DIK_W)) { MoveCameraTrack({ 0.0f, +speed, 0.0f }); }
 		else if (KeyboardInput::PushKey(DIK_S)) { MoveCameraTrack({ 0.0f, -speed, 0.0f }); }
 
 		if (KeyboardInput::PushKey(DIK_D)) { MoveCameraTrack({ +speed, 0.0f, 0.0f }); }
@@ -142,37 +142,80 @@ void Camera::TestCameraMove(float speed)
 
 		if (KeyboardInput::PushKey(DIK_R)) { MoveCameraTrack({ 0.0f, 0.0f, +speed }); }
 		else if (KeyboardInput::PushKey(DIK_F)) { MoveCameraTrack({ 0.0f, 0.0f, -speed }); }
+	*/
+		XMFLOAT3 pos{};
+
+		if (KeyboardInput::PushKey(DIK_W)) { pos.y += speed; }
+		else if (KeyboardInput::PushKey(DIK_S)) { pos.y += -speed; }
+
+		if (KeyboardInput::PushKey(DIK_D)) { pos.x += speed; }
+		else if (KeyboardInput::PushKey(DIK_A)) { pos.x += -speed; }
+
+		if (KeyboardInput::PushKey(DIK_R)) { pos.z += speed; }
+		else if (KeyboardInput::PushKey(DIK_F)) { pos.z += -speed; }
 	}
 
-	XMFLOAT3 result = target_;
+	/*XMFLOAT3 result = target_;
 	float rad = 0;
+	XMFLOAT3 rot{};
 	if (KeyboardInput::PushKey(DIK_UP))
 	{
-		angle_.y += speed;
-		rad = XMConvertToRadians(angle_.y);
-		result.y += cos(rad);
-		result.z -= sin(rad);
+
 	}
 	if (KeyboardInput::PushKey(DIK_DOWN))
 	{
-		angle_.y -= speed;
-		rad = XMConvertToRadians(angle_.y);
-		result.y -= cos(rad);
-		result.z += sin(rad);
+
 	}
 	if (KeyboardInput::PushKey(DIK_RIGHT))
 	{
-		angle_.x += speed;
-		rad = XMConvertToRadians(angle_.x);
-		result.x += cos(rad);
-		result.z -= sin(rad);
+		rot.x += speed;
 	}
 	if (KeyboardInput::PushKey(DIK_LEFT))
 	{
-		angle_.x -= speed;
-		rad = XMConvertToRadians(angle_.x);
-		result.x -= cos(rad);
-		result.z += sin(rad);
+		rot.x += -speed;
+	}*/
+
+	if (KeyboardInput::PushKey(DIK_UP) || KeyboardInput::PushKey(DIK_DOWN) || KeyboardInput::PushKey(DIK_RIGHT) || KeyboardInput::PushKey(DIK_LEFT))
+	{
+		XMFLOAT3 result = target_;
+		float rad = 0;
+
+		if (KeyboardInput::PushKey(DIK_UP))
+		{
+			angle_.y += speed;
+			rad = XMConvertToRadians(angle_.y);
+			result.y += cos(rad);
+			result.z -= sin(rad);
+		}
+		if (KeyboardInput::PushKey(DIK_DOWN))
+		{
+			angle_.y -= speed;
+			rad = XMConvertToRadians(angle_.y);
+			result.y -= cos(rad);
+			result.z += sin(rad);
+		}
+		if (KeyboardInput::PushKey(DIK_RIGHT))
+		{
+			angle_.x += speed;
+			rad = XMConvertToRadians(angle_.x);
+			result.x += cos(rad);
+			result.z -= sin(rad);
+		}
+		if (KeyboardInput::PushKey(DIK_LEFT))
+		{
+			angle_.x -= speed;
+			rad = XMConvertToRadians(angle_.x);
+			result.x -= cos(rad);
+			result.z += sin(rad);
+		}
+
+		result.x = eye_.x + 5 * sin(rad);
+		result.y = eye_.y;
+		result.z = eye_.z + 5 * cos(rad);
+
+		target_.x = result.x;
+		target_.y = result.y;
+		target_.z = result.z;
 	}
 
 	/*XMFLOAT2 rad{};
@@ -185,10 +228,6 @@ void Camera::TestCameraMove(float speed)
 
 	/*XMVECTOR norm = XMVector3Normalize(XMLoadFloat3(&result));
 	XMStoreFloat3(&result, norm);*/
-
-	target_.x = result.x;
-	target_.y = result.y;
-	target_.z = result.z;
 }
 
 void Camera::ResetCamera()
@@ -199,7 +238,7 @@ void Camera::ResetCamera()
 
 void Camera::DebugDraw()
 {
-	ImGui::DragFloat("FOV", &fov_, 0.1f, 0.1f, 179.9f);
+	ImGui::DragFloat("FOV", &fov_, 0.1f, 0.1f, 179.99f);
 	ImGui::Text("target : (%f, %f, %f)", target_.x, target_.y, target_.z);
 }
 
@@ -245,14 +284,22 @@ void Camera::UpdateViewMatrix()
 	//（ワールド座標系でのカメラの右方向、上方向、前方向）
 
 	// カメラ回転行列
-	XMMATRIX mat_camera_rot;
+	//XMMATRIX mat_camera_rot;
+	//// カメラ座標系→ワールド座標系の変換行列
+	//mat_camera_rot.r[0] = camera_axis_x;
+	//mat_camera_rot.r[1] = camera_axis_y;
+	//mat_camera_rot.r[2] = camera_axis_z;
+	//mat_camera_rot.r[3] = XMVectorSet(0, 0, 0, 1);
+	//// 転置により逆行列（逆回転）を計算
+	//mat_view_ = XMMatrixTranspose(mat_camera_rot);
+	// 
 	// カメラ座標系→ワールド座標系の変換行列
-	mat_camera_rot.r[0] = camera_axis_x;
-	mat_camera_rot.r[1] = camera_axis_y;
-	mat_camera_rot.r[2] = camera_axis_z;
-	mat_camera_rot.r[3] = XMVectorSet(0, 0, 0, 1);
+	mat_rot_.r[0] = camera_axis_x;
+	mat_rot_.r[1] = camera_axis_y;
+	mat_rot_.r[2] = camera_axis_z;
+	mat_rot_.r[3] = XMVectorSet(0, 0, 0, 1);
 	// 転置により逆行列（逆回転）を計算
-	mat_view_ = XMMatrixTranspose(mat_camera_rot);
+	mat_view_ = XMMatrixTranspose(mat_rot_);
 
 	// 視点座標に-1を掛けた座標
 	XMVECTOR reverse_eye_pos = XMVectorNegate(eye_pos);

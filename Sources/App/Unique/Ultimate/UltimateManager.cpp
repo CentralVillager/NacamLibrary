@@ -42,7 +42,7 @@ void UltimateManager::Initialize()
 	NcmEaseDesc desc{};
 	desc.ease_type = NcmEaseType::OutQuad;
 	desc.init_value = 0;
-	desc.total_move = value_dist_;
+	desc.total_move = (float)(value_dist_);
 	desc.t_rate = 0.03f;
 	ease_ = NcmEasing::RegisterEaseData(desc);
 }
@@ -55,9 +55,9 @@ void UltimateManager::Update()
 	if (is_change_)
 	{
 		// 現％を初期値とする
-		NcmEasing::SetInitValue(ease_, currect_ult_per_);
+		NcmEasing::SetInitValue(ease_, (float)(currect_ult_per_));
 		uint32_t total_move = value_dist_ - currect_ult_per_;
-		NcmEasing::SetTotalMove(ease_, total_move);
+		NcmEasing::SetTotalMove(ease_, (float)(total_move));
 
 		// 遷移中フラグを立てる
 		is_continuing = true;
@@ -73,7 +73,7 @@ void UltimateManager::Update()
 		NcmEasing::UpdateValue(ease_);
 
 		// その値を代入する
-		currect_ult_per_ = NcmEasing::GetValue(ease_);
+		currect_ult_per_ = (uint32_t)(NcmEasing::GetValue(ease_));
 
 		// 目標値まで遷移したら
 		if (currect_ult_per_ >= value_dist_)

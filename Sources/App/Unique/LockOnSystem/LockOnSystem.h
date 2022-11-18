@@ -66,7 +66,7 @@ public:
 	inline const std::vector<TargetData> &GetTgtData() { return tgt_datas_; }
 	inline const std::list<TargetData> &GetTgtList() { return tgt_list_; }
 	inline static const uint32_t &GetCurrentTgtNum() { return current_tgt_num_; }
-	const uint32_t &GetMaxTgtNum();
+	const uint32_t GetMaxTgtNum();
 
 	inline static const void SetMaxTgtNum(uint32_t n) { max_tgt_num_ = n; }
 

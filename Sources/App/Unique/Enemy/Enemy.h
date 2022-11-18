@@ -17,7 +17,7 @@ class Enemy : public AbsUniqueObj
 	static int id_counter_;
 	static Player *player_;
 
-	int id_;
+	uint32_t id_;
 
 	int count_;
 
@@ -39,7 +39,7 @@ public:
 	static void LoadResources();
 	static void ImportPtr(Player *player);
 
-	const int &GetID() { return id_; }
+	const uint32_t &GetID() { return id_; }
 	const std::shared_ptr<BulletList> &GetBulletList() { return bullets_; }
 
 	void Initialize(const XMFLOAT3 &pos);

@@ -34,13 +34,16 @@ void PlatePoly::StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList
 	cmd_list_ = cmd_list;
 }
 
-void PlatePoly::Initialize()
+void PlatePoly::Initialize(ncm_thandle tex_handle)
 {
 	HRESULT result;
 
 	// 初期化
 	InitializeDescriptorHeap();
-	CreateVertexBuffer();
+	// テクスチャのサイズを取得
+	XMFLOAT2 size = NcmSprite::GetSize(tex_handle);
+	// 頂点バッファの生成
+	CreateVertexBuffer(size);
 
 	// 定数バッファの生成
 	result = device_->CreateCommittedResource(
@@ -127,16 +130,30 @@ void PlatePoly::InitializeDescriptorHeap()
 	descriptor_handle_incre_size_ = device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 }
 
-void PlatePoly::CreateVertexBuffer()
+void PlatePoly::CreateVertexBuffer(XMFLOAT2 size)
 {
 	HRESULT result;
 
-	VertexPos plate_vert[] =
+	/*VertexPos plate_vert[] =
 	{
 		{{-0.5f, -0.5f, 0.0f}, {0, 0, 0}, {0, 0}},
 		{{-0.5f, +0.5f, 0.0f}, {0, 0, 0}, {0, 0}},
 		{{+0.5f, -0.5f, 0.0f}, {0, 0, 0}, {0, 0}},
 		{{+0.5f, +0.5f, 0.0f}, {0, 0, 0}, {0, 0}},
+	};*/
+
+	float left, right, top, bottom;
+	left = -(size.x / 2.0f) / size.x;
+	right = (size.x / 2.0f) / size.x;
+	top = -(size.y / 2.0f) / size.y;
+	bottom = (size.y / 2.0f) / size.y;
+
+	VertexPos plate_vert[] =
+	{
+		{{left, top, 0},		{left, top}},
+		{{left, bottom, 0},		{left, bottom}},
+		{{right, top, 0},		{right, top}},
+		{{right, bottom, 0},	{right, bottom}},
 	};
 
 	const UINT vertex_buffer_size = sizeof(plate_vert);

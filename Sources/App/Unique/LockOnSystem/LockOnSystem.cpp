@@ -72,11 +72,11 @@ void LockOnSystem::DebugDraw()
 	ImGui::Text("target_num : %d", current_tgt_num_);
 }
 
-const uint32_t &LockOnSystem::GetMaxTgtNum()
+const uint32_t LockOnSystem::GetMaxTgtNum()
 {
 	if (enemies_ptr_->GetEnemies().size() < max_tgt_num_)
 	{
-		return enemies_ptr_->GetEnemies().size();
+		return (uint32_t)(enemies_ptr_->GetEnemies().size());
 	}
 	else
 	{

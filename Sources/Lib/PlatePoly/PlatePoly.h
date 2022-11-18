@@ -17,7 +17,7 @@ class PlatePoly
 	struct VertexPos
 	{
 		XMFLOAT3 pos;
-		XMFLOAT3 normal;
+		//XMFLOAT3 normal;
 		XMFLOAT2 uv;
 	};
 
@@ -46,7 +46,7 @@ private:
 
 	// シェーダリソースビューのハンドル(CPU)
 	CD3DX12_CPU_DESCRIPTOR_HANDLE cpu_desc_handle_srv_;
-	// シェーダリソースビューのハンドル(CPU)
+	// シェーダリソースビューのハンドル(GPU)
 	CD3DX12_GPU_DESCRIPTOR_HANDLE gpu_desc_handle_srv_;
 	// 頂点バッファ
 	ComPtr<ID3D12Resource> vert_buff_;
@@ -81,16 +81,16 @@ public:
 	inline const XMFLOAT3 &GetPos() { return pos_; }
 	inline const float &GetScale() { return scale_; }
 	inline void SetPos(const XMFLOAT3 &pos) { pos_ = pos; }
-	inline void SetScale(const float &scale) { scale_ = scale; }
+	inline void SetScale(const float scale) { scale_ = scale; }
 
 public:
 
-	void Initialize();
+	void Initialize(ncm_thandle tex_handle);
 	void Update();
 	void Draw();
 
 private:
 
 	void InitializeDescriptorHeap();
-	void CreateVertexBuffer();
+	void CreateVertexBuffer(XMFLOAT2 size);
 };

@@ -94,7 +94,7 @@ void PipelineManager::GeneratePipeline(const PipelineName &p_name)
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC gpipeline{};
 	gpipeline.VS = CD3DX12_SHADER_BYTECODE(vs_blob.Get());
 	gpipeline.PS = CD3DX12_SHADER_BYTECODE(ps_blob.Get());
-	if (configs_[(int)(p_name)].GS_name){ gpipeline.GS = CD3DX12_SHADER_BYTECODE(gs_blob.Get()); }
+	if (configs_[(int)(p_name)].GS_name) { gpipeline.GS = CD3DX12_SHADER_BYTECODE(gs_blob.Get()); }
 
 	// サンプルマスク
 	gpipeline.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // 標準設定
@@ -167,14 +167,18 @@ void PipelineManager::GeneratePipeline(const PipelineName &p_name)
 	// バージョン自動判定のシリアライズ
 	ComPtr<ID3DBlob> root_sig_blob;
 	result = D3DX12SerializeVersionedRootSignature(&root_signature_desc, D3D_ROOT_SIGNATURE_VERSION_1_0, &root_sig_blob, &error_blob);
+	assert(SUCCEEDED(result));
 
 	// ルートシグネチャの生成
 	result = device_->CreateRootSignature(0, root_sig_blob->GetBufferPointer(), root_sig_blob->GetBufferSize(), IID_PPV_ARGS(&pipeline_container_[(int)(p_name)].root_signature));
+	assert(SUCCEEDED(result));
 
 	gpipeline.pRootSignature = pipeline_container_[(int)(p_name)].root_signature.Get();
 
 	// グラフィックスパイプラインの生成
 	result = device_->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipeline_container_[(int)(p_name)].pipeline_state));
+	pipeline_container_[(int)(p_name)].pipeline_state->SetName(configs_[(int)(p_name)].pipeline_name);
+	assert(SUCCEEDED(result));
 
 	pipeline_container_[(int)(p_name)].primitive_topology = configs_[(int)(p_name)].primitive_topology;
 }
@@ -185,6 +189,7 @@ void PipelineManager::SetTemplateConfigs()
 
 	// Object3d
 	PipelineName p_name = Object3d;
+	configs_[(int)(p_name)].pipeline_name = L"Object3d";
 	configs_[(int)(p_name)].VS_name = L"Resources/shaders/BasicVS.hlsl";
 	configs_[(int)(p_name)].PS_name = L"Resources/shaders/BasicPS.hlsl";
 	configs_[(int)(p_name)].fill_mode = D3D12_FILL_MODE_SOLID;
@@ -210,6 +215,7 @@ void PipelineManager::SetTemplateConfigs()
 
 	// Object3d_WireFrame
 	p_name = Object3d_WireFrame;
+	configs_[(int)(p_name)].pipeline_name = L"Object3d_WireFrame";
 	configs_[(int)(p_name)].VS_name = configs_[(int)(Object3d)].VS_name;
 	configs_[(int)(p_name)].PS_name = configs_[(int)(Object3d)].PS_name;
 	configs_[(int)(p_name)].fill_mode = D3D12_FILL_MODE_WIREFRAME;
@@ -229,6 +235,7 @@ void PipelineManager::SetTemplateConfigs()
 
 	// IndirectObject3d
 	p_name = IndirectObject3d;
+	configs_[(int)(p_name)].pipeline_name = L"IndirectObject3d";
 	configs_[(int)(p_name)].VS_name = L"Resources/shaders/IndirectVS.hlsl";
 	configs_[(int)(p_name)].PS_name = L"Resources/shaders/IndirectPS.hlsl";
 	configs_[(int)(p_name)].fill_mode = D3D12_FILL_MODE_SOLID;
@@ -254,6 +261,7 @@ void PipelineManager::SetTemplateConfigs()
 
 	// IndirectObject3d_WireFrame
 	p_name = IndirectObject3d_WireFrame;
+	configs_[(int)(p_name)].pipeline_name = L"IndirectObject3d_WireFrame";
 	configs_[(int)(p_name)].VS_name = configs_[(int)(IndirectObject3d)].VS_name;
 	configs_[(int)(p_name)].PS_name = configs_[(int)(IndirectObject3d)].PS_name;
 	configs_[(int)(p_name)].fill_mode = D3D12_FILL_MODE_WIREFRAME;
@@ -273,6 +281,7 @@ void PipelineManager::SetTemplateConfigs()
 
 	// Line
 	p_name = Line;
+	configs_[(int)(p_name)].pipeline_name = L"Line";
 	configs_[(int)(p_name)].VS_name = L"Resources/shaders/LineVS.hlsl";
 	configs_[(int)(p_name)].PS_name = L"Resources/shaders/LinePS.hlsl";
 	configs_[(int)(p_name)].fill_mode = D3D12_FILL_MODE_SOLID;
@@ -294,6 +303,7 @@ void PipelineManager::SetTemplateConfigs()
 
 	// Point
 	p_name = Point;
+	configs_[(int)(p_name)].pipeline_name = L"Point";
 	configs_[(int)(p_name)].VS_name = L"Resources/shaders/PointVS.hlsl";
 	configs_[(int)(p_name)].PS_name = L"Resources/shaders/PointPS.hlsl";
 	configs_[(int)(p_name)].GS_name = L"Resources/shaders/PointGS.hlsl";
@@ -318,6 +328,7 @@ void PipelineManager::SetTemplateConfigs()
 
 	// PlatePoly
 	p_name = PlatePoly;
+	configs_[(int)(p_name)].pipeline_name = L"PlatePoly";
 	configs_[(int)(p_name)].VS_name = L"Resources/shaders/PlatePolyVS.hlsl";
 	configs_[(int)(p_name)].PS_name = L"Resources/shaders/PlatePolyPS.hlsl";
 	configs_[(int)(p_name)].fill_mode = D3D12_FILL_MODE_SOLID;
@@ -342,6 +353,7 @@ void PipelineManager::SetTemplateConfigs()
 
 	// Sprite
 	p_name = Sprite;
+	configs_[(int)(p_name)].pipeline_name = L"Sprite";
 	configs_[(int)(p_name)].VS_name = L"Resources/shaders/SpriteVS.hlsl";
 	configs_[(int)(p_name)].PS_name = L"Resources/shaders/SpritePS.hlsl";
 	configs_[(int)(p_name)].fill_mode = D3D12_FILL_MODE_SOLID;
@@ -365,6 +377,7 @@ void PipelineManager::SetTemplateConfigs()
 
 	// PostEffect
 	p_name = PostEffect;
+	configs_[(int)(p_name)].pipeline_name = L"PostEffect";
 	configs_[(int)(p_name)].VS_name = L"Resources/shaders/PostEffectVS.hlsl";
 	configs_[(int)(p_name)].PS_name = L"Resources/shaders/PostEffectPS.hlsl";
 	configs_[(int)(p_name)].fill_mode = D3D12_FILL_MODE_SOLID;
@@ -390,6 +403,7 @@ void PipelineManager::SetTemplateConfigs()
 
 	// AverageBlur
 	p_name = AverageBlur;
+	configs_[(int)(p_name)].pipeline_name = L"AverageBlur";
 	configs_[(int)(p_name)].VS_name = L"Resources/shaders/BlurVS.hlsl";
 	configs_[(int)(p_name)].PS_name = L"Resources/shaders/BlurPS.hlsl";
 	configs_[(int)(p_name)].fill_mode = D3D12_FILL_MODE_SOLID;
@@ -401,7 +415,7 @@ void PipelineManager::SetTemplateConfigs()
 	};
 	configs_[(int)(p_name)].primitive_topology_type = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	configs_[(int)(p_name)].primitive_topology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	configs_[(int)(p_name)].num_render_targets = 1;
+	configs_[(int)(p_name)].num_render_targets = 2;
 	configs_[(int)(p_name)].rtv_formats.resize(2);
 	configs_[(int)(p_name)].rtv_formats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
 	configs_[(int)(p_name)].rtv_formats[1] = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -415,6 +429,7 @@ void PipelineManager::SetTemplateConfigs()
 
 	// GaussianBlur
 	p_name = GaussianBlur;
+	configs_[(int)(p_name)].pipeline_name = L"GaussianBlur";
 	configs_[(int)(p_name)].VS_name = L"Resources/shaders/BlurVS.hlsl";
 	configs_[(int)(p_name)].PS_name = L"Resources/shaders/GaussianBlurPS.hlsl";
 	configs_[(int)(p_name)].fill_mode = D3D12_FILL_MODE_SOLID;

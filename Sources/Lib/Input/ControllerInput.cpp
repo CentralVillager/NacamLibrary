@@ -7,13 +7,13 @@ Microsoft::WRL::ComPtr<IDirectInputDevice8> ControllerInput::dev_controller_;
 DIJOYSTATE ControllerInput::pad_data_;
 DIJOYSTATE ControllerInput::old_pad_data_;
 
-void ControllerInput::Initialize() {
-
+void ControllerInput::Initialize()
+{
 	ControllerInput::dinput_ = InputManager::GetDirectInput();
 
 	// コントローラデバイスが生成されなかったら処理を抜ける
-	if (!MakeControllerDevice()) {
-
+	if (!MakeControllerDevice())
+	{
 		return;
 	}
 
@@ -22,8 +22,8 @@ void ControllerInput::Initialize() {
 	SetExclusiveControlLevel();
 }
 
-void ControllerInput::Update() {
-
+void ControllerInput::Update()
+{
 	HRESULT result;
 
 	// コントローラーが接続されていなかったらスルー
@@ -41,8 +41,8 @@ void ControllerInput::Update() {
 	result = dev_controller_->GetDeviceState(sizeof(DIJOYSTATE), &pad_data_);
 }
 
-void ControllerInput::Finalize() {
-
+void ControllerInput::Finalize()
+{
 	HRESULT result;
 
 	if (!dev_controller_) { return; }
@@ -52,49 +52,60 @@ void ControllerInput::Finalize() {
 	dinput_->Release();
 }
 
-bool ControllerInput::LStickLeft() {
+bool ControllerInput::LStickLeft()
+{
 	if (pad_data_.lX < -DEAD_ZONE_) { return true; }
 	return false;
 }
 
-bool ControllerInput::LStickRight() {
+bool ControllerInput::LStickRight()
+{
 	if (pad_data_.lX > DEAD_ZONE_) { return true; }
 	return false;
 }
 
-bool ControllerInput::LStickUp() {
+bool ControllerInput::LStickUp()
+{
 	if (pad_data_.lY < -DEAD_ZONE_) { return true; }
 	return false;
 }
 
-bool ControllerInput::LStickDown() {
+bool ControllerInput::LStickDown()
+{
 	if (pad_data_.lY > DEAD_ZONE_) { return true; }
 	return false;
 }
 
-bool ControllerInput::RStickLeft() {
+bool ControllerInput::RStickLeft()
+{
 	if (pad_data_.lRx < -DEAD_ZONE_) { return true; }
 	return false;
 }
 
-bool ControllerInput::RStickRight() {
+bool ControllerInput::RStickRight()
+{
 	if (pad_data_.lRx > DEAD_ZONE_) { return true; }
 	return false;
 }
 
-bool ControllerInput::RStickUp() {
+bool ControllerInput::RStickUp()
+{
 	if (pad_data_.lRy < -DEAD_ZONE_) { return true; }
 	return false;
 }
 
-bool ControllerInput::RStickDown() {
+bool ControllerInput::RStickDown()
+{
 	if (pad_data_.lRy > DEAD_ZONE_) { return true; }
 	return false;
 }
 
-bool ControllerInput::PushCrossKey(BYTE angle) {
-	if (pad_data_.rgdwPOV[0] != 0xffffffff) {
-		if (pad_data_.rgdwPOV[0] == angle * 100) {
+bool ControllerInput::PushCrossKey(BYTE angle)
+{
+	if (pad_data_.rgdwPOV[0] != 0xffffffff)
+	{
+		if (pad_data_.rgdwPOV[0] == angle * 100)
+		{
 			return true;
 		}
 	}
@@ -102,57 +113,68 @@ bool ControllerInput::PushCrossKey(BYTE angle) {
 	return false;
 }
 
-bool ControllerInput::TriggerCrossKey(BYTE angle) {
+bool ControllerInput::TriggerCrossKey(BYTE angle)
+{
 	return false;
 }
 
-bool ControllerInput::ReleaseCrossKey(BYTE angle) {
+bool ControllerInput::ReleaseCrossKey(BYTE angle)
+{
 	return false;
 }
 
-bool ControllerInput::PushButton(BYTE button) {
+bool ControllerInput::PushButton(BYTE button)
+{
 	if (pad_data_.rgbButtons[button] & 0x80) { return true; }
 	return false;
 }
 
-bool ControllerInput::TriggerButton(BYTE button) {
+bool ControllerInput::TriggerButton(BYTE button)
+{
 	if (!(old_pad_data_.rgbButtons[button] & 0x80)
-		&& pad_data_.rgbButtons[button] & 0x80) {
+		&& pad_data_.rgbButtons[button] & 0x80)
+	{
 		return true;
 	}
 
 	return false;
 }
 
-bool ControllerInput::ReleaseButton(BYTE button) {
+bool ControllerInput::ReleaseButton(BYTE button)
+{
 	if (old_pad_data_.rgbButtons[button] & 0x80
-		&& !(pad_data_.rgbButtons[button] & 0x80)) {
+		&& !(pad_data_.rgbButtons[button] & 0x80))
+	{
 		return true;
 	}
 
 	return false;
 }
 
-bool ControllerInput::MakeControllerDevice() {
+bool ControllerInput::MakeControllerDevice()
+{
 	HRESULT result;
 	result = dinput_->CreateDevice(GUID_Joystick, &dev_controller_, NULL);// GUID_Joystick, GUID_SysMouse...
 
-	if (dev_controller_) {
-
+	if (dev_controller_)
+	{
 		return true;
 
-	} else {
-
+	}
+	else
+	{
 		return false;
 	}
 }
 
-void ControllerInput::SetFormat() {
+void ControllerInput::SetFormat()
+{
 	HRESULT result;
 	result = dev_controller_->SetDataFormat(&c_dfDIJoystick);
 }
 
-void ControllerInput::SetProperty() {
+void ControllerInput::SetProperty()
+{
 	HRESULT result;
 
 	// 軸モードを絶対値モードとして設定
@@ -181,13 +203,15 @@ void ControllerInput::SetProperty() {
 	result = dev_controller_->SetProperty(DIPROP_RANGE, &di_range.diph);
 }
 
-void ControllerInput::SetExclusiveControlLevel() {
+void ControllerInput::SetExclusiveControlLevel()
+{
 	HRESULT result;
 
 	result = dev_controller_->SetCooperativeLevel(Win32App::GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
 }
 
-void ControllerInput::DebugDraw() {
+void ControllerInput::DebugDraw()
+{
 	ImGui::Text("Controller");
 	ImGui::Text("A : %d", PushButton(DIB_A));
 	ImGui::Text("B : %d", PushButton(DIB_B));

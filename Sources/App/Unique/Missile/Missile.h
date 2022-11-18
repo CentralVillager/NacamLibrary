@@ -81,6 +81,7 @@ public:
 	void MoveZ(float speed);
 	void HomingTarget(const XMFLOAT3 &target_pos);
 	void HomingTarget(EnemiesList &enemies);
+	void TestHomingTarget(EnemiesList &enemies);
 	void TermEmitter();
 
 private:

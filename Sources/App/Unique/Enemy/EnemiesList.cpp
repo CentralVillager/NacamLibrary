@@ -92,7 +92,7 @@ bool EnemiesList::NoticeEmpty()
 	return false;
 }
 
-const int &EnemiesList::GetEnemyIndexWithID(UINT id)
+const uint32_t EnemiesList::GetEnemyIndexWithID(uint32_t id)
 {
 	// ‘S‚Ä‚Ì“G‚É‘Î‚µ‚ÄID‚ğŒŸõ
 	for (UINT i = 0; i < enemies_.size(); i++)

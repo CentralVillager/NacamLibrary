@@ -3,6 +3,7 @@
 #include "../Sources/App/Utility/NcmUtil.h"
 #include "../Player/Player.h"
 #include "../../../Lib/PreDraw/PreDraw.h"
+#include "../Sources/App/Math/NcmMath.h"
 
 using namespace NcmUtill;
 using namespace NcmMath;
@@ -65,8 +66,9 @@ void Enemy::Finalize()
 void Enemy::Update()
 {
 	RotY();
-	MoveHorizontally(0.5f, 100.0f);
-	AutoShot(200, player_->GetPos());
+	MoveHorizontally(2.0f, 100.0f);
+	//MoveHorizontally(0.5f, 100.0f);
+	//AutoShot(200, player_->GetPos());
 	obj_->Update();
 	UpdateColl();
 
@@ -114,7 +116,7 @@ void Enemy::MoveHorizontally(const float &speed, const float &range)
 	XMFLOAT3 pos = obj_->GetPos();
 	static int t = 0;
 	t++;
-	float sin = GetSinWave(2000, t);
+	float sin = GetSinWave(2000, (float)(t));
 	pos.x += sin;
 	obj_->SetPos(pos);
 

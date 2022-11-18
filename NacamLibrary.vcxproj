@@ -123,9 +123,10 @@
       <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWarningAsError>true</TreatWarningAsError>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -146,9 +147,10 @@
       <AdditionalIncludeDirectories>$(SolutionDir)DirectXTex</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWarningAsError>true</TreatWarningAsError>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -157,6 +159,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>libfbxsdk-mt.lib;libxml2-mt.lib;zlib-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -246,6 +249,7 @@
     <ClInclude Include="Sources\App\FpsManager\FPSManager.h" />
     <ClInclude Include="Sources\App\Grid\GridRender.h" />
     <ClInclude Include="Sources\App\Math\Easing\NcmEasing.h" />
+    <ClInclude Include="Sources\App\Math\NcmMath.h" />
     <ClInclude Include="Sources\App\Number\Numbers.h" />
     <ClInclude Include="Sources\App\Particle\Emitter.h" />
     <ClInclude Include="Sources\App\Particle\EmittersList.h" />

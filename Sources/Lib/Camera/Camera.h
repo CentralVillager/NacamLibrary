@@ -24,6 +24,8 @@ private:
 	ComPtr<ID3D12Resource> matrix_const_buffer_;
 	// ワールド行列
 	XMMATRIX mat_world_;
+	// 回転行列
+	XMMATRIX mat_rot_;
 	// ビュー行列
 	XMMATRIX mat_view_;
 	// 射影行列

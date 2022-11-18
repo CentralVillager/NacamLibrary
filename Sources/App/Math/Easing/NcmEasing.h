@@ -74,7 +74,7 @@ class NcmEasing
 	// イージング関数の格納先
 	static std::array<EaseFunc, (size_t)(NcmEaseType::MaxEaseNum)> ease_types_;
 
-	static constexpr float PI_ = 3.14159265358979f;
+	// 総ハンドルカウント変数
 	static ncm_ehandle handle_counter_;
 
 public:
@@ -84,34 +84,56 @@ public:
 	static void StaticInit();
 
 public:
-
+	
+	/// <summary>
+	/// イージングの設定を登録します。
+	/// </summary>
+	/// <returns>ハンドル</returns>
 	static ncm_ehandle RegisterEaseData(const NcmEaseDesc &args);
+
+	/// <summary>
+	/// イージングの設定を削除します。
+	/// </summary>
+	/// <param name="handle">削除したい設定のハンドル</param>
 	static void DeleteEaseData(ncm_ehandle handle);
 
+	/// <summary>
+	/// 値を更新します。
+	/// </summary>
 	static void UpdateValue(int handle);
-	static void ResetTime();
+
+	/// <summary>
+	/// 値をリセットします。
+	/// </summary>
 	static void ResetTime(int handle);
 
+	/// <summary>
+	/// 現在の値を取得します。
+	/// </summary>
+	/// <returns>現在の値</returns>
 	static float GetValue(int handle);
 
+	/// <summary>
+	/// 新しく初期値を設定します。
+	/// </summary>
+	/// <param name="handle">目的のハンドル</param>
+	/// <param name="v">設定したい値</param>
 	static void SetInitValue(int handle, float v);
+
+	/// <summary>
+	/// 新しく総移動量を設定します。
+	/// </summary>
+	/// <param name="handle">目的のハンドル</param>
+	/// <param name="t">設定したい値</param>
 	static void SetTotalMove(int handle, float v);
 
 private:
 
-	static NcmEaseDesc *SearchValue(int handle);
+	// ハンドルを元に格納されているデータを取得
+	static NcmEaseDesc *SearchValue(ncm_ehandle handle);
 
-	static float MakeEase(float *param, const NcmEaseDesc &ease_args);
-	static inline void ConvertRate(float *t, float rate = 0.1f, float max = 1.0f)
-	{
-		if (*t >= max)
-		{
-			*t = max;
-			return;
-		}
-
-		*t += rate;
-	}
+	// tを更新させる
+	static void ConvertRate(float *t, float rate = 0.1f, float max = 1.0f);
 
 private:
 

@@ -62,7 +62,7 @@ void DemoScene::Initialize()
 	NcmSprite::SetPos(test_, Win32App::FCENTER_);
 
 	PlatePoly::SetCamera(camera_.get());
-	poly_->Initialize();
+	//poly_->Initialize();
 	//poly_->SetTexSRVs(texture_);
 
 	GridRender::SetCamera(camera_.get());

@@ -11,7 +11,8 @@
 #include "../../../Lib/Object3d/Object3d.h"
 #include "../../../Lib/IndirectObject3d/IndirectObject3d.h"
 
-class ExecuteIndirectDemoScene : public AbsScene {
+class ExecuteIndirectDemoScene : public AbsScene
+{
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT2 = DirectX::XMFLOAT2;

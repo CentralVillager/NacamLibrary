@@ -1,9 +1,12 @@
 #include "NcmEasing.h"
 #include <cmath>
 #include "../Sources/App/Utility/NcmUtil.h"
+#include "../Sources/App/Math/NcmMath.h"
 
 // 参考サイト
 // https://easings.net/ja
+
+using namespace NcmMath;
 
 std::list<NcmEaseDesc> NcmEasing::easing_datas_;
 std::array<NcmEasing::EaseFunc, (size_t)(NcmEaseType::MaxEaseNum)> NcmEasing::ease_types_;
@@ -42,7 +45,7 @@ void NcmEasing::StaticInit()
 	ease_types_[(int)(NcmEaseType::OutBounce)] = OutBounce;
 }
 
-NcmEaseDesc *NcmEasing::SearchValue(int handle)
+NcmEaseDesc *NcmEasing::SearchValue(ncm_ehandle handle)
 {
 	for (auto &i : easing_datas_)
 	{
@@ -90,16 +93,6 @@ void NcmEasing::UpdateValue(int handle)
 	args->ease_value = ease_func(args->t);
 }
 
-void NcmEasing::ResetTime()
-{
-	// 全てのデータに対して
-	for (auto &i : easing_datas_)
-	{
-		// tをリセットする
-		i.t = 0.0f;
-	}
-}
-
 void NcmEasing::ResetTime(int handle)
 {
 	auto args = SearchValue(handle);
@@ -124,9 +117,15 @@ void NcmEasing::SetTotalMove(int handle, float v)
 	args->total_move = v;
 }
 
-float NcmEasing::MakeEase(float *param, const NcmEaseDesc &ease_args)
+void NcmEasing::ConvertRate(float *t, float rate, float max)
 {
-	return *param = ease_args.init_value + ease_args.total_move * ease_args.ease_value;
+	if (*t >= max)
+	{
+		*t = max;
+		return;
+	}
+
+	*t += rate;
 }
 
 float NcmEasing::Lerp(const float t)
@@ -136,7 +135,7 @@ float NcmEasing::Lerp(const float t)
 
 float NcmEasing::InSine(const float t)
 {
-	return 1 - cos(t * PI_ / 2.0f);
+	return 1 - cos(t * PI / 2.0f);
 }
 
 float NcmEasing::InCubic(const float t)
@@ -156,7 +155,7 @@ float NcmEasing::InCirc(const float t)
 
 float NcmEasing::InElastic(const float t)
 {
-	const float c4 = (2.0f * PI_) / 3.0f;
+	const float c4 = (2.0f * PI) / 3.0f;
 
 	return t == 0
 		? 0
@@ -196,7 +195,7 @@ float NcmEasing::InBounce(const float t)
 
 float NcmEasing::OutSine(const float t)
 {
-	return sin((t * PI_) / 2);
+	return sin((t * PI) / 2);
 }
 
 float NcmEasing::OutCubic(const float t)
@@ -216,7 +215,7 @@ float NcmEasing::OutCirc(const float t)
 
 float NcmEasing::OutElastic(const float t)
 {
-	const float c4 = (2 * PI_) / 3;
+	const float c4 = (2 * PI) / 3;
 
 	return t == 0
 		? 0
@@ -273,7 +272,7 @@ float NcmEasing::OutBounce(float t)
 
 float NcmEasing::InOutSine(const float t)
 {
-	return -(cos(PI_ * t) - 1.0f) / 2.0f;
+	return -(cos(PI * t) - 1.0f) / 2.0f;
 }
 
 float NcmEasing::InOutCubic(const float t)
@@ -295,7 +294,7 @@ float NcmEasing::InOutCirc(const float t)
 
 float NcmEasing::InOutElastic(const float t)
 {
-	const float c5 = (2.0f * PI_) / 4.5f;
+	const float c5 = (2.0f * PI) / 4.5f;
 
 	return t == 0
 		? 0

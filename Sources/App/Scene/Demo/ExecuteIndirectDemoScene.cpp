@@ -9,19 +9,19 @@
 
 using namespace DirectX;
 
-ExecuteIndirectDemoScene::ExecuteIndirectDemoScene() {
-
+ExecuteIndirectDemoScene::ExecuteIndirectDemoScene()
+{
 	// ƒJƒƒ‰‚Ì¶¬
 	camera_ = make_unique<Camera>();
 
 	indirect_obj_ = make_unique<IndirectObject3d>();
 }
 
-ExecuteIndirectDemoScene::~ExecuteIndirectDemoScene() {
-}
+ExecuteIndirectDemoScene::~ExecuteIndirectDemoScene()
+{}
 
-void ExecuteIndirectDemoScene::Initialize() {
-
+void ExecuteIndirectDemoScene::Initialize()
+{
 	// ƒJƒƒ‰‚Ì‰Šú‰»
 	camera_->Initialize();
 	camera_->SetDistance(20.0f);
@@ -31,39 +31,42 @@ void ExecuteIndirectDemoScene::Initialize() {
 	indirect_obj_->Initialize();
 }
 
-void ExecuteIndirectDemoScene::Finalize() {
-}
+void ExecuteIndirectDemoScene::Finalize()
+{}
 
-void ExecuteIndirectDemoScene::Update() {
-
-	if (KeyboardInput::PushKey(DIK_W) || KeyboardInput::PushKey(DIK_S) || KeyboardInput::PushKey(DIK_D) || KeyboardInput::PushKey(DIK_A) || KeyboardInput::PushKey(DIK_R) || KeyboardInput::PushKey(DIK_F)) {
-
-		if (KeyboardInput::PushKey(DIK_W)) { camera_->MoveCameraTrack({ 0.0f, +1.0f, 0.0f }); } else if (KeyboardInput::PushKey(DIK_S)) { camera_->MoveCameraTrack({ 0.0f, -1.0f, 0.0f }); }
-		if (KeyboardInput::PushKey(DIK_D)) { camera_->MoveCameraTrack({ +1.0f, 0.0f, 0.0f }); } else if (KeyboardInput::PushKey(DIK_A)) { camera_->MoveCameraTrack({ -1.0f, 0.0f, 0.0f }); }
-		if (KeyboardInput::PushKey(DIK_R)) { camera_->MoveCameraTrack({ 0.0f, 0.0f, +1.0f }); } else if (KeyboardInput::PushKey(DIK_F)) { camera_->MoveCameraTrack({ 0.0f, 0.0f, -1.0f }); }
+void ExecuteIndirectDemoScene::Update()
+{
+	if (KeyboardInput::PushKey(DIK_W) || KeyboardInput::PushKey(DIK_S) || KeyboardInput::PushKey(DIK_D) || KeyboardInput::PushKey(DIK_A) || KeyboardInput::PushKey(DIK_R) || KeyboardInput::PushKey(DIK_F))
+	{
+		if (KeyboardInput::PushKey(DIK_W)) { camera_->MoveCameraTrack({ 0.0f, +1.0f, 0.0f }); }
+		else if (KeyboardInput::PushKey(DIK_S)) { camera_->MoveCameraTrack({ 0.0f, -1.0f, 0.0f }); }
+		if (KeyboardInput::PushKey(DIK_D)) { camera_->MoveCameraTrack({ +1.0f, 0.0f, 0.0f }); }
+		else if (KeyboardInput::PushKey(DIK_A)) { camera_->MoveCameraTrack({ -1.0f, 0.0f, 0.0f }); }
+		if (KeyboardInput::PushKey(DIK_R)) { camera_->MoveCameraTrack({ 0.0f, 0.0f, +1.0f }); }
+		else if (KeyboardInput::PushKey(DIK_F)) { camera_->MoveCameraTrack({ 0.0f, 0.0f, -1.0f }); }
 	}
 
 	camera_->Update();
 
-	if (KeyboardInput::TriggerKey(DIK_SPACE)) {
-
+	if (KeyboardInput::TriggerKey(DIK_SPACE))
+	{
 		indirect_obj_->DetectPush(true);
-
-	} else {
-
+	}
+	else
+	{
 		indirect_obj_->DetectPush(false);
 	}
 
 	indirect_obj_->Update();
 }
 
-void ExecuteIndirectDemoScene::Draw() {
-
+void ExecuteIndirectDemoScene::Draw()
+{
 	PreDraw::PreRender(PipelineName::IndirectObject3d_WireFrame);
 	indirect_obj_->Draw();
 }
 
-void ExecuteIndirectDemoScene::DebugDraw() {
-
+void ExecuteIndirectDemoScene::DebugDraw()
+{
 	indirect_obj_->DebugDraw();
 }

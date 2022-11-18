@@ -377,9 +377,6 @@
     <ClCompile Include="Sources\App\Unique\LockOnSystem\LockOnSystem.cpp">
       <Filter>Application\Unique\LockOnSystem</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\App\Math\Easing\NcmEasing.cpp">
-      <Filter>Application\NacamMath\Easing</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\App\Unique\Bullet\Bullet.cpp">
       <Filter>Application\Unique\Bullet</Filter>
     </ClCompile>
@@ -388,9 +385,6 @@
     </ClCompile>
     <ClCompile Include="Sources\App\Unique\Bullet\BulletList.cpp">
       <Filter>Application\Unique\Bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\App\Ui\NcmUi.cpp">
-      <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Sources\App\Unique\Ultimate\UltimateManager.cpp">
       <Filter>Application\Unique\UltimateManager</Filter>
@@ -402,7 +396,13 @@
       <Filter>Library\Point</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Lib\PlatePoly\PlatePoly.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>Library\PlatePoly</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Ui\NcmUi.cpp">
+      <Filter>Application\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Math\Easing\NcmEasing.cpp">
+      <Filter>Application\NacamMath\Easing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -593,9 +593,6 @@
       <Filter>ソース ファイル</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
-    <ClInclude Include="Sources\App\Math\Easing\NcmEasing.h">
-      <Filter>Application\NacamMath\Easing</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\App\Unique\Bullet\Bullet.h">
       <Filter>Application\Unique\Bullet</Filter>
     </ClInclude>
@@ -608,7 +605,6 @@
     <ClInclude Include="Sources\Lib\NacamError\NacamError.h">
       <Filter>Library\NacamError</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\App\Ui\NcmUi.h" />
     <ClInclude Include="Sources\App\Unique\Ultimate\UltimateManager.h">
       <Filter>Application\Unique\UltimateManager</Filter>
     </ClInclude>
@@ -618,7 +614,18 @@
     <ClInclude Include="Sources\Lib\Point\Point.h">
       <Filter>Library\Point</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Lib\PlatePoly\PlatePoly.h" />
+    <ClInclude Include="Sources\Lib\PlatePoly\PlatePoly.h">
+      <Filter>Library\PlatePoly</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Ui\NcmUi.h">
+      <Filter>Application\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Math\NcmMath.h">
+      <Filter>Application\NacamMath</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Math\Easing\NcmEasing.h">
+      <Filter>Application\NacamMath\Easing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">

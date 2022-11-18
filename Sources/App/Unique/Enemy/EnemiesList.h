@@ -27,7 +27,7 @@ public:
 	const Sphere &GetCollData(UINT i) { return enemies_[i].GetCollData(); }
 	const bool &GetIsDead(UINT i) { return enemies_[i].IsDead(); }
 	const size_t &GetSize() { return enemies_.size(); }
-	const int &GetID(UINT i) { return enemies_[i].GetID(); }
+	const uint32_t GetID(UINT i) { return enemies_[i].GetID(); }
 
 	void Initialize(Player *player);
 	void Update();
@@ -42,5 +42,5 @@ public:
 	void Death(int i) { enemies_[i].Death(); }
 	bool NoticeEmpty();
 
-	const int &GetEnemyIndexWithID(UINT id);
+	const uint32_t GetEnemyIndexWithID(uint32_t id);
 };
