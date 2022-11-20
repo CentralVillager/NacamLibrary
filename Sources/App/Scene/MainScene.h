@@ -43,8 +43,7 @@ public:
 
 private:
 
-	static constexpr UINT GRID_NUM_ = 3;
-	static constexpr float SPEED_ = 2.0f;
+	static constexpr float SPEED_ = 1.5f;
 	static constexpr XMFLOAT3 init_pos_ = XMFLOAT3(0, 0, -500.0f);
 	static constexpr XMFLOAT3 cam_init_pos_ = XMFLOAT3(0, 10.0f, init_pos_.z);
 
@@ -55,7 +54,6 @@ private:
 	std::unique_ptr<Enemy> enemy_;
 	std::unique_ptr<EnemiesList> ene_list_;
 	std::unique_ptr<GridRender> grid_;
-	std::array<GridRender, GRID_NUM_> grid_floor_;
 	std::unique_ptr<MissileManager> missile_mgr_;
 	std::unique_ptr<Emitter> dust_;
 	std::unique_ptr<Object3d> sky_dome_;
@@ -82,7 +80,8 @@ private:
 	float ImGui_detection_range_;
 	XMFLOAT2 ImGui_Ui_pos_;
 
-	int player_camera_speed_;
+	int player_speed_;
+	int player_dec_speed_;
 
 	static constexpr float normal_fov_ = 60.0f;
 	static constexpr float accel_fov_ = 70.0f;

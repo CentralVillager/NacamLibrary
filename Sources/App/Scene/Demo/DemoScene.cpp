@@ -3,7 +3,6 @@
 #include "../Sources/Lib/Sprite/NcmSprite.h"
 #include "../Sources/Lib/Win32App/Win32App.h"
 #include "../Sources/Lib/PreDraw/PreDraw.h"
-#include "../Sources/App/Math/Easing/NcmEasing.h"
 #include "../Sources/Lib/Input/KeyboardInput.h"
 
 using namespace std;
@@ -30,6 +29,10 @@ DemoScene::DemoScene()
 
 	grid_ = make_unique<GridRender>();
 	ugrid_ = make_unique<GridRender>();
+
+	player_ = make_unique<Player>();
+
+	Player::LoadResources();
 }
 
 DemoScene::~DemoScene()
@@ -62,12 +65,15 @@ void DemoScene::Initialize()
 	NcmSprite::SetPos(test_, Win32App::FCENTER_);
 
 	PlatePoly::SetCamera(camera_.get());
-	//poly_->Initialize();
+	poly_->Initialize(texture_);
 	//poly_->SetTexSRVs(texture_);
 
 	GridRender::SetCamera(camera_.get());
 	grid_->Initialize(200, 10, XMFLOAT3(0, -20.0f, 0));
 	ugrid_->Initialize(200, 10, XMFLOAT3(0, +50.0f, 0));
+
+	Object3d::SetCamera(camera_.get());
+	player_->Initialize();
 }
 
 void DemoScene::Finalize()
@@ -121,11 +127,23 @@ void DemoScene::Update()
 		poly_->SetPos(pos);
 	}*/
 
-	camera_->TestCameraMove(1.0f);
+	//player_->RotationY(1.0f);
+	//player_->MoveXZ(1.0f);
+
+	camera_->TestCameraMove(1.0f, *player_);
 	camera_->Update();
 	poly_->Update();
 	grid_->Update();
 	ugrid_->Update();
+	player_->Update();
+
+	XMFLOAT3 target = player_->GetPos();
+	target.z += 50.0f;
+	camera_->SetTarget(target);
+	XMFLOAT3 eye = player_->GetPos();
+	eye.y += 20.0f;
+	eye.z -= 30.0f;
+	camera_->SetEye(eye);
 }
 
 void DemoScene::Draw()
@@ -133,6 +151,9 @@ void DemoScene::Draw()
 	//fbx_obj_->Draw(cmd_list_.Get());
 
 	using enum PipelineName;
+
+	PreDraw::PreRender(Object3d_WireFrame);
+	player_->Draw();
 
 	PreDraw::PreRender(Line);
 	grid_->Draw();

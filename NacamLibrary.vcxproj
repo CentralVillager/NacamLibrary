@@ -170,13 +170,13 @@
     <ClCompile Include="imgui\imgui_draw.cpp" />
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="Sources\App\Collision\Collision.cpp" />
     <ClCompile Include="Sources\App\Collision\CollisionPrimitive.cpp" />
     <ClCompile Include="Sources\App\Debug\NcmDebug.cpp" />
     <ClCompile Include="Sources\App\Debug\NcmImGui.cpp" />
     <ClCompile Include="Sources\App\FpsManager\FPSManager.cpp" />
     <ClCompile Include="Sources\App\Grid\GridRender.cpp" />
+    <ClCompile Include="Sources\App\main.cpp" />
     <ClCompile Include="Sources\App\Math\Easing\NcmEasing.cpp" />
     <ClCompile Include="Sources\App\Number\Numbers.cpp" />
     <ClCompile Include="Sources\App\Particle\Emitter.cpp" />
@@ -241,7 +241,6 @@
     <ClInclude Include="imgui\imstb_rectpack.h" />
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="Sources\App\Collision\Collision.h" />
     <ClInclude Include="Sources\App\Collision\CollisionPrimitive.h" />
     <ClInclude Include="Sources\App\Debug\NcmDebug.h" />

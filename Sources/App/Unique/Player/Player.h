@@ -9,11 +9,15 @@ class Player : public AbsUniqueObj
 {
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 
+private:
+
+	static constexpr uint32_t invincible_time_ = 80;
+
+private:
+
 	// ï`âÊÉfÅ[É^
 	static std::unique_ptr<Model> model_;
 	static std::unique_ptr<Model> coll_model_;
-
-	static constexpr uint32_t invincible_time_ = 80;
 
 	bool is_invincible_;
 	bool taking_damage_trigger_;
@@ -36,6 +40,8 @@ class Player : public AbsUniqueObj
 
 	bool is_already_;
 	bool is_released;
+
+	float rot_angle_;
 
 public:
 
@@ -71,8 +77,10 @@ public:
 	void Move(float speed);
 	void MoveXY(float speed);
 	void MoveXZ(float speed);
+	void RotationY(float speed);
+	void MoveForwardAuto();
 
-	void RotPoseLeft();
-	void RotPoseRight();
-	void ResetRotPose();
+	void RotPoseLeft(XMFLOAT3 &rot);
+	void RotPoseRight(XMFLOAT3 &rot);
+	void ResetRotPose(XMFLOAT3 &rot);
 };

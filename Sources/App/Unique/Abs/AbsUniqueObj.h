@@ -9,8 +9,13 @@
 class AbsUniqueObj
 {
 	using XMFLOAT3 = DirectX::XMFLOAT3;
+	using XMVECTOR = DirectX::XMVECTOR;
+	using XMMATRIX = DirectX::XMMATRIX;
 
 protected:
+
+	// 回転行列
+	XMMATRIX mat_rot_;
 
 	// 描画データ
 	std::shared_ptr<Object3d> obj_;
@@ -18,7 +23,9 @@ protected:
 
 	// 当たり判定
 	Sphere coll_;
-	float coll_radius_;
+
+	// 前方ベクトル
+	XMFLOAT3 forward_vec_;
 
 	// その他情報
 	float speed_;
@@ -31,11 +38,15 @@ public:
 
 public:
 
+	inline const XMMATRIX &GetRotMat() { return mat_rot_; }
 	inline const XMFLOAT3 &GetPos() { return obj_->GetPos(); }
 	inline const Sphere &GetCollData() { return coll_; }
+	inline const XMFLOAT3 &GetFwdVec() { return forward_vec_; }
+	inline const float &GetSpeed() { return speed_; }
 	inline const bool &IsDead() { return is_dead_; }
 	inline const void Death() { is_dead_ = true; }
 	inline void SetPos(const XMFLOAT3 &pos) { obj_->SetPos(pos); }
+	inline void SetSpeed(const float speed) { speed_ = speed; }
 	inline void SetIsDead(bool b) { is_dead_ = b; }
 
 public:
@@ -45,6 +56,8 @@ public:
 	virtual void Draw() = 0;
 	virtual void DrawColl() = 0;
 	virtual void DebugDraw() = 0;
+
 	void InitObj3d(Model *obj_model, Model *coll_model);
 	void UpdateColl();
+	void CalcFwdVec();
 };

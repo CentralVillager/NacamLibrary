@@ -1,6 +1,7 @@
 #include "FbxModel.h"
 
-void FbxModel::CreateBuffers(ID3D12Device *device) {
+void FbxModel::CreateBuffers(ID3D12Device *device)
+{
 	HRESULT result;
 
 	// 頂点データ全体のサイズ
@@ -18,7 +19,8 @@ void FbxModel::CreateBuffers(ID3D12Device *device) {
 	// 頂点バッファへのデータ転送
 	VertexData *vert_map = nullptr;
 	result = vert_buff_->Map(0, nullptr, reinterpret_cast<void **>(&vert_map));
-	if (SUCCEEDED(result)) {
+	if (SUCCEEDED(result))
+	{
 		std::copy(vertices_.begin(), vertices_.end(), vert_map);
 		vert_buff_->Unmap(0, nullptr);
 	}
@@ -43,7 +45,8 @@ void FbxModel::CreateBuffers(ID3D12Device *device) {
 	// インデックスバッファへのデータ転送
 	unsigned short *index_map = nullptr;
 	result = index_buff_->Map(0, nullptr, reinterpret_cast<void **>(&index_map));
-	if (SUCCEEDED(result)) {
+	if (SUCCEEDED(result))
+	{
 		std::copy(indices_.begin(), indices_.end(), index_map);
 		index_buff_->Unmap(0, nullptr);
 	}
@@ -69,7 +72,7 @@ void FbxModel::CreateBuffers(ID3D12Device *device) {
 	// テクスチャ用バッファの生成
 	result = device->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK,
-								 D3D12_MEMORY_POOL_L0),
+			D3D12_MEMORY_POOL_L0),
 		D3D12_HEAP_FLAG_NONE,
 		&tex_res_desc,
 		D3D12_RESOURCE_STATE_GENERIC_READ,
@@ -105,12 +108,14 @@ void FbxModel::CreateBuffers(ID3D12Device *device) {
 	device->CreateShaderResourceView(tex_buff_.Get(), &srv_desc, desc_heap_srv->GetCPUDescriptorHandleForHeapStart());
 }
 
-FbxModel::~FbxModel() {
+FbxModel::~FbxModel()
+{
 	// FBXシーンの解放
 	//fbx_scene_->Destroy();
 }
 
-void FbxModel::Draw(ID3D12GraphicsCommandList *cmd_list) {
+void FbxModel::Draw(ID3D12GraphicsCommandList *cmd_list)
+{
 	// 頂点バッファをセット
 	cmd_list->IASetVertexBuffers(0, 1, &vb_view);
 	// インデックスバッファをセット

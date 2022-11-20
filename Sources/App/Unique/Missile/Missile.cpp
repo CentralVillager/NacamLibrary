@@ -63,10 +63,10 @@ void Missile::Initialize(const MissileArgs &args, LockOnSystem *sys)
 	temp.y -= temp.y;
 	temp.z -= temp.z;
 	emi.particle.accel_ = temp;
-	emi.particle.life_ = mi_args_.life;
+	emi.particle.life_ = mi_args_.life + 500;
 	emi.particle.s_scale_ = 1.0f;
 	emi.pos_rand_ = { 0.0f, 0.0f, 0.0f };
-	emi.vel_rand_ = { 0.1f, 0.1f, 0.1f };
+	emi.vel_rand_ = { 0.01f, 0.01f, 0.01f };
 	emi.gene_num_ = 1;
 	emi.use_life_ = true;
 	emi.life_ = mi_args_.life;
@@ -362,18 +362,18 @@ void Missile::HomingTarget(EnemiesList &enemies)
 	}
 
 	// É~ÉTÉCÉãÇ™ìGÇí«Ç¢âzÇµÇΩÇÁ
-	if (pos.z >= enemies.GetPos(index).z)
-	{
-		// à»ëOÇÃë¨ìxÇÇªÇÃÇ‹Ç‹â¡éZ
-		pos.x += mi_args_.vel.x;
-		pos.y += mi_args_.vel.y;
-		pos.z += mi_args_.vel.z;
+	//if (pos.z >= enemies.GetPos(index).z)
+	//{
+	//	// à»ëOÇÃë¨ìxÇÇªÇÃÇ‹Ç‹â¡éZ
+	//	pos.x += mi_args_.vel.x;
+	//	pos.y += mi_args_.vel.y;
+	//	pos.z += mi_args_.vel.z;
 
-		// à íuÇîΩâf
-		obj_->SetPos(pos);
+	//	// à íuÇîΩâf
+	//	obj_->SetPos(pos);
 
-		return;
-	}
+	//	return;
+	//}
 
 	// ê≥ãKâª
 	XMVECTOR norm_vec = XMVector3Normalize(vec);

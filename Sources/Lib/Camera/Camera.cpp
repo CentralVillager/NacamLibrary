@@ -4,6 +4,7 @@
 #include "../Input/KeyboardInput.h"
 #include "../DirectXBase/DirectXBase.h"
 #include "../../App/Debug/NcmImGui.h"
+#include "../../App/Unique/Player/Player.h"
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
@@ -13,6 +14,7 @@ ComPtr<ID3D12Device> Camera::device_ = nullptr;
 Camera::Camera() :
 	matrix_const_buffer_(),
 	mat_world_(),
+	mat_rot_(),
 	mat_view_(),
 	mat_projection_(),
 	mat_billborad_(),
@@ -55,21 +57,9 @@ void Camera::Initialize()
 void Camera::Update()
 {
 	UpdateViewMatrix();		// ダーティーフラグを使いたい
-	UpdateViewProjection();	// やらなくてもいい
+	UpdateViewProjection();
 
 	HRESULT result = S_FALSE;
-
-	/*XMMATRIX mat_rot, mat_trans;
-	mat_rot = XMMatrixIdentity();
-	mat_rot *= XMMatrixRotationZ(XMConvertToRadians(0));
-	mat_rot *= XMMatrixRotationX(XMConvertToRadians(0));
-	mat_rot *= XMMatrixRotationY(XMConvertToRadians(10.0f));
-	mat_trans = XMMatrixTranslation(100.0f, 0, 0);*/
-
-	//mat_world_ = XMMatrixIdentity();
-	//XMMATRIX mat_rot = XMMatrixTranspose(mat_view_);
-	//mat_world_ *= mat_rot_;
-	//mat_world_ *= mat_trans;
 
 	MatrixConstBufferData *matrix_const_map = nullptr;
 	result = matrix_const_buffer_->Map(0, nullptr, reinterpret_cast<void **>(&matrix_const_map));
@@ -130,104 +120,32 @@ void Camera::MoveXY(float speed)
 	//Update();
 }
 
-void Camera::TestCameraMove(float speed)
+void Camera::TestCameraMove(float speed, Player &player)
 {
-	if (KeyboardInput::PushKey(DIK_W) || KeyboardInput::PushKey(DIK_S) || KeyboardInput::PushKey(DIK_D) || KeyboardInput::PushKey(DIK_A) || KeyboardInput::PushKey(DIK_R) || KeyboardInput::PushKey(DIK_F))
-	{
-		/*if (KeyboardInput::PushKey(DIK_W)) { MoveCameraTrack({ 0.0f, +speed, 0.0f }); }
-		else if (KeyboardInput::PushKey(DIK_S)) { MoveCameraTrack({ 0.0f, -speed, 0.0f }); }
+	// 上ベクトルを計算
+	XMFLOAT3 up_vec = { 0, 1, 0 };
+	XMVECTOR up_temp = XMVector3Transform(XMLoadFloat3(&up_vec), player.GetRotMat());
+	XMStoreFloat3(&up_vec, up_temp);
 
-		if (KeyboardInput::PushKey(DIK_D)) { MoveCameraTrack({ +speed, 0.0f, 0.0f }); }
-		else if (KeyboardInput::PushKey(DIK_A)) { MoveCameraTrack({ -speed, 0.0f, 0.0f }); }
+	XMFLOAT3 eye_result{};
+	eye_result.x = player.GetPos().x - player.GetFwdVec().x * differ_ + up_vec.x * differ_y_;
+	eye_result.y = player.GetPos().y - player.GetFwdVec().y * differ_ + up_vec.y * differ_y_;
+	eye_result.z = player.GetPos().z - player.GetFwdVec().z * differ_ + up_vec.z * differ_y_;
 
-		if (KeyboardInput::PushKey(DIK_R)) { MoveCameraTrack({ 0.0f, 0.0f, +speed }); }
-		else if (KeyboardInput::PushKey(DIK_F)) { MoveCameraTrack({ 0.0f, 0.0f, -speed }); }
-	*/
-		XMFLOAT3 pos{};
+	eye_ = eye_result;
 
-		if (KeyboardInput::PushKey(DIK_W)) { pos.y += speed; }
-		else if (KeyboardInput::PushKey(DIK_S)) { pos.y += -speed; }
+	XMFLOAT3 tgt_result{};
+	tgt_result.x = player.GetPos().x + player.GetFwdVec().x * differ_;
+	tgt_result.y = player.GetPos().y + player.GetFwdVec().y * differ_;
+	tgt_result.z = player.GetPos().z + player.GetFwdVec().z * differ_;
 
-		if (KeyboardInput::PushKey(DIK_D)) { pos.x += speed; }
-		else if (KeyboardInput::PushKey(DIK_A)) { pos.x += -speed; }
+	tgt_result.y -= offset_y_;
 
-		if (KeyboardInput::PushKey(DIK_R)) { pos.z += speed; }
-		else if (KeyboardInput::PushKey(DIK_F)) { pos.z += -speed; }
-	}
+	// 注視点を更新
+	target_ = tgt_result;
 
-	/*XMFLOAT3 result = target_;
-	float rad = 0;
-	XMFLOAT3 rot{};
-	if (KeyboardInput::PushKey(DIK_UP))
-	{
-
-	}
-	if (KeyboardInput::PushKey(DIK_DOWN))
-	{
-
-	}
-	if (KeyboardInput::PushKey(DIK_RIGHT))
-	{
-		rot.x += speed;
-	}
-	if (KeyboardInput::PushKey(DIK_LEFT))
-	{
-		rot.x += -speed;
-	}*/
-
-	if (KeyboardInput::PushKey(DIK_UP) || KeyboardInput::PushKey(DIK_DOWN) || KeyboardInput::PushKey(DIK_RIGHT) || KeyboardInput::PushKey(DIK_LEFT))
-	{
-		XMFLOAT3 result = target_;
-		float rad = 0;
-
-		if (KeyboardInput::PushKey(DIK_UP))
-		{
-			angle_.y += speed;
-			rad = XMConvertToRadians(angle_.y);
-			result.y += cos(rad);
-			result.z -= sin(rad);
-		}
-		if (KeyboardInput::PushKey(DIK_DOWN))
-		{
-			angle_.y -= speed;
-			rad = XMConvertToRadians(angle_.y);
-			result.y -= cos(rad);
-			result.z += sin(rad);
-		}
-		if (KeyboardInput::PushKey(DIK_RIGHT))
-		{
-			angle_.x += speed;
-			rad = XMConvertToRadians(angle_.x);
-			result.x += cos(rad);
-			result.z -= sin(rad);
-		}
-		if (KeyboardInput::PushKey(DIK_LEFT))
-		{
-			angle_.x -= speed;
-			rad = XMConvertToRadians(angle_.x);
-			result.x -= cos(rad);
-			result.z += sin(rad);
-		}
-
-		result.x = eye_.x + 5 * sin(rad);
-		result.y = eye_.y;
-		result.z = eye_.z + 5 * cos(rad);
-
-		target_.x = result.x;
-		target_.y = result.y;
-		target_.z = result.z;
-	}
-
-	/*XMFLOAT2 rad{};
-	rad.x = XMConvertToRadians(angle_.x);
-	rad.y = XMConvertToRadians(angle_.y);*/
-
-	/*XMFLOAT3 result{};
-	result.x += cos(rad.x);
-	result.y += sin(rad.y);*/
-
-	/*XMVECTOR norm = XMVector3Normalize(XMLoadFloat3(&result));
-	XMStoreFloat3(&result, norm);*/
+	// 上ベクトルを更新
+	up_vec_ = up_vec;
 }
 
 void Camera::ResetCamera()
@@ -239,6 +157,9 @@ void Camera::ResetCamera()
 void Camera::DebugDraw()
 {
 	ImGui::DragFloat("FOV", &fov_, 0.1f, 0.1f, 179.99f);
+	ImGui::DragFloat("Differ", &differ_, 0.1f, 0, 200.0f);
+	ImGui::DragFloat("DifferY", &differ_y_, 0.1f, 0, 200.0f);
+	ImGui::DragFloat("OffsetY", &offset_y_, 0.1f, -200.0f, 200.0f);
 	ImGui::Text("target : (%f, %f, %f)", target_.x, target_.y, target_.z);
 }
 
@@ -282,17 +203,6 @@ void Camera::UpdateViewMatrix()
 
 	// ここまでで直交した3方向のベクトルが揃う
 	//（ワールド座標系でのカメラの右方向、上方向、前方向）
-
-	// カメラ回転行列
-	//XMMATRIX mat_camera_rot;
-	//// カメラ座標系→ワールド座標系の変換行列
-	//mat_camera_rot.r[0] = camera_axis_x;
-	//mat_camera_rot.r[1] = camera_axis_y;
-	//mat_camera_rot.r[2] = camera_axis_z;
-	//mat_camera_rot.r[3] = XMVectorSet(0, 0, 0, 1);
-	//// 転置により逆行列（逆回転）を計算
-	//mat_view_ = XMMatrixTranspose(mat_camera_rot);
-	// 
 	// カメラ座標系→ワールド座標系の変換行列
 	mat_rot_.r[0] = camera_axis_x;
 	mat_rot_.r[1] = camera_axis_y;

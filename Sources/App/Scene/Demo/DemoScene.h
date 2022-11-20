@@ -9,6 +9,8 @@
 #include "../../../Lib/Point/Point.h"
 #include "../../../Lib/PlatePoly/PlatePoly.h"
 #include "../../Grid/GridRender.h"
+#include "../Sources/App/Math/Easing/NcmEasing.h"
+#include "../../Unique/Player/Player.h"
 
 class DemoScene : public AbsScene
 {
@@ -30,9 +32,9 @@ private:
 	//std::unique_ptr<FbxModel> fbx_model_;
 	//FbxModel *fbx_model_;s
 
-	int texture_;
-	int ease_;
-	int test_;
+	ncm_thandle texture_;
+	ncm_ehandle ease_;
+	ncm_thandle test_;
 
 	bool b = true;
 
@@ -41,6 +43,8 @@ private:
 
 	std::unique_ptr<Point> point_;
 	std::unique_ptr<PlatePoly> poly_;
+
+	std::unique_ptr<Player> player_;
 
 public:
 

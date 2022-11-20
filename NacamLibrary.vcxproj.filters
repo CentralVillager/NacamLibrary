@@ -200,9 +200,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="imgui\imgui.cpp">
       <Filter>Application\Debug\ImGui\Include</Filter>
     </ClCompile>
@@ -404,6 +401,9 @@
     <ClCompile Include="Sources\App\Math\Easing\NcmEasing.cpp">
       <Filter>Application\NacamMath\Easing</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\App\main.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -592,7 +592,6 @@
     <ClInclude Include="Sources\resource.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h" />
     <ClInclude Include="Sources\App\Unique\Bullet\Bullet.h">
       <Filter>Application\Unique\Bullet</Filter>
     </ClInclude>

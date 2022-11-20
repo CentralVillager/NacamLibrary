@@ -4,6 +4,8 @@
 #include <wrl.h>
 #include <d3d12.h>
 
+class Player;
+
 class Camera
 {
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
@@ -51,6 +53,10 @@ private:
 	// 視野角
 	float fov_;
 
+	float differ_ = 22.0f;
+	float differ_y_ = 12.0f;
+	float offset_y_ = 3.0f;
+
 public:
 
 	Camera();
@@ -95,7 +101,7 @@ public:
 
 	void MoveXY(float speed);
 
-	void TestCameraMove(float speed);
+	void TestCameraMove(float speed, Player &player);
 
 	/// <summary>
 	/// カメラ位置のリセット

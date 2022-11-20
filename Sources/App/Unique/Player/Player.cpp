@@ -15,7 +15,7 @@ std::unique_ptr<Model> Player::model_ = nullptr;
 std::unique_ptr<Model> Player::coll_model_ = nullptr;
 
 Player::Player()
-	: AbsUniqueObj(1.0f, 2.0f),
+	: AbsUniqueObj(0.5f, 2.0f),
 	is_invincible_(false),
 	taking_damage_trigger_(false),
 	is_triggering_ult_(false),
@@ -29,7 +29,8 @@ Player::Player()
 	ease_rot_left_(),
 	ease_reset_rot_(),
 	is_already_(false),
-	is_released(false)
+	is_released(false),
+	rot_angle_(5.0f)
 {}
 
 Player::~Player()
@@ -48,7 +49,36 @@ void Player::LoadResources()
 }
 
 void Player::Initialize()
-{}
+{
+	is_dead_ = false;
+	hp_ = 3;
+	InitObj3d(model_.get(), coll_model_.get());
+	obj_->SetPos(XMFLOAT3(0, 0, 20.0f));
+	obj_->SetRot(XMFLOAT3(0, 180.0f, 0));
+
+	// コリジョンの更新
+	UpdateColl();
+
+	// イージング関連の初期化
+	NcmEaseDesc args;
+	args.init_value = 0.0f;
+	args.total_move = rot_angle_;
+	args.ease_type = NcmEaseType::OutCubic;
+	args.t_rate = 0.05f;
+	ease_rot_right_ = NcmEasing::RegisterEaseData(args);
+
+	args.init_value = 0.0f;
+	args.total_move = -rot_angle_;
+	args.ease_type = NcmEaseType::OutCubic;
+	args.t_rate = 0.05f;
+	ease_rot_left_ = NcmEasing::RegisterEaseData(args);
+
+	args.init_value = 0.0f;
+	args.total_move = -rot_angle_;
+	args.ease_type = NcmEaseType::OutCubic;
+	args.t_rate = 0.05f;
+	ease_reset_rot_ = NcmEasing::RegisterEaseData(args);
+}
 
 void Player::Initialize(MissileManager *mi_mgr, LockOnSystem *lockon_sys, UltimateManager *ult, XMFLOAT3 pos)
 {
@@ -70,19 +100,19 @@ void Player::Initialize(MissileManager *mi_mgr, LockOnSystem *lockon_sys, Ultima
 	// イージング関連の初期化
 	NcmEaseDesc args;
 	args.init_value = 0.0f;
-	args.total_move = 45.0f;
+	args.total_move = -rot_angle_;
 	args.ease_type = NcmEaseType::OutCubic;
 	args.t_rate = 0.05f;
 	ease_rot_right_ = NcmEasing::RegisterEaseData(args);
 
 	args.init_value = 0.0f;
-	args.total_move = -45.0f;
+	args.total_move = rot_angle_;
 	args.ease_type = NcmEaseType::OutCubic;
 	args.t_rate = 0.05f;
 	ease_rot_left_ = NcmEasing::RegisterEaseData(args);
 
 	args.init_value = 0.0f;
-	args.total_move = -45.0f;
+	args.total_move = rot_angle_;
 	args.ease_type = NcmEaseType::OutCubic;
 	args.t_rate = 0.05f;
 	ease_reset_rot_ = NcmEasing::RegisterEaseData(args);
@@ -139,8 +169,10 @@ void Player::Update()
 		is_triggering_ult_ = true;
 	}
 
+	// ULTの発動を検知したら
 	if (is_triggering_ult_)
 	{
+		// ULT用ミサイルセットを発射する
 		FireUltimateMissile();
 	}
 
@@ -166,8 +198,15 @@ void Player::Update()
 		CountInvincibleTime();
 	}
 
+	// 入力により回頭させる
+	RotationY(2.0f);
+
+	// 自動で前に進む
+	MoveForwardAuto();
+
 	obj_->Update();
 	UpdateColl();
+	CalcFwdVec();
 }
 
 void Player::Draw()
@@ -218,7 +257,7 @@ void Player::FireMultiMissile()
 	// tgt_index はMissileManagerで設定
 	l_args.detection_range = 1000.0f;
 	l_args.init_straight_time_ = 0;
-	l_args.life = 100;
+	l_args.life = 200;
 
 	p_mi_mgr_->FireMultiMissile(l_args, 4);
 }
@@ -234,7 +273,7 @@ void Player::FireChargeMissile()
 	// tgt_index はMissileManagerで設定
 	l_args.detection_range = 1000.0f;
 	l_args.init_straight_time_ = 0;
-	l_args.life = 140;
+	l_args.life = 200;
 
 	p_mi_mgr_->FireChargeMissile(l_args);
 }
@@ -257,7 +296,7 @@ void Player::FireUltimateMissile()
 		// tgt_index はMissileManagerで設定
 		l_args.detection_range = 1000.0f;
 		l_args.init_straight_time_ = 0;
-		l_args.life = 140;
+		l_args.life = 200;
 
 		launched++;
 
@@ -369,13 +408,13 @@ void Player::MoveXZ(float speed)
 	if (KeyboardInput::PushKey(DIK_D))
 	{
 		pos.x += speed;
-		RotPoseRight();
+		//RotPoseRight();
 		is_released = false;
 	}
 	else if (KeyboardInput::PushKey(DIK_A))
 	{
 		pos.x -= speed;
-		RotPoseLeft();
+		//RotPoseLeft();
 		is_released = false;
 	}
 
@@ -391,7 +430,7 @@ void Player::MoveXZ(float speed)
 
 	if (is_released)
 	{
-		ResetRotPose();
+		//ResetRotPose();
 	}
 	else
 	{
@@ -399,21 +438,69 @@ void Player::MoveXZ(float speed)
 	}
 }
 
-void Player::RotPoseLeft()
+void Player::RotationY(float speed)
+{
+	// 回頭処理
+	XMFLOAT3 rot = obj_->GetRot();
+
+	if (KeyboardInput::PushKey(DIK_A))
+	{
+		rot.y -= speed;
+		RotPoseRight(rot);
+		is_released = false;
+	}
+	else if (KeyboardInput::PushKey(DIK_D))
+	{
+		rot.y += speed;
+		RotPoseLeft(rot);
+		is_released = false;
+	}
+
+	if (KeyboardInput::ReleaseKey(DIK_A) || KeyboardInput::ReleaseKey(DIK_D))
+	{
+		is_released = true;
+		NcmEasing::ResetTime(ease_rot_right_);
+		NcmEasing::ResetTime(ease_rot_left_);
+	}
+
+	if (is_released)
+	{
+		ResetRotPose(rot);
+	}
+	else
+	{
+		NcmEasing::ResetTime(ease_reset_rot_);
+	}
+
+	obj_->SetRot(rot);
+}
+
+void Player::MoveForwardAuto()
+{
+	XMFLOAT3 pos = obj_->GetPos();
+	pos.x += speed_ * forward_vec_.x;
+	pos.y += speed_ * forward_vec_.y;
+	pos.z += speed_ * forward_vec_.z;
+	obj_->SetPos(pos);
+}
+
+void Player::RotPoseLeft(XMFLOAT3 &rot)
 {
 	is_already_ = false;
 	NcmEasing::UpdateValue(ease_rot_left_);
-	obj_->SetRot(XMFLOAT3(0, 180.0f, NcmEasing::GetValue(ease_rot_left_)));
+	rot.z = NcmEasing::GetValue(ease_rot_left_);
+	obj_->SetRot(rot);
 }
 
-void Player::RotPoseRight()
+void Player::RotPoseRight(XMFLOAT3 &rot)
 {
 	is_already_ = false;
 	NcmEasing::UpdateValue(ease_rot_right_);
-	obj_->SetRot(XMFLOAT3(0, 180.0f, NcmEasing::GetValue(ease_rot_right_)));
+	rot.z = NcmEasing::GetValue(ease_rot_right_);
+	obj_->SetRot(rot);
 }
 
-void Player::ResetRotPose()
+void Player::ResetRotPose(XMFLOAT3 &rot)
 {
 	if (!is_already_)
 	{
@@ -423,17 +510,18 @@ void Player::ResetRotPose()
 		// それが正なら
 		if (IsPlus(rot))
 		{
-			NcmEasing::SetTotalMove(ease_reset_rot_, -45.0f);
+			NcmEasing::SetTotalMove(ease_reset_rot_, -rot_angle_);
 		}
 		// それが負なら
 		else if (IsMinus(rot))
 		{
-			NcmEasing::SetTotalMove(ease_reset_rot_, 45.0f);
+			NcmEasing::SetTotalMove(ease_reset_rot_, rot_angle_);
 		}
 
 		is_already_ = true;
 	}
 
 	NcmEasing::UpdateValue(ease_reset_rot_);
-	obj_->SetRot(XMFLOAT3(0, 180.0f, NcmEasing::GetValue(ease_reset_rot_)));
+	rot.z = NcmEasing::GetValue(ease_reset_rot_);
+	obj_->SetRot(rot);
 }

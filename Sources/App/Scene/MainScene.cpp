@@ -37,7 +37,7 @@ MainScene::MainScene() :
 	is_failed_(false),
 	ImGui_detection_range_(1000.0f),
 	ImGui_Ui_pos_(Win32App::FCENTER_),
-	player_camera_speed_(),
+	player_speed_(),
 	fov_acc_value_(),
 	fov_dec_value_()
 {
@@ -94,10 +94,6 @@ void MainScene::Initialize()
 	reticle_->Initialize();
 	numbers_->Initialize();
 	ult_->Initialize();
-	/*for (UINT i = 0; i < grid_floor_.size(); i++)
-	{
-		grid_floor_[i].Initialize(200, 10, XMFLOAT3(0, 0, (float)(i) * 1000));
-	}*/
 
 	// enemyの生成
 	ene_list_->AddTemplateSet();
@@ -108,10 +104,10 @@ void MainScene::Initialize()
 	p.particle.velocity_ = { 0.0f, 0.0f, 0.0f };
 	p.particle.accel_ = { 0, 0.001f, 0 };
 	p.particle.life_ = 100;
-	p.particle.s_scale_ = 0.1f;
-	p.pos_rand_ = { 200.0f, 200.0f, 200.0f };
+	p.particle.s_scale_ = 0.3f;
+	p.pos_rand_ = { 1000.0f, 1000.0f, 1000.0f };
 	p.vel_rand_ = { 0.1f, 0.1f, 0.1f };
-	p.gene_num_ = 1;
+	p.gene_num_ = 2;
 	p.use_life_ = false;
 	dust_->SetEmitterDesc(p);
 
@@ -142,10 +138,16 @@ void MainScene::Initialize()
 
 	NcmEaseDesc ease;
 	ease.ease_type = NcmEaseType::OutCirc;
-	ease.init_value = 0.0f;
+	ease.init_value = 0.5f;
 	ease.total_move = SPEED_;
 	ease.t_rate = 0.05f;
-	player_camera_speed_ = NcmEasing::RegisterEaseData(ease);
+	player_speed_ = NcmEasing::RegisterEaseData(ease);
+
+	ease.ease_type = NcmEaseType::OutCirc;
+	ease.init_value = SPEED_;
+	ease.total_move = -0.5f;
+	ease.t_rate = 0.05f;
+	player_dec_speed_ = NcmEasing::RegisterEaseData(ease);
 
 	ease.ease_type = NcmEaseType::OutCubic;
 	ease.init_value = normal_fov_;
@@ -214,33 +216,40 @@ void MainScene::Update()
 		}
 	}
 
-	// プレイヤー操作
-	if (KeyboardInput::PushKey(DIK_W) || KeyboardInput::PushKey(DIK_S) || KeyboardInput::PushKey(DIK_D) || KeyboardInput::PushKey(DIK_A))
+	// 加速
+	if (KeyboardInput::PushKey(DIK_W))
 	{
-		NcmEasing::UpdateValue(player_camera_speed_);
+		NcmEasing::ResetTime(fov_dec_value_);
+		NcmEasing::ResetTime(player_dec_speed_);
 
-		if (KeyboardInput::PushKey(DIK_W))
-		{
-			NcmEasing::UpdateValue(fov_acc_value_);
-			float fov = camera_->GetFOV();
-			fov = NcmEasing::GetValue(fov_acc_value_);
-			camera_->SetFOV(fov);
-			NcmEasing::ResetTime(fov_dec_value_);
-		}
+		// イージングの値を遷移
+		NcmEasing::UpdateValue(player_speed_);
+		NcmEasing::UpdateValue(fov_acc_value_);
+
+		float fov = camera_->GetFOV();
+		fov = NcmEasing::GetValue(fov_acc_value_);
+		camera_->SetFOV(fov);
+
+		player_->SetSpeed(NcmEasing::GetValue(player_speed_));
 	}
+	// 減速・通常
 	else
 	{
-		NcmEasing::ResetTime(player_camera_speed_);
+		NcmEasing::ResetTime(player_speed_);
+		NcmEasing::ResetTime(fov_acc_value_);
 
+		// イージングの値を遷移
+		NcmEasing::UpdateValue(player_dec_speed_);
 		NcmEasing::UpdateValue(fov_dec_value_);
+
 		float fov = camera_->GetFOV();
 		fov = NcmEasing::GetValue(fov_dec_value_);
 		camera_->SetFOV(fov);
-		NcmEasing::ResetTime(fov_acc_value_);
+
+		player_->SetSpeed(NcmEasing::GetValue(player_dec_speed_));
 	}
 
-	player_->MoveXZ(NcmEasing::GetValue(player_camera_speed_));
-	camera_->MoveXY(NcmEasing::GetValue(player_camera_speed_));
+	camera_->TestCameraMove(1.0f, *player_);
 
 	// クリア遷移
 	if (ene_list_->NoticeEmpty())
@@ -272,11 +281,6 @@ void MainScene::Update()
 	missile_mgr_->Update();
 	lockon_sys_->Update();
 	ult_->Update();
-	/*for (auto &i : grid_floor_)
-	{
-		i.MoveMinusZ();
-		i.Update();
-	}*/
 
 	// ミサイル追尾処理
 	missile_mgr_->HomingTarget(*ene_list_);
@@ -304,10 +308,6 @@ void MainScene::Draw()
 	using enum PipelineName;
 
 	PreDraw::PreRender(Line);
-	/*for (auto &i : grid_floor_)
-	{
-		i.Draw();
-	}*/
 	grid_->Draw();
 
 	//PreDraw::PreRender(Object3d);

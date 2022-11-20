@@ -12,7 +12,8 @@
 /// <summary>
 /// ノード構造体
 /// </summary>
-struct Node {
+struct Node
+{
 	// 名前
 	std::string name_;
 	// ローカルスケール
@@ -32,7 +33,8 @@ struct Node {
 /// <summary>
 /// FBXモデルクラス
 /// </summary>
-class FbxModel {
+class FbxModel
+{
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -44,15 +46,19 @@ class FbxModel {
 	template <class T> using vector = std::vector<T>;
 
 public:
+
 	// フレンドクラス
 	friend class FbxLoader;
 
 public:	// 定数
+
 	static const int MAX_BONE_INDICES_ = 4;
 
 public:
+
 	// 頂点データ構造体
-	struct VertexData {
+	struct VertexData
+	{
 		DirectX::XMFLOAT3 pos;
 		DirectX::XMFLOAT3 normal;
 		DirectX::XMFLOAT2 uv;
@@ -61,7 +67,8 @@ public:
 	};
 
 	// ボーン構造体
-	struct Bone {
+	struct Bone
+	{
 		// 名前
 		std::string name;
 		// 初期姿勢の逆行列
@@ -74,6 +81,7 @@ public:
 	};
 
 private:
+
 	// 頂点バッファ
 	ComPtr<ID3D12Resource> vert_buff_;
 	// インデックスバッファ
@@ -88,6 +96,7 @@ private:
 	ComPtr<ID3D12DescriptorHeap> desc_heap_srv;
 
 public:
+
 	/// <summary>
 	/// バッファ生成
 	/// </summary>
@@ -95,6 +104,7 @@ public:
 	void CreateBuffers(ID3D12Device *device);
 
 private:
+
 	// モデル名
 	std::string name_;
 	// ノード配列
@@ -122,6 +132,7 @@ private:
 	FbxScene *fbx_scene_ = nullptr;
 
 public:
+
 	~FbxModel();
 
 	const XMMATRIX &GetModelTransform() { return mesh_node_->global_transform; }

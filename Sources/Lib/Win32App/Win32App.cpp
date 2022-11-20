@@ -1,5 +1,4 @@
 #include "../Win32App/Win32App.h"
-#include "../Sources/resource.h"
 
 using namespace DirectX;
 
