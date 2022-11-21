@@ -68,7 +68,7 @@ void Enemy::Update()
 	RotY();
 	MoveHorizontally(2.0f, 100.0f);
 	//MoveHorizontally(0.5f, 100.0f);
-	//AutoShot(200, player_->GetPos());
+	AutoShot(200, player_->GetPos());
 	obj_->Update();
 	UpdateColl();
 

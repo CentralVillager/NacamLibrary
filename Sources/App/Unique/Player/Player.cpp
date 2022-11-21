@@ -199,7 +199,7 @@ void Player::Update()
 	}
 
 	// “ü—Í‚É‚æ‚è‰ñ“ª‚³‚¹‚é
-	RotationY(2.0f);
+	RotationY(1.0f);
 
 	// ©“®‚Å‘O‚Éi‚Ş
 	MoveForwardAuto();

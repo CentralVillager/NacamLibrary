@@ -25,8 +25,8 @@ void Particle::Initialize(Model *model, const ParticleDesc &particle)
 
 	object_->SetModel(model);
 	object_->Initialize();
-	plate_->Initialize(particle_->tex_handle_);
-	plate_->SetTexHandle(particle_->tex_handle_);
+	//plate_->Initialize(particle_->tex_handle_);
+	//plate_->SetTexHandle(particle_->tex_handle_);
 }
 
 void Particle::Finalize()
