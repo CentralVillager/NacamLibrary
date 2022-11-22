@@ -2,9 +2,13 @@
 #include <Windows.h>
 #include <Xinput.h>
 #include <stdint.h>
+#include <array>
 
 #pragma comment(lib, "Xinput.lib")
 
+/// <summary>
+/// コントローラーのボタンの種類
+/// </summary>
 enum class NcmButtonType
 {
 	// 十字キー
@@ -32,19 +36,44 @@ enum class NcmButtonType
 	Y = XINPUT_GAMEPAD_Y,
 };
 
+/// <summary>
+/// コントローラー側面のトリガーの種類
+/// </summary>
 enum class NcmTriggerType
 {
-	L_TRI,
-	R_TRI
+	L_TRI, R_TRI
 };
 
+/// <summary>
+/// コントローラーのスティックの種類
+/// </summary>
 enum class NcmStickType
 {
-	L_STICK,
-	R_STICK,
+	L_STICK, R_STICK,
 };
 
-struct StickInput
+/// <summary>
+/// スティックの入力方向の種類
+/// </summary>
+enum class NcmStickDirection : char
+{
+	NEUTRAL = 0b0000,
+
+	UP = 0b0001,
+	DOWN = 0b0010,
+	LEFT = 0b0100,
+	RIGHT = 0b1000,
+
+	UPPER_LEFT = 0b0101,
+	UPPER_RIGHT = 0b1001,
+	DOWNER_LEFT = 0b0110,
+	DOWNER_RIGHT = 0b1010
+};
+
+/// <summary>
+/// スティックの入力情報
+/// </summary>
+struct StickOutput
 {
 	SHORT x;
 	SHORT y;
@@ -52,59 +81,112 @@ struct StickInput
 	int32_t dead_zone;
 };
 
+/// <summary>
+/// コントローラーの入力情報
+/// </summary>
+struct NcmInputState
+{
+	XINPUT_STATE state;
+	NcmStickDirection stick_direction;
+
+	/// <summary>
+	/// 入力された方向の取得
+	/// </summary>
+	char GetDirection(NcmStickType type);
+};
+
 class NcmInput
 {
+public:
+
+	// デッドゾーン
+	static constexpr uint32_t NCM_LEFT_STICK_DEAD_ZONE_ = XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE + 500;
+	static constexpr uint32_t NCM_RIGHT_STICK_DEAD_ZONE_ = XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE + 500;
+
+private:
+
 	// コントローラーの認識番号
-	DWORD user_num_;
+	static DWORD user_num_;
 
 	// 接続されているか
-	bool is_connected_;
+	static bool is_connected_;
 
 	// 状態を格納する変数
-	XINPUT_STATE state_;
+	static NcmInputState state_;
 
 	// 1フレーム前の状態を格納する変数
-	XINPUT_STATE old_state_;
+	static NcmInputState old_state_;
 
 public:
 
-	NcmInput();
-	~NcmInput();
+	/// <summary>
+	/// 状態の更新
+	/// </summary>
+	static void Update();
+
+	/// <summary>
+	/// デバッグ用描画
+	/// </summary>
+	static void DebugDraw();
 
 public:
 
-	void Update();
-	void DebugDraw();
-
-public:
+#pragma region Button
 
 	/// <summary>
 	/// ボタンが押下されているか
 	/// </summary>
-	bool IsPush(NcmButtonType button);
+	static bool IsPush(NcmButtonType button);
 
 	/// <summary>
 	/// ボタンが押された瞬間か
 	/// </summary>
-	bool IsTrigger(NcmButtonType button);
+	static bool IsTrigger(NcmButtonType button);
 
 	/// <summary>
 	/// ボタンが離された瞬間か
 	/// </summary>
-	bool IsRelease(NcmButtonType button);
+	static bool IsRelease(NcmButtonType button);
+
+#pragma endregion
+
+#pragma region Trigger
 
 	/// <summary>
 	/// トリガーが反応しているか
 	/// </summary>
-	bool IsPush(NcmTriggerType trigger);
+	static bool IsPush(NcmTriggerType trigger);
+
+#pragma endregion
+
+#pragma region Stick
 
 	/// <summary>
-	/// スティック情報を取得する
+	/// スティックが入力されているか
 	/// </summary>
-	StickInput GetStickState(NcmStickType stick);
+	static bool IsHold(NcmStickType type, NcmStickDirection direction);
 
 	/// <summary>
-	/// 十字方向に丸められたスティック情報を取得する
+	/// スティックが入力された瞬間か
 	/// </summary>
-	StickInput GetStickStateLikeCross(NcmStickType stick);
+	static bool IsTrigger(NcmStickType type, NcmStickDirection direction);
+
+	/// <summary>
+	/// スティックが離された瞬間か
+	/// </summary>
+	static bool IsRelease(NcmStickType type, NcmStickDirection direction);
+
+	/// <summary>
+	/// スティックの入力情報を取得する
+	/// </summary>
+	static StickOutput GetStickState(NcmStickType stick, XINPUT_STATE state);
+
+#pragma endregion
+
+private:
+
+	/// <summary>
+	/// スティックの入力方向を取得する
+	/// </summary>
+	static char GetDirection(NcmStickType type);
 };

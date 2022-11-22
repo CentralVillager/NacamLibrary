@@ -10,7 +10,6 @@
 using namespace NcmUtill;
 
 MainScene::MainScene() :
-	input_(std::make_unique<NcmInput>()),
 	camera_(std::make_unique<Camera>()),
 	player_(std::make_unique<Player>()),
 	enemy_(std::make_unique<Enemy>()),
@@ -170,9 +169,6 @@ void MainScene::Finalize()
 
 void MainScene::Update()
 {
-	// コントローラー入力情報の更新
-	input_->Update();
-
 	if (NcmDebug::GetInstance()->IsDebugMode())
 	{
 		// キーバインドごとの操作
@@ -406,7 +402,7 @@ void MainScene::DebugDraw()
 	NcmImGui::DragFloat2("UI_pos", ImGui_Ui_pos_, 1.0f, 0.0f, 1280.0f);
 	ult_->DebugDraw();
 
-	input_->DebugDraw();
+	NcmInput::DebugDraw();
 }
 
 void MainScene::CollisionProcess()

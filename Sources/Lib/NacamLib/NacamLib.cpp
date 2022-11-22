@@ -5,6 +5,7 @@
 #include "../Input/InputManager.h"
 #include "../Input/KeyboardInput.h"
 #include "../Input/ControllerInput.h"
+#include "../Input/NcmInput.h"
 #include "../Object3d/Object3d.h"
 #include "../IndirectObject3d/IndirectObject3d.h"
 #include "../Line/Line.h"
@@ -74,6 +75,7 @@ void NacamLib::NacamLib_Update(int fps)
 
 	/*-- コントローラー更新処理 --*/
 	ControllerInput::Update();
+	NcmInput::Update();
 
 	/*-- シーン更新 --*/
 	SceneManager::GetSceneStack().top()->Update();

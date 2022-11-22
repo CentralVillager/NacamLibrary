@@ -5,6 +5,7 @@
 #include "../../Debug/NcmDebug.h"
 #include "../../../Lib/Input/KeyboardInput.h"
 #include "../Sources/App/Math/NcmMath.h"
+#include "../../../Lib/Input/NcmInput.h"
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
@@ -16,7 +17,6 @@ std::unique_ptr<Model> Player::coll_model_ = nullptr;
 
 Player::Player()
 	: AbsUniqueObj(0.5f, 2.0f),
-	input_(std::unique_ptr<NcmInput>()),
 	is_invincible_(false),
 	taking_damage_trigger_(false),
 	is_triggering_ult_(false),
@@ -132,27 +132,13 @@ void Player::Update()
 	}
 
 	// スペース長押しで
-	if (KeyboardInput::HoldKey(DIK_SPACE))
+	if (KeyboardInput::HoldKey(DIK_SPACE) || NcmInput::IsPush(NcmButtonType::A))
 	{
 		// ミサイルをチャージ
 		ChargeMissile();
 	}
 	// 離して
-	else if (KeyboardInput::ReleaseKey(DIK_SPACE))
-	{
-		// ミサイルを発射
-		FireChargeMissile();
-		p_lockon_sys_->ResetTargetNum();
-		count_ = 0;
-	}
-
-	if (input_->IsPush(NcmButtonType::A))
-	{
-		// ミサイルをチャージ
-		ChargeMissile();
-	}
-	// 離して
-	else if (input_->IsRelease(NcmButtonType::A))
+	else if (KeyboardInput::ReleaseKey(DIK_SPACE) || NcmInput::IsRelease(NcmButtonType::A))
 	{
 		// ミサイルを発射
 		FireChargeMissile();
@@ -161,7 +147,7 @@ void Player::Update()
 	}
 
 	// Qで
-	if (KeyboardInput::ReleaseKey(DIK_Q))
+	if (KeyboardInput::ReleaseKey(DIK_Q) || NcmInput::IsTrigger(NcmButtonType::Y))
 	{
 		// ウルトが溜まっていなかったら
 		if (!p_ult_->NoticeFullCharged())
@@ -455,23 +441,27 @@ void Player::MoveXZ(float speed)
 
 void Player::RotationY(float speed)
 {
+	using enum NcmStickType;
+	using enum NcmStickDirection;
+
 	// 回頭処理
 	XMFLOAT3 rot = obj_->GetRot();
 
-	if (KeyboardInput::PushKey(DIK_A))
+	if (KeyboardInput::PushKey(DIK_A) || NcmInput::IsHold(L_STICK, LEFT))
 	{
 		rot.y -= speed;
 		RotPoseRight(rot);
 		is_released = false;
 	}
-	else if (KeyboardInput::PushKey(DIK_D))
+	else if (KeyboardInput::PushKey(DIK_D) || NcmInput::IsHold(L_STICK, RIGHT))
 	{
 		rot.y += speed;
 		RotPoseLeft(rot);
 		is_released = false;
 	}
 
-	if (KeyboardInput::ReleaseKey(DIK_A) || KeyboardInput::ReleaseKey(DIK_D))
+	if (KeyboardInput::ReleaseKey(DIK_A) || KeyboardInput::ReleaseKey(DIK_D) || 
+		NcmInput::IsRelease(L_STICK, LEFT) || NcmInput::IsRelease(L_STICK, RIGHT))
 	{
 		is_released = true;
 		NcmEasing::ResetTime(ease_rot_right_);

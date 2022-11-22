@@ -4,15 +4,10 @@
 
 using namespace NcmUtill;
 
-NcmInput::NcmInput() :
-	user_num_(),
-	is_connected_(false),
-	state_(),
-	old_state_()
-{}
-
-NcmInput::~NcmInput()
-{}
+DWORD NcmInput::user_num_ = 0;
+bool NcmInput::is_connected_ = false;
+NcmInputState NcmInput::state_{};
+NcmInputState NcmInput::old_state_{};
 
 void NcmInput::Update()
 {
@@ -23,7 +18,7 @@ void NcmInput::Update()
 	ZeroMemory(&state_, sizeof(XINPUT_STATE));
 
 	// コントローラーの状態を取得
-	DWORD result = XInputGetState(user_num_, &state_);
+	DWORD result = XInputGetState(user_num_, &state_.state);
 
 	if (result == ERROR_SUCCESS)
 	{
@@ -38,16 +33,11 @@ void NcmInput::Update()
 }
 
 void NcmInput::DebugDraw()
-{
-	using enum NcmStickType;
-
-	ImGui::Text("%d, %d", GetStickStateLikeCross(L_STICK).x, GetStickStateLikeCross(L_STICK).y);
-	ImGui::Text("%d, %d", GetStickStateLikeCross(R_STICK).x, GetStickStateLikeCross(R_STICK).y);
-}
+{}
 
 bool NcmInput::IsPush(NcmButtonType button)
 {
-	if (state_.Gamepad.wButtons & (int)(button))
+	if (state_.state.Gamepad.wButtons & (int)(button))
 	{
 		return true;
 	}
@@ -57,7 +47,7 @@ bool NcmInput::IsPush(NcmButtonType button)
 
 bool NcmInput::IsTrigger(NcmButtonType button)
 {
-	if (state_.Gamepad.wButtons & (int)(button) && !(old_state_.Gamepad.wButtons & (int)(button)))
+	if (state_.state.Gamepad.wButtons & (int)(button) && !(old_state_.state.Gamepad.wButtons & (int)(button)))
 	{
 		return true;
 	}
@@ -67,7 +57,7 @@ bool NcmInput::IsTrigger(NcmButtonType button)
 
 bool NcmInput::IsRelease(NcmButtonType button)
 {
-	if (!(state_.Gamepad.wButtons & (int)(button)) && old_state_.Gamepad.wButtons & (int)(button))
+	if (!(state_.state.Gamepad.wButtons & (int)(button)) && old_state_.state.Gamepad.wButtons & (int)(button))
 	{
 		return true;
 	}
@@ -82,11 +72,11 @@ bool NcmInput::IsPush(NcmTriggerType trigger)
 
 	if (trigger == NcmTriggerType::L_TRI)
 	{
-		trigger_type = state_.Gamepad.bLeftTrigger;
+		trigger_type = state_.state.Gamepad.bLeftTrigger;
 	}
 	else if (trigger == NcmTriggerType::R_TRI)
 	{
-		trigger_type = state_.Gamepad.bRightTrigger;
+		trigger_type = state_.state.Gamepad.bRightTrigger;
 	}
 
 	if (trigger_type > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
@@ -97,22 +87,60 @@ bool NcmInput::IsPush(NcmTriggerType trigger)
 	return false;
 }
 
-StickInput NcmInput::GetStickState(NcmStickType stick)
+bool NcmInput::IsHold(NcmStickType type, NcmStickDirection direction)
 {
-	StickInput input{};
-	ZeroMemory(&input, sizeof(StickInput));
+	using enum NcmStickDirection;
+
+	if (GetDirection(type) & (char)(direction))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool NcmInput::IsTrigger(NcmStickType type, NcmStickDirection direction)
+{
+	using enum NcmStickDirection;
+
+	if (state_.GetDirection(type) & (char)(direction) &&
+		!(old_state_.GetDirection(type) & (char)(direction)))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool NcmInput::IsRelease(NcmStickType type, NcmStickDirection direction)
+{
+	using enum NcmStickDirection;
+
+	if (!(state_.GetDirection(type) & (char)(direction)) &&
+		(old_state_.GetDirection(type) & (char)(direction)))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+StickOutput NcmInput::GetStickState(NcmStickType stick, XINPUT_STATE state)
+{
+	StickOutput input{};
+	ZeroMemory(&input, sizeof(StickOutput));
 
 	if (stick == NcmStickType::L_STICK)
 	{
-		input.x = state_.Gamepad.sThumbLX;
-		input.y = state_.Gamepad.sThumbLY;
-		input.dead_zone = XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE + 500;
+		input.x = state.Gamepad.sThumbLX;
+		input.y = state.Gamepad.sThumbLY;
+		input.dead_zone = NCM_LEFT_STICK_DEAD_ZONE_;
 	}
 	else if (stick == NcmStickType::R_STICK)
 	{
-		input.x = state_.Gamepad.sThumbRX;
-		input.y = state_.Gamepad.sThumbRY;
-		input.dead_zone = XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE + 500;
+		input.x = state.Gamepad.sThumbRX;
+		input.y = state.Gamepad.sThumbRY;
+		input.dead_zone = NCM_RIGHT_STICK_DEAD_ZONE_;
 	}
 
 	// デッドゾーン以内の入力を丸める
@@ -128,39 +156,72 @@ StickInput NcmInput::GetStickState(NcmStickType stick)
 	return input;
 }
 
-StickInput NcmInput::GetStickStateLikeCross(NcmStickType stick)
+char NcmInput::GetDirection(NcmStickType type)
 {
-	StickInput result = GetStickState(stick);
+	using enum NcmStickDirection;
+
+	// スティックの状態を取得
+	StickOutput result = GetStickState(type, state_.state);
+
+	// 方向情報をニュートラルで初期化
+	char direction = (char)(NEUTRAL);
 
 	// 上
 	if (IsPlus(result.y) && result.x < result.dead_zone && result.x > -result.dead_zone)
 	{
-		result.y = 1;
+		direction |= (char)(UP);
 	}
 	// 下
 	else if (IsMinus(result.y) && result.x < result.dead_zone && result.x > -result.dead_zone)
 	{
-		result.y = -1;
-	}
-	else
-	{
-		result.y = 0;
+		direction |= (char)(DOWN);
 	}
 
 	// 左
 	if (IsMinus(result.x) && result.y < result.dead_zone && result.y > -result.dead_zone)
 	{
-		result.x = -1;
+		direction |= (char)(LEFT);
 	}
 	// 右
 	else if (IsPlus(result.x) && result.y < result.dead_zone && result.y > -result.dead_zone)
 	{
-		result.x = 1;
-	}
-	else
-	{
-		result.x = 0;
+		direction |= (char)(RIGHT);
 	}
 
-	return result;
+	return direction;
+}
+
+char NcmInputState::GetDirection(NcmStickType type)
+{
+	using enum NcmStickDirection;
+
+	// スティックの状態を取得
+	StickOutput result = NcmInput::GetStickState(type, state);
+
+	// 方向情報をニュートラルで初期化
+	char direction = (char)(NEUTRAL);
+
+	// 上
+	if (IsPlus(result.y) && result.x < result.dead_zone && result.x > -result.dead_zone)
+	{
+		direction |= (char)(UP);
+	}
+	// 下
+	else if (IsMinus(result.y) && result.x < result.dead_zone && result.x > -result.dead_zone)
+	{
+		direction |= (char)(DOWN);
+	}
+
+	// 左
+	if (IsMinus(result.x) && result.y < result.dead_zone && result.y > -result.dead_zone)
+	{
+		direction |= (char)(LEFT);
+	}
+	// 右
+	else if (IsPlus(result.x) && result.y < result.dead_zone && result.y > -result.dead_zone)
+	{
+		direction |= (char)(RIGHT);
+	}
+
+	return direction;
 }

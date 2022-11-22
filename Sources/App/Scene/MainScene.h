@@ -50,8 +50,6 @@ private:
 
 private:
 
-	std::unique_ptr<NcmInput> input_;
-
 	std::unique_ptr<Camera> camera_;
 	std::unique_ptr<Player> player_;
 	std::unique_ptr<Enemy> enemy_;
