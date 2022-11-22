@@ -274,7 +274,7 @@ void Missile::HomingTarget(const XMFLOAT3 &target_pos)
 
 	//float r = vec.m128_f32[0] * mi_vec.m128_f32[2] - mi_vec.m128_f32[0] * vec.m128_f32[2];
 
-	//if (IsPlus(r)) {
+	//if (IsZeroOrMore(r)) {
 
 	//	norm_vec.m128_f32[0] += 1.0f;
 

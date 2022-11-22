@@ -220,6 +220,7 @@
     <ClCompile Include="Sources\Lib\Input\ControllerInput.cpp" />
     <ClCompile Include="Sources\Lib\Input\InputManager.cpp" />
     <ClCompile Include="Sources\Lib\Input\KeyboardInput.cpp" />
+    <ClCompile Include="Sources\Lib\Input\NcmInput.cpp" />
     <ClCompile Include="Sources\Lib\Line\Line.cpp" />
     <ClCompile Include="Sources\Lib\Model\Model.cpp" />
     <ClCompile Include="Sources\Lib\NacamLib\NacamLib.cpp" />
@@ -293,6 +294,7 @@
     <ClInclude Include="Sources\Lib\Input\ControllerInput.h" />
     <ClInclude Include="Sources\Lib\Input\InputManager.h" />
     <ClInclude Include="Sources\Lib\Input\KeyboardInput.h" />
+    <ClInclude Include="Sources\Lib\Input\NcmInput.h" />
     <ClInclude Include="Sources\Lib\Line\Line.h" />
     <ClInclude Include="Sources\Lib\Model\Model.h" />
     <ClInclude Include="Sources\Lib\NacamError\NacamError.h" />

@@ -18,6 +18,7 @@
 #include "../Ui/NcmUi.h"
 #include "../../App/Unique/Ultimate/UltimateManager.h"
 #include "../../Lib/PlatePoly/PlatePoly.h"
+#include "../../Lib/Input/NcmInput.h"
 
 class MainScene : public AbsScene
 {
@@ -48,6 +49,8 @@ private:
 	static constexpr XMFLOAT3 cam_init_pos_ = XMFLOAT3(0, 10.0f, init_pos_.z);
 
 private:
+
+	std::unique_ptr<NcmInput> input_;
 
 	std::unique_ptr<Camera> camera_;
 	std::unique_ptr<Player> player_;

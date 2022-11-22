@@ -1,9 +1,11 @@
 #pragma once
+#include <memory>
 #include "../Reticle/Reticle.h"
 #include "../Missile/MissileManager.h"
 #include "../LockOnSystem/LockOnSystem.h"
 #include "../Abs/AbsUniqueObj.h"
 #include "../Ultimate/UltimateManager.h"
+#include "../../../Lib/Input/NcmInput.h"
 
 class Player : public AbsUniqueObj
 {
@@ -18,6 +20,8 @@ private:
 	// ï`âÊÉfÅ[É^
 	static std::unique_ptr<Model> model_;
 	static std::unique_ptr<Model> coll_model_;
+
+	std::unique_ptr<NcmInput> input_;
 
 	bool is_invincible_;
 	bool taking_damage_trigger_;

@@ -49,7 +49,7 @@ namespace NcmUtill
 	/// <returns></returns>
 	inline static bool IsPlus(const float value)
 	{
-		if (value >= 0) { return true; }
+		if (value > 0) { return true; }
 
 		return false;
 	}
@@ -69,6 +69,13 @@ namespace NcmUtill
 	inline static bool IsZero(const int num)
 	{
 		if (num == 0) { return true; }
+
+		return false;
+	}
+
+	inline static bool IsZeroOrMore(const float value)
+	{
+		if (value >= 0) { return true; }
 
 		return false;
 	}

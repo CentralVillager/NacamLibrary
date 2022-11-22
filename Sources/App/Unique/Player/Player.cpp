@@ -16,6 +16,7 @@ std::unique_ptr<Model> Player::coll_model_ = nullptr;
 
 Player::Player()
 	: AbsUniqueObj(0.5f, 2.0f),
+	input_(std::unique_ptr<NcmInput>()),
 	is_invincible_(false),
 	taking_damage_trigger_(false),
 	is_triggering_ult_(false),
@@ -138,6 +139,20 @@ void Player::Update()
 	}
 	// 離して
 	else if (KeyboardInput::ReleaseKey(DIK_SPACE))
+	{
+		// ミサイルを発射
+		FireChargeMissile();
+		p_lockon_sys_->ResetTargetNum();
+		count_ = 0;
+	}
+
+	if (input_->IsPush(NcmButtonType::A))
+	{
+		// ミサイルをチャージ
+		ChargeMissile();
+	}
+	// 離して
+	else if (input_->IsRelease(NcmButtonType::A))
 	{
 		// ミサイルを発射
 		FireChargeMissile();
@@ -508,7 +523,7 @@ void Player::ResetRotPose(XMFLOAT3 &rot)
 		NcmEasing::SetInitValue(ease_reset_rot_, rot);
 
 		// それが正なら
-		if (IsPlus(rot))
+		if (IsZeroOrMore(rot))
 		{
 			NcmEasing::SetTotalMove(ease_reset_rot_, -rot_angle_);
 		}
