@@ -9,7 +9,8 @@
 #pragma comment(lib, "dinput8.lib")
 #pragma comment(lib, "dxguid.lib")
 
-class InputManager final : public Singleton<InputManager> {
+class InputManager final : public Singleton<InputManager>
+{
 	friend Singleton<InputManager>;
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 

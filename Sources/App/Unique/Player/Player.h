@@ -5,6 +5,7 @@
 #include "../LockOnSystem/LockOnSystem.h"
 #include "../Abs/AbsUniqueObj.h"
 #include "../Ultimate/UltimateManager.h"
+#include "../Missile/MissileLauncher.h"
 
 class Player : public AbsUniqueObj
 {
@@ -20,10 +21,10 @@ private:
 	static std::unique_ptr<Model> model_;
 	static std::unique_ptr<Model> coll_model_;
 
-	bool is_invincible_;
-	bool taking_damage_trigger_;
-	bool is_triggering_ult_;
-	uint32_t hp_;
+	bool is_invincible_;			// 無敵状態かどうか
+	bool taking_damage_trigger_;	// ダメージを受けた瞬間か
+	bool is_triggering_ult_;		// ウルトを放った瞬間か
+	uint32_t hp_;					// HP
 
 	// 他クラス情報
 	MissileManager *p_mi_mgr_;
@@ -31,18 +32,19 @@ private:
 	UltimateManager *p_ult_;
 
 	// ミサイル発射関連
-	int32_t charge_time_;
-	int32_t count_;
+	std::unique_ptr<MissileLauncher> mi_launcher_;
+	int32_t charge_time_;			// 発射に必要なチャージ時間
+	int32_t count_;					// チャージカウント用
 
 	// イージング用変数
-	int32_t ease_rot_right_;
-	int32_t ease_rot_left_;
-	int32_t ease_reset_rot_;
+	int32_t ease_rot_right_;		// 右傾倒時の姿勢遷移用
+	int32_t ease_rot_left_;			// 左傾倒時の姿勢遷移用
+	int32_t ease_reset_rot_;		// 姿勢リセット用
 
 	bool is_already_;
 	bool is_released;
 
-	float rot_angle_;
+	float rot_angle_;				// 傾倒する角度
 
 public:
 
@@ -69,9 +71,6 @@ public:
 
 public:
 
-	void FireMultiMissile();
-	void FireChargeMissile();
-	void FireUltimateMissile();
 	void ChargeMissile();
 	void TakeDamage();
 	void CountInvincibleTime();

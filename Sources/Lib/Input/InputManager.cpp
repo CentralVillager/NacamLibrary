@@ -2,13 +2,13 @@
 
 Microsoft::WRL::ComPtr<IDirectInput8> InputManager::dinput_;
 
-void InputManager::StaticInitialize() {
-
+void InputManager::StaticInitialize()
+{
 	MakeDirectInput();
 }
 
-void InputManager::MakeDirectInput() {
-
+void InputManager::MakeDirectInput()
+{
 	HRESULT result;
 
 	result = DirectInput8Create(

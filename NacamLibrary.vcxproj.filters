@@ -407,6 +407,9 @@
     <ClCompile Include="Sources\Lib\Input\NcmInput.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\App\Unique\Missile\MissileLauncher.cpp">
+      <Filter>Application\Unique\Missile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -629,6 +632,21 @@
       <Filter>Application\NacamMath\Easing</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Lib\Input\NcmInput.h" />
+    <ClInclude Include="Sources\App\Unique\Missile\IMissileState.h">
+      <Filter>Application\Unique\Missile</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Unique\Missile\MissileStateUltimate.h">
+      <Filter>Application\Unique\Missile</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Unique\Missile\MissileStateCharge.h">
+      <Filter>Application\Unique\Missile</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Unique\Missile\MissileLauncher.h">
+      <Filter>Application\Unique\Missile</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Unique\Missile\MissileStateMulti.h">
+      <Filter>Application\Unique\Missile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">

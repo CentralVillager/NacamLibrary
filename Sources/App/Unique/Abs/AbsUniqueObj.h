@@ -24,7 +24,7 @@ protected:
 	// 当たり判定
 	Sphere coll_;
 
-	// 前方ベクトル
+	// 正面ベクトル
 	XMFLOAT3 forward_vec_;
 
 	// その他情報

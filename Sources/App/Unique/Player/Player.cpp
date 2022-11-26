@@ -24,6 +24,7 @@ Player::Player()
 	p_mi_mgr_(nullptr),
 	p_lockon_sys_(nullptr),
 	p_ult_(nullptr),
+	mi_launcher_(std::make_unique<MissileLauncher>()),
 	charge_time_(40),
 	count_(),
 	ease_rot_right_(),
@@ -141,13 +142,14 @@ void Player::Update()
 	else if (KeyboardInput::ReleaseKey(DIK_SPACE) || NcmInput::IsRelease(NcmButtonType::A))
 	{
 		// ミサイルを発射
-		FireChargeMissile();
+		mi_launcher_->FireMissile(MissileType::Charge, obj_->GetPos(), p_mi_mgr_);
+
 		p_lockon_sys_->ResetTargetNum();
 		count_ = 0;
 	}
 
 	// Qで
-	if (KeyboardInput::ReleaseKey(DIK_Q) || NcmInput::IsTrigger(NcmButtonType::Y))
+	if (KeyboardInput::TriggerKey(DIK_Q) || NcmInput::IsTrigger(NcmButtonType::Y))
 	{
 		// ウルトが溜まっていなかったら
 		if (!p_ult_->NoticeFullCharged())
@@ -164,9 +166,8 @@ void Player::Update()
 			}
 		}
 
-		// ウルトを発動する
+		// ウルトを発動する(UI)
 		p_ult_->TriggeringUlt();
-		FireUltimateMissile();
 		is_triggering_ult_ = true;
 	}
 
@@ -174,7 +175,10 @@ void Player::Update()
 	if (is_triggering_ult_)
 	{
 		// ULT用ミサイルセットを発射する
-		FireUltimateMissile();
+		if (mi_launcher_->FireMissile(MissileType::Ultimate, obj_->GetPos(), p_mi_mgr_))
+		{
+			is_triggering_ult_ = false;
+		}
 	}
 
 	// HPが0以下なら
@@ -247,72 +251,6 @@ void Player::DebugDraw()
 	ImGui::DragInt("charge_time", &charge_time_);
 }
 
-void Player::FireMultiMissile()
-{
-	MissileArgs l_args{};
-	l_args.pos = obj_->GetPos();
-	l_args.vel = XMFLOAT3(0, 0, 1.0f);
-	//l_args.acc = XMFLOAT3(0, -1.0f, 0);
-	// acc はMissileManagerで設定
-	// tgt_pos はMissileManagerで設定
-	// tgt_index はMissileManagerで設定
-	l_args.detection_range = 1000.0f;
-	l_args.init_straight_time_ = 0;
-	l_args.life = 200;
-
-	p_mi_mgr_->FireMultiMissile(l_args, 4);
-}
-
-void Player::FireChargeMissile()
-{
-	MissileArgs l_args{};
-	l_args.pos = obj_->GetPos();
-	l_args.vel = XMFLOAT3(0, 0, 1.0f);
-	//l_args.acc = XMFLOAT3(0, -1.0f, 0);
-	// acc はMissileManagerで設定
-	// tgt_pos はMissileManagerで設定
-	// tgt_index はMissileManagerで設定
-	l_args.detection_range = 1000.0f;
-	l_args.init_straight_time_ = 0;
-	l_args.life = 200;
-
-	p_mi_mgr_->FireChargeMissile(l_args);
-}
-
-void Player::FireUltimateMissile()
-{
-	static const uint32_t DELAY = 3;
-	static uint32_t count = 1;
-	static uint32_t launched = 0;
-	count--;
-
-	if (IsZeroOrLess(count))
-	{
-		MissileArgs l_args{};
-		l_args.pos = obj_->GetPos();
-		l_args.vel = XMFLOAT3(0, 0, 1.0f);
-		//l_args.acc = XMFLOAT3(0, -1.0f, 0);
-		// acc はMissileManagerで設定
-		// tgt_pos はMissileManagerで設定
-		// tgt_index はMissileManagerで設定
-		l_args.detection_range = 1000.0f;
-		l_args.init_straight_time_ = 0;
-		l_args.life = 200;
-
-		launched++;
-
-		p_mi_mgr_->FireUltimateMissile(l_args, launched);
-		count = DELAY;
-	}
-
-	if (launched >= 20)
-	{
-		is_triggering_ult_ = false;
-		launched = 0;
-		count = 1;
-	}
-}
-
 void Player::ChargeMissile()
 {
 	if (p_lockon_sys_->GetCurrentTgtNum() >= p_lockon_sys_->GetMaxTgtNum())
@@ -349,50 +287,6 @@ void Player::CountInvincibleTime()
 	{
 		is_invincible_ = false;
 		count = invincible_time_;
-	}
-}
-
-void Player::Move(float speed)
-{
-	if (KeyboardInput::PushKey(DIK_W) || KeyboardInput::PushKey(DIK_S) || KeyboardInput::PushKey(DIK_D) || KeyboardInput::PushKey(DIK_A) || KeyboardInput::PushKey(DIK_R) || KeyboardInput::PushKey(DIK_F))
-	{
-		XMFLOAT3 pos = obj_->GetPos();
-
-		if (KeyboardInput::PushKey(DIK_W)) { pos.y += speed; }
-		else if (KeyboardInput::PushKey(DIK_S)) { pos.y -= speed; }
-		if (KeyboardInput::PushKey(DIK_D)) { pos.x += speed; }
-		else if (KeyboardInput::PushKey(DIK_A)) { pos.x -= speed; }
-		if (KeyboardInput::PushKey(DIK_R)) { pos.z += speed; }
-		else if (KeyboardInput::PushKey(DIK_F)) { pos.z -= speed; }
-
-		obj_->SetPos(pos);
-	}
-
-	if (KeyboardInput::PushKey(DIK_UP) || KeyboardInput::PushKey(DIK_DOWN) || KeyboardInput::PushKey(DIK_LEFT) || KeyboardInput::PushKey(DIK_RIGHT))
-	{
-		XMFLOAT3 rot = obj_->GetRot();
-
-		if (KeyboardInput::PushKey(DIK_UP)) { rot.x -= speed; }
-		if (KeyboardInput::PushKey(DIK_DOWN)) { rot.x += speed; }
-		if (KeyboardInput::PushKey(DIK_LEFT)) { rot.z -= speed; }
-		if (KeyboardInput::PushKey(DIK_RIGHT)) { rot.z += speed; }
-
-		obj_->SetRot(rot);
-	}
-}
-
-void Player::MoveXY(float speed)
-{
-	if (KeyboardInput::PushKey(DIK_W) || KeyboardInput::PushKey(DIK_S) || KeyboardInput::PushKey(DIK_D) || KeyboardInput::PushKey(DIK_A))
-	{
-		XMFLOAT3 pos = obj_->GetPos();
-
-		if (KeyboardInput::PushKey(DIK_W)) { pos.y += speed; }
-		else if (KeyboardInput::PushKey(DIK_S)) { pos.y -= speed; }
-		if (KeyboardInput::PushKey(DIK_D)) { pos.x += speed; }
-		else if (KeyboardInput::PushKey(DIK_A)) { pos.x -= speed; }
-
-		obj_->SetPos(pos);
 	}
 }
 
@@ -460,7 +354,7 @@ void Player::RotationY(float speed)
 		is_released = false;
 	}
 
-	if (KeyboardInput::ReleaseKey(DIK_A) || KeyboardInput::ReleaseKey(DIK_D) || 
+	if (KeyboardInput::ReleaseKey(DIK_A) || KeyboardInput::ReleaseKey(DIK_D) ||
 		NcmInput::IsRelease(L_STICK, LEFT) || NcmInput::IsRelease(L_STICK, RIGHT))
 	{
 		is_released = true;
