@@ -34,10 +34,11 @@ private:
 
 private:
 
+	// 描画データ
 	static std::unique_ptr<Model> model_;
 	std::vector<Object3d> markers_;
 
-	std::vector<TargetData> tgt_datas_;
+	// ターゲットのリスト
 	std::list<TargetData> tgt_list_;
 
 	Player *player_ptr_;
@@ -62,8 +63,6 @@ public:
 
 public:
 
-	inline const TargetData &GetTgtData(int i) { return tgt_datas_[i]; }
-	inline const std::vector<TargetData> &GetTgtData() { return tgt_datas_; }
 	inline const std::list<TargetData> &GetTgtList() { return tgt_list_; }
 	inline static const uint32_t &GetCurrentTgtNum() { return current_tgt_num_; }
 	const uint32_t GetMaxTgtNum();
@@ -72,11 +71,25 @@ public:
 
 public:
 
+	/// <summary>
+	/// ターゲット数を増やす
+	/// </summary>
 	void AddTargetNum();
+
+	/// <summary>
+	/// ターゲット数をリセットする
+	/// </summary>
 	void ResetTargetNum();
 
 private:
 
+	/// <summary>
+	/// 一番近い敵を算出する
+	/// </summary>
 	void CalcNearestTargets(const XMFLOAT3 &player_pos, EnemiesList &enemies);
+
+	/// <summary>
+	/// 距離を算出する
+	/// </summary>
 	float CalcDistance(const XMFLOAT3 &dist_pos, const XMFLOAT3 &src_pos);
 };

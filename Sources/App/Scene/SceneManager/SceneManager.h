@@ -4,7 +4,9 @@
 #include <array>
 #include "../AbsScene.h"
 
-// 全シーン名
+/// <summary>
+/// 全シーン名
+/// </summary>
 enum class SceneName : unsigned int
 {
 	SPLASH,		// ロゴなどを表示

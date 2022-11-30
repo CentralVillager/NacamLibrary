@@ -125,8 +125,8 @@ void NcmSprite::DrawTex(const ncm_thandle handle)
 {
 	// ワールド行列の更新
 	sprite_hub_[handle].mat_world_ = XMMatrixIdentity();
-	sprite_hub_[handle].mat_world_ *= XMMatrixRotationZ(XMConvertToRadians(sprite_hub_[handle].rotation_));
-	sprite_hub_[handle].mat_world_ *= XMMatrixTranslation(sprite_hub_[handle].position_.x, sprite_hub_[handle].position_.y, 0.0f);
+	sprite_hub_[handle].mat_world_ *= XMMatrixRotationZ(XMConvertToRadians(sprite_hub_[handle].rot_.z));
+	sprite_hub_[handle].mat_world_ *= XMMatrixTranslation(sprite_hub_[handle].pos_.x, sprite_hub_[handle].pos_.y, 0.0f);
 
 	// 定数バッファにデータ転送
 	ConstBufferData *const_map = nullptr;
@@ -140,9 +140,9 @@ void NcmSprite::DrawTex(const ncm_thandle handle)
 
 	// 頂点バッファの設定
 	cmd_list_->IASetVertexBuffers(0, 1, &sprite_hub_[handle].vb_view_);
-	ID3D12DescriptorHeap *ppHeaps[] = { desc_heap_.Get() };
+	ID3D12DescriptorHeap *pp_heaps[] = { desc_heap_.Get() };
 	// デスクリプタヒープをセット
-	cmd_list_->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+	cmd_list_->SetDescriptorHeaps(_countof(pp_heaps), pp_heaps);
 	// 定数バッファビューをセット
 	cmd_list_->SetGraphicsRootConstantBufferView(0, sprite_hub_[handle].const_buffer_->GetGPUVirtualAddress());
 	// シェーダリソースビューをセット

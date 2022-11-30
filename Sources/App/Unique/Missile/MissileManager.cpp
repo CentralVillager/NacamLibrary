@@ -67,11 +67,6 @@ const Sphere &MissileManager::GetCollData(UINT n)
 	return itr->GetCollData();
 }
 
-void MissileManager::Fire(const MissileArgs &args)
-{
-	AddMissile(args);
-}
-
 void MissileManager::FireMultiMissile(const MissileArgs &args, uint32_t num)
 {
 	MissileArgs l_args{};
@@ -149,14 +144,6 @@ void MissileManager::FireUltimateMissile(const MissileArgs &args, uint32_t launc
 	p_lockon_sys_->SetMaxTgtNum(4);
 }
 
-void MissileManager::HomingTarget(XMFLOAT3 target_pos)
-{
-	for (auto &i : missile_list_)
-	{
-		i.HomingTarget(target_pos);
-	}
-}
-
 void MissileManager::HomingTarget(EnemiesList &enemies)
 {
 	for (auto &i : missile_list_)
@@ -170,7 +157,7 @@ void MissileManager::Death(UINT n)
 {
 	auto itr = MoveIterator(missile_list_.begin(), n);
 
-	itr->TermEmitter();
+	itr->PrepareTermEmitter();
 	itr->SetMissileLife(0);
 	itr->InvalidateMissile();
 }
@@ -178,6 +165,6 @@ void MissileManager::Death(UINT n)
 void MissileManager::AddMissile(const MissileArgs &args)
 {
 	missile_list_.emplace_front();
-	missile_list_.front().Initialize(args, p_lockon_sys_);
+	missile_list_.front().Initialize(args);
 	missile_list_.front().Activate();
 }

@@ -1,6 +1,7 @@
 #include "LockOnSystem.h"
 #include "../Player/Player.h"
 #include "../../Debug/NcmImGui.h"
+#include "../../../Lib/PreDraw/PreDraw.h"
 
 using namespace DirectX;
 
@@ -10,7 +11,6 @@ std::unique_ptr<Model> LockOnSystem::model_ = nullptr;
 
 LockOnSystem::LockOnSystem() :
 	markers_(),
-	tgt_datas_(),
 	tgt_list_(),
 	player_ptr_(),
 	enemies_ptr_(),
@@ -40,11 +40,16 @@ void LockOnSystem::Initialize(Player *player, EnemiesList *enemies_ptr)
 
 void LockOnSystem::Update()
 {
+	// 最も近い敵を算出する
 	CalcNearestTargets(player_ptr_->GetPos(), *enemies_ptr_);
 
+	// ターゲットリストのイテレータを取得
 	auto itr = tgt_list_.begin();
+
+	// 全てのマーカーに対して
 	for (auto &i : markers_)
 	{
+		// ターゲットの位置にマーカーを設置
 		i.SetPos({ itr->pos.x, itr->pos.y + 2.0f, itr->pos.z });
 		i.Update();
 		itr++;
@@ -53,6 +58,7 @@ void LockOnSystem::Update()
 
 void LockOnSystem::Draw()
 {
+	PreDraw::PreRender(PipelineName::Object3d);
 	for (auto &i : markers_)
 	{
 		i.Draw();
@@ -86,43 +92,49 @@ const uint32_t LockOnSystem::GetMaxTgtNum()
 
 void LockOnSystem::AddTargetNum()
 {
+	// 現ターゲット数が最大ターゲット数以上なら
 	if (current_tgt_num_ >= max_tgt_num_)
 	{
+		// その後の処理をスルー
 		return;
 	}
 
+	// マーカーを初期化
 	markers_.emplace_back();
 	markers_.back().Initialize();
 	markers_.back().SetModel(model_.get());
 	markers_.back().SetScale(2.0f);
 
+	// 現ターゲット数を更新
 	current_tgt_num_++;
 }
 
 void LockOnSystem::ResetTargetNum()
 {
 	markers_.clear();
-	tgt_datas_.clear();
 	tgt_list_.clear();
 	current_tgt_num_ = 0;
 }
 
 void LockOnSystem::CalcNearestTargets(const XMFLOAT3 &player_pos, EnemiesList &enemies)
 {
-	// 仮初期化
-	float nearest_dist = 1000000.0f;
-
+	// 初期化
 	tgt_list_.clear();
 
 	// 全ての敵に対して
 	for (UINT i = 0; i < enemies.GetEnemies().size(); i++)
 	{
+		// 要素を構築
 		tgt_list_.emplace_back();
+		// プレイヤーと敵との距離を計算し、格納
 		tgt_list_.back().dist = CalcDistance(player_pos, enemies.GetPos(i));
+		// 位置を格納
 		tgt_list_.back().pos = enemies.GetPos(i);
+		// IDを格納
 		tgt_list_.back().id = enemies.GetID(i);
 	}
 
+	// 距離が近い順に要素をソート
 	tgt_list_.sort([](const TargetData &lhs, const TargetData &rhs) { return lhs.dist < rhs.dist; });
 }
 

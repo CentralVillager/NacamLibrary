@@ -99,9 +99,10 @@ public:
 	/// <param name="speed"></param>
 	void BasicCameraMove(float speed);
 
-	void MoveXY(float speed);
-
-	void TestCameraMove(float speed, Player &player);
+	/// <summary>
+	/// 追従カメラ
+	/// </summary>
+	void FollowCameraMove(float speed, Player &player);
 
 	/// <summary>
 	/// カメラ位置のリセット

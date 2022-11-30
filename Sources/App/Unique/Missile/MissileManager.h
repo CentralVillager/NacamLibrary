@@ -8,6 +8,9 @@
 #include "../Enemy/EnemiesList.h"
 #include "../LockOnSystem/LockOnSystem.h"
 
+/// <summary>
+/// ミサイルのコンテナを管理します。
+/// </summary>
 class MissileManager
 {
 	using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -37,11 +40,9 @@ public:
 	const bool &GetIsValidity(UINT n);
 	const Sphere &GetCollData(UINT n);
 
-	void Fire(const MissileArgs &args);
 	void FireMultiMissile(const MissileArgs &args, uint32_t num);
 	void FireChargeMissile(const MissileArgs &args);
 	void FireUltimateMissile(const MissileArgs &args, uint32_t launched);
-	void HomingTarget(XMFLOAT3 target_pos);
 	void HomingTarget(EnemiesList &enemies);
 	void Death(UINT n);
 

@@ -95,6 +95,9 @@ struct NcmInputState
 	char GetDirection(NcmStickType type);
 };
 
+/// <summary>
+/// XInputを使用したコントローラー入力を管理します。
+/// </summary>
 class NcmInput
 {
 public:

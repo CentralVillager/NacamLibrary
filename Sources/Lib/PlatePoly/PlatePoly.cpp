@@ -44,12 +44,14 @@ void PlatePoly::Initialize(ncm_thandle tex_handle)
 	XMFLOAT2 size = NcmSprite::GetSize(tex_handle);
 	// 頂点バッファの生成
 	CreateVertexBuffer(size);
+	gpu_desc_handle_srv_ = NcmSprite::GetDrawData(tex_handle).gpu_desc_handle_srv_;
 
 	// 定数バッファの生成
 	result = device_->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
 		D3D12_HEAP_FLAG_NONE,
-		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferData) + 0xff) & ~0xff),
+		&CD3DX12_RESOURCE_DESC::Buffer(sizeof(ConstBufferData)),
+		//&CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferData) + 0xff) & ~0xff),
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&const_buff_));
@@ -91,7 +93,7 @@ void PlatePoly::Update()
 	// 定数バッファへ転送
 	ConstBufferData *const_map = nullptr;
 	result = const_buff_->Map(0, nullptr, (void **)&const_map);
-	//const_map->mat = camera_->GetMatView() * camera_->GetMatProjection();
+	const_map->color = NcmSprite::GetDrawData(tex_handle_).color_;
 	const_map->mat = mat_world_ * camera_->GetMatView() * camera_->GetMatProjection();
 	const_map->mat_billboard = camera_->GetMatBillboard();
 	const_buff_->Unmap(0, nullptr);
@@ -107,10 +109,10 @@ void PlatePoly::Draw()
 	// 定数バッファビューをセット
 	cmd_list_->SetGraphicsRootConstantBufferView(0, const_buff_->GetGPUVirtualAddress());
 	// シェーダリソースビューをセット
-	cmd_list_->SetGraphicsRootDescriptorTable(1, NcmSprite::GetDrawData(tex_handle_).gpu_desc_handle_srv_);
-	//cmd_list_->SetGraphicsRootDescriptorTable(1, gpu_desc_handle_srv_);
+	//cmd_list_->SetGraphicsRootDescriptorTable(1, NcmSprite::GetDrawData(tex_handle_).gpu_desc_handle_srv_);
+	cmd_list_->SetGraphicsRootDescriptorTable(1, gpu_desc_handle_srv_);
 	// 描画コマンド
-	cmd_list_->DrawInstanced(vertex_count_, 1, 0, 0);
+	cmd_list_->DrawInstanced(VERTEX_COUNT_, 1, 0, 0);
 }
 
 void PlatePoly::InitializeDescriptorHeap()
@@ -172,7 +174,7 @@ void PlatePoly::CreateVertexBuffer(XMFLOAT2 size)
 	result = vert_buff_->Map(0, nullptr, reinterpret_cast<void **>(&vert_map));
 	if (SUCCEEDED(result))
 	{
-		std::memcpy(vert_map, plate_vert, sizeof(VertexPos) * vertex_count_);
+		std::memcpy(vert_map, plate_vert, sizeof(VertexPos) * VERTEX_COUNT_);
 		vert_buff_->Unmap(0, nullptr);
 	}
 

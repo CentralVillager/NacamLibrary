@@ -52,6 +52,7 @@ struct PipelineConfigs
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipeline;
 	D3D12_PRIMITIVE_TOPOLOGY_TYPE primitive_topology_type;
 	D3D_PRIMITIVE_TOPOLOGY primitive_topology;
+	D3D12_RENDER_TARGET_BLEND_DESC blend_desc;
 	UINT num_render_targets;
 	std::vector<DXGI_FORMAT> rtv_formats;
 	std::vector<CD3DX12_DESCRIPTOR_RANGE> desc_range;

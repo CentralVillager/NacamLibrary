@@ -38,6 +38,7 @@ MainScene::MainScene() :
 	ImGui_detection_range_(1000.0f),
 	ImGui_Ui_pos_(Win32App::FCENTER_),
 	player_speed_(),
+	player_dec_speed_(),
 	fov_acc_value_(),
 	fov_dec_value_()
 {
@@ -69,13 +70,12 @@ void MainScene::Initialize()
 	Object3d::SetCamera(camera_.get());
 	GridRender::SetCamera(camera_.get());
 	PlatePoly::SetCamera(camera_.get());
+	NcmPlatePoly::SetCamera(camera_.get());
 
 	// カメラの初期化
 	camera_->Initialize();
 	camera_->SetDistance(20.0f);
-	camera_->MoveCameraTrack(XMFLOAT3(0, 10.0f, cam_init_pos_.z));
-	//camera_->MoveCameraTrack(XMFLOAT3(0, 10.0f, -10.0f));
-	//camera_->MoveEye(cam_init_pos_);
+	camera_->MoveCameraTrack(XMFLOAT3(0, 10.0f, CAM_INIT_POS_.z));
 	camera_->MoveEye(XMFLOAT3(0, 10.0f, -10.0f));
 	camera_->Update();
 
@@ -89,7 +89,7 @@ void MainScene::Initialize()
 	ene_list_->Initialize(player_.get());
 	lockon_sys_->Initialize(player_.get(), ene_list_.get());
 	missile_mgr_->Initialize(lockon_sys_.get());
-	player_->Initialize(missile_mgr_.get(), lockon_sys_.get(), ult_.get(), init_pos_);
+	player_->Initialize(missile_mgr_.get(), lockon_sys_.get(), ult_.get(), INIT_POS_);
 	grid_->Initialize(200, 10, XMFLOAT3(0, -20.0f, 0));
 	reticle_->Initialize();
 	numbers_->Initialize();
@@ -136,6 +136,7 @@ void MainScene::Initialize()
 
 	is_clear_ = false;
 
+	// イージング情報の設定
 	NcmEaseDesc ease;
 	ease.ease_type = NcmEaseType::OutCirc;
 	ease.init_value = 0.5f;
@@ -150,17 +151,18 @@ void MainScene::Initialize()
 	player_dec_speed_ = NcmEasing::RegisterEaseData(ease);
 
 	ease.ease_type = NcmEaseType::OutCubic;
-	ease.init_value = normal_fov_;
-	ease.total_move = accel_fov_ - normal_fov_;
+	ease.init_value = NORMAL_FOV_;
+	ease.total_move = ACCEL_FOV_ - NORMAL_FOV_;
 	ease.t_rate = 0.05f;
 	fov_acc_value_ = NcmEasing::RegisterEaseData(ease);
 
 	ease.ease_type = NcmEaseType::OutCubic;
-	ease.init_value = accel_fov_;
-	ease.total_move = normal_fov_ - accel_fov_;
+	ease.init_value = ACCEL_FOV_;
+	ease.total_move = NORMAL_FOV_ - ACCEL_FOV_;
 	ease.t_rate = 0.05f;
 	fov_dec_value_ = NcmEasing::RegisterEaseData(ease);
 
+	// UI関連の初期化
 	NcmUi::Initialize();
 }
 
@@ -190,10 +192,8 @@ void MainScene::Update()
 		// リセット
 		if (KeyboardInput::TriggerKey(DIK_2))
 		{
-			//camera_->MoveCameraTrack(XMFLOAT3(0, 10.0f, 0));
 			camera_->SetEye(XMFLOAT3(0, 10.0f, -10.0f));
-			//camera_->SetTarget(cam_init_pos_);
-			player_->Initialize(missile_mgr_.get(), lockon_sys_.get(), ult_.get(), init_pos_);
+			player_->Initialize(missile_mgr_.get(), lockon_sys_.get(), ult_.get(), INIT_POS_);
 		}
 
 		// キーアサインの変更
@@ -249,7 +249,7 @@ void MainScene::Update()
 		player_->SetSpeed(NcmEasing::GetValue(player_dec_speed_));
 	}
 
-	camera_->TestCameraMove(1.0f, *player_);
+	camera_->FollowCameraMove(1.0f, *player_);
 
 	// クリア遷移
 	if (ene_list_->NoticeEmpty())
@@ -301,6 +301,10 @@ void MainScene::Update()
 		bool mode = NcmDebug::GetInstance()->IsCheatMode();
 		NcmDebug::GetInstance()->SetCheatMode(!mode);
 	}
+
+	/*NcmPlatePoly::SetPos(space_, XMFLOAT3(0, 0, 0));
+	NcmPlatePoly::SetScale(space_, 1.0f);
+	NcmPlatePoly::Update(space_);*/
 }
 
 void MainScene::Draw()
@@ -351,8 +355,10 @@ void MainScene::Draw()
 
 	NcmUi::DrawMissileNumSet(LockOnSystem::GetCurrentTgtNum());
 	NcmUi::DrawHp(player_->GetHp(), 30.0f);
-	//NcmUi::DrawSpace();
 	ult_->DrawUi();
+
+	PreDraw::PreRender(PipelineName::PlatePoly);
+	NcmPlatePoly::Draw(space_);
 }
 
 void MainScene::DebugDraw()
@@ -397,7 +403,6 @@ void MainScene::DebugDraw()
 	numbers_->DebugDraw();
 
 	camera_->DebugDraw();
-	//ene_list_->DebugDraw();
 
 	NcmImGui::DragFloat2("UI_pos", ImGui_Ui_pos_, 1.0f, 0.0f, 1280.0f);
 	ult_->DebugDraw();

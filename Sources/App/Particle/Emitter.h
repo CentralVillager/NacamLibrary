@@ -1,6 +1,7 @@
 #pragma once
 #include "Particle.h"
 #include <forward_list>
+#include <list>
 #include <memory>
 #include <DirectXMath.h>
 #include "../Sources/Lib/Model/Model.h"
@@ -31,19 +32,25 @@ class Emitter
 {
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 
-	// モデルデータ
-	static std::unique_ptr<Model> model_;
+private:
+
+	// あらかじめ確保する数
+	static constexpr uint32_t RESERVE_NUM_ = 256;
 
 private:
 
+	// モデルデータ
+	static std::unique_ptr<Model> model_;
+
+	// テクスチャハンドル
+	static ncm_thandle tex_handle_;
+
 	// パーティクル管理コンテナ
+	static std::list<Particle> shared_particles_;
 	std::forward_list<Particle> particles_;
 
 	// パーティクル生成に必要な要素
 	EmitterDesc emitter_desc_;
-
-	// テクスチャハンドル
-	static ncm_thandle tex_handle_;
 
 public:
 
@@ -60,6 +67,21 @@ public:
 	/// 初期化
 	/// </summary>
 	static void LoadResources();
+
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	void Initialize();
+
+	/// <summary>
+	/// 更新
+	/// </summary>
+	void Update();
+
+	/// <summary>
+	/// 確保されたパーティクルを使う
+	/// </summary>
+	void UseParticle();
 
 	/// <summary>
 	/// パーティクルを生成する

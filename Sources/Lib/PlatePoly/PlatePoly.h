@@ -12,6 +12,7 @@ class PlatePoly
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
+	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
 
 	struct VertexPos
@@ -23,13 +24,14 @@ class PlatePoly
 
 	struct ConstBufferData
 	{
+		XMFLOAT4 color;
 		XMMATRIX mat;
 		XMMATRIX mat_billboard;
 	};
 
 private:
 
-	static constexpr int vertex_count_ = 4;
+	static constexpr int VERTEX_COUNT_ = 4;
 
 	// デバイス
 	static ComPtr<ID3D12Device> device_;

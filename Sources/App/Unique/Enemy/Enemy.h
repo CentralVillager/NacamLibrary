@@ -52,9 +52,23 @@ public:
 
 public:
 
+	/// <summary>
+	/// y²‰ñ“]‚ğs‚¤
+	/// </summary>
 	void RotY();
+
+	/// <summary>
+	/// …•½•ûŒü‚ÉˆÚ“®
+	/// </summary>
 	void MoveHorizontally(const float &speed, const float &range);
+
+	/// <summary>
+	/// ‰~‰^“®‚ğs‚¤
+	/// </summary>
 	void MoveCircular();
 
+	/// <summary>
+	/// İ’è‚µ‚½ŠÔŠu‚Å’e‚ğ”­Ë‚·‚é
+	/// </summary>
 	void AutoShot(int interval, const XMFLOAT3 &dist);
 };

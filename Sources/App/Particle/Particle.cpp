@@ -25,8 +25,8 @@ void Particle::Initialize(Model *model, const ParticleDesc &particle)
 
 	object_->SetModel(model);
 	object_->Initialize();
-	//plate_->Initialize(particle_->tex_handle_);
-	//plate_->SetTexHandle(particle_->tex_handle_);
+	plate_->Initialize(particle_->tex_handle_);
+	plate_->SetTexHandle(particle_->tex_handle_);
 }
 
 void Particle::Finalize()
@@ -57,26 +57,32 @@ void Particle::Update()
 	particle_->scale_ = particle_->s_scale_ + (particle_->e_scale_ - particle_->s_scale_) / f;
 
 	//	最終的な位置をセット
-	object_->SetPos(particle_->position_);
+	/*object_->SetPos(particle_->position_);
 	object_->SetScale(particle_->scale_);
-	object_->Update();
-	/*plate_->SetPos(particle_->position_);
+	object_->Update();*/
+	plate_->SetPos(particle_->position_);
 	plate_->SetScale(particle_->scale_);
-	plate_->Update();*/
+	plate_->Update();
 }
 
 void Particle::Draw()
 {
-	PreDraw::PreRender(PipelineName::Object3d_WireFrame);	// 仮
-	// 描画
-	object_->Draw();
+	//PreDraw::PreRender(PipelineName::Object3d_WireFrame);	// 仮
+	//// 描画
+	//object_->Draw();
 
-	/*PreDraw::PreRender(PipelineName::PlatePoly);
-	plate_->Draw();*/
+	PreDraw::PreRender(PipelineName::PlatePoly);
+	plate_->Draw();
 }
 
 void Particle::DebugDraw()
 {}
+
+void Particle::ResetParamater()
+{
+	// ゼロクリア
+	ZeroMemory(particle_.get(), sizeof(ParticleDesc));
+}
 
 const DirectX::XMFLOAT3 operator+(const DirectX::XMFLOAT3 &lhs, const DirectX::XMFLOAT3 &rhs)
 {

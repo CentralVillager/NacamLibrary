@@ -35,16 +35,20 @@ TitleScene::~TitleScene()
 
 void TitleScene::Initialize()
 {
+	// カメラの初期化
 	camera_->Initialize();
 	Object3d::SetCamera(camera_.get());
 
+	// 天球の初期化
 	sky_dome_->Initialize();
 	sky_dome_->SetModel(model_sky_dome_.get());
 	sky_dome_->SetScale(10.0f);
 	sky_dome_->Update();
 
+	// エミッターのリソースをロード
 	Emitter::LoadResources();
 
+	// エミッターの設定
 	EmitterDesc p;
 	p.particle.position_ = { 0.0f, 0.0f, 500.0f };
 	p.particle.velocity_ = { 0.0f, 0.0f, -10.0f };
@@ -57,6 +61,7 @@ void TitleScene::Initialize()
 	p.use_life_ = false;
 	emitter_->SetEmitterDesc(p);
 
+	// スプライトの設定
 	XMINT2 pos = { Win32App::CENTER_.x, 650 };
 	NcmSprite::SetPos(space_, pos);
 }
@@ -66,6 +71,7 @@ void TitleScene::Finalize()
 
 void TitleScene::Update()
 {
+	// シーン遷移
 	if (KeyboardInput::TriggerKey(DIK_SPACE))
 	{
 		SceneManager::SetNextScene(SceneName::MAIN);

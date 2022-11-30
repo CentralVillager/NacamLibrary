@@ -17,7 +17,7 @@ class MissileLauncher
 
 private:
 
-	std::shared_ptr<IMissileState> mi_state_;
+	std::shared_ptr<IMissileState> state_;
 
 	std::shared_ptr<MissileStateMulti> multi_missile_;
 	std::shared_ptr<MissileStateCharge> charge_missile_;
@@ -25,9 +25,12 @@ private:
 
 public:
 
-	MissileLauncher();
-
-public:
-
+	/// <summary>
+	/// ミサイルを発射する
+	/// </summary>
+	/// <param name="type">発射方式</param>
+	/// <param name="launch_pos">発射地点</param>
+	/// <param name="ptr">MissileManagerのポインタ</param>
+	/// <returns></returns>
 	bool FireMissile(MissileType type, const XMFLOAT3 &launch_pos, MissileManager *ptr);
 };

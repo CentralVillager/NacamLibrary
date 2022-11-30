@@ -18,6 +18,7 @@ AbsUniqueObj::AbsUniqueObj(float speed, float coll_radius)
 
 void AbsUniqueObj::InitObj3d(Model *obj_model, Model *coll_model)
 {
+	// •`‰æƒf[ƒ^‚ð‰Šú‰»
 	obj_->Initialize();
 	obj_->SetModel(obj_model);
 	coll_obj_->Initialize();

@@ -78,12 +78,12 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)Lib\fbx_sdk\include;$(ProjectDir)\imgui;$(ProjectDir)Lib\DirectXTex\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)Lib\fbx_sdk\include;$(ProjectDir)\imgui;$(ProjectDir)Lib\DirectXTex\Include;$(ProjectDir)Lib\json;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Lib\fbx_sdk\lib;$(ProjectDir)Lib\DirectXTex\Lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(ProjectDir)Lib\fbx_sdk\include;$(ProjectDir)\imgui;$(ProjectDir)Lib\DirectXTex\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)Lib\fbx_sdk\include;$(ProjectDir)\imgui;$(ProjectDir)Lib\DirectXTex\Include;$(ProjectDir)Lib\json;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Lib\fbx_sdk\lib;$(ProjectDir)Lib\DirectXTex\Lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -176,6 +176,7 @@
     <ClCompile Include="Sources\App\Debug\NcmImGui.cpp" />
     <ClCompile Include="Sources\App\FpsManager\FPSManager.cpp" />
     <ClCompile Include="Sources\App\Grid\GridRender.cpp" />
+    <ClCompile Include="Sources\App\Level\LevelDataManager.cpp" />
     <ClCompile Include="Sources\App\main.cpp" />
     <ClCompile Include="Sources\App\Math\Easing\NcmEasing.cpp" />
     <ClCompile Include="Sources\App\Number\Numbers.cpp" />
@@ -223,10 +224,12 @@
     <ClCompile Include="Sources\Lib\Input\KeyboardInput.cpp" />
     <ClCompile Include="Sources\Lib\Input\NcmInput.cpp" />
     <ClCompile Include="Sources\Lib\Line\Line.cpp" />
+    <ClCompile Include="Sources\Lib\Loader\JsonLoader.cpp" />
     <ClCompile Include="Sources\Lib\Model\Model.cpp" />
     <ClCompile Include="Sources\Lib\NacamLib\NacamLib.cpp" />
     <ClCompile Include="Sources\Lib\Object3d\Object3d.cpp" />
     <ClCompile Include="Sources\Lib\Pipeline\PipelineManager.cpp" />
+    <ClCompile Include="Sources\Lib\PlatePoly\NcmPlatePoly.cpp" />
     <ClCompile Include="Sources\Lib\PlatePoly\PlatePoly.cpp" />
     <ClCompile Include="Sources\Lib\Point\Point.cpp" />
     <ClCompile Include="Sources\Lib\PostEffect\PostEffect.cpp" />
@@ -249,6 +252,7 @@
     <ClInclude Include="Sources\App\Debug\NcmImGui.h" />
     <ClInclude Include="Sources\App\FpsManager\FPSManager.h" />
     <ClInclude Include="Sources\App\Grid\GridRender.h" />
+    <ClInclude Include="Sources\App\Level\LevelDataManager.h" />
     <ClInclude Include="Sources\App\Math\Easing\NcmEasing.h" />
     <ClInclude Include="Sources\App\Math\NcmMath.h" />
     <ClInclude Include="Sources\App\Number\Numbers.h" />
@@ -302,11 +306,13 @@
     <ClInclude Include="Sources\Lib\Input\KeyboardInput.h" />
     <ClInclude Include="Sources\Lib\Input\NcmInput.h" />
     <ClInclude Include="Sources\Lib\Line\Line.h" />
+    <ClInclude Include="Sources\Lib\Loader\JsonLoader.h" />
     <ClInclude Include="Sources\Lib\Model\Model.h" />
     <ClInclude Include="Sources\Lib\NacamError\NacamError.h" />
     <ClInclude Include="Sources\Lib\NacamLib\NacamLib.h" />
     <ClInclude Include="Sources\Lib\Object3d\Object3d.h" />
     <ClInclude Include="Sources\Lib\Pipeline\PipelineManager.h" />
+    <ClInclude Include="Sources\Lib\PlatePoly\NcmPlatePoly.h" />
     <ClInclude Include="Sources\Lib\PlatePoly\PlatePoly.h" />
     <ClInclude Include="Sources\Lib\Point\Point.h" />
     <ClInclude Include="Sources\Lib\PostEffect\PostEffect.h" />

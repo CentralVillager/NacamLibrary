@@ -21,11 +21,12 @@ public:
 
 	static void TermSprite();
 
-private:
+protected:
+	//private:
 
-	/// <summary>
-	/// 頂点データ構造体
-	/// </summary>
+		/// <summary>
+		/// 頂点データ構造体
+		/// </summary>
 	struct VertexPosUv
 	{
 		XMFLOAT3 pos;
@@ -39,6 +40,7 @@ private:
 	{
 		XMFLOAT4 color;
 		XMMATRIX mat;
+		XMMATRIX mat_billboard;
 	};
 
 	/// <summary>
@@ -58,10 +60,10 @@ private:
 		CD3DX12_GPU_DESCRIPTOR_HANDLE gpu_desc_handle_srv_;
 
 		XMFLOAT4 color_ = { 1, 1, 1, 1 };
-		XMFLOAT2 position_{};
-		float rotation_ = 0.0f;
-		XMFLOAT2 size_ = { 100.0f, 100.0f };
+		XMFLOAT3 pos_{};
+		XMFLOAT3 rot_{};
 		float scale_ = 1.0f;
+		XMFLOAT2 size_ = { 100.0f, 100.0f };
 		XMFLOAT2 anchorpoint_ = { 0, 0 };
 
 		bool is_flip_x_ = false;
@@ -71,9 +73,10 @@ private:
 		XMFLOAT2 tex_size_ = { 100.0f, 100.0f };
 	};
 
-private:
+protected:
+	//private:
 
-	// テクスチャの最大枚数
+		// テクスチャの最大枚数
 	static const int srv_count_ = 512;
 
 	// 頂点数
@@ -129,17 +132,22 @@ public:
 public:
 
 	static inline const DrawData &GetDrawData(const ncm_thandle handle) { return sprite_hub_[handle]; }
-	static inline const XMFLOAT2 &GetPos(const ncm_thandle handle) { return sprite_hub_[handle].position_; }
+	static inline const XMFLOAT2 &GetPos(const ncm_thandle handle)
+	{
+		XMFLOAT2 pos = { sprite_hub_[handle].pos_.x, sprite_hub_[handle].pos_.y };
+		return pos;
+	}
 	static inline const XMFLOAT2 &GetSize(const ncm_thandle handle) { return sprite_hub_[handle].size_; }
 
 	static inline void SetPos(const ncm_thandle handle, const XMINT2 &pos)
 	{
-		sprite_hub_[handle].position_ = { (float)(pos.x), (float)(pos.y) };
+		sprite_hub_[handle].pos_ = { (float)(pos.x), (float)(pos.y), 0 };
 		TransferVertices(&sprite_hub_[handle]);
 	}
 	static inline void SetPos(const ncm_thandle handle, const XMFLOAT2 &pos)
 	{
-		sprite_hub_[handle].position_ = pos;
+		XMFLOAT3 temp_pos = { pos.x, pos.y, 0 };
+		sprite_hub_[handle].pos_ = temp_pos;
 		TransferVertices(&sprite_hub_[handle]);
 	}
 	static inline void SetSize(const ncm_thandle handle, const XMFLOAT2 &size)
@@ -171,7 +179,8 @@ public:
 		TransferVertices(&sprite_hub_[handle]);
 	}
 
-private:
+protected:
+	//private:
 
 	static void GenerateDrawData(const ncm_thandle handle, const wchar_t *filename);
 	static void TransferVertices(DrawData *itr);

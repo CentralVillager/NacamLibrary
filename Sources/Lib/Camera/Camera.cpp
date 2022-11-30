@@ -106,21 +106,7 @@ void Camera::BasicCameraMove(float speed)
 	//Update();
 }
 
-void Camera::MoveXY(float speed)
-{
-	if (KeyboardInput::PushKey(DIK_W) || KeyboardInput::PushKey(DIK_S) || KeyboardInput::PushKey(DIK_D) || KeyboardInput::PushKey(DIK_A))
-	{
-		if (KeyboardInput::PushKey(DIK_W)) { MoveCameraTrack({ 0.0f, 0.0f, +speed }); }
-		else if (KeyboardInput::PushKey(DIK_S)) { MoveCameraTrack({ 0.0f, 0.0f, -speed }); }
-
-		if (KeyboardInput::PushKey(DIK_D)) { MoveCameraTrack({ +speed, 0.0f, 0.0f }); }
-		else if (KeyboardInput::PushKey(DIK_A)) { MoveCameraTrack({ -speed, 0.0f, 0.0f }); }
-	}
-
-	//Update();
-}
-
-void Camera::TestCameraMove(float speed, Player &player)
+void Camera::FollowCameraMove(float speed, Player &player)
 {
 	// 上ベクトルを計算
 	XMFLOAT3 up_vec = { 0, 1, 0 };
@@ -165,13 +151,6 @@ void Camera::DebugDraw()
 
 void Camera::UpdateViewMatrix()
 {
-	//mat_view_ = XMMatrixLookAtLH(XMLoadFloat3(&eye_), XMLoadFloat3(&target_), XMLoadFloat3(&up_vec_));
-
-	if (parent_mat_ != nullptr)
-	{
-		//mat_view_ *= parent_mat_;
-	}
-
 	// 視点座標
 	XMVECTOR eye_pos = XMLoadFloat3(&eye_);
 	// 注視点座標

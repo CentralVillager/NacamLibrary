@@ -3,6 +3,7 @@
 #include "../Sources/Lib/NacamLib/NacamLib.h"
 #include "../../../Lib/NacamError/NacamError.h"
 #include "../Sources/App/Math/NcmMath.h"
+#include "../../../Lib/PreDraw/PreDraw.h"
 
 using namespace DirectX;
 using namespace NcmUtill;
@@ -14,11 +15,7 @@ std::unique_ptr<Model> Missile::coll_model_ = nullptr;
 Missile::Missile()
 	: AbsUniqueObj(3.0f, 1.0f),
 	emitter_(std::make_unique<Emitter>()),
-	mi_args_(),
-	min_dist_(),
-	rot_dead_zone_(),
-	tgt_index_(),
-	p_lockon_sys_(nullptr)
+	mi_args_()
 {}
 
 Missile::~Missile()
@@ -39,10 +36,8 @@ void Missile::LoadResources()
 	}
 }
 
-void Missile::Initialize(const MissileArgs &args, LockOnSystem *sys)
+void Missile::Initialize(const MissileArgs &args)
 {
-	p_lockon_sys_ = sys;
-
 	// 値を入力より設定
 	mi_args_ = args;
 
@@ -63,7 +58,7 @@ void Missile::Initialize(const MissileArgs &args, LockOnSystem *sys)
 	temp.y -= temp.y;
 	temp.z -= temp.z;
 	emi.particle.accel_ = temp;
-	emi.particle.life_ = mi_args_.life + 500;
+	emi.particle.life_ = mi_args_.life;
 	emi.particle.s_scale_ = 1.0f;
 	emi.pos_rand_ = { 0.0f, 0.0f, 0.0f };
 	emi.vel_rand_ = { 0.01f, 0.01f, 0.01f };
@@ -112,11 +107,16 @@ void Missile::Update()
 	}
 
 	UpdateEmitter();
+	CalcFwdVec();
 }
 
 void Missile::Draw()
 {
+	// ミサイルが有効ならミサイルを描画
+	PreDraw::PreRender(PipelineName::Object3d);
 	if (mi_args_.is_validity) { obj_->Draw(); }
+
+	// パーティクルを描画
 	emitter_->Draw();
 }
 
@@ -145,190 +145,21 @@ void Missile::MoveZ(float speed)
 	obj_->SetPos(pos);
 }
 
-void Missile::HomingTarget(const XMFLOAT3 &target_pos)
-{
-	XMFLOAT3 pos = obj_->GetPos();
-
-	static XMVECTOR old_len{};
-	const float speed = 3.0f;	// 仮
-
-	if (mi_args_.init_straight_time_ > 0)
-	{
-		mi_args_.init_straight_time_--;
-		pos.z += speed;
-		obj_->SetPos(pos);
-
-		return;
-	}
-
-	// XMVECTORに変換
-	XMVECTOR mi_vec = XMLoadFloat3(&obj_->GetPos());
-	XMVECTOR ta_vec = XMLoadFloat3(&mi_args_.tgt_pos);
-	//XMVECTOR tgt_vec = XMLoadFloat3(&target_pos);
-
-	// ふたつの座標を結ぶベクトルを計算
-	XMVECTOR vec =
-	{
-		(ta_vec.m128_f32[0] - mi_vec.m128_f32[0]),
-		(ta_vec.m128_f32[1] - mi_vec.m128_f32[1]),
-		(ta_vec.m128_f32[2] - mi_vec.m128_f32[2])
-	};
-
-	XMVECTOR len = XMVector3Length(vec);
-	min_dist_ = len.m128_f32[0];
-
-	// ミサイルと目標が離れ始めたら
-	//if (len.m128_f32[0] >= old_len.m128_f32[0]) {
-
-	//	// 保持している速度を加算
-	//	pos.x += mi_args_.vel.x;
-	//	pos.y += mi_args_.vel.y;
-	//	pos.z += mi_args_.vel.z;
-
-	//	// 位置を反映
-	//	object_->SetPos(pos);
-
-	//	// その後の追尾処理をスキップ
-	//	return;
-	//}
-
-	// 追尾範囲外なら
-	if (len.m128_f32[0] >= mi_args_.detection_range)
-	{
-		// 直進だけして
-		pos.z += speed;
-		obj_->SetPos(pos);
-
-		// その後の追尾処理をスキップ
-		return;
-	}
-
-	//if (pos.z >= target_pos.z)
-	if (pos.z >= mi_args_.tgt_pos.z)
-	{
-		// 位置を更新
-		pos.x += mi_args_.vel.x;
-		pos.y += mi_args_.vel.y;
-		pos.z += mi_args_.vel.z;
-
-		// 位置を反映
-		obj_->SetPos(pos);
-
-		return;
-	}
-
-	// 正規化
-	XMVECTOR norm_vec = XMVector3Normalize(vec);
-	XMVECTOR mi_norm_vec = XMVector3Normalize(XMLoadFloat3(&mi_args_.vel));
-
-	rot_dead_zone_ = 1.0f;
-
-	XMVECTOR differ = {
-
-		norm_vec.m128_f32[0] - mi_norm_vec.m128_f32[0],
-		norm_vec.m128_f32[1] - mi_norm_vec.m128_f32[1],
-		norm_vec.m128_f32[2] - mi_norm_vec.m128_f32[2]
-	};
-
-	// 速度を加算
-	/*norm_vec.m128_f32[0] *= speed;
-	norm_vec.m128_f32[1] *= speed;
-	norm_vec.m128_f32[2] *= speed;*/
-
-	differ.m128_f32[0] /= rot_dead_zone_;
-	differ.m128_f32[1] /= rot_dead_zone_;
-	differ.m128_f32[2] /= rot_dead_zone_;
-
-	/*mi_args_.vel.x += norm_vec.m128_f32[0];
-	mi_args_.vel.y += norm_vec.m128_f32[1];
-	mi_args_.vel.z += norm_vec.m128_f32[2];*/
-	mi_args_.vel.x += differ.m128_f32[0] * speed;
-	mi_args_.vel.y += differ.m128_f32[1] * speed;
-	mi_args_.vel.z = speed;
-
-	// 位置を更新
-	pos.x += mi_args_.vel.x;
-	pos.y += mi_args_.vel.y;
-	pos.z += mi_args_.vel.z;
-
-	// 位置を反映
-	obj_->SetPos(pos);
-
-	/* -- 外積追尾 -- */
-	// XMVECTORに変換
-	//XMVECTOR mi_vec = XMLoadFloat3(&object_->GetPos());
-	//XMVECTOR tgt_vec = XMLoadFloat3(&target_pos);
-
-	//// ふたつの座標を結ぶベクトルを計算
-	//XMVECTOR vec = {
-	//	(tgt_vec.m128_f32[0] - mi_vec.m128_f32[0]),
-	//	(tgt_vec.m128_f32[1] - mi_vec.m128_f32[1]),
-	//	(tgt_vec.m128_f32[2] - mi_vec.m128_f32[2])
-	//};
-
-	//// 長さを計算
-	//XMVECTOR len = XMVector3Length(vec);
-
-	//// 正規化
-	//XMVECTOR norm_vec = XMVector3Normalize(vec);
-
-	//float r = vec.m128_f32[0] * mi_vec.m128_f32[2] - mi_vec.m128_f32[0] * vec.m128_f32[2];
-
-	//if (IsZeroOrMore(r)) {
-
-	//	norm_vec.m128_f32[0] += 1.0f;
-
-	//} else if (IsMinus(r)) {
-
-	//	norm_vec.m128_f32[0] += -1.0f;
-	//}
-
-	//pos.x += norm_vec.m128_f32[0];
-	//pos.y += norm_vec.m128_f32[1];
-	//pos.z += norm_vec.m128_f32[2];
-
-	//// 位置を反映
-	//object_->SetPos(pos);
-}
-
 void Missile::HomingTarget(EnemiesList &enemies)
 {
-	const float speed = 3.0f;	// 仮
+	// 位置を取得
 	XMFLOAT3 pos = obj_->GetPos();
 
-	// 敵がいないなら
-	if (enemies.GetEnemies().size() <= 0)
-	{
-		// 直進させる
-		MoveZ(speed);
-
-		return;
-	}
-
-	// 無追尾時間中なら
-	if (mi_args_.init_straight_time_ > 0)
-	{
-		mi_args_.init_straight_time_--;
-
-		// 直進させる
-		MoveZ(speed);
-
-		return;
-	}
-
-	// XMVECTORに変換
-	XMVECTOR mi_vec = XMLoadFloat3(&obj_->GetPos());
-
-	// 追尾したい敵のIDが入っている要素の添字を検索
+	// 追尾したい敵の添字を検索
 	int index = enemies.GetEnemyIndexWithID(mi_args_.tgt_id);
 
 	// 居なかったら
 	if (index == (int)(NacamError::NonDetected))
 	{
 		// 以前の速度をそのまま加算
-		pos.x += mi_args_.vel.x;
-		pos.y += mi_args_.vel.y;
-		pos.z += mi_args_.vel.z;
+		pos.x *= mi_args_.vel.x;
+		pos.y *= mi_args_.vel.y;
+		pos.z *= mi_args_.vel.z;
 
 		// 位置を反映
 		obj_->SetPos(pos);
@@ -340,82 +171,32 @@ void Missile::HomingTarget(EnemiesList &enemies)
 	// 判明した添字をもとに敵の位置を特定
 	XMVECTOR tgt_vec = XMLoadFloat3(&enemies.GetPos(index));
 
+	// ミサイルのベクトルをXMVECTORに変換
+	XMVECTOR mi_vec = XMLoadFloat3(&obj_->GetPos());
+
 	// ふたつの座標を結ぶベクトルを計算
-	XMVECTOR vec =
-	{
-		(tgt_vec.m128_f32[0] - mi_vec.m128_f32[0]),
-		(tgt_vec.m128_f32[1] - mi_vec.m128_f32[1]),
-		(tgt_vec.m128_f32[2] - mi_vec.m128_f32[2])
-	};
-
-	XMVECTOR len = XMVector3Length(vec);
-	min_dist_ = len.m128_f32[0];
-
-	// 追尾範囲外なら
-	if (len.m128_f32[0] >= mi_args_.detection_range)
-	{
-		// 直進だけして
-		MoveZ(speed);
-
-		// その後の追尾処理をスキップ
-		return;
-	}
-
-	// ミサイルが敵を追い越したら
-	//if (pos.z >= enemies.GetPos(index).z)
-	//{
-	//	// 以前の速度をそのまま加算
-	//	pos.x += mi_args_.vel.x;
-	//	pos.y += mi_args_.vel.y;
-	//	pos.z += mi_args_.vel.z;
-
-	//	// 位置を反映
-	//	obj_->SetPos(pos);
-
-	//	return;
-	//}
+	XMVECTOR dest_vec = tgt_vec - mi_vec;
 
 	// 正規化
-	XMVECTOR norm_vec = XMVector3Normalize(vec);
-	XMVECTOR mi_norm_vec = XMVector3Normalize(XMLoadFloat3(&mi_args_.vel));
+	dest_vec = XMVector3Normalize(dest_vec);
 
-	rot_dead_zone_ = 1.0f;
+	// 速度を乗算
+	dest_vec.m128_f32[0] *= speed_;
+	dest_vec.m128_f32[1] *= speed_;
+	dest_vec.m128_f32[2] *= speed_;
 
-	// 離れている距離
-	XMVECTOR differ =
-	{
-		norm_vec.m128_f32[0] - mi_norm_vec.m128_f32[0],
-		norm_vec.m128_f32[1] - mi_norm_vec.m128_f32[1],
-		norm_vec.m128_f32[2] - mi_norm_vec.m128_f32[2]
-	};
-
-	//differ = XMVector3Normalize(differ);
-
-	// 回頭角度を適用
-	/*differ.m128_f32[0] /= rot_dead_zone_;
-	differ.m128_f32[1] /= rot_dead_zone_;
-	differ.m128_f32[2] /= rot_dead_zone_;*/
-
-	mi_args_.vel.x += mi_args_.acc.x;
-	mi_args_.vel.y += mi_args_.acc.y;
-	mi_args_.vel.z += mi_args_.acc.z;
+	// その値を格納
+	XMStoreFloat3(&mi_args_.vel, dest_vec);
 
 	// 速度を加算
-	mi_args_.vel.x += differ.m128_f32[0] * speed;
-	mi_args_.vel.y += differ.m128_f32[1] * speed;
-	mi_args_.vel.z += differ.m128_f32[2] * speed;
-	//mi_args_.vel.z = speed;
-
-	// 位置を更新
 	pos.x += mi_args_.vel.x;
 	pos.y += mi_args_.vel.y;
 	pos.z += mi_args_.vel.z;
 
-	// 位置を反映
+	// 位置を更新 
 	obj_->SetPos(pos);
 
-	/*XMFLOAT3 rot = obj_->GetRot();
-	rot = LookAt(mi_args_.vel);*/
+	// 回転角を更新
 	obj_->SetRot(LookAt(mi_args_.vel));
 }
 
@@ -449,26 +230,18 @@ void Missile::TestHomingTarget(EnemiesList &enemies)
 	XMVECTOR mi_vec = XMLoadFloat3(&obj_->GetPos());
 
 	// ふたつの座標を結ぶベクトルを計算
-	XMVECTOR vec = tgt_vec - mi_vec;
+	XMVECTOR dest_vec = tgt_vec - mi_vec;
 
 	// 正規化
-	XMVECTOR dist_vec = XMVector3Normalize(vec);
-
-	{
-		// 現ベクトルと回頭先ベクトルとの差分を取る
-		XMVECTOR differ_vec = dist_vec - mi_vec;
-
-		// 正規化
-		XMVECTOR norm_vec = XMVector3Normalize(differ_vec);
-	}
+	dest_vec = XMVector3Normalize(dest_vec);
 
 	// 速度を乗算
-	dist_vec.m128_f32[0] *= speed_;
-	dist_vec.m128_f32[1] *= speed_;
-	dist_vec.m128_f32[2] *= speed_;
+	dest_vec.m128_f32[0] *= speed_;
+	dest_vec.m128_f32[1] *= speed_;
+	dest_vec.m128_f32[2] *= speed_;
 
 	// その値を格納
-	XMStoreFloat3(&mi_args_.vel, dist_vec);
+	XMStoreFloat3(&mi_args_.vel, dest_vec);
 
 	// 速度を加算
 	pos.x += mi_args_.vel.x;
@@ -482,7 +255,7 @@ void Missile::TestHomingTarget(EnemiesList &enemies)
 	obj_->SetRot(LookAt(mi_args_.vel));
 }
 
-void Missile::TermEmitter()
+void Missile::PrepareTermEmitter()
 {
 	emitter_->PrepareTerminate();
 }
@@ -490,5 +263,7 @@ void Missile::TermEmitter()
 void Missile::UpdateEmitter()
 {
 	emitter_->SetPosition(obj_->GetPos());
+	emitter_->UseParticle();
+	emitter_->Update();
 	emitter_->GenerateParticle();
 }

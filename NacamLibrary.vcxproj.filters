@@ -39,9 +39,6 @@
     <Filter Include="Library\Model">
       <UniqueIdentifier>{5480a6d3-20a9-46ef-b4c0-86323d6b2f10}</UniqueIdentifier>
     </Filter>
-    <Filter Include="NotUse">
-      <UniqueIdentifier>{7e06c4f2-375b-40b0-baa0-9dcfcebcae9e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application\Utility">
       <UniqueIdentifier>{946c89b9-c8f2-4503-a4a8-26b7a7a49119}</UniqueIdentifier>
     </Filter>
@@ -197,6 +194,12 @@
     </Filter>
     <Filter Include="Library\PlatePoly">
       <UniqueIdentifier>{18b28dbf-63e4-48f2-b4f5-8239ae3afc19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\Loader">
+      <UniqueIdentifier>{fc615cd1-a00f-4f33-bcd3-31dc349019b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\LevelDataManager">
+      <UniqueIdentifier>{02771ec3-9871-49a0-8224-63215fbc97f0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -404,11 +407,20 @@
     <ClCompile Include="Sources\App\main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Lib\Input\NcmInput.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\App\Unique\Missile\MissileLauncher.cpp">
       <Filter>Application\Unique\Missile</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\Input\NcmInput.cpp">
+      <Filter>Library\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\Loader\JsonLoader.cpp">
+      <Filter>Library\Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\PlatePoly\NcmPlatePoly.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Level\LevelDataManager.cpp">
+      <Filter>Application\LevelDataManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -631,7 +643,6 @@
     <ClInclude Include="Sources\App\Math\Easing\NcmEasing.h">
       <Filter>Application\NacamMath\Easing</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Lib\Input\NcmInput.h" />
     <ClInclude Include="Sources\App\Unique\Missile\IMissileState.h">
       <Filter>Application\Unique\Missile</Filter>
     </ClInclude>
@@ -646,6 +657,16 @@
     </ClInclude>
     <ClInclude Include="Sources\App\Unique\Missile\MissileStateMulti.h">
       <Filter>Application\Unique\Missile</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Input\NcmInput.h">
+      <Filter>Library\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Loader\JsonLoader.h">
+      <Filter>Library\Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\PlatePoly\NcmPlatePoly.h" />
+    <ClInclude Include="Sources\App\Level\LevelDataManager.h">
+      <Filter>Application\LevelDataManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

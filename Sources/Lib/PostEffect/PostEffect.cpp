@@ -37,8 +37,8 @@ void PostEffect::Initialize()
 		&CD3DX12_RESOURCE_DESC::Buffer(sizeof(Vertex) * vertex_num_),
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&vertex_buffer_)
-	);
+		IID_PPV_ARGS(&vertex_buffer_));
+	vertex_buffer_->SetName(L"PostEffectVertexBuffer");
 
 	assert(SUCCEEDED(result));
 
@@ -72,8 +72,8 @@ void PostEffect::Initialize()
 		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferData) + 0xff) & ~0xff),
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&const_buffer_)
-	);
+		IID_PPV_ARGS(&const_buffer_));
+	const_buffer_->SetName(L"PostEffectConstantBuffer");
 
 	assert(SUCCEEDED(result));
 
@@ -131,6 +131,7 @@ void PostEffect::Initialize()
 
 	// SRV用デスクリプタヒープを生成
 	result = device_->CreateDescriptorHeap(&srv_desc_heap_desc, IID_PPV_ARGS(&desc_heap_SRV_));
+	desc_heap_SRV_->SetName(L"PostEffectDescriptorHeapSRV");
 	assert(SUCCEEDED(result));
 
 	// SRV設定
@@ -159,6 +160,7 @@ void PostEffect::Initialize()
 
 	// RTV用デスクリプタヒープを生成
 	result = device_->CreateDescriptorHeap(&rtv_desc_heap_desc, IID_PPV_ARGS(&desc_heap_RTV_));
+	desc_heap_RTV_->SetName(L"PostEffectDescriptorHeapRTV");
 
 	assert(SUCCEEDED(result));
 
@@ -187,8 +189,8 @@ void PostEffect::Initialize()
 		&depth_res_desc,
 		D3D12_RESOURCE_STATE_DEPTH_WRITE,
 		&CD3DX12_CLEAR_VALUE(DXGI_FORMAT_D32_FLOAT, 1.0f, 0),
-		IID_PPV_ARGS(&depth_buff_)
-	);
+		IID_PPV_ARGS(&depth_buff_));
+	depth_buff_->SetName(L"PostEffectDepthBuffer");
 
 	assert(SUCCEEDED(result));
 
@@ -199,6 +201,7 @@ void PostEffect::Initialize()
 
 	// DSV用デスクリプタヒープを作成
 	result = device_->CreateDescriptorHeap(&desc_heap_desc, IID_PPV_ARGS(&desc_heap_DSV_));
+	desc_heap_DSV_->SetName(L"PostEffectDescriptorHeapDSV");
 
 	assert(SUCCEEDED(result));
 
@@ -213,7 +216,6 @@ void PostEffect::Initialize()
 
 void PostEffect::Draw()
 {
-
 	if (KeyboardInput::TriggerKey(DIK_1))
 	{
 		static int tex = 0;

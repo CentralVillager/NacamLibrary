@@ -31,6 +31,8 @@ struct ParticleDesc
 	int frame_ = 0;
 	// テクスチャハンドル
 	ncm_thandle tex_handle_;
+	// 使われているか
+	bool is_used = false;
 };
 
 class Particle
@@ -49,14 +51,22 @@ public:
 
 public:
 
+	inline const bool &GetIsDead() { return particle_->is_dead_; }
+	inline const bool &GetIsUsed() { return particle_->is_used; }
+	inline void SetIsUsed(const bool is_used) { particle_->is_used = is_used; }
+	inline void SetParticleValue(const ParticleDesc &p) { *particle_ = p; }
+
+public:
+
 	void Initialize(Model *model, const ParticleDesc &particle);
 	void Finalize();
 	void Update();
 	void Draw();
 	void DebugDraw();
 
-	inline const bool &GetIsDead() { return particle_->is_dead_; }
-	inline void SetParticleValue(const ParticleDesc &p) { *particle_ = p; }
+public:
+
+	void ResetParamater();
 };
 
 const DirectX::XMFLOAT3 operator+(const DirectX::XMFLOAT3 &lhs, const DirectX::XMFLOAT3 &rhs);

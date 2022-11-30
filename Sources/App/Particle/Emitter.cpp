@@ -8,6 +8,7 @@ using namespace DirectX;
 
 std::unique_ptr<Model> Emitter::model_ = nullptr;
 ncm_thandle Emitter::tex_handle_ = 0;
+std::list<Particle> Emitter::shared_particles_;
 
 ParticleDesc Emitter::GenerateValue(const EmitterDesc &emitter)
 {
@@ -76,6 +77,62 @@ void Emitter::LoadResources()
 
 		tex_handle_ = NcmSprite::LoadTex(L"Resources/textures/effect1.png");
 	}
+
+	// RESERVE_NUM_個の要素をあらかじめ確保
+	shared_particles_.resize(RESERVE_NUM_);
+
+	// 全てのパーティクルに対して
+	for (auto &i : shared_particles_)
+	{
+		// 初期化
+		i.Initialize(model_.get(), {});
+	}
+}
+
+void Emitter::Initialize()
+{}
+
+void Emitter::Update()
+{
+	// is_used フラグが立っている要素を前方へ
+	shared_particles_.sort([](Particle &lhs, Particle &rhs) { return lhs.GetIsUsed() > rhs.GetIsUsed(); });
+
+	// 全てのパーティクルに対して
+	for (auto &i : shared_particles_)
+	{
+		// 使われているなら
+		if (i.GetIsUsed())
+		{
+			// 更新する
+			i.Update();
+
+			// 死んでいたら
+			if (i.GetIsDead())
+			{
+				// 無効化する
+				i.SetIsUsed(false);
+				// 値をリセットする
+				i.ResetParamater();
+			}
+		}
+		// 使われていないなら
+		else
+		{
+			// ループを抜ける
+			break;
+		}
+	}
+}
+
+void Emitter::UseParticle()
+{
+	// 最後尾の参照を取得
+	auto itr = shared_particles_.end();
+	itr--;
+
+	// その要素を有効化する
+	itr->SetIsUsed(true);
+	itr->SetParticleValue(GenerateValue(emitter_desc_));
 }
 
 void Emitter::GenerateParticle()
@@ -132,6 +189,23 @@ bool Emitter::NoticeCanTerminate()
 void Emitter::Draw()
 {
 	//PreDraw::PreRender(PipelineName::PlatePoly);
+
+	// 全てのパーティクルに対して
+	for (auto &i : shared_particles_)
+	{
+		// 使われているなら
+		if (i.GetIsUsed())
+		{
+			// 更新する
+			i.Draw();
+		}
+		// 使われていないなら
+		else
+		{
+			// ループを抜ける
+			break;
+		}
+	}
 
 	// 全てのパーティクルを描画
 	for (auto &i : particles_)

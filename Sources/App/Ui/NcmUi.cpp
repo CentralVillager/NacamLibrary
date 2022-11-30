@@ -18,10 +18,10 @@ NcmUi::NcmUi()
 
 NcmUi::~NcmUi()
 {
-	if (!ui_hub_.empty())
+	/*if (!ui_hub_.empty())
 	{
 		ui_hub_.clear();
-	}
+	}*/
 }
 
 void NcmUi::Initialize()

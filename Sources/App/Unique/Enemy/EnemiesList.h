@@ -37,8 +37,17 @@ public:
 
 public:
 
+	/// <summary>
+	/// “G‚Ì¶¬
+	/// </summary>
+	/// <param name="pos"></param>
 	void Add(const XMFLOAT3 &pos);
+
+	/// <summary>
+	/// Œˆ‚Ü‚Á‚½“GƒZƒbƒg‚Ì¶¬
+	/// </summary>
 	void AddTemplateSet();
+
 	void Death(int i) { enemies_[i].Death(); }
 	bool NoticeEmpty();
 

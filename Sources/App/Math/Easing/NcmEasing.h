@@ -2,8 +2,12 @@
 #include <list>
 #include <array>
 
+// イージング用ハンドル格納型
 typedef uint32_t ncm_ehandle;
 
+/// <summary>
+/// イージングの種類
+/// </summary>
 enum class NcmEaseType
 {
 	Lerp,
@@ -33,6 +37,9 @@ enum class NcmEaseType
 	MaxEaseNum
 };
 
+/// <summary>
+/// イージングの設定構造体
+/// </summary>
 struct NcmEaseDesc
 {
 	// 初期値
@@ -63,6 +70,9 @@ struct NcmEaseDesc
 	{}
 };
 
+/// <summary>
+/// イージングを管理します。
+/// </summary>
 class NcmEasing
 {
 	// イージングに必要なデータ

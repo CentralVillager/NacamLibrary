@@ -4,21 +4,24 @@
 #include "../LockOnSystem/LockOnSystem.h"
 #include "../Abs/AbsUniqueObj.h"
 
+/// <summary>
+/// ミサイルが持つパラメータ
+/// </summary>
 struct MissileArgs
 {
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 
-	XMFLOAT3 pos;
-	XMFLOAT3 vel;
-	XMFLOAT3 acc;
+	XMFLOAT3 pos;				// 位置
+	XMFLOAT3 vel;				// 速度
+	XMFLOAT3 acc;				// 加速度
 
-	XMFLOAT3 tgt_pos;
-	int tgt_id;
+	XMFLOAT3 tgt_pos;			// ターゲットの位置
+	int tgt_id;					// ターゲットのID
 
-	float detection_range;
-	UINT init_straight_time_;
-	UINT life;
-	bool is_validity;
+	float detection_range;		// ターゲット探知範囲
+	UINT init_straight_time_;	// 追尾を開始するまでの時間
+	UINT life;					// 寿命
+	bool is_validity;			// ミサイルが有効か
 
 	MissileArgs() :
 		pos(XMFLOAT3(0, 0, 0)),
@@ -41,15 +44,8 @@ class Missile : public AbsUniqueObj
 	static std::unique_ptr<Model> model_;
 	static std::unique_ptr<Model> coll_model_;
 
-	// エミッター
-	std::unique_ptr<Emitter> emitter_;
-	MissileArgs mi_args_;
-	float min_dist_;
-	float rot_dead_zone_;
-
-	UINT tgt_index_;
-
-	LockOnSystem *p_lockon_sys_;
+	std::unique_ptr<Emitter> emitter_;	// エミッター
+	MissileArgs mi_args_;				// パラメータ
 
 public:
 
@@ -60,7 +56,7 @@ public:
 
 	static void LoadResources();
 
-	void Initialize(const MissileArgs &args, LockOnSystem *sys);
+	void Initialize(const MissileArgs &args);
 	void Initialize() override;
 	void Finalize();
 	void Update() override;
@@ -75,14 +71,32 @@ public:
 	void SetMissileLife(const int &life) { mi_args_.life = life; }
 	void SetTgtPos(const XMFLOAT3 pos) { mi_args_.tgt_pos = pos; }
 
+	/// <summary>
+	/// 死亡フラグを含めてミサイルを有効化
+	/// </summary>
 	void Activate();
+
+	/// <summary>
+	/// 死亡フラグはそのままにミサイルを無効化
+	/// </summary>
 	void InvalidateMissile() { mi_args_.is_validity = false; }
 
+	/// <summary>
+	/// z軸方向へ進む
+	/// </summary>
 	void MoveZ(float speed);
-	void HomingTarget(const XMFLOAT3 &target_pos);
+
+	/// <summary>
+	/// ターゲットを追尾する
+	/// </summary>
 	void HomingTarget(EnemiesList &enemies);
+
 	void TestHomingTarget(EnemiesList &enemies);
-	void TermEmitter();
+
+	/// <summary>
+	/// エミッターの終了準備をする
+	/// </summary>
+	void PrepareTermEmitter();
 
 private:
 

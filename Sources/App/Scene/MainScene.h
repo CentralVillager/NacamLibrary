@@ -2,10 +2,6 @@
 #include <wrl.h>
 #include <memory>
 #include <DirectXMath.h>
-#include "../../App/Scene/AbsScene.h"
-#include "../../Lib/DirectXBase/DirectXBase.h"
-#include "../../Lib/Camera/Camera.h"
-#include "../../Lib/Sprite/NcmSprite.h"
 #include "../Grid/GridRender.h"
 #include "../Unique/Player/Player.h"
 #include "../Unique/Enemy/Enemy.h"
@@ -16,8 +12,13 @@
 #include "../Unique/WaveManager/WaveManager.h"
 #include "../Number/Numbers.h"
 #include "../Ui/NcmUi.h"
+#include "../../App/Scene/AbsScene.h"
 #include "../../App/Unique/Ultimate/UltimateManager.h"
+#include "../../Lib/DirectXBase/DirectXBase.h"
+#include "../../Lib/Camera/Camera.h"
+#include "../../Lib/Sprite/NcmSprite.h"
 #include "../../Lib/PlatePoly/PlatePoly.h"
+#include "../../Lib/PlatePoly/NcmPlatePoly.h"
 #include "../../Lib/Input/NcmInput.h"
 
 class MainScene : public AbsScene
@@ -31,6 +32,9 @@ class MainScene : public AbsScene
 
 public:
 
+	/// <summary>
+	/// デバッグ用のキーバインド
+	/// </summary>
 	enum class KeyBind
 	{
 		Start,
@@ -45,8 +49,11 @@ public:
 private:
 
 	static constexpr float SPEED_ = 1.5f;
-	static constexpr XMFLOAT3 init_pos_ = XMFLOAT3(0, 0, -500.0f);
-	static constexpr XMFLOAT3 cam_init_pos_ = XMFLOAT3(0, 10.0f, init_pos_.z);
+	static constexpr XMFLOAT3 INIT_POS_ = XMFLOAT3(0, 0, -500.0f);
+	static constexpr XMFLOAT3 CAM_INIT_POS_ = XMFLOAT3(0, 10.0f, INIT_POS_.z);
+
+	static constexpr float NORMAL_FOV_ = 60.0f;
+	static constexpr float ACCEL_FOV_ = 70.0f;
 
 private:
 
@@ -64,30 +71,32 @@ private:
 	std::unique_ptr<Numbers> numbers_;
 	std::unique_ptr<NcmUi> ui_;
 	std::unique_ptr<UltimateManager> ult_;
-	int texture_;
-	int clear_;
-	int over_;
-	int space_;
 
+	// テクスチャ
+	ncm_thandle texture_;
+	ncm_thandle clear_;
+	ncm_thandle over_;
+	ncm_thandle space_;
+
+	// クリアフラグ
+	bool is_clear_;
+	bool is_failed_;
+
+	// デバッグ用
 	int key_bind_;
 	bool is_wire_;
 	bool draw_dust_;
 	bool draw_coll_;
 	bool draw_numbers_;
-
-	bool is_clear_;
-	bool is_failed_;
-
 	float ImGui_detection_range_;
 	XMFLOAT2 ImGui_Ui_pos_;
 
-	int player_speed_;
-	int player_dec_speed_;
+	// イージング用ハンドル
+	ncm_ehandle player_speed_;
+	ncm_ehandle player_dec_speed_;
 
-	static constexpr float normal_fov_ = 60.0f;
-	static constexpr float accel_fov_ = 70.0f;
-	uint32_t fov_acc_value_;
-	uint32_t fov_dec_value_;
+	ncm_ehandle fov_acc_value_;
+	ncm_ehandle fov_dec_value_;
 
 public:
 

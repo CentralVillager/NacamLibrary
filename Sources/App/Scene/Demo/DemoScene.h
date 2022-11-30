@@ -11,6 +11,8 @@
 #include "../../Grid/GridRender.h"
 #include "../Sources/App/Math/Easing/NcmEasing.h"
 #include "../../Unique/Player/Player.h"
+#include "../../../Lib/Loader/JsonLoader.h"
+#include "../../../App/Level/LevelDataManager.h"
 
 class DemoScene : public AbsScene
 {
@@ -23,14 +25,6 @@ private:
 
 	// カメラ
 	std::unique_ptr<Camera> camera_;
-
-	// FBXオブジェクト
-	//std::unique_ptr<FbxObject3d> fbx_obj_;
-	//FbxObject3d *fbx_obj_;
-
-	//// FBXモデル
-	//std::unique_ptr<FbxModel> fbx_model_;
-	//FbxModel *fbx_model_;s
 
 	ncm_thandle texture_;
 	ncm_ehandle ease_;
@@ -45,6 +39,13 @@ private:
 	std::unique_ptr<PlatePoly> poly_;
 
 	std::unique_ptr<Player> player_;
+
+	// レベルデータ
+	std::unique_ptr<LevelDataManager> level_;
+
+	// オブジェクトs
+	std::vector<Object3d> objs_;
+	std::unique_ptr<Model> model_;
 
 public:
 

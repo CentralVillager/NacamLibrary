@@ -49,12 +49,11 @@ void Bullet::Update()
 
 	XMFLOAT3 pos;
 	pos = obj_->GetPos();
-
 	pos.x += vel_.x;
 	pos.y += vel_.y;
 	pos.z += vel_.z;
-
 	obj_->SetPos(pos);
+
 	obj_->Update();
 	UpdateColl();
 
