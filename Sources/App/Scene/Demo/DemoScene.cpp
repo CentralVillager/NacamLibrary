@@ -32,6 +32,8 @@ DemoScene::DemoScene()
 
 	model_ = make_unique<Model>();
 	model_->LoadObjModel("Resources/ball/", "smooth_ball.obj", "smooth_ball.mtl");
+
+	particle_ = make_unique<NcmPlatePoly>();
 }
 
 DemoScene::~DemoScene()
@@ -79,6 +81,9 @@ void DemoScene::Initialize()
 
 	Object3d::SetCamera(camera_.get());
 	player_->Initialize();
+
+	NcmPlatePoly::SetCamera(camera_.get());
+	particle_->Initialize();
 }
 
 void DemoScene::Finalize()
@@ -124,6 +129,8 @@ void DemoScene::Update()
 	{
 		i.Update();
 	}
+
+	//particle_->Update();
 }
 
 void DemoScene::Draw()
@@ -148,6 +155,8 @@ void DemoScene::Draw()
 
 	PreDraw::PreRender(PlatePoly);
 	poly_->Draw();
+
+	particle_->Draw();
 }
 
 void DemoScene::DebugDraw()

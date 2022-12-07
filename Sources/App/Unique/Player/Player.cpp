@@ -207,7 +207,7 @@ void Player::Update()
 	RotationY(1.0f);
 
 	// Ž©“®‚Å‘O‚Éi‚Þ
-	MoveForwardAuto();
+	//MoveForwardAuto();
 
 	obj_->Update();
 	UpdateColl();

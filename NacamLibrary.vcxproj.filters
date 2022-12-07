@@ -416,11 +416,17 @@
     <ClCompile Include="Sources\Lib\Loader\JsonLoader.cpp">
       <Filter>Library\Loader</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Lib\PlatePoly\NcmPlatePoly.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\App\Level\LevelDataManager.cpp">
       <Filter>Application\LevelDataManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\PlatePoly\NcmPlatePoly.cpp">
+      <Filter>Library\PlatePoly</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Particle\NcmParticleManager.cpp">
+      <Filter>Application\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Unique\Missile\MissileHoming.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -643,7 +649,7 @@
     <ClInclude Include="Sources\App\Math\Easing\NcmEasing.h">
       <Filter>Application\NacamMath\Easing</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\IMissileState.h">
+    <ClInclude Include="Sources\App\Unique\Missile\IMissileLaunchState.h">
       <Filter>Application\Unique\Missile</Filter>
     </ClInclude>
     <ClInclude Include="Sources\App\Unique\Missile\MissileStateUltimate.h">
@@ -664,10 +670,31 @@
     <ClInclude Include="Sources\Lib\Loader\JsonLoader.h">
       <Filter>Library\Loader</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Lib\PlatePoly\NcmPlatePoly.h" />
     <ClInclude Include="Sources\App\Level\LevelDataManager.h">
       <Filter>Application\LevelDataManager</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\App\Particle\NcmParticleCommonArgs.h">
+      <Filter>Application\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\PlatePoly\NcmPlatePoly.h">
+      <Filter>Library\PlatePoly</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Particle\NcmParticleManager.h">
+      <Filter>Application\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Unique\Missile\IMissileHomingState.h">
+      <Filter>Application\Unique\Missile</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Unique\Missile\MissileHomingStateHighAccuracy.h">
+      <Filter>Application\Unique\Missile</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Unique\Missile\MissileHomingStateLowAccuracy.h">
+      <Filter>Application\Unique\Missile</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Unique\Missile\MissileHomingStateMiddleAccuracy.h">
+      <Filter>Application\Unique\Missile</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Unique\Missile\MissileHoming.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">

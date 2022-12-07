@@ -14,6 +14,7 @@
 #include "../Ui/NcmUi.h"
 #include "../../App/Scene/AbsScene.h"
 #include "../../App/Unique/Ultimate/UltimateManager.h"
+#include "../../App/Particle/NcmParticleManager.h"
 #include "../../Lib/DirectXBase/DirectXBase.h"
 #include "../../Lib/Camera/Camera.h"
 #include "../../Lib/Sprite/NcmSprite.h"
@@ -55,6 +56,8 @@ private:
 	static constexpr float NORMAL_FOV_ = 60.0f;
 	static constexpr float ACCEL_FOV_ = 70.0f;
 
+	static constexpr float SCENE_CHANGE_SPEED_ = 0.05f;
+
 private:
 
 	std::unique_ptr<Camera> camera_;
@@ -71,6 +74,7 @@ private:
 	std::unique_ptr<Numbers> numbers_;
 	std::unique_ptr<NcmUi> ui_;
 	std::unique_ptr<UltimateManager> ult_;
+	std::unique_ptr<NcmParticleManager> particle_mgr_;
 
 	// テクスチャ
 	ncm_thandle texture_;
@@ -97,6 +101,8 @@ private:
 
 	ncm_ehandle fov_acc_value_;
 	ncm_ehandle fov_dec_value_;
+
+	bool is_scene_change_;
 
 public:
 

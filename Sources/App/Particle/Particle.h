@@ -51,6 +51,9 @@ public:
 
 public:
 
+	inline const XMFLOAT3 &GetPos() { return particle_->position_; }
+	inline const float &GetScale() { return particle_->scale_; }
+	inline const uint32_t GetLife() { return (uint32_t)(particle_->life_); }
 	inline const bool &GetIsDead() { return particle_->is_dead_; }
 	inline const bool &GetIsUsed() { return particle_->is_used; }
 	inline void SetIsUsed(const bool is_used) { particle_->is_used = is_used; }

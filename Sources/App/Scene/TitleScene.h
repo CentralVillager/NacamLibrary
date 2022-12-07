@@ -30,6 +30,8 @@ class TitleScene : public AbsScene
 
 	int logo_;
 
+	bool is_scene_change_;
+
 public:
 
 	TitleScene();

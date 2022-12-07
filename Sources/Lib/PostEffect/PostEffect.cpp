@@ -16,6 +16,7 @@ using namespace NcmUtill;
 ComPtr<ID3D12Device> PostEffect::device_ = nullptr;
 ComPtr<ID3D12GraphicsCommandList> PostEffect::command_list_;
 const float PostEffect::clear_color_[4] = { Convert256to01(25), Convert256to01(25), Convert256to01(25), 0.0f };
+XMFLOAT4 PostEffect::color_ = { 1, 1, 1, 1 };
 
 PostEffect::PostEffect()
 {
@@ -238,7 +239,7 @@ void PostEffect::Draw()
 	HRESULT result = this->const_buffer_->Map(0, nullptr, (void **)&constMap);
 	if (SUCCEEDED(result))
 	{
-		constMap->color = this->color;
+		constMap->color = this->color_;
 		constMap->mat = XMMatrixIdentity();	// s—ñ‚Ì‡¬	
 		this->const_buffer_->Unmap(0, nullptr);
 	}
@@ -306,6 +307,7 @@ void PostEffect::SetPipeline(Pipeline p)
 		PreDraw::PreRender(PipelineName::GaussianBlur);
 	}
 }
+
 
 void PostEffect::PreDrawScene()
 {

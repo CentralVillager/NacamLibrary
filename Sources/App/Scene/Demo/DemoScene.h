@@ -8,6 +8,7 @@
 #include "../../../Lib/Fbx/FbxModel.h"
 #include "../../../Lib/Point/Point.h"
 #include "../../../Lib/PlatePoly/PlatePoly.h"
+#include "../../../Lib/PlatePoly/NcmPlatePoly.h"
 #include "../../Grid/GridRender.h"
 #include "../Sources/App/Math/Easing/NcmEasing.h"
 #include "../../Unique/Player/Player.h"
@@ -46,6 +47,8 @@ private:
 	// オブジェクトs
 	std::vector<Object3d> objs_;
 	std::unique_ptr<Model> model_;
+
+	std::unique_ptr<NcmPlatePoly> particle_;
 
 public:
 

@@ -38,9 +38,18 @@ class SceneManager
 
 	static std::array<SceneName, (int)(SceneState::StateNum)> scene_state_;
 
+	static float alpha_;
+
 public:
 
 	static const stack<shared_ptr<AbsScene>> &GetSceneStack() { return scene_stack_; }
+
+	/// <summary>
+	/// シーン切り替え効果の実行
+	/// </summary>
+	/// <param name="speed"></param>
+	static bool InChangeScene(float speed);
+	static bool OutChangeScene(float speed);
 
 	/// <summary>
 	/// シーン切り替えの実行

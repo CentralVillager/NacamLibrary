@@ -5,7 +5,7 @@
 /// <summary>
 /// ミサイル発射パターンの基底クラス
 /// </summary>
-class IMissileState
+class IMissileLaunchState
 {
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 

@@ -1,7 +1,7 @@
 #pragma once
-#include "IMissileState.h"
+#include "IMissileLaunchState.h"
 
-class MissileStateCharge : public IMissileState
+class MissileStateCharge : public IMissileLaunchState
 {
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 
@@ -17,7 +17,7 @@ public:
 		// tgt_pos ‚ÍMissileManager‚ÅÝ’è
 		// tgt_index ‚ÍMissileManager‚ÅÝ’è
 		l_args.detection_range = 1000.0f;
-		l_args.init_straight_time_ = 0;
+		l_args.init_straight_time = 0;
 		l_args.life = 200;
 
 		ptr->FireChargeMissile(l_args);

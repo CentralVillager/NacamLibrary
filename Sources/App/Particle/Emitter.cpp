@@ -3,17 +3,18 @@
 #include "../Utility/NcmUtil.h"
 #include "../Debug/NcmImGui.h"
 #include "../../Lib/PreDraw/PreDraw.h"
+#include "../../App/Particle/NcmParticleManager.h"
 
 using namespace DirectX;
+using namespace NcmUtill;
 
 std::unique_ptr<Model> Emitter::model_ = nullptr;
 ncm_thandle Emitter::tex_handle_ = 0;
 std::list<Particle> Emitter::shared_particles_;
+uint32_t Emitter::particle_num_ = 0;
 
 ParticleDesc Emitter::GenerateValue(const EmitterDesc &emitter)
 {
-	using namespace NcmUtill;
-
 	EmitterDesc emi{};
 	emi = emitter;
 
@@ -55,6 +56,7 @@ ParticleDesc Emitter::GenerateValue(const EmitterDesc &emitter)
 	p.e_scale_ = 0.0f;
 	p.life_ = emi.particle.life_;
 	p.tex_handle_ = tex_handle_;
+	p.is_used = true;
 
 	return p;
 }
@@ -77,65 +79,9 @@ void Emitter::LoadResources()
 
 		tex_handle_ = NcmSprite::LoadTex(L"Resources/textures/effect1.png");
 	}
-
-	// RESERVE_NUM_個の要素をあらかじめ確保
-	shared_particles_.resize(RESERVE_NUM_);
-
-	// 全てのパーティクルに対して
-	for (auto &i : shared_particles_)
-	{
-		// 初期化
-		i.Initialize(model_.get(), {});
-	}
 }
-
-void Emitter::Initialize()
-{}
 
 void Emitter::Update()
-{
-	// is_used フラグが立っている要素を前方へ
-	shared_particles_.sort([](Particle &lhs, Particle &rhs) { return lhs.GetIsUsed() > rhs.GetIsUsed(); });
-
-	// 全てのパーティクルに対して
-	for (auto &i : shared_particles_)
-	{
-		// 使われているなら
-		if (i.GetIsUsed())
-		{
-			// 更新する
-			i.Update();
-
-			// 死んでいたら
-			if (i.GetIsDead())
-			{
-				// 無効化する
-				i.SetIsUsed(false);
-				// 値をリセットする
-				i.ResetParamater();
-			}
-		}
-		// 使われていないなら
-		else
-		{
-			// ループを抜ける
-			break;
-		}
-	}
-}
-
-void Emitter::UseParticle()
-{
-	// 最後尾の参照を取得
-	auto itr = shared_particles_.end();
-	itr--;
-
-	// その要素を有効化する
-	itr->SetIsUsed(true);
-	itr->SetParticleValue(GenerateValue(emitter_desc_));
-}
-
-void Emitter::GenerateParticle()
 {
 	// 寿命を使用する設定なら
 	if (emitter_desc_.use_life_ && emitter_desc_.life_ > 0)
@@ -147,21 +93,112 @@ void Emitter::GenerateParticle()
 	// 寿命を迎えていなければ && 終了命令が来ていなければ
 	if (emitter_desc_.life_ > 0 && !emitter_desc_.is_dead_)
 	{
-		// 1フレーム中に指定された数を生成する
+		// 最後尾の次の参照を取得
+		auto itr = shared_particles_.end();
+
+		// 1フレーム中に指定された数を使う
 		for (UINT count = emitter_desc_.gene_num_; count > 0; count--)
 		{
+			UseParticle(itr);
+			updated_dirty_ = true;
+		}
+	}
+
+	// パーティクルが生成されていたら
+	if (updated_dirty_)
+	{
+		// is_used フラグが立っている要素を前方へソート
+		shared_particles_.sort([](Particle &lhs, Particle &rhs) { return lhs.GetIsUsed() > rhs.GetIsUsed(); });
+		updated_dirty_ = false;
+	}
+
+	// 全てのパーティクルに対して
+	for (auto &i : shared_particles_)
+	{
+		// 使われているなら
+		if (i.GetIsUsed())
+		{
+			// 更新する
+			i.Update();
+		}
+		// 使われていないなら
+		else
+		{
+			// ループを抜ける
+			break;
+		}
+		// 死んでいたら
+		if (i.GetIsDead())
+		{
+			// 無効化する
+			i.SetIsUsed(false);
+			// 値をリセットする
+			i.ResetParamater();
+			particle_num_--;
+		}
+	}
+
+	// is_used フラグが立っている要素を前方へソート
+	shared_particles_.sort([](Particle &lhs, Particle &rhs) { return lhs.GetIsUsed() > rhs.GetIsUsed(); });
+}
+
+void Emitter::UseParticle(std::list<Particle>::iterator last_itr)
+{
+	// 最後尾から順に使用
+	last_itr--;
+
+	// その要素を有効化する
+	last_itr->SetIsUsed(true);
+
+	// パラメータを設定
+	last_itr->SetParticleValue(GenerateValue(emitter_desc_));
+
+	particle_num_++;
+}
+
+void Emitter::GenerateParticle()
+{
+	// 寿命を使用する設定なら
+	if (emitter_desc_.use_life_ && emitter_desc_.life_ > 0)
+	{
+		// 寿命を削る
+		emitter_desc_.life_--;
+	}
+
+	// 描画用データ格納用変数
+	//forward_list<NcmParticleCommonArgs> part_args_;
+
+	// 寿命を迎えていなければ && 終了命令が来ていなければ
+	if (emitter_desc_.life_ > 0 && !emitter_desc_.is_dead_)
+	{
+		// 1フレーム中に指定された数を
+		for (UINT count = emitter_desc_.gene_num_; count > 0; count--)
+		{
+			// 生成する
 			Add(GenerateValue(emitter_desc_));
 		}
 	}
 
-	// 寿命が尽きた粒をコンテナから削除
-	particles_.remove_if([](Particle &x) { return x.GetIsDead(); });
+	// マネージャ受け渡し用コンテナ
+	forward_list<NcmParticleCommonArgs> temp;
 
-	// 全てのパーティクルを更新
+	// 全てのパーティクルに対して
 	for (auto &i : particles_)
 	{
+		// 更新
 		i.Update();
+
+		// マネージャ受け渡し用コンテナへ値を渡す
+		temp.emplace_front();
+		temp.front().pos = i.GetPos();
+		temp.front().scale = i.GetScale();
 	}
+
+	// マネージャへ値を渡す
+	NcmParticleManager::AddParticleCommonArgs(temp);
+
+	// 寿命が尽きた粒をコンテナから削除
+	particles_.remove_if([](Particle &x) { return x.GetIsDead(); });
 }
 
 void Emitter::PrepareTerminate()
@@ -189,7 +226,6 @@ bool Emitter::NoticeCanTerminate()
 void Emitter::Draw()
 {
 	//PreDraw::PreRender(PipelineName::PlatePoly);
-
 	// 全てのパーティクルに対して
 	for (auto &i : shared_particles_)
 	{
@@ -226,4 +262,9 @@ void Emitter::DebugDraw()
 	ImGui::Text("life : %d", emitter_desc_.life_);
 	ImGui::Spacing();
 	ImGui::Spacing();
+}
+
+void Emitter::StaticDebugDraw()
+{
+	//ImGui::Text("particle_num = %d", particle_num_);
 }

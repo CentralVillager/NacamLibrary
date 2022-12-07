@@ -6,6 +6,7 @@
 #include <DirectXMath.h>
 #include "../Sources/Lib/Model/Model.h"
 #include "../../Lib/Sprite/NcmSprite.h"
+#include "NcmParticleCommonArgs.h"
 
 // エミッターの設定構造体
 struct EmitterDesc
@@ -35,7 +36,7 @@ class Emitter
 private:
 
 	// あらかじめ確保する数
-	static constexpr uint32_t RESERVE_NUM_ = 256;
+	static constexpr uint32_t RESERVE_NUM_ = 512;
 
 private:
 
@@ -45,20 +46,28 @@ private:
 	// テクスチャハンドル
 	static ncm_thandle tex_handle_;
 
-	// パーティクル管理コンテナ
+	// リソースシェア版パーティクル管理コンテナ
 	static std::list<Particle> shared_particles_;
+
+	// 使用されたパーティクルの数
+	static uint32_t particle_num_;
+
+	// パーティクル管理コンテナ
 	std::forward_list<Particle> particles_;
 
 	// パーティクル生成に必要な要素
 	EmitterDesc emitter_desc_;
 
+	// パーティクルが使用されたかに関するダーティフラグ
+	bool updated_dirty_ = false;
+
 public:
 
 	// アクセッサ
 	inline const EmitterDesc &GetEmitterDesc() { return emitter_desc_; }
-	inline void SetEmitterDesc(const EmitterDesc &p) { emitter_desc_ = p; }
-
 	inline const XMFLOAT3 &GetPosition() { return emitter_desc_.particle.position_; }
+
+	inline void SetEmitterDesc(const EmitterDesc &p) { emitter_desc_ = p; }
 	inline void SetPosition(const XMFLOAT3 &pos) { emitter_desc_.particle.position_ = pos; }
 
 public:
@@ -69,11 +78,6 @@ public:
 	static void LoadResources();
 
 	/// <summary>
-	/// 初期化
-	/// </summary>
-	void Initialize();
-
-	/// <summary>
 	/// 更新
 	/// </summary>
 	void Update();
@@ -81,7 +85,7 @@ public:
 	/// <summary>
 	/// 確保されたパーティクルを使う
 	/// </summary>
-	void UseParticle();
+	void UseParticle(std::list<Particle>::iterator last_itr);
 
 	/// <summary>
 	/// パーティクルを生成する
@@ -107,6 +111,7 @@ public:
 	/// <summary>
 	/// デバッグ用描画
 	void DebugDraw();
+	static void StaticDebugDraw();
 
 private:
 

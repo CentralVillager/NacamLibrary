@@ -12,9 +12,45 @@
 #include "../Demo/ExecuteIndirectDemoScene.h"
 #include "../Demo/MathDemoScene.h"
 #include "../../Debug/NcmImGui.h"
+#include "../../../Lib/PostEffect/PostEffect.h"
 
 stack<shared_ptr<AbsScene>> SceneManager::scene_stack_;
 std::array<SceneName, (int)(SceneManager::SceneState::StateNum)> SceneManager::scene_state_;
+float SceneManager::alpha_ = 1.0f;
+
+bool SceneManager::InChangeScene(float speed)
+{
+	if (alpha_ >= 0.0f)
+	{
+		alpha_ -= speed;
+		PostEffect::SetAplha(alpha_);
+	}
+
+	if (alpha_ <= 0.0f)
+	{
+		alpha_ = 0.0f;
+		return true;
+	}
+
+	return false;
+}
+
+bool SceneManager::OutChangeScene(float speed)
+{
+	if (alpha_ <= 1.0f)
+	{
+		alpha_ += speed;
+		PostEffect::SetAplha(alpha_);
+	}
+
+	if (alpha_ >= 1.0f)
+	{
+		alpha_ = 1.0f;
+		return true;
+	}
+
+	return false;
+}
 
 void SceneManager::ExecuteSceneChange()
 {

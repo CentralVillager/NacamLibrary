@@ -1,5 +1,7 @@
 cbuffer cbuff0 : register(b0)
 {
+    float4 color;
+    matrix mat;
 }
 
 // 頂点シェーダーからピクセルシェーダーへのやり取りに使用する構造体

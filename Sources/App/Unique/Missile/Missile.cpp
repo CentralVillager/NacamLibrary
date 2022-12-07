@@ -147,19 +147,47 @@ void Missile::MoveZ(float speed)
 
 void Missile::HomingTarget(EnemiesList &enemies)
 {
-	// 位置を取得
+	const float speed = 3.0f;	// 仮
 	XMFLOAT3 pos = obj_->GetPos();
 
-	// 追尾したい敵の添字を検索
+	// 敵がいないなら
+	if (enemies.GetEnemies().size() <= 0)
+	{
+		// 以前の速度をそのまま加算
+		pos.x += mi_args_.vel.x;
+		pos.y += mi_args_.vel.y;
+		pos.z += mi_args_.vel.z;
+
+		// 位置を反映
+		obj_->SetPos(pos);
+
+		return;
+	}
+
+	// 無追尾時間中なら
+	if (mi_args_.init_straight_time > 0)
+	{
+		mi_args_.init_straight_time--;
+
+		// 直進させる
+		//MoveZ(speed);
+
+		return;
+	}
+
+	// XMVECTORに変換
+	XMVECTOR mi_vec = XMLoadFloat3(&obj_->GetPos());
+
+	// 追尾したい敵のIDが入っている要素の添字を検索
 	int index = enemies.GetEnemyIndexWithID(mi_args_.tgt_id);
 
 	// 居なかったら
 	if (index == (int)(NacamError::NonDetected))
 	{
 		// 以前の速度をそのまま加算
-		pos.x *= mi_args_.vel.x;
-		pos.y *= mi_args_.vel.y;
-		pos.z *= mi_args_.vel.z;
+		pos.x += mi_args_.vel.x;
+		pos.y += mi_args_.vel.y;
+		pos.z += mi_args_.vel.z;
 
 		// 位置を反映
 		obj_->SetPos(pos);
@@ -171,32 +199,55 @@ void Missile::HomingTarget(EnemiesList &enemies)
 	// 判明した添字をもとに敵の位置を特定
 	XMVECTOR tgt_vec = XMLoadFloat3(&enemies.GetPos(index));
 
-	// ミサイルのベクトルをXMVECTORに変換
-	XMVECTOR mi_vec = XMLoadFloat3(&obj_->GetPos());
-
 	// ふたつの座標を結ぶベクトルを計算
-	XMVECTOR dest_vec = tgt_vec - mi_vec;
+	XMVECTOR vec =
+	{
+		(tgt_vec.m128_f32[0] - mi_vec.m128_f32[0]),
+		(tgt_vec.m128_f32[1] - mi_vec.m128_f32[1]),
+		(tgt_vec.m128_f32[2] - mi_vec.m128_f32[2])
+	};
+
+	XMVECTOR len = XMVector3Length(vec);
+
+	// 追尾範囲外なら
+	if (len.m128_f32[0] >= mi_args_.detection_range)
+	{
+		// 直進だけして
+		MoveZ(speed);
+
+		// その後の追尾処理をスキップ
+		return;
+	}
 
 	// 正規化
-	dest_vec = XMVector3Normalize(dest_vec);
+	XMVECTOR norm_vec = XMVector3Normalize(vec);
+	XMVECTOR mi_norm_vec = XMVector3Normalize(XMLoadFloat3(&mi_args_.vel));
 
-	// 速度を乗算
-	dest_vec.m128_f32[0] *= speed_;
-	dest_vec.m128_f32[1] *= speed_;
-	dest_vec.m128_f32[2] *= speed_;
+	// 離れている距離
+	XMVECTOR differ =
+	{
+		norm_vec.m128_f32[0] - mi_norm_vec.m128_f32[0],
+		norm_vec.m128_f32[1] - mi_norm_vec.m128_f32[1],
+		norm_vec.m128_f32[2] - mi_norm_vec.m128_f32[2]
+	};
 
-	// その値を格納
-	XMStoreFloat3(&mi_args_.vel, dest_vec);
+	mi_args_.vel.x += mi_args_.acc.x;
+	mi_args_.vel.y += mi_args_.acc.y;
+	mi_args_.vel.z += mi_args_.acc.z;
 
 	// 速度を加算
+	mi_args_.vel.x += differ.m128_f32[0] * speed;
+	mi_args_.vel.y += differ.m128_f32[1] * speed;
+	mi_args_.vel.z += differ.m128_f32[2] * speed;
+
+	// 位置を更新
 	pos.x += mi_args_.vel.x;
 	pos.y += mi_args_.vel.y;
 	pos.z += mi_args_.vel.z;
 
-	// 位置を更新 
+	// 位置を反映
 	obj_->SetPos(pos);
 
-	// 回転角を更新
 	obj_->SetRot(LookAt(mi_args_.vel));
 }
 
@@ -263,7 +314,6 @@ void Missile::PrepareTermEmitter()
 void Missile::UpdateEmitter()
 {
 	emitter_->SetPosition(obj_->GetPos());
-	emitter_->UseParticle();
-	emitter_->Update();
+	//emitter_->Update();
 	emitter_->GenerateParticle();
 }

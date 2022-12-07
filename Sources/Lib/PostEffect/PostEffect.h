@@ -71,7 +71,7 @@ private:
 	// 画面クリアカラー
 	static const float clear_color_[4];
 
-	XMFLOAT4 color = { 1, 1, 1, 1 };
+	static XMFLOAT4 color_;
 
 private:
 
@@ -97,6 +97,9 @@ public:
 public:
 
 	static void SetPipeline(Pipeline p);
+
+	static float GetAplha() { return color_.w; }
+	static void SetAplha(float color) { color_.w = color; }
 
 	/// <summary>
 	/// シーン描画前処理

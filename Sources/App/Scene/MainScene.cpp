@@ -6,6 +6,9 @@
 #include "../Sources/App/Math/Easing/NcmEasing.h"
 #include "../Utility/NcmUtil.h"
 #include "../Debug/NcmDebug.h"
+#include "../../Lib/PostEffect/PostEffect.h"
+#include "../../Lib/Input/NcmInput.h"
+#include <vector>
 
 using namespace NcmUtill;
 
@@ -24,6 +27,7 @@ MainScene::MainScene() :
 	numbers_(make_unique<Numbers>()),
 	ui_(make_unique<NcmUi>()),
 	ult_(make_unique<UltimateManager>()),
+	particle_mgr_(make_unique<NcmParticleManager>()),
 	texture_(),
 	clear_(),
 	over_(),
@@ -40,7 +44,8 @@ MainScene::MainScene() :
 	player_speed_(),
 	player_dec_speed_(),
 	fov_acc_value_(),
-	fov_dec_value_()
+	fov_dec_value_(),
+	is_scene_change_()
 {
 	// テクスチャのロード
 	clear_ = NcmSprite::LoadTex(L"Resources/Textures/clear.png");
@@ -111,6 +116,8 @@ void MainScene::Initialize()
 	p.use_life_ = false;
 	dust_->SetEmitterDesc(p);
 
+	particle_mgr_->Initialize();
+
 	// スプライトの初期化
 	NcmSprite::SetSize(clear_, { 1280.0f, 720.0f });
 	NcmSprite::SetSize(over_, { 1280.0f, 720.0f });
@@ -164,6 +171,8 @@ void MainScene::Initialize()
 
 	// UI関連の初期化
 	NcmUi::Initialize();
+
+	is_scene_change_ = false;
 }
 
 void MainScene::Finalize()
@@ -171,6 +180,15 @@ void MainScene::Finalize()
 
 void MainScene::Update()
 {
+	// 画面遷移を実行
+	if (!is_scene_change_)
+	{
+		SceneManager::OutChangeScene(SCENE_CHANGE_SPEED_);
+	}
+
+	// パーティクルの全要素を削除
+	NcmParticleManager::ClearParticleArgsBeforeUpdate();
+
 	if (NcmDebug::GetInstance()->IsDebugMode())
 	{
 		// キーバインドごとの操作
@@ -217,7 +235,8 @@ void MainScene::Update()
 	}
 
 	// 加速
-	if (KeyboardInput::PushKey(DIK_W))
+	if (KeyboardInput::PushKey(DIK_W) ||
+		NcmInput::IsHold(NcmStickType::L_STICK, NcmStickDirection::UP))
 	{
 		NcmEasing::ResetTime(fov_dec_value_);
 		NcmEasing::ResetTime(player_dec_speed_);
@@ -256,9 +275,13 @@ void MainScene::Update()
 	{
 		is_clear_ = true;
 
-		if (KeyboardInput::TriggerKey(DIK_SPACE))
+		if (KeyboardInput::TriggerKey(DIK_SPACE) ||
+			NcmInput::IsTrigger(NcmButtonType::A) ||
+			NcmInput::IsTrigger(NcmButtonType::B) ||
+			NcmInput::IsTrigger(NcmButtonType::X) ||
+			NcmInput::IsTrigger(NcmButtonType::Y))
 		{
-			SceneManager::SetNextScene(SceneName::TITLE);
+			is_scene_change_ = true;
 		}
 	}
 
@@ -267,7 +290,19 @@ void MainScene::Update()
 	{
 		is_failed_ = true;
 
-		if (KeyboardInput::TriggerKey(DIK_SPACE))
+		if (KeyboardInput::TriggerKey(DIK_SPACE) ||
+			NcmInput::IsTrigger(NcmButtonType::A) ||
+			NcmInput::IsTrigger(NcmButtonType::B) ||
+			NcmInput::IsTrigger(NcmButtonType::X) ||
+			NcmInput::IsTrigger(NcmButtonType::Y))
+		{
+			is_scene_change_ = true;
+		}
+	}
+
+	if (is_scene_change_)
+	{
+		if (SceneManager::InChangeScene(SCENE_CHANGE_SPEED_))
 		{
 			SceneManager::SetNextScene(SceneName::TITLE);
 		}
@@ -281,6 +316,7 @@ void MainScene::Update()
 	missile_mgr_->Update();
 	lockon_sys_->Update();
 	ult_->Update();
+	particle_mgr_->Update();
 
 	// ミサイル追尾処理
 	missile_mgr_->HomingTarget(*ene_list_);
@@ -301,10 +337,6 @@ void MainScene::Update()
 		bool mode = NcmDebug::GetInstance()->IsCheatMode();
 		NcmDebug::GetInstance()->SetCheatMode(!mode);
 	}
-
-	/*NcmPlatePoly::SetPos(space_, XMFLOAT3(0, 0, 0));
-	NcmPlatePoly::SetScale(space_, 1.0f);
-	NcmPlatePoly::Update(space_);*/
 }
 
 void MainScene::Draw()
@@ -333,6 +365,9 @@ void MainScene::Draw()
 		missile_mgr_->DrawColl();
 	}
 
+	PreDraw::PreRender(PlatePoly);
+	particle_mgr_->Draw();
+
 	PreDraw::PreRender(Sprite);
 	if (is_clear_)
 	{
@@ -357,8 +392,8 @@ void MainScene::Draw()
 	NcmUi::DrawHp(player_->GetHp(), 30.0f);
 	ult_->DrawUi();
 
-	PreDraw::PreRender(PipelineName::PlatePoly);
-	NcmPlatePoly::Draw(space_);
+	/*PreDraw::PreRender(PipelineName::PlatePoly);
+	NcmPlatePoly::Draw(space_);*/
 }
 
 void MainScene::DebugDraw()
@@ -366,6 +401,9 @@ void MainScene::DebugDraw()
 	bool debug = NcmDebug::GetInstance()->IsDebugMode();
 	ImGui::Checkbox("DebugMode?", &debug);
 	NcmDebug::GetInstance()->SetDebugMode(debug);
+
+	NcmParticleManager::StaticDebugDraw();
+	Emitter::StaticDebugDraw();
 
 	player_->DebugDraw();
 	lockon_sys_->DebugDraw();

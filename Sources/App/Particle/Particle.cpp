@@ -25,8 +25,8 @@ void Particle::Initialize(Model *model, const ParticleDesc &particle)
 
 	object_->SetModel(model);
 	object_->Initialize();
-	plate_->Initialize(particle_->tex_handle_);
-	plate_->SetTexHandle(particle_->tex_handle_);
+	/*plate_->Initialize(particle_->tex_handle_);
+	plate_->SetTexHandle(particle_->tex_handle_);*/
 }
 
 void Particle::Finalize()
@@ -60,9 +60,9 @@ void Particle::Update()
 	/*object_->SetPos(particle_->position_);
 	object_->SetScale(particle_->scale_);
 	object_->Update();*/
-	plate_->SetPos(particle_->position_);
+	/*plate_->SetPos(particle_->position_);
 	plate_->SetScale(particle_->scale_);
-	plate_->Update();
+	plate_->Update();*/
 }
 
 void Particle::Draw()
@@ -71,8 +71,8 @@ void Particle::Draw()
 	//// •`‰æ
 	//object_->Draw();
 
-	PreDraw::PreRender(PipelineName::PlatePoly);
-	plate_->Draw();
+	/*PreDraw::PreRender(PipelineName::PlatePoly);
+	plate_->Draw();*/
 }
 
 void Particle::DebugDraw()

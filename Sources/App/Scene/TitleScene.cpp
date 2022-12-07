@@ -4,6 +4,8 @@
 #include "../../Lib/Win32App/Win32App.h"
 #include "../../Lib/PreDraw/PreDraw.h"
 #include "../../Lib/Input/KeyboardInput.h"
+#include "../../Lib/PostEffect/PostEffect.h"
+#include "../../Lib/Input/NcmInput.h"
 
 TitleScene::TitleScene()
 {
@@ -64,6 +66,8 @@ void TitleScene::Initialize()
 	// スプライトの設定
 	XMINT2 pos = { Win32App::CENTER_.x, 650 };
 	NcmSprite::SetPos(space_, pos);
+
+	is_scene_change_ = false;
 }
 
 void TitleScene::Finalize()
@@ -71,10 +75,27 @@ void TitleScene::Finalize()
 
 void TitleScene::Update()
 {
-	// シーン遷移
-	if (KeyboardInput::TriggerKey(DIK_SPACE))
+	if (!is_scene_change_)
 	{
-		SceneManager::SetNextScene(SceneName::MAIN);
+		SceneManager::OutChangeScene(0.05f);
+	}
+
+	// シーン遷移
+	if (KeyboardInput::TriggerKey(DIK_SPACE) ||
+		NcmInput::IsTrigger(NcmButtonType::A) ||
+		NcmInput::IsTrigger(NcmButtonType::B) ||
+		NcmInput::IsTrigger(NcmButtonType::X) ||
+		NcmInput::IsTrigger(NcmButtonType::Y))
+	{
+		is_scene_change_ = true;
+	}
+
+	if (is_scene_change_)
+	{
+		if (SceneManager::InChangeScene(0.05f))
+		{
+			SceneManager::SetNextScene(SceneName::MAIN);
+		}
 	}
 
 	camera_->BasicCameraMoveTrack(1.0f);

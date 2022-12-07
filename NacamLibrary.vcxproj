@@ -182,6 +182,7 @@
     <ClCompile Include="Sources\App\Number\Numbers.cpp" />
     <ClCompile Include="Sources\App\Particle\Emitter.cpp" />
     <ClCompile Include="Sources\App\Particle\EmittersList.cpp" />
+    <ClCompile Include="Sources\App\Particle\NcmParticleManager.cpp" />
     <ClCompile Include="Sources\App\Particle\Particle.cpp" />
     <ClCompile Include="Sources\App\Scene\Demo\DemoScene.cpp" />
     <ClCompile Include="Sources\App\Scene\Demo\ExecuteIndirectDemoScene.cpp" />
@@ -204,6 +205,7 @@
     <ClCompile Include="Sources\App\Unique\Enemy\Enemy.cpp" />
     <ClCompile Include="Sources\App\Unique\LockOnSystem\LockOnSystem.cpp" />
     <ClCompile Include="Sources\App\Unique\Missile\Missile.cpp" />
+    <ClCompile Include="Sources\App\Unique\Missile\MissileHoming.cpp" />
     <ClCompile Include="Sources\App\Unique\Missile\MissileManager.cpp" />
     <ClCompile Include="Sources\App\Unique\Missile\MissileLauncher.cpp" />
     <ClCompile Include="Sources\App\Unique\Player\Player.cpp" />
@@ -258,6 +260,8 @@
     <ClInclude Include="Sources\App\Number\Numbers.h" />
     <ClInclude Include="Sources\App\Particle\Emitter.h" />
     <ClInclude Include="Sources\App\Particle\EmittersList.h" />
+    <ClInclude Include="Sources\App\Particle\NcmParticleCommonArgs.h" />
+    <ClInclude Include="Sources\App\Particle\NcmParticleManager.h" />
     <ClInclude Include="Sources\App\Particle\Particle.h" />
     <ClInclude Include="Sources\App\Scene\AbsScene.h" />
     <ClInclude Include="Sources\App\Scene\Demo\DemoScene.h" />
@@ -281,8 +285,13 @@
     <ClInclude Include="Sources\App\Unique\Enemy\EnemiesList.h" />
     <ClInclude Include="Sources\App\Unique\Enemy\Enemy.h" />
     <ClInclude Include="Sources\App\Unique\LockOnSystem\LockOnSystem.h" />
-    <ClInclude Include="Sources\App\Unique\Missile\IMissileState.h" />
+    <ClInclude Include="Sources\App\Unique\Missile\IMissileHomingState.h" />
+    <ClInclude Include="Sources\App\Unique\Missile\IMissileLaunchState.h" />
     <ClInclude Include="Sources\App\Unique\Missile\Missile.h" />
+    <ClInclude Include="Sources\App\Unique\Missile\MissileHoming.h" />
+    <ClInclude Include="Sources\App\Unique\Missile\MissileHomingStateHighAccuracy.h" />
+    <ClInclude Include="Sources\App\Unique\Missile\MissileHomingStateLowAccuracy.h" />
+    <ClInclude Include="Sources\App\Unique\Missile\MissileHomingStateMiddleAccuracy.h" />
     <ClInclude Include="Sources\App\Unique\Missile\MissileManager.h" />
     <ClInclude Include="Sources\App\Unique\Missile\MissileLauncher.h" />
     <ClInclude Include="Sources\App\Unique\Missile\MissileStateCharge.h" />

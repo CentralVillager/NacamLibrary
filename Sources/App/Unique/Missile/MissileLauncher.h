@@ -1,8 +1,5 @@
 #pragma once
 #include <memory>
-#include "MissileStateMulti.h"
-#include "MissileStateCharge.h"
-#include "MissileStateUltimate.h"
 
 enum class MissileType
 {
@@ -17,11 +14,7 @@ class MissileLauncher
 
 private:
 
-	std::shared_ptr<IMissileState> state_;
-
-	std::shared_ptr<MissileStateMulti> multi_missile_;
-	std::shared_ptr<MissileStateCharge> charge_missile_;
-	std::shared_ptr<MissileStateUltimate> ultimate_missile_;
+	std::shared_ptr<IMissileLaunchState> state_;
 
 public:
 

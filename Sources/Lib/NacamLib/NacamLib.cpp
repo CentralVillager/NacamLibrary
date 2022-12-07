@@ -20,6 +20,7 @@
 #include "../Sources/App/Math/Easing/NcmEasing.h"
 #include "../Point/Point.h"
 #include "../PlatePoly/PlatePoly.h"
+#include "../PlatePoly/NcmPlatePoly.h"
 
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
@@ -166,6 +167,7 @@ void NacamLib::GameObjectInitialize()
 	IndirectObject3d::StaticInitialize(*pipeline_mgr_);
 	Point::StaticInitialize(device_.Get(), cmd_list_.Get());
 	PlatePoly::StaticInitialize(device_.Get(), cmd_list_.Get());
+	NcmPlatePoly::StaticInitialize(device_.Get(), cmd_list_.Get());
 
 	NcmEasing::StaticInit();
 
