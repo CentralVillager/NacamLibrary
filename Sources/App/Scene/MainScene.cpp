@@ -101,7 +101,8 @@ void MainScene::Initialize()
 	ult_->Initialize();
 
 	// enemy‚Ì¶¬
-	ene_list_->AddTemplateSet();
+	ene_list_->Add(XMFLOAT3(0, 0, 0));
+	//ene_list_->AddTemplateSet();
 
 	// oƒGƒ~ƒbƒ^[‚Ì¶¬
 	EmitterDesc p;
@@ -322,7 +323,7 @@ void MainScene::Update()
 	missile_mgr_->HomingTarget(*ene_list_);
 
 	// “–‚½‚è”»’è
-	CollisionProcess();
+	//CollisionProcess();
 
 	// o•`‰æ‘¼
 	if (draw_dust_) { dust_->GenerateParticle(); }
@@ -343,32 +344,32 @@ void MainScene::Draw()
 {
 	using enum PipelineName;
 
-	PreDraw::PreRender(Line);
+	PreDraw::SetPipeline(Line);
 	grid_->Draw();
 
-	//PreDraw::PreRender(Object3d);
-	PreDraw::PreRender(Object3d_WireFrame);
+	//PreDraw::SetPipeline(Object3d);
+	PreDraw::SetPipeline(Object3d_WireFrame);
 	player_->Draw();
 	ene_list_->Draw();
 	missile_mgr_->Draw();
 	lockon_sys_->Draw();
 	if (draw_dust_) { dust_->Draw(); }
 
-	if (is_wire_) { PreDraw::PreRender(Object3d); }
+	if (is_wire_) { PreDraw::SetPipeline(Object3d); }
 	sky_dome_->Draw();
 
 	if (draw_coll_)
 	{
-		PreDraw::PreRender(Object3d_WireFrame);
+		PreDraw::SetPipeline(Object3d_WireFrame);
 		player_->DrawColl();
 		ene_list_->DrawColl();
 		missile_mgr_->DrawColl();
 	}
 
-	PreDraw::PreRender(PlatePoly);
+	PreDraw::SetPipeline(PlatePoly);
 	particle_mgr_->Draw();
 
-	PreDraw::PreRender(Sprite);
+	PreDraw::SetPipeline(Sprite);
 	if (is_clear_)
 	{
 		if (CheckDoDisplay())
@@ -392,7 +393,7 @@ void MainScene::Draw()
 	NcmUi::DrawHp(player_->GetHp(), 30.0f);
 	ult_->DrawUi();
 
-	/*PreDraw::PreRender(PipelineName::PlatePoly);
+	/*PreDraw::SetPipeline(PipelineName::PlatePoly);
 	NcmPlatePoly::Draw(space_);*/
 }
 

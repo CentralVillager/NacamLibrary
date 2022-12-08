@@ -5,6 +5,7 @@ SamplerState smp : register(s0); // 0番スロットに設定されたサンプ�
 
 float4 main(GSOutput input) : SV_TARGET
 {
-    return tex.Sample(smp, input.uv);
-	//return float4(1, 1, 1, 1);
+    float4 color = tex.Sample(smp, input.uv);
+    // return float4(color.rgb, 0.1);
+    return float4(color.rgb, alpha);
 }

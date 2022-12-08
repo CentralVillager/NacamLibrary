@@ -137,7 +137,7 @@ void DemoScene::Draw()
 {
 	using enum PipelineName;
 
-	PreDraw::PreRender(Object3d_WireFrame);
+	PreDraw::SetPipeline(Object3d_WireFrame);
 	//player_->Draw();
 
 	for (auto &i : objs_)
@@ -145,15 +145,15 @@ void DemoScene::Draw()
 		i.Draw();
 	}
 
-	PreDraw::PreRender(Line);
+	PreDraw::SetPipeline(Line);
 	grid_->Draw();
 	//ugrid_->Draw();
 
-	PreDraw::PreRender(Sprite);
+	PreDraw::SetPipeline(Sprite);
 	/*NcmSprite::DrawTex(texture_);
 	NcmSprite::DrawTex(test_, Win32App::FCENTER_);*/
 
-	PreDraw::PreRender(PlatePoly);
+	PreDraw::SetPipeline(PlatePoly);
 	poly_->Draw();
 
 	particle_->Draw();

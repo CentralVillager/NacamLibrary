@@ -216,11 +216,11 @@ void ParticleDemoScene::Draw() {
 
 	if (is_wire_) {
 
-		PreDraw::PreRender(PipelineName::Object3d_WireFrame);
+		PreDraw::SetPipeline(PipelineName::Object3d_WireFrame);
 
 	} else {
 
-		PreDraw::PreRender(PipelineName::Object3d);
+		PreDraw::SetPipeline(PipelineName::Object3d);
 	}
 	sky_dome_->Draw();
 

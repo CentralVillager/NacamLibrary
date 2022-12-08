@@ -115,10 +115,10 @@ using namespace DirectX;
 //
 //void MathDemoScene::Draw() {
 //
-//	PreDraw::PreRender(PipelineName::Object3d);
+//	PreDraw::SetPipeline(PipelineName::Object3d);
 //	object_->Draw();
 //
-//	PreDraw::PreRender(PipelineName::Line);
+//	PreDraw::SetPipeline(PipelineName::Line);
 //	line_->Draw();
 //}
 //
@@ -215,7 +215,7 @@ using namespace DirectX;
 //
 //void MathDemoScene::Draw() {
 //
-//	PreDraw::PreRender(PipelineName::Object3d);
+//	PreDraw::SetPipeline(PipelineName::Object3d);
 //
 //	for (auto &i : object_) {
 //
@@ -372,7 +372,7 @@ void MathDemoScene::Update() {
 
 void MathDemoScene::Draw() {
 
-	PreDraw::PreRender(PipelineName::Object3d);
+	PreDraw::SetPipeline(PipelineName::Object3d);
 
 	for (auto &i : object_) {
 

@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include "IMissileLaunchState.h"
 
 enum class MissileType
 {

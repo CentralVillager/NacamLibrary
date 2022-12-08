@@ -105,11 +105,11 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {
-	PreDraw::PreRender(PipelineName::Object3d);
+	PreDraw::SetPipeline(PipelineName::Object3d);
 	sky_dome_->Draw();
 	emitter_->Draw();
 
-	PreDraw::PreRender(PipelineName::Sprite);
+	PreDraw::SetPipeline(PipelineName::Sprite);
 
 	int visible_time = 75;
 	int invisivle_time = 25;

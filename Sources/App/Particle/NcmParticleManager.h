@@ -12,10 +12,9 @@ class NcmParticleManager
 {
 	static std::forward_list<NcmParticleCommonArgs> part_args_;	// 描画用共通データ
 	static size_t particle_num;
-	static size_t max_size;
 	static size_t max_particle_num;
 
-	std::unique_ptr<NcmPlatePoly> poly_;		// 描画データ
+	std::unique_ptr<NcmPlatePoly> poly_;	// 描画データ
 
 public:
 

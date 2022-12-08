@@ -1,5 +1,4 @@
 #pragma once
-#include <Windows.h>
 #include <wrl.h>
 #include <d3d12.h>
 #include <DirectXMath.h>
@@ -28,6 +27,7 @@ public:
 	// 定数バッファ用データ構造体
 	struct ConstBufferData
 	{
+		float alpha;	// 透明度
 		XMMATRIX mat;	// ３Ｄ変換行列
 		XMMATRIX mat_billboard;
 	};
@@ -120,12 +120,10 @@ public:
 	/// 毎フレーム処理
 	/// </summary>
 	void UpdateVertBuffer(std::forward_list<NcmParticleCommonArgs> &args);
-	void UpdateConstBuffer();
+	void UpdateConstBuffer(std::forward_list<NcmParticleCommonArgs> &args);
 
 	/// <summary>
 	/// 描画
 	/// </summary>
 	void Draw();
 };
-
-const DirectX::XMFLOAT3 operator+(const DirectX::XMFLOAT3 &lhs, const DirectX::XMFLOAT3 &rhs);

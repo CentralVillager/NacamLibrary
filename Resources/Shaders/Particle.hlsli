@@ -1,5 +1,6 @@
 cbuffer cbuff0 : register(b0)
 {
+    float alpha;
     matrix mat; // ３Ｄ変換行列
     matrix mat_billboard;
 };

@@ -53,8 +53,10 @@ ParticleDesc Emitter::GenerateValue(const EmitterDesc &emitter)
 	p.velocity_ = emi.particle.velocity_;
 	p.accel_ = acc;
 	p.scale_ = p.s_scale_ = emi.particle.s_scale_;
-	p.e_scale_ = 0.0f;
+	p.e_scale_ = p.scale_;
+	//p.e_scale_ = 0.0f;
 	p.life_ = emi.particle.life_;
+	p.alpha_ = 1.0f;
 	p.tex_handle_ = tex_handle_;
 	p.is_used = true;
 
@@ -165,9 +167,6 @@ void Emitter::GenerateParticle()
 		emitter_desc_.life_--;
 	}
 
-	// 描画用データ格納用変数
-	//forward_list<NcmParticleCommonArgs> part_args_;
-
 	// 寿命を迎えていなければ && 終了命令が来ていなければ
 	if (emitter_desc_.life_ > 0 && !emitter_desc_.is_dead_)
 	{
@@ -192,6 +191,7 @@ void Emitter::GenerateParticle()
 		temp.emplace_front();
 		temp.front().pos = i.GetPos();
 		temp.front().scale = i.GetScale();
+		temp.front().alpha = i.GetAlpha();
 	}
 
 	// マネージャへ値を渡す
@@ -225,7 +225,7 @@ bool Emitter::NoticeCanTerminate()
 
 void Emitter::Draw()
 {
-	//PreDraw::PreRender(PipelineName::PlatePoly);
+	//PreDraw::SetPipeline(PipelineName::PlatePoly);
 	// 全てのパーティクルに対して
 	for (auto &i : shared_particles_)
 	{

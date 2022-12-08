@@ -32,7 +32,7 @@ bool Object3d::StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList 
 void Object3d::PreDraw()
 {
 	// 仮置き
-	PreDraw::PreRender(PipelineName::Object3d);
+	PreDraw::SetPipeline(PipelineName::Object3d);
 }
 
 bool Object3d::InitializeDescriptorHeap()

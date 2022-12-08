@@ -58,7 +58,7 @@ void LockOnSystem::Update()
 
 void LockOnSystem::Draw()
 {
-	PreDraw::PreRender(PipelineName::Object3d);
+	PreDraw::SetPipeline(PipelineName::Object3d);
 	for (auto &i : markers_)
 	{
 		i.Draw();

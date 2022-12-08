@@ -17,7 +17,7 @@ void PreDraw::StaticInitialize(const PipelineManager &p_mgr)
 	pipeline_mgr_ = std::make_unique<PipelineManager>(p_mgr);
 }
 
-void PreDraw::PreRender(PipelineName p_name)
+void PreDraw::SetPipeline(PipelineName p_name)
 {
 	// パイプラインステートの設定
 	cmd_list_->SetPipelineState(pipeline_mgr_->GetPipeline(p_name).pipeline_state.Get());

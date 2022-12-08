@@ -29,6 +29,8 @@ struct ParticleDesc
 	bool is_dead_ = false;
 	// 現在フレーム
 	int frame_ = 0;
+	// 透明度
+	float alpha_ = 1.0f;
 	// テクスチャハンドル
 	ncm_thandle tex_handle_;
 	// 使われているか
@@ -54,6 +56,7 @@ public:
 	inline const XMFLOAT3 &GetPos() { return particle_->position_; }
 	inline const float &GetScale() { return particle_->scale_; }
 	inline const uint32_t GetLife() { return (uint32_t)(particle_->life_); }
+	inline const float GetAlpha() { return particle_->alpha_; }
 	inline const bool &GetIsDead() { return particle_->is_dead_; }
 	inline const bool &GetIsUsed() { return particle_->is_used; }
 	inline void SetIsUsed(const bool is_used) { particle_->is_used = is_used; }

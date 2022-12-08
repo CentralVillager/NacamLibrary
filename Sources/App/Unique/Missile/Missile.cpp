@@ -113,7 +113,7 @@ void Missile::Update()
 void Missile::Draw()
 {
 	// ミサイルが有効ならミサイルを描画
-	PreDraw::PreRender(PipelineName::Object3d);
+	PreDraw::SetPipeline(PipelineName::Object3d);
 	if (mi_args_.is_validity) { obj_->Draw(); }
 
 	// パーティクルを描画

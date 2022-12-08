@@ -123,7 +123,7 @@ void MissileManager::FireUltimateMissile(const MissileArgs &args, uint32_t launc
 	p_lockon_sys_->SetMaxTgtNum(10);
 
 	// ‰Á‘¬“x‚ğƒ‰ƒ“ƒ_ƒ€‚Éİ’è
-	XMFLOAT3 rand = GenerateRandom(XMFLOAT3(-1.0f, -1.0f, 0), XMFLOAT3(1.0f, 1.0f, 0));
+	XMFLOAT3 rand = GenerateRandom(XMFLOAT3(-1.5f, -1.5f, 0), XMFLOAT3(1.5f, 1.5f, 0));
 	//XMFLOAT3 rand = { 0, -1.0f, 0 };
 	l_args.acc = rand;
 

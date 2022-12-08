@@ -21,6 +21,7 @@ void Particle::Initialize(Model *model, const ParticleDesc &particle)
 	particle_->e_scale_ = particle.e_scale_;
 	particle_->life_ = particle.life_;
 	particle_->is_dead_ = false;
+	particle_->alpha_ = particle.alpha_;
 	particle_->tex_handle_ = particle.tex_handle_;
 
 	object_->SetModel(model);
@@ -45,7 +46,7 @@ void Particle::Update()
 	particle_->frame_++;
 
 	// 進行度を0～1の範囲に換算
-	float f = (float)particle_->life_ / particle_->frame_;
+	float f = (float)(particle_->life_) / particle_->frame_;
 
 	// 速度に加速度を加算
 	particle_->velocity_ = particle_->velocity_ + particle_->accel_;
@@ -56,22 +57,17 @@ void Particle::Update()
 	// スケールの線形補間
 	particle_->scale_ = particle_->s_scale_ + (particle_->e_scale_ - particle_->s_scale_) / f;
 
-	//	最終的な位置をセット
-	/*object_->SetPos(particle_->position_);
-	object_->SetScale(particle_->scale_);
-	object_->Update();*/
-	/*plate_->SetPos(particle_->position_);
-	plate_->SetScale(particle_->scale_);
-	plate_->Update();*/
+	// 透明度を0~1換算
+	particle_->alpha_ -= 0.01f;
 }
 
 void Particle::Draw()
 {
-	//PreDraw::PreRender(PipelineName::Object3d_WireFrame);	// 仮
+	//PreDraw::SetPipeline(PipelineName::Object3d_WireFrame);	// 仮
 	//// 描画
 	//object_->Draw();
 
-	/*PreDraw::PreRender(PipelineName::PlatePoly);
+	/*PreDraw::SetPipeline(PipelineName::PlatePoly);
 	plate_->Draw();*/
 }
 

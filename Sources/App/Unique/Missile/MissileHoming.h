@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include "IMissileHomingState.h"
 
 /// <summary>
 /// ’Ç”ö‚Ì¸“x

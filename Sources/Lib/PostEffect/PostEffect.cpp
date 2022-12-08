@@ -294,17 +294,17 @@ void PostEffect::SetPipeline(Pipeline p)
 {
 	if (p == Pipeline::Basic)
 	{
-		PreDraw::PreRender(PipelineName::PostEffect);
+		PreDraw::SetPipeline(PipelineName::PostEffect);
 
 	}
 	else if (p == Pipeline::AverageBlur)
 	{
-		PreDraw::PreRender(PipelineName::AverageBlur);
+		PreDraw::SetPipeline(PipelineName::AverageBlur);
 
 	}
 	else if (p == Pipeline::GaussianBlur)
 	{
-		PreDraw::PreRender(PipelineName::GaussianBlur);
+		PreDraw::SetPipeline(PipelineName::GaussianBlur);
 	}
 }
 

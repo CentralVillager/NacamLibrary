@@ -28,9 +28,9 @@ private:
 public:
 
 	/// <summary>
-	/// 描画前処理
+	/// グラフィクスパイプラインをセット
 	/// </summary>
 	/// <param name="p_name"></param>
-	static void PreRender(PipelineName p_name);
+	static void SetPipeline(PipelineName p_name);
 };
 

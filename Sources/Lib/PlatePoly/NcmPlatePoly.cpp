@@ -187,7 +187,6 @@ void NcmPlatePoly::UpdateVertBuffer(std::forward_list<NcmParticleCommonArgs> &ar
 	// 頂点バッファへデータ転送
 	VertexPos *vert_map = nullptr;
 	HRESULT result = vert_buff_->Map(0, nullptr, reinterpret_cast<void **>(&vert_map));
-
 	if (SUCCEEDED(result))
 	{
 		// パーティクルの情報を1つずつ反映
@@ -207,11 +206,15 @@ void NcmPlatePoly::UpdateVertBuffer(std::forward_list<NcmParticleCommonArgs> &ar
 	draw_vert_size_ = (UINT)(std::distance(args.begin(), args.end()));
 }
 
-void NcmPlatePoly::UpdateConstBuffer()
+void NcmPlatePoly::UpdateConstBuffer(std::forward_list<NcmParticleCommonArgs> &args)
 {
 	// 定数バッファへデータを転送
 	ConstBufferData *const_map = nullptr;
 	HRESULT result = const_buff_->Map(0, nullptr, (void **)&const_map);
+	for (auto itr = args.begin(); itr != args.end(); itr++)
+	{
+		const_map->alpha = itr->alpha;
+	}
 	const_map->mat = cam_ptr_->GetMatView() * cam_ptr_->GetMatProjection();	// 行列の合成
 	const_map->mat_billboard = cam_ptr_->GetMatBillboard();
 	const_buff_->Unmap(0, nullptr);

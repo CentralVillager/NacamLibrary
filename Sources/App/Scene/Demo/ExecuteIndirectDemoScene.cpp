@@ -62,7 +62,7 @@ void ExecuteIndirectDemoScene::Update()
 
 void ExecuteIndirectDemoScene::Draw()
 {
-	PreDraw::PreRender(PipelineName::IndirectObject3d_WireFrame);
+	PreDraw::SetPipeline(PipelineName::IndirectObject3d_WireFrame);
 	indirect_obj_->Draw();
 }
 

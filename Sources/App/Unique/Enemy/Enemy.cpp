@@ -66,7 +66,7 @@ void Enemy::Finalize()
 void Enemy::Update()
 {
 	RotY();
-	MoveHorizontally(2.0f, 100.0f);
+	//MoveHorizontally(2.0f, 100.0f);
 	//AutoShot(200, player_->GetPos());
 	obj_->Update();
 	UpdateColl();
@@ -76,13 +76,13 @@ void Enemy::Update()
 
 void Enemy::Draw()
 {
-	PreDraw::PreRender(PipelineName::Object3d_WireFrame);
+	PreDraw::SetPipeline(PipelineName::Object3d_WireFrame);
 	obj_->Draw();
 
-	PreDraw::PreRender(PipelineName::Object3d);
+	PreDraw::SetPipeline(PipelineName::Object3d);
 	bullets_->Draw();
 
-	PreDraw::PreRender(PipelineName::Object3d_WireFrame);
+	PreDraw::SetPipeline(PipelineName::Object3d_WireFrame);
 }
 
 void Enemy::DrawColl()
