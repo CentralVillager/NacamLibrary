@@ -4,30 +4,24 @@
 #include "../../Lib/Sprite/NcmSprite.h"
 
 Particle::Particle() :
-	object_(std::make_unique<Object3d>()),
-	particle_(std::make_shared<ParticleDesc>()),
-	plate_(std::make_unique<PlatePoly>())
+	particle_(std::make_shared<ParticleDesc>())
 {}
 
 Particle::~Particle()
 {}
 
-void Particle::Initialize(Model *model, const ParticleDesc &particle)
+void Particle::Initialize(Model *model, const ParticleDesc &part_desc_)
 {
-	particle_->position_ = particle.position_;
-	particle_->velocity_ = particle.velocity_;
-	particle_->accel_ = particle.accel_;
-	particle_->s_scale_ = particle.s_scale_;
-	particle_->e_scale_ = particle.e_scale_;
-	particle_->life_ = particle.life_;
+	// 渡された各値を適用
+	particle_->position_ = part_desc_.position_;
+	particle_->velocity_ = part_desc_.velocity_;
+	particle_->accel_ = part_desc_.accel_;
+	particle_->life_ = part_desc_.life_;
+	particle_->s_scale_ = part_desc_.s_scale_;
+	particle_->e_scale_ = part_desc_.e_scale_;
 	particle_->is_dead_ = false;
-	particle_->alpha_ = particle.alpha_;
-	particle_->tex_handle_ = particle.tex_handle_;
-
-	object_->SetModel(model);
-	object_->Initialize();
-	/*plate_->Initialize(particle_->tex_handle_);
-	plate_->SetTexHandle(particle_->tex_handle_);*/
+	particle_->alpha_ = part_desc_.alpha_;
+	particle_->tex_handle_ = part_desc_.tex_handle_;
 }
 
 void Particle::Finalize()
@@ -45,7 +39,7 @@ void Particle::Update()
 	// 経過フレーム数をカウント
 	particle_->frame_++;
 
-	// 進行度を0～1の範囲に換算
+	// 進行度を0~1の範囲に換算
 	float f = (float)(particle_->life_) / particle_->frame_;
 
 	// 速度に加速度を加算
@@ -58,18 +52,11 @@ void Particle::Update()
 	particle_->scale_ = particle_->s_scale_ + (particle_->e_scale_ - particle_->s_scale_) / f;
 
 	// 透明度を0~1換算
-	particle_->alpha_ -= 0.01f;
+	particle_->alpha_ = 1 - (float)(particle_->frame_) / particle_->life_;
 }
 
 void Particle::Draw()
-{
-	//PreDraw::SetPipeline(PipelineName::Object3d_WireFrame);	// 仮
-	//// 描画
-	//object_->Draw();
-
-	/*PreDraw::SetPipeline(PipelineName::PlatePoly);
-	plate_->Draw();*/
-}
+{}
 
 void Particle::DebugDraw()
 {}

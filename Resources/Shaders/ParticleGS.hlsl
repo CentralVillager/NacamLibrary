@@ -28,7 +28,6 @@ void main(
 	
     for (uint i = 0; i < vnum; i++)
     {
-        //float4 offset = mul(mat_billboard, offset_array[i]);
         float4 offset;
         
         // 中心からのオフセットをスケーリング
@@ -39,8 +38,8 @@ void main(
         element.svpos = input[0].pos + offset;
 
         element.svpos = mul(mat, element.svpos);
-		//element.uv = float2(0.5f, 0.5f);
         element.uv = uv_array[i];
+        element.color = input[0].color;
         output.Append(element);
     }
 }

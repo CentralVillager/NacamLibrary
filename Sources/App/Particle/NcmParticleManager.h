@@ -1,9 +1,17 @@
 #pragma once
 #include <memory>
 #include <forward_list>
+#include <array>
 #include "../../App/Particle/Emitter.h"
 #include "../../Lib/PlatePoly/NcmPlatePoly.h"
 #include "NcmParticleCommonArgs.h"
+
+enum class ParticleType
+{
+	Trail,
+	Explosion,
+	MaxParticleTypeNum
+};
 
 /// <summary>
 /// 板ポリを使用したパーティクルのマネージャ
@@ -15,6 +23,8 @@ class NcmParticleManager
 	static size_t max_particle_num;
 
 	std::unique_ptr<NcmPlatePoly> poly_;	// 描画データ
+	std::array<std::unique_ptr<NcmPlatePoly>, 
+		(size_t)(ParticleType::MaxParticleTypeNum)> polies_;
 
 public:
 

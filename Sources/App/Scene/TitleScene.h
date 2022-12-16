@@ -7,6 +7,7 @@
 #include "../../Lib/Sprite/NcmSprite.h"
 #include "../../Lib/Model/Model.h"
 #include "../../Lib/Object3d/Object3d.h"
+#include "../../App/Particle/NcmParticleManager.h"
 
 class TitleScene : public AbsScene
 {
@@ -27,6 +28,8 @@ class TitleScene : public AbsScene
 	std::unique_ptr<Object3d> sky_dome_;
 
 	std::unique_ptr<Emitter> emitter_;
+
+	std::unique_ptr<NcmParticleManager> part_mgr_;
 
 	int logo_;
 

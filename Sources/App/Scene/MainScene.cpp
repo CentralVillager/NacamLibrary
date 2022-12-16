@@ -34,7 +34,7 @@ MainScene::MainScene() :
 	space_(),
 	key_bind_(0),
 	is_wire_(true),
-	draw_dust_(true),
+	draw_dust_(false),
 	draw_coll_(false),
 	draw_numbers_(false),
 	is_clear_(false),
@@ -101,16 +101,16 @@ void MainScene::Initialize()
 	ult_->Initialize();
 
 	// enemyの生成
-	ene_list_->Add(XMFLOAT3(0, 0, 0));
-	//ene_list_->AddTemplateSet();
+	//ene_list_->Add(XMFLOAT3(0, 0, -400.0f));
+	ene_list_->AddTemplateSet();
 
 	// 塵エミッターの生成
 	EmitterDesc p;
-	p.particle.position_ = { 0.0f, 0.0f, 0.0f };
-	p.particle.velocity_ = { 0.0f, 0.0f, 0.0f };
-	p.particle.accel_ = { 0, 0.001f, 0 };
-	p.particle.life_ = 100;
-	p.particle.s_scale_ = 0.3f;
+	p.part_desc_.position_ = { 0.0f, 0.0f, 0.0f };
+	p.part_desc_.velocity_ = { 0.0f, 0.0f, 0.0f };
+	p.part_desc_.accel_ = { 0, 0.001f, 0 };
+	p.part_desc_.life_ = 100;
+	p.part_desc_.s_scale_ = 0.3f;
 	p.pos_rand_ = { 1000.0f, 1000.0f, 1000.0f };
 	p.vel_rand_ = { 0.1f, 0.1f, 0.1f };
 	p.gene_num_ = 2;
@@ -323,10 +323,15 @@ void MainScene::Update()
 	missile_mgr_->HomingTarget(*ene_list_);
 
 	// 当たり判定
-	//CollisionProcess();
+	CollisionProcess();
 
 	// 塵描画他
-	if (draw_dust_) { dust_->GenerateParticle(); }
+	if (draw_dust_) 
+	{
+		dust_->GenerateParticle(); 
+		dust_->UpdateParticle();
+	}
+
 	sky_dome_->Update();
 
 	NcmUi::CalcBarSize(player_->GetChargeCount(), player_->GetMaxChargeTime());
@@ -461,7 +466,7 @@ void MainScene::CollisionProcess()
 				// ミサイルが有効なら
 				if (missile_mgr_->GetIsValidity(j))
 				{
-					ene_list_->Death(i);
+					//ene_list_->Death(i);
 					missile_mgr_->Death(j);
 					ult_->AddUltValue(20);
 				}

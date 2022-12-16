@@ -4,8 +4,8 @@
 #include "../../../Lib/PreDraw/PreDraw.h"
 #include "../../../Lib/Input/KeyboardInput.h"
 
-ParticleDemoScene::ParticleDemoScene() {
-
+ParticleDemoScene::ParticleDemoScene()
+{
 	// カメラの生成
 	camera_ = make_unique<Camera>();
 
@@ -22,13 +22,14 @@ ParticleDemoScene::ParticleDemoScene() {
 	contrails_1_.resize(0);
 
 	dust_ = make_unique<Emitter>();
+	particle_mgr_ = make_unique<NcmParticleManager>();
 }
 
-ParticleDemoScene::~ParticleDemoScene() {
-}
+ParticleDemoScene::~ParticleDemoScene()
+{}
 
-void ParticleDemoScene::Initialize() {
-
+void ParticleDemoScene::Initialize()
+{
 	// カメラの初期化
 	camera_->Initialize();
 	camera_->SetDistance(20.0f);
@@ -43,37 +44,39 @@ void ParticleDemoScene::Initialize() {
 
 	Emitter::LoadResources();
 
+	particle_mgr_->Initialize();
+
 	mode_ = MODE::MONO;
 
 	// エミッターの初期化
 	EmitterDesc p;
-	p.particle.position_ = { 0.0f, 0.0f, 10.0f };
-	p.particle.velocity_ = { 0.0f, 0.0f, 0.0f };
-	p.particle.accel_ = { 0, 0.001f, 0 };
-	p.particle.life_ = 100;
-	p.particle.s_scale_ = 1.0f;
+	p.part_desc_.position_ = { 0.0f, 0.0f, 10.0f };
+	p.part_desc_.velocity_ = { 0.0f, 0.0f, 0.0f };
+	p.part_desc_.accel_ = { 0, 0.001f, 0 };
+	p.part_desc_.life_ = 100;
+	p.part_desc_.s_scale_ = 1.0f;
 	p.pos_rand_ = { 0.0f, 0.0f, 0.0f };
 	p.vel_rand_ = { 0.1f, 0.1f, 0.1f };
 	p.gene_num_ = 1;
 	p.use_life_ = false;
 	emitter_1_->SetEmitterDesc(p);
 
-	p.particle.position_ = { 10.0f, 0.0f, -50.0f };
-	p.particle.velocity_ = { 0.0f, 0.0f, -1.0f };
-	p.particle.accel_ = { 0, 0.001f, 0 };
-	p.particle.life_ = 100;
-	p.particle.s_scale_ = 1.0f;
+	p.part_desc_.position_ = { 10.0f, 0.0f, -50.0f };
+	p.part_desc_.velocity_ = { 0.0f, 0.0f, -1.0f };
+	p.part_desc_.accel_ = { 0, 0.001f, 0 };
+	p.part_desc_.life_ = 100;
+	p.part_desc_.s_scale_ = 1.0f;
 	p.pos_rand_ = { 0.0f, 0.0f, 0.0f };
 	p.vel_rand_ = { 0.1f, 0.1f, 0.1f };
 	p.gene_num_ = 1;
 	p.use_life_ = false;
 	contrail_1_->SetEmitterDesc(p);
 
-	p.particle.position_ = { -10.0f, 0.0f, -50.0f };
-	p.particle.velocity_ = { 0.0f, 0.0f, -1.0f };
-	p.particle.accel_ = { 0, 0.001f, 0 };
-	p.particle.life_ = 100;
-	p.particle.s_scale_ = 1.0f;
+	p.part_desc_.position_ = { -10.0f, 0.0f, -50.0f };
+	p.part_desc_.velocity_ = { 0.0f, 0.0f, -1.0f };
+	p.part_desc_.accel_ = { 0, 0.001f, 0 };
+	p.part_desc_.life_ = 100;
+	p.part_desc_.s_scale_ = 1.0f;
 	p.pos_rand_ = { 0.0f, 0.0f, 0.0f };
 	p.vel_rand_ = { 0.1f, 0.1f, 0.1f };
 	p.gene_num_ = 1;
@@ -82,11 +85,11 @@ void ParticleDemoScene::Initialize() {
 
 	emitter_life_ = 100;
 
-	p.particle.position_ = { 0.0f, 0.0f, 0.0f };
-	p.particle.velocity_ = { 0.0f, 0.0f, 0.0f };
-	p.particle.accel_ = { 0, 0.001f, 0 };
-	p.particle.life_ = 100;
-	p.particle.s_scale_ = 0.1f;
+	p.part_desc_.position_ = { 0.0f, 0.0f, 0.0f };
+	p.part_desc_.velocity_ = { 0.0f, 0.0f, 0.0f };
+	p.part_desc_.accel_ = { 0, 0.001f, 0 };
+	p.part_desc_.life_ = 100;
+	p.part_desc_.s_scale_ = 0.1f;
 	p.pos_rand_ = { 200.0f, 200.0f, 200.0f };
 	p.vel_rand_ = { 0.1f, 0.1f, 0.1f };
 	p.gene_num_ = 1;
@@ -94,19 +97,25 @@ void ParticleDemoScene::Initialize() {
 	dust_->SetEmitterDesc(p);
 }
 
-void ParticleDemoScene::Finalize() {
-}
+void ParticleDemoScene::Finalize()
+{}
 
-void ParticleDemoScene::Update() {
+void ParticleDemoScene::Update()
+{
+	NcmParticleManager::ClearParticleArgsBeforeUpdate();
 
 	// カメラ操作
-	if (KeyboardInput::PushKey(DIK_W) || KeyboardInput::PushKey(DIK_S) || KeyboardInput::PushKey(DIK_D) || KeyboardInput::PushKey(DIK_A) || KeyboardInput::PushKey(DIK_R) || KeyboardInput::PushKey(DIK_F)) {
+	if (KeyboardInput::PushKey(DIK_W) || KeyboardInput::PushKey(DIK_S) || KeyboardInput::PushKey(DIK_D) || KeyboardInput::PushKey(DIK_A) || KeyboardInput::PushKey(DIK_R) || KeyboardInput::PushKey(DIK_F))
+	{
 
-		if (KeyboardInput::PushKey(DIK_W)) { camera_->MoveCameraTrack({ 0.0f,+1.0f,0.0f }); } else if (KeyboardInput::PushKey(DIK_S)) { camera_->MoveCameraTrack({ 0.0f,-1.0f,0.0f }); }
+		if (KeyboardInput::PushKey(DIK_W)) { camera_->MoveCameraTrack({ 0.0f,+1.0f,0.0f }); }
+		else if (KeyboardInput::PushKey(DIK_S)) { camera_->MoveCameraTrack({ 0.0f,-1.0f,0.0f }); }
 
-		if (KeyboardInput::PushKey(DIK_D)) { camera_->MoveCameraTrack({ +1.0f, 0.0f, 0.0f }); } else if (KeyboardInput::PushKey(DIK_A)) { camera_->MoveCameraTrack({ -1.0f,0.0f,0.0f }); }
+		if (KeyboardInput::PushKey(DIK_D)) { camera_->MoveCameraTrack({ +1.0f, 0.0f, 0.0f }); }
+		else if (KeyboardInput::PushKey(DIK_A)) { camera_->MoveCameraTrack({ -1.0f,0.0f,0.0f }); }
 
-		if (KeyboardInput::PushKey(DIK_R)) { camera_->MoveCameraTrack({ 0.0f, 0.0f, +1.0f }); } else if (KeyboardInput::PushKey(DIK_F)) { camera_->MoveCameraTrack({ 0.0f, 0.0f, -1.0f }); }
+		if (KeyboardInput::PushKey(DIK_R)) { camera_->MoveCameraTrack({ 0.0f, 0.0f, +1.0f }); }
+		else if (KeyboardInput::PushKey(DIK_F)) { camera_->MoveCameraTrack({ 0.0f, 0.0f, -1.0f }); }
 	}
 
 	if (KeyboardInput::PushKey(DIK_UP)) { camera_->MoveEye({ 0.0f, -1.0f, 0.0f }); }
@@ -117,31 +126,32 @@ void ParticleDemoScene::Update() {
 	sky_dome_->Update();
 
 	// カメラ位置をリセット
-	if (notice_reset_) {
-
+	if (notice_reset_)
+	{
 		camera_->SetEye({ 0.0f, 0.0f, -camera_->GetDistance() });
 		camera_->SetTarget({ 0.0f, 0.0f, 0.0f });
 	}
 	camera_->Update();
 
-	switch (mode_) {
-
+	switch (mode_)
+	{
 	case MODE::MONO:
 
 		// 全パラメータをリセット
-		if (notice_reset_) {
-
+		if (notice_reset_)
+		{
 			ResetParam();
 		}
 
 		emitter_1_->GenerateParticle();
+		emitter_1_->UpdateParticle();
 		break;
 
 	case MODE::MISSILE:
 
 		// 位置をリセット
-		if (notice_reset_) {
-
+		if (notice_reset_)
+		{
 			ResetPos();
 		}
 
@@ -156,17 +166,17 @@ void ParticleDemoScene::Update() {
 	case MODE::MISSILE_CONTAINER:
 
 		// パーティクルを生成
-		if (notice_generate_) {
-
+		if (notice_generate_)
+		{
 			contrails_1_.emplace_front();
 			Emitter *emitter = &contrails_1_.front();
 
 			EmitterDesc p;
-			p.particle.position_ = { 10.0f, 0.0f, -50.0f };
-			p.particle.velocity_ = { 0.0f, 0.f, -1.0f };
-			p.particle.accel_ = { 0, 0, 0 };
-			p.particle.life_ = 100;
-			p.particle.s_scale_ = 1.0f;
+			p.part_desc_.position_ = { 10.0f, 0.0f, -50.0f };
+			p.part_desc_.velocity_ = { 0.0f, 0.f, -1.0f };
+			p.part_desc_.accel_ = { 0, 0, 0 };
+			p.part_desc_.life_ = 100;
+			p.part_desc_.s_scale_ = 1.0f;
 			p.pos_rand_ = { 0.0f, 0.0f, 0.0f };
 			p.vel_rand_ = { 0.1f, 0.1f, 0.1f };
 			p.gene_num_ = 1;
@@ -176,11 +186,11 @@ void ParticleDemoScene::Update() {
 
 			contrails_1_.emplace_front();
 			emitter = &contrails_1_.front();
-			p.particle.position_ = { -10.0f, 0.0f, -50.0f };
-			p.particle.velocity_ = { 0.0f, 0.f, -1.0f };
-			p.particle.accel_ = { 0, 0, 0 };
-			p.particle.life_ = 100;
-			p.particle.s_scale_ = 1.0f;
+			p.part_desc_.position_ = { -10.0f, 0.0f, -50.0f };
+			p.part_desc_.velocity_ = { 0.0f, 0.f, -1.0f };
+			p.part_desc_.accel_ = { 0, 0, 0 };
+			p.part_desc_.life_ = 100;
+			p.part_desc_.s_scale_ = 1.0f;
 			p.pos_rand_ = { 0.0f, 0.0f, 0.0f };
 			p.vel_rand_ = { 0.1f, 0.1f, 0.1f };
 			p.gene_num_ = 1;
@@ -189,14 +199,15 @@ void ParticleDemoScene::Update() {
 			emitter->SetEmitterDesc(p);
 		}
 
-		for (auto &i : contrails_1_) {
-
+		for (auto &i : contrails_1_)
+		{
 			// z方向に移動
 			XMFLOAT3 pos = i.GetPosition();
 			pos.z += 1.0f;
 			i.SetPosition(pos);
 
 			i.GenerateParticle();
+			i.UpdateParticle();
 		}
 
 		contrails_1_.remove_if([](Emitter &x) { return x.NoticeCanTerminate(); });
@@ -210,23 +221,25 @@ void ParticleDemoScene::Update() {
 	notice_generate_ = false;
 
 	dust_->GenerateParticle();
+	dust_->UpdateParticle();
+	particle_mgr_->Update();
 }
 
-void ParticleDemoScene::Draw() {
-
-	if (is_wire_) {
-
+void ParticleDemoScene::Draw()
+{
+	if (is_wire_)
+	{
 		PreDraw::SetPipeline(PipelineName::Object3d_WireFrame);
-
-	} else {
-
+	}
+	else
+	{
 		PreDraw::SetPipeline(PipelineName::Object3d);
 	}
 	sky_dome_->Draw();
 
 	// モード毎にメニュー切り替え
-	switch (mode_) {
-
+	switch (mode_)
+	{
 	case MODE::MONO:
 
 		emitter_1_->Draw();
@@ -240,7 +253,8 @@ void ParticleDemoScene::Draw() {
 
 	case MODE::MISSILE_CONTAINER:
 
-		for (auto &i : contrails_1_) {
+		for (auto &i : contrails_1_)
+		{
 
 			i.Draw();
 		}
@@ -251,10 +265,11 @@ void ParticleDemoScene::Draw() {
 	}
 
 	dust_->Draw();
+	particle_mgr_->Draw();
 }
 
-void ParticleDemoScene::DebugDraw() {
-
+void ParticleDemoScene::DebugDraw()
+{
 	ImGui::Checkbox("WireFrame", &is_wire_);
 
 	// モード選択
@@ -263,8 +278,8 @@ void ParticleDemoScene::DebugDraw() {
 	mode_ = static_cast<MODE>(mode);
 
 	// リセット
-	if (ImGui::Button("RESET") && !notice_reset_) {
-
+	if (ImGui::Button("RESET") && !notice_reset_)
+	{
 		notice_reset_ = true;
 	}
 
@@ -273,8 +288,8 @@ void ParticleDemoScene::DebugDraw() {
 	ImGui::Separator();
 
 	// モード毎にメニュー切り替え
-	switch (mode_) {
-
+	switch (mode_)
+	{
 	case MODE::MONO:
 
 		ImGui::Text("Normal Particle Demo");
@@ -304,13 +319,13 @@ void ParticleDemoScene::DebugDraw() {
 		ImGui::Spacing();
 		ImGui::SliderInt("EmitterLife", &emitter_life_, 0, 500);
 
-		if (ImGui::Button("GENERATE") && !notice_generate_) {
-
+		if (ImGui::Button("GENERATE") && !notice_generate_)
+		{
 			notice_generate_ = true;
 		}
 
-		for (auto &i : contrails_1_) {
-
+		for (auto &i : contrails_1_)
+		{
 			i.DebugDraw();
 		}
 
@@ -321,14 +336,14 @@ void ParticleDemoScene::DebugDraw() {
 	}
 }
 
-void ParticleDemoScene::ResetParam() {
-
+void ParticleDemoScene::ResetParam()
+{
 	EmitterDesc p;
-	p.particle.position_ = { 0.0f, 0.0f, 10.0f };
-	p.particle.velocity_ = { 0.0f, 0.0f, 0.0f };
-	p.particle.accel_ = { 0, 0.001f, 0 };
-	p.particle.life_ = 100;
-	p.particle.s_scale_ = 1.0f;
+	p.part_desc_.position_ = { 0.0f, 0.0f, 10.0f };
+	p.part_desc_.velocity_ = { 0.0f, 0.0f, 0.0f };
+	p.part_desc_.accel_ = { 0, 0.001f, 0 };
+	p.part_desc_.life_ = 100;
+	p.part_desc_.s_scale_ = 1.0f;
 	p.pos_rand_ = { 0.0f, 0.0f, 0.0f };
 	p.vel_rand_ = { 0.1f, 0.1f, 0.1f };
 	p.gene_num_ = 1;
@@ -336,14 +351,14 @@ void ParticleDemoScene::ResetParam() {
 	emitter_1_->SetEmitterDesc(p);
 }
 
-void ParticleDemoScene::ResetPos() {
-
+void ParticleDemoScene::ResetPos()
+{
 	contrail_1_->SetPosition({ 10.0f, 0.0f, -50.0f });
 	contrail_2_->SetPosition({ -10.0f, 0.0f, -50.0f });
 }
 
-void ParticleDemoScene::MoveZ() {
-
+void ParticleDemoScene::MoveZ()
+{
 	XMFLOAT3 pos = contrail_1_->GetPosition();
 	pos.z += 1.0f;
 	contrail_1_->SetPosition(pos);

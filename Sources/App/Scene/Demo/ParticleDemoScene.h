@@ -6,15 +6,17 @@
 #include "../AbsScene.h"
 #include "../../Particle/Emitter.h"
 #include "../../../Lib/Camera/Camera.h"
+#include "../../../App/Particle/NcmParticleManager.h"
 
-class ParticleDemoScene : public AbsScene {
+class ParticleDemoScene : public AbsScene
+{
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 
 public:
 
-	enum class MODE {
-
+	enum class MODE
+	{
 		MONO,
 		MISSILE,
 		MISSILE_CONTAINER
@@ -40,6 +42,8 @@ private:
 	std::forward_list<Emitter> contrails_1_;
 
 	std::unique_ptr<Emitter> dust_;
+
+	std::unique_ptr<NcmParticleManager> particle_mgr_;
 
 	// ÉÇÅ[Éhäiî[
 	MODE mode_;

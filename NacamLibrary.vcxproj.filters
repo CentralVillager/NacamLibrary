@@ -407,9 +407,6 @@
     <ClCompile Include="Sources\App\main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\App\Unique\Missile\MissileLauncher.cpp">
-      <Filter>Application\Unique\Missile</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Lib\Input\NcmInput.cpp">
       <Filter>Library\Input</Filter>
     </ClCompile>
@@ -661,9 +658,6 @@
     <ClInclude Include="Sources\App\Unique\Missile\MissileLauncher.h">
       <Filter>Application\Unique\Missile</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\MissileStateMulti.h">
-      <Filter>Application\Unique\Missile</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Lib\Input\NcmInput.h">
       <Filter>Library\Input</Filter>
     </ClInclude>
@@ -695,6 +689,9 @@
       <Filter>Application\Unique\Missile</Filter>
     </ClInclude>
     <ClInclude Include="Sources\App\Unique\Missile\MissileHoming.h">
+      <Filter>Application\Unique\Missile</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Unique\Missile\MissileStateMonoCircuse.h">
       <Filter>Application\Unique\Missile</Filter>
     </ClInclude>
   </ItemGroup>

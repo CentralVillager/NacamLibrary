@@ -14,6 +14,7 @@ void EmittersList::Update(const XMFLOAT3 &pos)
 	{
 		i.SetPosition(pos);
 		i.GenerateParticle();
+		i.UpdateParticle();
 	}
 
 	emitters_.remove_if([](Emitter &x) { return x.NoticeCanTerminate(); });

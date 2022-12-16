@@ -11,11 +11,8 @@ UINT NcmPlatePoly::desc_incre_size_ = 0;
 ID3D12GraphicsCommandList *NcmPlatePoly::cmd_list_ = nullptr;
 ComPtr<ID3D12DescriptorHeap> NcmPlatePoly::desc_heap_;
 ComPtr<ID3D12Resource> NcmPlatePoly::vert_buff_;
-ComPtr<ID3D12Resource> NcmPlatePoly::tex_buff_;
-CD3DX12_CPU_DESCRIPTOR_HANDLE NcmPlatePoly::cpu_desc_handle_srv_;
-CD3DX12_GPU_DESCRIPTOR_HANDLE NcmPlatePoly::gpu_desc_handle_srv_;
 D3D12_VERTEX_BUFFER_VIEW NcmPlatePoly::vb_view_{};
-NcmPlatePoly::VertexPos NcmPlatePoly::vertices_[VERTEX_COUNT_];
+std::array<NcmPlatePoly::VertexPos, NcmPlatePoly::VERTEX_COUNT_> NcmPlatePoly::vertices_;
 Camera *NcmPlatePoly::cam_ptr_ = nullptr;
 
 NcmPlatePoly::NcmPlatePoly() :
@@ -36,9 +33,6 @@ bool NcmPlatePoly::StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandL
 
 	// デスクリプタヒープの初期化
 	InitializeDescriptorHeap();
-
-	// テクスチャ読み込み
-	LoadTexture();
 
 	// モデル生成
 	CreateModel();
@@ -68,7 +62,41 @@ bool NcmPlatePoly::InitializeDescriptorHeap()
 	return true;
 }
 
-bool NcmPlatePoly::LoadTexture()
+void NcmPlatePoly::CreateModel()
+{
+	HRESULT result = S_FALSE;
+
+	// 頂点バッファ生成
+	result = device_->CreateCommittedResource(
+		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
+		D3D12_HEAP_FLAG_NONE,
+		&CD3DX12_RESOURCE_DESC::Buffer(sizeof(vertices_)),
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&vert_buff_));
+	vert_buff_->SetName(L"PlatePolyVertexBuffer");
+	if (FAILED(result))
+	{
+		assert(0);
+		return;
+	}
+
+	// 頂点バッファへのデータ転送
+	VertexPos *vert_map = nullptr;
+	result = vert_buff_->Map(0, nullptr, reinterpret_cast<void **>(&vert_map));
+	if (SUCCEEDED(result))
+	{
+		memcpy(vert_map, &vertices_, sizeof(vertices_));
+		vert_buff_->Unmap(0, nullptr);
+	}
+
+	// 頂点バッファビューの作成
+	vb_view_.BufferLocation = vert_buff_->GetGPUVirtualAddress();
+	vb_view_.SizeInBytes = sizeof(vertices_);
+	vb_view_.StrideInBytes = sizeof(vertices_[0]);
+}
+
+void NcmPlatePoly::LoadTexture(const wchar_t *path)
 {
 	HRESULT result = S_FALSE;
 
@@ -77,7 +105,7 @@ bool NcmPlatePoly::LoadTexture()
 	ScratchImage scratch_img{};
 
 	result = LoadFromWICFile(
-		L"Resources/Textures/effect1.png", WIC_FLAGS_NONE,
+		path, WIC_FLAGS_NONE,
 		&metadata, scratch_img);
 	assert(SUCCEEDED(result));
 
@@ -128,41 +156,6 @@ bool NcmPlatePoly::LoadTexture()
 		&srv_desc, //テクスチャ設定情報
 		cpu_desc_handle_srv_
 	);
-
-	return true;
-}
-
-void NcmPlatePoly::CreateModel()
-{
-	HRESULT result = S_FALSE;
-
-	// 頂点バッファ生成
-	result = device_->CreateCommittedResource(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
-		D3D12_HEAP_FLAG_NONE,
-		&CD3DX12_RESOURCE_DESC::Buffer(sizeof(vertices_)),
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&vert_buff_));
-	if (FAILED(result))
-	{
-		assert(0);
-		return;
-	}
-
-	// 頂点バッファへのデータ転送
-	VertexPos *vert_map = nullptr;
-	result = vert_buff_->Map(0, nullptr, (void **)&vert_map);
-	if (SUCCEEDED(result))
-	{
-		memcpy(vert_map, vertices_, sizeof(vertices_));
-		vert_buff_->Unmap(0, nullptr);
-	}
-
-	// 頂点バッファビューの作成
-	vb_view_.BufferLocation = vert_buff_->GetGPUVirtualAddress();
-	vb_view_.SizeInBytes = sizeof(vertices_);
-	vb_view_.StrideInBytes = sizeof(vertices_[0]);
 }
 
 void NcmPlatePoly::Initialize()
@@ -174,12 +167,13 @@ void NcmPlatePoly::Initialize()
 
 	// 定数バッファの生成
 	result = device_->CreateCommittedResource(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), 	// アップロード可能
+		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
 		D3D12_HEAP_FLAG_NONE,
-		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferData) + 0xff) & ~0xff),
+		&CD3DX12_RESOURCE_DESC::Buffer((sizeof(MatConstBufferData) + 0xff) & ~0xff),
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&const_buff_));
+	const_buff_->SetName(L"PlatePolyConstantBuffer");
 }
 
 void NcmPlatePoly::UpdateVertBuffer(std::forward_list<NcmParticleCommonArgs> &args)
@@ -196,6 +190,8 @@ void NcmPlatePoly::UpdateVertBuffer(std::forward_list<NcmParticleCommonArgs> &ar
 			vert_map->pos = itr->pos;
 			// スケール
 			vert_map->scale = itr->scale;
+			// 透明度
+			vert_map->color = XMFLOAT4(itr->alpha, itr->alpha, itr->alpha, itr->alpha);
 			// 次の座標へ
 			vert_map++;
 		}
@@ -209,12 +205,8 @@ void NcmPlatePoly::UpdateVertBuffer(std::forward_list<NcmParticleCommonArgs> &ar
 void NcmPlatePoly::UpdateConstBuffer(std::forward_list<NcmParticleCommonArgs> &args)
 {
 	// 定数バッファへデータを転送
-	ConstBufferData *const_map = nullptr;
+	MatConstBufferData *const_map = nullptr;
 	HRESULT result = const_buff_->Map(0, nullptr, (void **)&const_map);
-	for (auto itr = args.begin(); itr != args.end(); itr++)
-	{
-		const_map->alpha = itr->alpha;
-	}
 	const_map->mat = cam_ptr_->GetMatView() * cam_ptr_->GetMatProjection();	// 行列の合成
 	const_map->mat_billboard = cam_ptr_->GetMatBillboard();
 	const_buff_->Unmap(0, nullptr);

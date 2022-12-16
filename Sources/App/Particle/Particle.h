@@ -11,40 +11,43 @@ struct ParticleDesc
 {
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 
-	// 座標
-	XMFLOAT3 position_ = {};
-	// 速度
-	XMFLOAT3 velocity_ = {};
-	// 加速度
-	XMFLOAT3 accel_ = {};
-	// 開始時スケール
-	float s_scale_;
-	// 終了時スケール
-	float e_scale_ = 0.0f;
-	// スケール
-	float scale_;
-	// 終了フレーム
-	int life_ = 0;
-	// 死亡フラグ
-	bool is_dead_ = false;
-	// 現在フレーム
-	int frame_ = 0;
-	// 透明度
-	float alpha_ = 1.0f;
-	// テクスチャハンドル
-	ncm_thandle tex_handle_;
-	// 使われているか
-	bool is_used = false;
+	XMFLOAT3 position_;	// 座標
+	XMFLOAT3 velocity_;	// 速度
+	XMFLOAT3 accel_;	// 加速度
+	uint32_t life_;		// 寿命
+	uint32_t frame_;	// 現在フレーム
+	float s_scale_;		// 開始時スケール
+	float e_scale_;		// 終了時スケール
+	float scale_;		// スケール
+	bool is_dead_;		// 死亡フラグ
+	float alpha_;		// 透明度
+	bool is_used_;		// 使われているか
+	ncm_thandle tex_handle_;	// テクスチャハンドル
+
+	ParticleDesc() :
+		position_(),
+		velocity_(),
+		accel_(),
+		life_(),
+		frame_(),
+		s_scale_(),
+		e_scale_(),
+		scale_(),
+		is_dead_(),
+		alpha_(1.0f),
+		is_used_(),
+		tex_handle_()
+	{}
 };
 
 class Particle
 {
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 
-	std::unique_ptr<Object3d> object_;
-	std::shared_ptr<ParticleDesc> particle_;
+private:
 
-	std::unique_ptr<PlatePoly> plate_;
+	// パーティクル一粒
+	std::shared_ptr<ParticleDesc> particle_;
 
 public:
 
@@ -55,16 +58,16 @@ public:
 
 	inline const XMFLOAT3 &GetPos() { return particle_->position_; }
 	inline const float &GetScale() { return particle_->scale_; }
-	inline const uint32_t GetLife() { return (uint32_t)(particle_->life_); }
+	inline const uint32_t GetLife() { return particle_->life_; }
 	inline const float GetAlpha() { return particle_->alpha_; }
 	inline const bool &GetIsDead() { return particle_->is_dead_; }
-	inline const bool &GetIsUsed() { return particle_->is_used; }
-	inline void SetIsUsed(const bool is_used) { particle_->is_used = is_used; }
+	inline const bool &GetIsUsed() { return particle_->is_used_; }
+	inline void SetIsUsed(const bool is_used) { particle_->is_used_ = is_used; }
 	inline void SetParticleValue(const ParticleDesc &p) { *particle_ = p; }
 
 public:
 
-	void Initialize(Model *model, const ParticleDesc &particle);
+	void Initialize(Model *model, const ParticleDesc &part_desc_);
 	void Finalize();
 	void Update();
 	void Draw();

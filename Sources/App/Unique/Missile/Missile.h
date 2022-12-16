@@ -7,7 +7,7 @@
 /// <summary>
 /// ミサイルが持つパラメータ
 /// </summary>
-struct MissileArgs
+struct MissileParam
 {
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 
@@ -22,20 +22,25 @@ struct MissileArgs
 	UINT init_straight_time;	// 追尾を開始するまでの時間
 	UINT life;					// 寿命
 	bool is_validity;			// ミサイルが有効か
+	bool is_explode;			// 爆発中か
 
-	MissileArgs() :
-		pos(XMFLOAT3(0, 0, 0)),
-		vel(XMFLOAT3(0, 0, 0)),
-		acc(XMFLOAT3(0, 0, 0)),
-		tgt_pos(XMFLOAT3(0, 0, 0)),
-		tgt_id(0),
-		detection_range(0),
-		init_straight_time(0),
-		life(0),
-		is_validity(false)
+	MissileParam() :
+		pos(),
+		vel(),
+		acc(),
+		tgt_pos(),
+		tgt_id(),
+		detection_range(),
+		init_straight_time(),
+		life(),
+		is_validity(),
+		is_explode()
 	{}
 };
 
+/// <summary>
+/// ミサイル
+/// </summary>
 class Missile : public AbsUniqueObj
 {
 	using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -43,11 +48,19 @@ class Missile : public AbsUniqueObj
 
 private:
 
+	// 爆発パーティクルの粒の数目安
+	static constexpr uint32_t EXPLO_PARTICLE_NUM_ = 100;
+
+private:
+
 	static std::unique_ptr<Model> model_;
 	static std::unique_ptr<Model> coll_model_;
 
+private:
+
 	std::unique_ptr<Emitter> emitter_;	// エミッター
-	MissileArgs mi_args_;				// パラメータ
+	std::unique_ptr<Emitter> explo_emi_;// 爆発エミッター
+	MissileParam mi_param_;				// パラメータ
 
 public:
 
@@ -58,7 +71,7 @@ public:
 
 	static void LoadResources();
 
-	void Initialize(const MissileArgs &args);
+	void Initialize(const MissileParam &args);
 	void Initialize() override;
 	void Finalize();
 	void Update() override;
@@ -68,10 +81,10 @@ public:
 
 public:
 
-	const bool &GetIsValidity() { return mi_args_.is_validity; }
+	const bool &GetIsValidity() { return mi_param_.is_validity; }
 
-	void SetMissileLife(const int life) { mi_args_.life = life; }
-	void SetTgtPos(const XMFLOAT3 &pos) { mi_args_.tgt_pos = pos; }
+	void SetMissileLife(const int life) { mi_param_.life = life; }
+	void SetTgtPos(const XMFLOAT3 &pos) { mi_param_.tgt_pos = pos; }
 
 	/// <summary>
 	/// 死亡フラグを含めてミサイルを有効化
@@ -81,7 +94,12 @@ public:
 	/// <summary>
 	/// 死亡フラグはそのままにミサイルを無効化
 	/// </summary>
-	void InvalidateMissile() { mi_args_.is_validity = false; }
+	void InvalidateMissile();
+
+	/// <summary>
+	/// 死亡時の爆発
+	/// </summary>
+	void ExplosionOnDeath();
 
 	/// <summary>
 	/// z軸方向へ進む
@@ -91,6 +109,7 @@ public:
 	/// <summary>
 	/// ターゲットを追尾する
 	/// </summary>
+	/// <param name="enemies">敵のコンテナ</param>
 	void HomingTarget(EnemiesList &enemies);
 
 	void TestHomingTarget(EnemiesList &enemies);

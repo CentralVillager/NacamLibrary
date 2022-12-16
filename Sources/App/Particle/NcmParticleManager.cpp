@@ -8,8 +8,15 @@ size_t NcmParticleManager::particle_num = 0;
 size_t NcmParticleManager::max_particle_num = 0;
 
 NcmParticleManager::NcmParticleManager() :
-	poly_(make_unique<NcmPlatePoly>())
-{}
+	poly_(make_unique<NcmPlatePoly>()),
+	polies_()
+{
+	poly_->LoadTexture(L"Resources/Textures/particle/effect1.png");
+
+	using enum ParticleType;
+
+	//polies_[(int)(Trail)]->LoadTexture(L"Resources/Textures/effect1.png");
+}
 
 NcmParticleManager::~NcmParticleManager()
 {}

@@ -335,30 +335,24 @@ void PipelineManager::SetTemplateConfigs()
 	configs_[(int)(p_name)].PS_name = L"Resources/shaders/ParticlePS.hlsl";
 	configs_[(int)(p_name)].GS_name = L"Resources/shaders/ParticleGS.hlsl";
 	configs_[(int)(p_name)].fill_mode = D3D12_FILL_MODE_SOLID;
-	configs_[(int)(p_name)].input_layout.resize(2);
+	configs_[(int)(p_name)].input_layout.resize(3);
 	configs_[(int)(p_name)].input_layout =
 	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
 	};
 	configs_[(int)(p_name)].primitive_topology_type = D3D12_PRIMITIVE_TOPOLOGY_TYPE_POINT;
 	configs_[(int)(p_name)].primitive_topology = D3D_PRIMITIVE_TOPOLOGY_POINTLIST;
 	configs_[(int)(p_name)].blend_desc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
 	configs_[(int)(p_name)].blend_desc.BlendEnable = true;
+
 	configs_[(int)(p_name)].blend_desc.BlendOp = D3D12_BLEND_OP_ADD;
-	/*configs_[(int)(p_name)].blend_desc.SrcBlend = D3D12_BLEND_ONE;
-	configs_[(int)(p_name)].blend_desc.DestBlend = D3D12_BLEND_ONE;*/
 	configs_[(int)(p_name)].blend_desc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
 	configs_[(int)(p_name)].blend_desc.DestBlend = D3D12_BLEND_ONE;
 	configs_[(int)(p_name)].blend_desc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
 	configs_[(int)(p_name)].blend_desc.SrcBlendAlpha = D3D12_BLEND_ONE;
 	configs_[(int)(p_name)].blend_desc.DestBlendAlpha = D3D12_BLEND_ZERO;
-	/*configs_[(int)(p_name)].blend_desc.BlendOp = D3D12_BLEND_OP_ADD;
-	configs_[(int)(p_name)].blend_desc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
-	configs_[(int)(p_name)].blend_desc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
-	configs_[(int)(p_name)].blend_desc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
-	configs_[(int)(p_name)].blend_desc.SrcBlendAlpha = D3D12_BLEND_ONE;
-	configs_[(int)(p_name)].blend_desc.DestBlendAlpha = D3D12_BLEND_ZERO;*/
 	configs_[(int)(p_name)].num_render_targets = 2;
 	configs_[(int)(p_name)].rtv_formats.resize(2);
 	configs_[(int)(p_name)].rtv_formats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;

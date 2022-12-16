@@ -26,6 +26,11 @@ public:
 		uint32_t id;
 	};
 
+public:
+
+	// デフォルトの最大同時ロックオン可能数
+	static constexpr uint32_t DEFAULT_TGT_NUM_ = 4;
+
 private:
 
 	// 現在のロックオン可能最大数
@@ -38,7 +43,7 @@ private:
 	static std::unique_ptr<Model> model_;
 	std::vector<Object3d> markers_;
 
-	// ターゲットのリスト
+	// 距離に応じて昇順にソートされたターゲットのリスト
 	std::list<TargetData> tgt_list_;
 
 	Player *player_ptr_;

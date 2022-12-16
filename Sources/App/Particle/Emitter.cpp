@@ -28,7 +28,7 @@ ParticleDesc Emitter::GenerateValue(const EmitterDesc &emitter)
 		XMFLOAT3 pos_rand = GenerateRandom((emi.pos_rand_ / 2) - emi.pos_rand_, emi.pos_rand_ / 2);
 
 		// ランダム値を位置に加算
-		emi.particle.position_ = emi.particle.position_ + pos_rand;
+		emi.part_desc_.position_ = emi.part_desc_.position_ + pos_rand;
 	}
 
 	{
@@ -41,7 +41,7 @@ ParticleDesc Emitter::GenerateValue(const EmitterDesc &emitter)
 		XMFLOAT3 vel_rand = GenerateRandom((emi.vel_rand_ / 2) - emi.vel_rand_, emi.vel_rand_ / 2);
 
 		// ランダム値を速度に加算
-		emi.particle.velocity_ = emi.particle.velocity_ + vel_rand;
+		emi.part_desc_.velocity_ = emi.part_desc_.velocity_ + vel_rand;
 	}
 
 	XMFLOAT3 acc{};
@@ -49,16 +49,15 @@ ParticleDesc Emitter::GenerateValue(const EmitterDesc &emitter)
 
 	// 設定された値で要素を作成
 	ParticleDesc p{};
-	p.position_ = emi.particle.position_;
-	p.velocity_ = emi.particle.velocity_;
+	p.position_ = emi.part_desc_.position_;
+	p.velocity_ = emi.part_desc_.velocity_;
 	p.accel_ = acc;
-	p.scale_ = p.s_scale_ = emi.particle.s_scale_;
+	p.scale_ = p.s_scale_ = emi.part_desc_.s_scale_;
 	p.e_scale_ = p.scale_;
-	//p.e_scale_ = 0.0f;
-	p.life_ = emi.particle.life_;
+	p.life_ = emi.part_desc_.life_;
 	p.alpha_ = 1.0f;
 	p.tex_handle_ = tex_handle_;
-	p.is_used = true;
+	p.is_used_ = true;
 
 	return p;
 }
@@ -79,7 +78,7 @@ void Emitter::LoadResources()
 		model_ = make_unique<Model>();
 		model_->LoadObjModel("Resources/Ball/", "smooth_ball.obj", "smooth_ball.mtl");
 
-		tex_handle_ = NcmSprite::LoadTex(L"Resources/textures/effect1.png");
+		tex_handle_ = NcmSprite::LoadTex(L"Resources/textures/particle/effect1.png");
 	}
 }
 
@@ -109,7 +108,7 @@ void Emitter::Update()
 	// パーティクルが生成されていたら
 	if (updated_dirty_)
 	{
-		// is_used フラグが立っている要素を前方へソート
+		// is_used_ フラグが立っている要素を前方へソート
 		shared_particles_.sort([](Particle &lhs, Particle &rhs) { return lhs.GetIsUsed() > rhs.GetIsUsed(); });
 		updated_dirty_ = false;
 	}
@@ -140,7 +139,7 @@ void Emitter::Update()
 		}
 	}
 
-	// is_used フラグが立っている要素を前方へソート
+	// is_used_ フラグが立っている要素を前方へソート
 	shared_particles_.sort([](Particle &lhs, Particle &rhs) { return lhs.GetIsUsed() > rhs.GetIsUsed(); });
 }
 
@@ -160,13 +159,6 @@ void Emitter::UseParticle(std::list<Particle>::iterator last_itr)
 
 void Emitter::GenerateParticle()
 {
-	// 寿命を使用する設定なら
-	if (emitter_desc_.use_life_ && emitter_desc_.life_ > 0)
-	{
-		// 寿命を削る
-		emitter_desc_.life_--;
-	}
-
 	// 寿命を迎えていなければ && 終了命令が来ていなければ
 	if (emitter_desc_.life_ > 0 && !emitter_desc_.is_dead_)
 	{
@@ -175,11 +167,23 @@ void Emitter::GenerateParticle()
 		{
 			// 生成する
 			Add(GenerateValue(emitter_desc_));
+			XMFLOAT3 vel = GenerateValue(emitter_desc_).velocity_;
+			int a = 0;
 		}
 	}
+}
 
+void Emitter::UpdateParticle()
+{
 	// マネージャ受け渡し用コンテナ
 	forward_list<NcmParticleCommonArgs> temp;
+
+	// 寿命を使用する設定なら
+	if (emitter_desc_.use_life_ && emitter_desc_.life_ > 0)
+	{
+		// 寿命を削る
+		emitter_desc_.life_--;
+	}
 
 	// 全てのパーティクルに対して
 	for (auto &i : particles_)
@@ -192,6 +196,11 @@ void Emitter::GenerateParticle()
 		temp.front().pos = i.GetPos();
 		temp.front().scale = i.GetScale();
 		temp.front().alpha = i.GetAlpha();
+
+		if (i.GetIsDead())
+		{
+			int a = 0;
+		}
 	}
 
 	// マネージャへ値を渡す
@@ -252,14 +261,14 @@ void Emitter::Draw()
 
 void Emitter::DebugDraw()
 {
-	NcmImGui::DragFloat3("pos", emitter_desc_.particle.position_, 1.0f, -100.0f, 100.0f);
+	NcmImGui::DragFloat3("pos", emitter_desc_.part_desc_.position_, 1.0f, -100.0f, 100.0f);
 	NcmImGui::SliderFloat3("range", emitter_desc_.pos_rand_, 0.0f, 100.0f);
-	NcmImGui::DragFloat3("velocity", emitter_desc_.particle.velocity_, 0.1f, -5.0f, 5.0f);
+	NcmImGui::DragFloat3("velocity", emitter_desc_.part_desc_.velocity_, 0.1f, -5.0f, 5.0f);
 	NcmImGui::SliderFloat3("vel_range", emitter_desc_.vel_rand_, 0.0f, 1.0f);
-	ImGui::DragFloat("scale", &emitter_desc_.particle.s_scale_, 0.1f, 0.1f, 50.0f);
-	ImGui::DragInt("life", &emitter_desc_.particle.life_, 1.0f, 0, 1000);
+	ImGui::DragFloat("scale", &emitter_desc_.part_desc_.s_scale_, 0.1f, 0.1f, 50.0f);
 	NcmImGui::SliderUINT("num", emitter_desc_.gene_num_, 0, 50);
 	ImGui::Text("life : %d", emitter_desc_.life_);
+	ImGui::Text("alpha : %d", emitter_desc_.part_desc_.alpha_);
 	ImGui::Spacing();
 	ImGui::Spacing();
 }

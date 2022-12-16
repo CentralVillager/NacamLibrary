@@ -11,22 +11,25 @@
 // エミッターの設定構造体
 struct EmitterDesc
 {
-	// パーティクルの構成要素
-	ParticleDesc particle;
-	// 生成位置の乱数の振れ幅
-	DirectX::XMFLOAT3 pos_rand_;
-	// 速度の乱数の振れ幅
-	DirectX::XMFLOAT3 vel_rand_;
-	// 生成する個数
-	UINT gene_num_;
-	// エミッターの寿命を有効にするか
-	bool use_life_;
-	// エミッターの寿命
-	UINT life_ = 1;
-	// 死んでいるか
-	bool is_dead_ = false;
-	// テクスチャハンドル
-	ncm_thandle tex_handle_;
+	ParticleDesc part_desc_;		// パーティクルの構成要素
+	DirectX::XMFLOAT3 pos_rand_;	// 生成位置の乱数の振れ幅
+	DirectX::XMFLOAT3 vel_rand_;	// 速度の乱数の振れ幅
+	UINT gene_num_;					// 生成する個数
+	bool use_life_;					// エミッターの寿命を有効にするか
+	UINT life_;						// エミッターの寿命
+	bool is_dead_;					// 死んでいるか
+	ncm_thandle tex_handle_;		// テクスチャハンドル
+
+	EmitterDesc() :
+		part_desc_(),
+		pos_rand_(),
+		vel_rand_(),
+		gene_num_(),
+		use_life_(),
+		life_(1),
+		is_dead_(),
+		tex_handle_()
+	{}
 };
 
 class Emitter
@@ -65,10 +68,10 @@ public:
 
 	// アクセッサ
 	inline const EmitterDesc &GetEmitterDesc() { return emitter_desc_; }
-	inline const XMFLOAT3 &GetPosition() { return emitter_desc_.particle.position_; }
+	inline const XMFLOAT3 &GetPosition() { return emitter_desc_.part_desc_.position_; }
 
 	inline void SetEmitterDesc(const EmitterDesc &p) { emitter_desc_ = p; }
-	inline void SetPosition(const XMFLOAT3 &pos) { emitter_desc_.particle.position_ = pos; }
+	inline void SetPosition(const XMFLOAT3 &pos) { emitter_desc_.part_desc_.position_ = pos; }
 
 public:
 
@@ -91,6 +94,11 @@ public:
 	/// パーティクルを生成する
 	/// </summary>
 	void GenerateParticle();
+
+	/// <summary>
+	/// パーティクルを更新する
+	/// </summary>
+	void UpdateParticle();
 
 	/// <summary>
 	/// エミッター終了準備をする

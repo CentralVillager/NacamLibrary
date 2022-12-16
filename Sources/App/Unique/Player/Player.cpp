@@ -142,7 +142,7 @@ void Player::Update()
 	else if (KeyboardInput::ReleaseKey(DIK_SPACE) || NcmInput::IsRelease(NcmButtonType::A))
 	{
 		// ミサイルを発射
-		mi_launcher_->FireMissile(MissileType::Charge, obj_->GetPos(), p_mi_mgr_);
+		mi_launcher_->FireMissile(MissileType::Charge, GetPos(), GetFwdVec(), p_mi_mgr_);
 
 		p_lockon_sys_->ResetTargetNum();
 		count_ = 0;
@@ -171,11 +171,16 @@ void Player::Update()
 		is_triggering_ult_ = true;
 	}
 
+	if (KeyboardInput::TriggerKey(DIK_E))
+	{
+		mi_launcher_->FireMissile(MissileType::Mono, GetPos(), GetFwdVec(), p_mi_mgr_);
+	}
+
 	// ULTの発動を検知したら
 	if (is_triggering_ult_)
 	{
 		// ULT用ミサイルセットを発射する
-		if (mi_launcher_->FireMissile(MissileType::Ultimate, obj_->GetPos(), p_mi_mgr_))
+		if (mi_launcher_->FireMissile(MissileType::Ultimate, GetPos(), GetFwdVec(), p_mi_mgr_))
 		{
 			is_triggering_ult_ = false;
 		}
@@ -204,10 +209,10 @@ void Player::Update()
 	}
 
 	// 入力により回頭させる
-	RotationY(1.0f);
+	RotationY(2.0f);
 
 	// 自動で前に進む
-	//MoveForwardAuto();
+	MoveForwardAuto();
 
 	obj_->Update();
 	UpdateColl();
@@ -253,8 +258,10 @@ void Player::DebugDraw()
 
 void Player::ChargeMissile()
 {
+	// 現ターゲット数が最大ターゲット数を超えたら
 	if (p_lockon_sys_->GetCurrentTgtNum() >= p_lockon_sys_->GetMaxTgtNum())
 	{
+		// 以降の処理をスルー
 		return;
 	}
 

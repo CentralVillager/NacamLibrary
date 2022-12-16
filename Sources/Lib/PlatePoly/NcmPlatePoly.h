@@ -4,6 +4,8 @@
 #include <DirectXMath.h>
 #include <d3dx12.h>
 #include <forward_list>
+#include <array>
+#include <list>
 #include "../../Lib/Camera/Camera.h"
 #include "../../App/Particle/NcmParticleCommonArgs.h"
 
@@ -17,17 +19,21 @@ class NcmPlatePoly
 
 public:
 
-	// 頂点データ構造体
+	/// <summary>
+	/// 頂点データ構造体
+	/// </summary>
 	struct VertexPos
 	{
 		XMFLOAT3 pos;	// xyz座標
 		float scale;	// スケール
+		XMFLOAT4 color;	// (透明度の使用が目的)
 	};
 
-	// 定数バッファ用データ構造体
-	struct ConstBufferData
+	/// <summary>
+	/// 定数バッファ用データ構造体
+	/// </summary>
+	struct MatConstBufferData
 	{
-		float alpha;	// 透明度
 		XMMATRIX mat;	// ３Ｄ変換行列
 		XMMATRIX mat_billboard;
 	};
@@ -48,20 +54,21 @@ private:
 	static ComPtr<ID3D12DescriptorHeap> desc_heap_;
 	// 頂点バッファ
 	static ComPtr<ID3D12Resource> vert_buff_;
-	// テクスチャバッファ
-	static ComPtr<ID3D12Resource> tex_buff_;
-	// シェーダリソースビューのハンドル(CPU)
-	static CD3DX12_CPU_DESCRIPTOR_HANDLE cpu_desc_handle_srv_;
-	// シェーダリソースビューのハンドル(CPU)
-	static CD3DX12_GPU_DESCRIPTOR_HANDLE gpu_desc_handle_srv_;
 	// 頂点バッファビュー
 	static D3D12_VERTEX_BUFFER_VIEW vb_view_;
 	// 頂点データ配列
-	static VertexPos vertices_[VERTEX_COUNT_];
+	static std::array<VertexPos, VERTEX_COUNT_> vertices_;
 	// カメラのポインタ
 	static Camera *cam_ptr_;
 
 private:
+
+	// テクスチャバッファ
+	ComPtr<ID3D12Resource> tex_buff_;
+	// シェーダリソースビューのハンドル(CPU)
+	CD3DX12_CPU_DESCRIPTOR_HANDLE cpu_desc_handle_srv_;
+	// シェーダリソースビューのハンドル(CPU)
+	CD3DX12_GPU_DESCRIPTOR_HANDLE gpu_desc_handle_srv_;
 
 	// 定数バッファ
 	ComPtr<ID3D12Resource> const_buff_;
@@ -81,12 +88,6 @@ private:
 	/// </summary>
 	/// <returns></returns>
 	static bool InitializeDescriptorHeap();
-
-	/// <summary>
-	/// テクスチャ読み込み
-	/// </summary>
-	/// <returns>成否</returns>
-	static bool LoadTexture();
 
 	/// <summary>
 	/// モデル作成
@@ -109,6 +110,11 @@ public:
 	/// </summary>
 	/// <param name="cam"></param>
 	static void SetCamera(Camera *cam) { cam_ptr_ = cam; }
+
+	/// <summary>
+	/// テクスチャ読み込み
+	/// </summary>
+	void LoadTexture(const wchar_t *path);
 
 	/// <summary>
 	/// 初期化

@@ -67,83 +67,6 @@ const Sphere &MissileManager::GetCollData(UINT n)
 	return itr->GetCollData();
 }
 
-void MissileManager::FireMultiMissile(const MissileArgs &args, uint32_t num)
-{
-	MissileArgs l_args{};
-	l_args = args;
-
-	// ロック上限数まで
-	for (UINT i = 0; i < num; i++)
-	{
-		// 加速度をランダムに設定
-		//XMFLOAT3 rand = GenerateRandom(XMFLOAT3(-1.0f, -1.0f, 0), XMFLOAT3(1.0f, 1.0f, 0));
-		XMFLOAT3 rand = { 0, -1.0f, 0 };
-		l_args.acc = rand;
-
-		auto itr = MoveIterator(p_lockon_sys_->GetTgtList().begin(), i);
-
-		// ターゲットデータを取得
-		l_args.tgt_pos = itr->pos;
-		l_args.tgt_id = itr->id;
-
-		// ミサイルを追加
-		AddMissile(l_args);
-	}
-}
-
-void MissileManager::FireChargeMissile(const MissileArgs &args)
-{
-	MissileArgs l_args{};
-	l_args = args;
-
-	// ロック上限数まで
-	for (UINT i = 0; i < p_lockon_sys_->GetCurrentTgtNum(); i++)
-	{
-		// 加速度をランダムに設定
-		//XMFLOAT3 rand = GenerateRandom(XMFLOAT3(-1.0f, -1.0f, 0), XMFLOAT3(1.0f, 1.0f, 0));
-		//XMFLOAT3 rand = { 0, -1.0f, 0 };
-		//l_args.acc = rand;
-
-		auto itr = MoveIterator(p_lockon_sys_->GetTgtList().begin(), i);
-
-		// ターゲットデータを取得
-		l_args.tgt_pos = itr->pos;
-		l_args.tgt_id = itr->id;
-
-		// ミサイルを追加
-		AddMissile(l_args);
-	}
-}
-
-void MissileManager::FireUltimateMissile(const MissileArgs &args, uint32_t launched)
-{
-	MissileArgs l_args{};
-	l_args = args;
-
-	p_lockon_sys_->SetMaxTgtNum(10);
-
-	// 加速度をランダムに設定
-	XMFLOAT3 rand = GenerateRandom(XMFLOAT3(-1.5f, -1.5f, 0), XMFLOAT3(1.5f, 1.5f, 0));
-	//XMFLOAT3 rand = { 0, -1.0f, 0 };
-	l_args.acc = rand;
-
-	if (p_lockon_sys_->GetMaxTgtNum() <= launched)
-	{
-		launched = p_lockon_sys_->GetMaxTgtNum() - 1;
-	}
-
-	auto itr = MoveIterator(p_lockon_sys_->GetTgtList().begin(), launched);
-
-	// ターゲットデータを取得
-	l_args.tgt_pos = itr->pos;
-	l_args.tgt_id = itr->id;
-
-	// ミサイルを追加
-	AddMissile(l_args);
-
-	p_lockon_sys_->SetMaxTgtNum(4);
-}
-
 void MissileManager::HomingTarget(EnemiesList &enemies)
 {
 	for (auto &i : missile_list_)
@@ -155,14 +78,18 @@ void MissileManager::HomingTarget(EnemiesList &enemies)
 
 void MissileManager::Death(UINT n)
 {
+	// 死んだミサイルを特定
 	auto itr = MoveIterator(missile_list_.begin(), n);
 
+	// エミッターの終了準備
 	itr->PrepareTermEmitter();
+	// ミサイルの寿命を強制的に0に
 	itr->SetMissileLife(0);
+	// ミサイルを無効化(死亡フラグは建てない)
 	itr->InvalidateMissile();
 }
 
-void MissileManager::AddMissile(const MissileArgs &args)
+void MissileManager::AddMissile(const MissileParam &args)
 {
 	missile_list_.emplace_front();
 	missile_list_.front().Initialize(args);
