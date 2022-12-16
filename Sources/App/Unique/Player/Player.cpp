@@ -21,7 +21,6 @@ Player::Player()
 	taking_damage_trigger_(false),
 	is_triggering_ult_(false),
 	hp_(),
-	p_mi_mgr_(nullptr),
 	p_lockon_sys_(nullptr),
 	p_ult_(nullptr),
 	mi_launcher_(std::make_unique<MissileLauncher>()),
@@ -82,13 +81,12 @@ void Player::Initialize()
 	ease_reset_rot_ = NcmEasing::RegisterEaseData(args);
 }
 
-void Player::Initialize(MissileManager *mi_mgr, LockOnSystem *lockon_sys, UltimateManager *ult, XMFLOAT3 pos)
+void Player::Initialize(LockOnSystem *lockon_sys, UltimateManager *ult, XMFLOAT3 pos)
 {
 	is_dead_ = false;
 	hp_ = 3;
 
 	// 他クラス情報を格納
-	p_mi_mgr_ = mi_mgr;
 	p_lockon_sys_ = lockon_sys;
 	p_ult_ = ult;
 
@@ -142,7 +140,7 @@ void Player::Update()
 	else if (KeyboardInput::ReleaseKey(DIK_SPACE) || NcmInput::IsRelease(NcmButtonType::A))
 	{
 		// ミサイルを発射
-		mi_launcher_->FireMissile(MissileType::Charge, GetPos(), GetFwdVec(), p_mi_mgr_);
+		mi_launcher_->FireMissile(MissileType::Charge, GetPos(), GetFwdVec());
 
 		p_lockon_sys_->ResetTargetNum();
 		count_ = 0;
@@ -173,14 +171,14 @@ void Player::Update()
 
 	if (KeyboardInput::TriggerKey(DIK_E))
 	{
-		mi_launcher_->FireMissile(MissileType::Mono, GetPos(), GetFwdVec(), p_mi_mgr_);
+		mi_launcher_->FireMissile(MissileType::Mono, GetPos(), GetFwdVec());
 	}
 
 	// ULTの発動を検知したら
 	if (is_triggering_ult_)
 	{
 		// ULT用ミサイルセットを発射する
-		if (mi_launcher_->FireMissile(MissileType::Ultimate, GetPos(), GetFwdVec(), p_mi_mgr_))
+		if (mi_launcher_->FireMissile(MissileType::Ultimate, GetPos(), GetFwdVec()))
 		{
 			is_triggering_ult_ = false;
 		}

@@ -6,6 +6,9 @@
 #include "../../../App/Collision/CollisionPrimitive.h"
 #include "../../Debug/NcmImGui.h"
 
+/// <summary>
+/// 移動 || 生死判定のあるゲーム内オブジェクトのインターフェース
+/// </summary>
 class AbsUniqueObj
 {
 	using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -57,7 +60,20 @@ public:
 	virtual void DrawColl() = 0;
 	virtual void DebugDraw() = 0;
 
+	/// <summary>
+	/// 描画データの初期化
+	/// </summary>
+	/// <param name="obj_model">使用するモデルデータ</param>
+	/// <param name="coll_model">使用する当たり判定可視化用モデルデータ</param>
 	void InitObj3d(Model *obj_model, Model *coll_model);
+
+	/// <summary>
+	/// 当たり判定の更新
+	/// </summary>
 	void UpdateColl();
+
+	/// <summary>
+	/// 正面ベクトルの計算
+	/// </summary>
 	void CalcFwdVec();
 };

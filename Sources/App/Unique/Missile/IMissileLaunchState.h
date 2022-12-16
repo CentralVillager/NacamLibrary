@@ -13,5 +13,5 @@ class IMissileLaunchState
 
 public:
 
-	virtual bool FireMissile(const XMFLOAT3 &launch_pos, const XMFLOAT3 &vec, MissileManager *ptr) = 0;
+	virtual bool FireMissile(const XMFLOAT3 &launch_pos, const XMFLOAT3 &dest_pos, MissileManager *ptr) = 0;
 };

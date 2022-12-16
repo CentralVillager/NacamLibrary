@@ -12,5 +12,5 @@ protected:
 
 public:
 
-	virtual void HomingTarget(XMFLOAT3 dest_pos) = 0;
+	virtual void HomingEnemy(XMFLOAT3 dest_pos) = 0;
 };

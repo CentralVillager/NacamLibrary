@@ -1,18 +1,15 @@
 #pragma once
 #include "IMissileLaunchState.h"
+#include <DirectXMath.h>
 
 class MissileStateUltimate : public IMissileLaunchState
 {
-	using XMFLOAT3 = DirectX::XMFLOAT3;
-
-private:
-
 	// ミサイルの総発射数
 	static constexpr uint32_t ULT_LAUNCH_NUM_ = 20;
 
 public:
 
-	bool FireMissile(const XMFLOAT3 &launch_pos, const XMFLOAT3 &vec, MissileManager *ptr) override
+	bool FireMissile(const DirectX::XMFLOAT3 &launch_pos, const DirectX::XMFLOAT3 &dest_pos, MissileManager *ptr) override
 	{
 		// 総ターゲット数
 		static uint32_t all_tgt_num_ = 0;
@@ -53,12 +50,26 @@ public:
 			return false;
 		}
 
+		// XMVECTORへ変換
+		DirectX::XMVECTOR launch = DirectX::XMLoadFloat3(&launch_pos);
+		DirectX::XMVECTOR dest = DirectX::XMLoadFloat3(&dest_pos);
+
+		// 方向ベクトルを算出
+		DirectX::XMVECTOR direction_vec =
+		{
+			(dest.m128_f32[0] - launch.m128_f32[0]),
+			(dest.m128_f32[1] - launch.m128_f32[1]),
+			(dest.m128_f32[2] - launch.m128_f32[2])
+		};
+		// 正規化
+		direction_vec = DirectX::XMVector3Normalize(direction_vec);
+
 		// パラメータを設定
 		MissileParam param{};
 		param.pos = launch_pos;
-		param.vel = vec;
+		DirectX::XMStoreFloat3(&param.vel, direction_vec);
 		// 加速度をランダムに設定
-		param.acc = NcmUtill::GenerateRandom(XMFLOAT3(-1.5f, -1.5f, 0), XMFLOAT3(1.5f, 1.5f, 0));
+		param.acc = NcmUtill::GenerateRandom(DirectX::XMFLOAT3(-1.5f, -1.5f, 0), DirectX::XMFLOAT3(1.5f, 1.5f, 0));
 		// tgt_pos	 は下で設定
 		// tgt_index は下で設定
 		param.detection_range = 1000.0f;

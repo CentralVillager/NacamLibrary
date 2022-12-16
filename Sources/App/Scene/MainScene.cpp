@@ -1,4 +1,5 @@
 #include "MainScene.h"
+#include <vector>
 #include "../../Lib/PreDraw/PreDraw.h"
 #include "../../Lib/Input/KeyboardInput.h"
 #include "../Scene/SceneManager/SceneManager.h"
@@ -8,7 +9,7 @@
 #include "../Debug/NcmDebug.h"
 #include "../../Lib/PostEffect/PostEffect.h"
 #include "../../Lib/Input/NcmInput.h"
-#include <vector>
+#include "../../App/Unique/Missile/MissileLauncher.h"
 
 using namespace NcmUtill;
 
@@ -94,11 +95,12 @@ void MainScene::Initialize()
 	ene_list_->Initialize(player_.get());
 	lockon_sys_->Initialize(player_.get(), ene_list_.get());
 	missile_mgr_->Initialize(lockon_sys_.get());
-	player_->Initialize(missile_mgr_.get(), lockon_sys_.get(), ult_.get(), INIT_POS_);
+	player_->Initialize(lockon_sys_.get(), ult_.get(), INIT_POS_);
 	grid_->Initialize(200, 10, XMFLOAT3(0, -20.0f, 0));
 	reticle_->Initialize();
 	numbers_->Initialize();
 	ult_->Initialize();
+	MissileLauncher::SetMissileMgrPtr(missile_mgr_.get());
 
 	// enemyの生成
 	//ene_list_->Add(XMFLOAT3(0, 0, -400.0f));
@@ -212,7 +214,7 @@ void MainScene::Update()
 		if (KeyboardInput::TriggerKey(DIK_2))
 		{
 			camera_->SetEye(XMFLOAT3(0, 10.0f, -10.0f));
-			player_->Initialize(missile_mgr_.get(), lockon_sys_.get(), ult_.get(), INIT_POS_);
+			player_->Initialize(lockon_sys_.get(), ult_.get(), INIT_POS_);
 		}
 
 		// キーアサインの変更
@@ -320,15 +322,15 @@ void MainScene::Update()
 	particle_mgr_->Update();
 
 	// ミサイル追尾処理
-	missile_mgr_->HomingTarget(*ene_list_);
+	missile_mgr_->HomingEnemy(*ene_list_);
 
 	// 当たり判定
 	CollisionProcess();
 
 	// 塵描画他
-	if (draw_dust_) 
+	if (draw_dust_)
 	{
-		dust_->GenerateParticle(); 
+		dust_->GenerateParticle();
 		dust_->UpdateParticle();
 	}
 

@@ -1,12 +1,14 @@
 #pragma once
 #include <memory>
 #include "../Reticle/Reticle.h"
-#include "../Missile/MissileManager.h"
 #include "../LockOnSystem/LockOnSystem.h"
 #include "../Abs/AbsUniqueObj.h"
 #include "../Ultimate/UltimateManager.h"
 #include "../Missile/MissileLauncher.h"
 
+/// <summary>
+/// プレイヤー
+/// </summary>
 class Player : public AbsUniqueObj
 {
 	using XMFLOAT3 = DirectX::XMFLOAT3;
@@ -27,7 +29,6 @@ private:
 	uint32_t hp_;					// HP
 
 	// 他クラス情報
-	MissileManager *p_mi_mgr_;
 	LockOnSystem *p_lockon_sys_;
 	UltimateManager *p_ult_;
 
@@ -62,7 +63,7 @@ public:
 	inline const int32_t &GetMaxChargeTime() { return charge_time_; }
 
 	void Initialize() override;
-	void Initialize(MissileManager *mi_mgr, LockOnSystem *lockon_sys, UltimateManager *ult, XMFLOAT3 pos);
+	void Initialize(LockOnSystem *lockon_sys, UltimateManager *ult, XMFLOAT3 pos);
 	void Finalize();
 	void Update() override;
 	void Draw() override;

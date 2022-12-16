@@ -10,7 +10,11 @@ class EnemiesList
 {
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 
+private:
+
 	static const int MAX_ENEMY_NUM_ = 20;
+
+private:
 
 	std::vector<Enemy> enemies_;
 	Player *player_;

@@ -4,6 +4,7 @@
 #include "../Player/Player.h"
 #include "../../../Lib/PreDraw/PreDraw.h"
 #include "../Sources/App/Math/NcmMath.h"
+#include "../Missile/MissileLauncher.h"
 
 using namespace NcmUtill;
 using namespace NcmMath;
@@ -19,9 +20,14 @@ Enemy::Enemy() :
 	count_(100),
 	circular_angle_(0.0f),
 	bullets_(std::make_shared<BulletList>()),
-	shot_interval_(0)
+	mi_launcher_(std::make_shared<MissileLauncher>()),
+	shot_interval_(0),
+	missile_launch_intervel_(0)
 {
+	// 敵生成時にカウントを加算
 	id_counter_++;
+	// それをIDとする
+	id_ = id_counter_;
 }
 
 Enemy::~Enemy()
@@ -52,7 +58,6 @@ void Enemy::Initialize(const XMFLOAT3 &pos)
 	obj_->SetPos(pos);
 
 	is_dead_ = false;
-	id_ = id_counter_;
 
 	circular_angle_ = 0.0f;
 }
@@ -68,10 +73,11 @@ void Enemy::Update()
 	RotY();
 	MoveHorizontally(2.0f, 100.0f);
 	//AutoShot(200, player_->GetPos());
+	bullets_->Update();
+	//FireMissile(1000);
+
 	obj_->Update();
 	UpdateColl();
-
-	bullets_->Update();
 }
 
 void Enemy::Draw()
@@ -175,4 +181,40 @@ void Enemy::AutoShot(int interval, const XMFLOAT3 &dist)
 		// カウントをリセットする
 		count = shot_interval_;
 	}
+}
+
+void Enemy::FireMissile(uint32_t interval)
+{
+	// 発射可能なら
+	if (CheckCanFire(interval))
+	{
+		// ミサイルを発射する
+		mi_launcher_->FireMissile(MissileType::Mono, GetPos(), GetFwdVec());
+	}
+}
+
+bool Enemy::CheckCanFire(uint32_t interval)
+{
+	// 発射されたか
+	static bool was_fired = true;
+
+	// 発射されていたら
+	if (was_fired)
+	{
+		// 発射間隔を更新する
+		missile_launch_intervel_ = interval;
+		was_fired = false;
+	}
+
+	// カウントを減らす
+	missile_launch_intervel_--;
+
+	// カウントが0以下になったら
+	if (IsZeroOrLess(missile_launch_intervel_))
+	{
+		was_fired = true;
+		return true;
+	}
+
+	return false;
 }

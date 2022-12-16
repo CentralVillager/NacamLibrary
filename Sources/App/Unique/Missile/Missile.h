@@ -48,6 +48,22 @@ class Missile : public AbsUniqueObj
 
 private:
 
+	/// <summary>
+	/// ターゲット検索結果
+	/// </summary>
+	struct SearchResult
+	{
+		bool is_succes;
+		XMFLOAT3 pos;
+
+		SearchResult() :
+			is_succes(),
+			pos()
+		{}
+	};
+
+private:
+
 	// 爆発パーティクルの粒の数目安
 	static constexpr uint32_t EXPLO_PARTICLE_NUM_ = 100;
 
@@ -107,12 +123,25 @@ public:
 	void MoveZ(float speed);
 
 	/// <summary>
-	/// ターゲットを追尾する
+	/// ターゲットの位置を算出する
+	/// </summary>
+	/// <param name="enemies"></param>
+	/// <returns></returns>
+	SearchResult CalcEnemyPos(EnemiesList &enemies);
+
+	/// <summary>
+	/// 敵を追尾する
 	/// </summary>
 	/// <param name="enemies">敵のコンテナ</param>
-	void HomingTarget(EnemiesList &enemies);
+	void HomingEnemy(EnemiesList &enemies);
 
 	void TestHomingTarget(EnemiesList &enemies);
+
+	/// <summary>
+	/// 指定した位置に追尾する
+	/// </summary>
+	/// <param name="target"></param>
+	void HomingTarget(XMFLOAT3 &target);
 
 	/// <summary>
 	/// エミッターの終了準備をする

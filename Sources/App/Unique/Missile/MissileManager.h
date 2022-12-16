@@ -18,6 +18,7 @@ class MissileManager
 
 private:
 
+	// ゲーム内に存在する全てのミサイルを管理するコンテナ
 	std::list<Missile> missile_list_;
 
 	LockOnSystem *p_lockon_sys_;
@@ -43,7 +44,23 @@ public:
 	const Sphere &GetCollData(UINT n);
 	LockOnSystem *GetLockOnSys() { return p_lockon_sys_; }
 
-	void HomingTarget(EnemiesList &enemies);
+public:
+
+	/// <summary>
+	/// 毎フレーム追尾計算
+	/// </summary>
+	/// <param name="enemies"></param>
+	void HomingEnemy(EnemiesList &enemies);
+
+	/// <summary>
+	/// 死亡処理
+	/// </summary>
+	/// <param name="n"></param>
 	void Death(UINT n);
+
+	/// <summary>
+	/// 新たにミサイルを生成し追加する
+	/// </summary>
+	/// <param name="args"></param>
 	void AddMissile(const MissileParam &args);
 };

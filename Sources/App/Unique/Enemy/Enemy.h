@@ -1,30 +1,53 @@
 #pragma once
+#include <memory>
 #include "../Sources/App/Unique/Bullet/Bullet.h"
 #include "../Bullet/BulletList.h"
 #include "../Abs/AbsUniqueObj.h"
 
 class Player;
+class MissileLauncher;
 
+/// <summary>
+/// 敵
+/// </summary>
 class Enemy : public AbsUniqueObj
 {
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 
+private:
+
 	// モデルデータ
 	static std::unique_ptr<Model> model_;
 	static std::unique_ptr<Model> coll_model_;
 
+	// ID付与用カウンター
 	static int id_counter_;
+
 	static Player *player_;
 
+private:
+
+	// 弾
+	std::shared_ptr<BulletList> bullets_;
+
+	// ミサイル
+	std::shared_ptr<MissileLauncher> mi_launcher_;
+
+	// 個体判別用ID
 	uint32_t id_;
 
+	// 反転間隔
 	int count_;
 
+	// 円運動用アングル
 	float circular_angle_;
 
-	std::shared_ptr<BulletList> bullets_;
-	int shot_interval_;
+	// 発射間隔保存用
+	uint32_t shot_interval_;
+
+	// ミサイル発射間隔保存用
+	uint32_t missile_launch_intervel_;
 
 	int32_t cycle = 100;
 	float length = 100.0f;
@@ -70,5 +93,17 @@ public:
 	/// <summary>
 	/// 設定した間隔で弾を発射する
 	/// </summary>
+	/// <param name="interval">発射間隔</param>
+	/// <param name="dist">目標位置</param>
 	void AutoShot(int interval, const XMFLOAT3 &dist);
+
+	/// <summary>
+	/// ミサイルを発射する
+	/// </summary>
+	/// <param name="interval">発射間隔</param>
+	void FireMissile(uint32_t interval);
+
+private:
+
+	bool CheckCanFire(uint32_t interval);
 };

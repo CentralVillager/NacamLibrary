@@ -27,5 +27,5 @@ public:
 	/// </summary>
 	/// <param name="accuracy">追尾精度</param>
 	/// <param name="dest_pos">ターゲットの位置</param>
-	void HomingTarget(HomingAccuracy accuracy, XMFLOAT3 dest_pos);
+	void HomingEnemy(HomingAccuracy accuracy, XMFLOAT3 dest_pos);
 };

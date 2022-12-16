@@ -67,12 +67,11 @@ const Sphere &MissileManager::GetCollData(UINT n)
 	return itr->GetCollData();
 }
 
-void MissileManager::HomingTarget(EnemiesList &enemies)
+void MissileManager::HomingEnemy(EnemiesList &enemies)
 {
 	for (auto &i : missile_list_)
 	{
-		i.HomingTarget(enemies);
-		//i.TestHomingTarget(enemies);
+		i.HomingEnemy(enemies);
 	}
 }
 

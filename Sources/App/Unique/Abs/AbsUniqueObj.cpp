@@ -3,8 +3,7 @@
 
 using namespace DirectX;
 
-AbsUniqueObj::AbsUniqueObj(float speed, float coll_radius)
-	:
+AbsUniqueObj::AbsUniqueObj(float speed, float coll_radius) :
 	mat_rot_(XMMatrixIdentity()),
 	obj_(std::make_shared<Object3d>()),
 	coll_obj_(std::make_shared<Object3d>()),
