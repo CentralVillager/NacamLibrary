@@ -1,6 +1,7 @@
 #include "MissileManager.h"
 #include "../Sources/App/Collision/Collision.h"
 #include "../Sources/App/Utility/NcmUtil.h"
+#include "../Player/Player.h"
 
 using namespace DirectX;
 using namespace NcmUtill;
@@ -13,8 +14,9 @@ MissileManager::MissileManager() :
 MissileManager::~MissileManager()
 {}
 
-void MissileManager::Initialize(LockOnSystem *sys)
+void MissileManager::Initialize(Player *p, LockOnSystem *sys)
 {
+	p_player_ = p;
 	p_lockon_sys_ = sys;
 }
 
@@ -75,10 +77,37 @@ void MissileManager::HomingEnemy(EnemiesList &enemies)
 	}
 }
 
-void MissileManager::Death(UINT n)
+void MissileManager::HomingTarget()
+{
+	for (auto &i : missile_list_)
+	{
+		if (i.GetIsValidity())
+		{
+			i.HomingTarget();
+		}
+	}
+}
+
+void MissileManager::UpdateTargetPos(EnemiesList &enemies)
+{
+	for (auto &i : missile_list_)
+	{
+		if (i.GetIsValidity())
+		{
+			i.UpdateTargetPos(enemies);
+		}
+	}
+}
+
+bool MissileManager::Death(UINT n)
 {
 	// 死んだミサイルを特定
 	auto itr = MoveIterator(missile_list_.begin(), n);
+
+	if (itr->GetMissileParam().type == MissileType::ForEnemy)
+	{
+		return false;
+	}
 
 	// エミッターの終了準備
 	itr->PrepareTermEmitter();
@@ -86,11 +115,13 @@ void MissileManager::Death(UINT n)
 	itr->SetMissileLife(0);
 	// ミサイルを無効化(死亡フラグは建てない)
 	itr->InvalidateMissile();
+
+	return true;
 }
 
-void MissileManager::AddMissile(const MissileParam &args)
+void MissileManager::AddMissile(const MissileParam &param)
 {
 	missile_list_.emplace_front();
-	missile_list_.front().Initialize(args);
+	missile_list_.front().Initialize(param);
 	missile_list_.front().Activate();
 }

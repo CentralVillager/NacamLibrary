@@ -48,7 +48,9 @@ public:
 	inline const float &GetSpeed() { return speed_; }
 	inline const bool &IsDead() { return is_dead_; }
 	inline const void Death() { is_dead_ = true; }
+
 	inline void SetPos(const XMFLOAT3 &pos) { obj_->SetPos(pos); }
+	inline void SetRot(const XMFLOAT3 &rot) { obj_->SetRot(rot); }
 	inline void SetSpeed(const float speed) { speed_ = speed; }
 	inline void SetIsDead(bool b) { is_dead_ = b; }
 

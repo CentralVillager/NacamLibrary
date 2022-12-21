@@ -55,5 +55,5 @@ public:
 	void Death(int i) { enemies_[i].Death(); }
 	bool NoticeEmpty();
 
-	const uint32_t GetEnemyIndexWithID(uint32_t id);
+	const int32_t GetEnemyIndexWithID(int32_t id);
 };

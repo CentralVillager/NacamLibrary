@@ -3,7 +3,7 @@
 
 class MissileHomingStateMiddleAccuracy : public IMissileHomingState
 {
-	void HomingEnemy(XMFLOAT3 dest_pos) override
+	void HomingTarget(XMFLOAT3 dest_pos) override
 	{
 
 	}

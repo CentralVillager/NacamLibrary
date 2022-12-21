@@ -32,6 +32,7 @@ void NcmParticleManager::AddParticleCommonArgs(forward_list<NcmParticleCommonArg
 		itr->pos = i->pos;
 		itr->scale = i->scale * 2;
 		itr->alpha = i->alpha;
+		itr->color = i->color;
 
 		i++;
 	}

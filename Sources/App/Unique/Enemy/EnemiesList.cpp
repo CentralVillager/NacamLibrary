@@ -2,6 +2,7 @@
 #include <algorithm>
 #include "../Sources/Lib/NacamError/NacamError.h"
 #include "../Player/Player.h"
+#include "../Missile/MissileDescs.h"
 
 using namespace std;
 
@@ -42,9 +43,17 @@ void EnemiesList::Draw()
 
 void EnemiesList::DebugDraw()
 {
-	for (auto &i : enemies_)
+	/*for (auto &i : enemies_)
 	{
 		i.DebugDraw();
+	}*/
+
+	if (ImGui::Button("Launch Missile"))
+	{
+		for (auto &i : enemies_)
+		{
+			i.FireMissile();
+		}
 	}
 }
 
@@ -92,8 +101,15 @@ bool EnemiesList::NoticeEmpty()
 	return false;
 }
 
-const uint32_t EnemiesList::GetEnemyIndexWithID(uint32_t id)
+const int32_t EnemiesList::GetEnemyIndexWithID(int32_t id)
 {
+	// ターゲットがプレイヤーなら
+	if (id == (int32_t)(TargetIs::Player))
+	{
+		// そう返す
+		return (int32_t)(TargetIs::Player);
+	}
+
 	// 全ての敵に対してIDを検索
 	for (UINT i = 0; i < enemies_.size(); i++)
 	{
@@ -106,5 +122,5 @@ const uint32_t EnemiesList::GetEnemyIndexWithID(uint32_t id)
 	}
 
 	// 該当IDが存在しないのでエラーを示させる
-	return (int)(NacamError::NonDetected);
+	return (int32_t)(NacamError::NonDetected);
 }

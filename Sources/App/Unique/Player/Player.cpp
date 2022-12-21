@@ -81,7 +81,7 @@ void Player::Initialize()
 	ease_reset_rot_ = NcmEasing::RegisterEaseData(args);
 }
 
-void Player::Initialize(LockOnSystem *lockon_sys, UltimateManager *ult, XMFLOAT3 pos)
+void Player::Initialize(LockOnSystem *lockon_sys, UltimateManager *ult, const XMFLOAT3 &pos)
 {
 	is_dead_ = false;
 	hp_ = 3;
@@ -140,7 +140,7 @@ void Player::Update()
 	else if (KeyboardInput::ReleaseKey(DIK_SPACE) || NcmInput::IsRelease(NcmButtonType::A))
 	{
 		// ミサイルを発射
-		mi_launcher_->FireMissile(MissileType::Charge, GetPos(), GetFwdVec());
+		mi_launcher_->FireMissile(MissileType::Charge, LaunchedBy::Player, GetPos());
 
 		p_lockon_sys_->ResetTargetNum();
 		count_ = 0;
@@ -171,14 +171,14 @@ void Player::Update()
 
 	if (KeyboardInput::TriggerKey(DIK_E))
 	{
-		mi_launcher_->FireMissile(MissileType::Mono, GetPos(), GetFwdVec());
+		mi_launcher_->FireMissile(MissileType::Mono, LaunchedBy::Player, GetPos());
 	}
 
 	// ULTの発動を検知したら
 	if (is_triggering_ult_)
 	{
 		// ULT用ミサイルセットを発射する
-		if (mi_launcher_->FireMissile(MissileType::Ultimate, GetPos(), GetFwdVec()))
+		if (mi_launcher_->FireMissile(MissileType::Ultimate, LaunchedBy::Player, GetPos()))
 		{
 			is_triggering_ult_ = false;
 		}
@@ -205,6 +205,9 @@ void Player::Update()
 		// 残り無敵時間を更新する
 		CountInvincibleTime();
 	}
+
+	// デバッグ用
+	//MoveXZ(3.0f);
 
 	// 入力により回頭させる
 	RotationY(2.0f);
@@ -285,13 +288,13 @@ void Player::TakeDamage()
 
 void Player::CountInvincibleTime()
 {
-	static uint32_t count = invincible_time_;
+	static uint32_t count = INVINCIBLE_TIME_;
 	count--;
 
 	if (IsZeroOrLess(count))
 	{
 		is_invincible_ = false;
-		count = invincible_time_;
+		count = INVINCIBLE_TIME_;
 	}
 }
 
@@ -379,7 +382,7 @@ void Player::RotationY(float speed)
 	obj_->SetRot(rot);
 }
 
-void Player::MoveForwardAuto()
+volatile void Player::MoveForwardAuto()
 {
 	XMFLOAT3 pos = obj_->GetPos();
 	pos.x += speed_ * forward_vec_.x;

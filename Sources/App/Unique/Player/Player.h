@@ -15,7 +15,8 @@ class Player : public AbsUniqueObj
 
 private:
 
-	static constexpr uint32_t invincible_time_ = 80;
+	// –³“GŽžŠÔ
+	static constexpr uint32_t INVINCIBLE_TIME_ = 80;
 
 private:
 
@@ -63,7 +64,7 @@ public:
 	inline const int32_t &GetMaxChargeTime() { return charge_time_; }
 
 	void Initialize() override;
-	void Initialize(LockOnSystem *lockon_sys, UltimateManager *ult, XMFLOAT3 pos);
+	void Initialize(LockOnSystem *lockon_sys, UltimateManager *ult, const XMFLOAT3 &pos);
 	void Finalize();
 	void Update() override;
 	void Draw() override;
@@ -75,11 +76,9 @@ public:
 	void ChargeMissile();
 	void TakeDamage();
 	void CountInvincibleTime();
-	void Move(float speed);
-	void MoveXY(float speed);
 	void MoveXZ(float speed);
 	void RotationY(float speed);
-	void MoveForwardAuto();
+	volatile void MoveForwardAuto();
 
 	void RotPoseLeft(XMFLOAT3 &rot);
 	void RotPoseRight(XMFLOAT3 &rot);

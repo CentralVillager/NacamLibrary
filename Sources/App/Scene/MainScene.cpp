@@ -94,13 +94,14 @@ void MainScene::Initialize()
 	// 各ゲームオブジェクトの初期化
 	ene_list_->Initialize(player_.get());
 	lockon_sys_->Initialize(player_.get(), ene_list_.get());
-	missile_mgr_->Initialize(lockon_sys_.get());
 	player_->Initialize(lockon_sys_.get(), ult_.get(), INIT_POS_);
+	missile_mgr_->Initialize(player_.get(), lockon_sys_.get());
 	grid_->Initialize(200, 10, XMFLOAT3(0, -20.0f, 0));
 	reticle_->Initialize();
 	numbers_->Initialize();
 	ult_->Initialize();
-	MissileLauncher::SetMissileMgrPtr(missile_mgr_.get());
+	MissileLauncher::SetPtr(missile_mgr_.get(), lockon_sys_.get());
+	Missile::SetPtr(player_.get());
 
 	// enemyの生成
 	//ene_list_->Add(XMFLOAT3(0, 0, -400.0f));
@@ -322,7 +323,9 @@ void MainScene::Update()
 	particle_mgr_->Update();
 
 	// ミサイル追尾処理
-	missile_mgr_->HomingEnemy(*ene_list_);
+	//missile_mgr_->HomingEnemy(*ene_list_);
+	missile_mgr_->UpdateTargetPos(*ene_list_);
+	missile_mgr_->HomingTarget();
 
 	// 当たり判定
 	CollisionProcess();
@@ -413,6 +416,8 @@ void MainScene::DebugDraw()
 	NcmParticleManager::StaticDebugDraw();
 	Emitter::StaticDebugDraw();
 
+	ene_list_->DebugDraw();
+
 	player_->DebugDraw();
 	lockon_sys_->DebugDraw();
 
@@ -468,9 +473,11 @@ void MainScene::CollisionProcess()
 				// ミサイルが有効なら
 				if (missile_mgr_->GetIsValidity(j))
 				{
-					//ene_list_->Death(i);
-					missile_mgr_->Death(j);
-					ult_->AddUltValue(20);
+					if (missile_mgr_->Death(j))
+					{
+						ene_list_->Death(i);
+						ult_->AddUltValue(20);
+					}
 				}
 			}
 		}

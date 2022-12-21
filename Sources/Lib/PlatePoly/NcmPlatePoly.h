@@ -26,7 +26,9 @@ public:
 	{
 		XMFLOAT3 pos;	// xyz座標
 		float scale;	// スケール
-		XMFLOAT4 color;	// (透明度の使用が目的)
+		float pad;
+		XMFLOAT4 color;	// 色
+		XMFLOAT4 alpha;	// (透明度の使用が目的)
 	};
 
 	/// <summary>

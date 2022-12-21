@@ -40,6 +40,7 @@ void main(
         element.svpos = mul(mat, element.svpos);
         element.uv = uv_array[i];
         element.color = input[0].color;
+        element.alpha = input[0].alpha;
         output.Append(element);
     }
 }

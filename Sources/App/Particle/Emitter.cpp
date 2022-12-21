@@ -55,6 +55,7 @@ ParticleDesc Emitter::GenerateValue(const EmitterDesc &emitter)
 	p.scale_ = p.s_scale_ = emi.part_desc_.s_scale_;
 	p.e_scale_ = p.scale_;
 	p.life_ = emi.part_desc_.life_;
+	p.color_ = emi.part_desc_.color_;
 	p.alpha_ = 1.0f;
 	p.tex_handle_ = tex_handle_;
 	p.is_used_ = true;
@@ -195,6 +196,7 @@ void Emitter::UpdateParticle()
 		temp.emplace_front();
 		temp.front().pos = i.GetPos();
 		temp.front().scale = i.GetScale();
+		temp.front().color = i.GetColor();
 		temp.front().alpha = i.GetAlpha();
 
 		if (i.GetIsDead())

@@ -20,6 +20,7 @@ struct ParticleDesc
 	float e_scale_;		// 終了時スケール
 	float scale_;		// スケール
 	bool is_dead_;		// 死亡フラグ
+	XMFLOAT3 color_;	// 色
 	float alpha_;		// 透明度
 	bool is_used_;		// 使われているか
 	ncm_thandle tex_handle_;	// テクスチャハンドル
@@ -34,6 +35,7 @@ struct ParticleDesc
 		e_scale_(),
 		scale_(),
 		is_dead_(),
+		color_(),
 		alpha_(1.0f),
 		is_used_(),
 		tex_handle_()
@@ -59,6 +61,7 @@ public:
 	inline const XMFLOAT3 &GetPos() { return particle_->position_; }
 	inline const float &GetScale() { return particle_->scale_; }
 	inline const uint32_t GetLife() { return particle_->life_; }
+	inline const XMFLOAT3 &GetColor() { return particle_->color_; }
 	inline const float GetAlpha() { return particle_->alpha_; }
 	inline const bool &GetIsDead() { return particle_->is_dead_; }
 	inline const bool &GetIsUsed() { return particle_->is_used_; }

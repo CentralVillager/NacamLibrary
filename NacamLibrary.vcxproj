@@ -287,6 +287,7 @@
     <ClInclude Include="Sources\App\Unique\Missile\IMissileHomingState.h" />
     <ClInclude Include="Sources\App\Unique\Missile\IMissileLaunchState.h" />
     <ClInclude Include="Sources\App\Unique\Missile\Missile.h" />
+    <ClInclude Include="Sources\App\Unique\Missile\MissileDescs.h" />
     <ClInclude Include="Sources\App\Unique\Missile\MissileHoming.h" />
     <ClInclude Include="Sources\App\Unique\Missile\MissileHomingStateHighAccuracy.h" />
     <ClInclude Include="Sources\App\Unique\Missile\MissileHomingStateLowAccuracy.h" />
@@ -294,6 +295,7 @@
     <ClInclude Include="Sources\App\Unique\Missile\MissileManager.h" />
     <ClInclude Include="Sources\App\Unique\Missile\MissileLauncher.h" />
     <ClInclude Include="Sources\App\Unique\Missile\MissileStateCharge.h" />
+    <ClInclude Include="Sources\App\Unique\Missile\MissileStateForEnemy.h" />
     <ClInclude Include="Sources\App\Unique\Missile\MissileStateMonoCircuse.h" />
     <ClInclude Include="Sources\App\Unique\Missile\MissileStateUltimate.h" />
     <ClInclude Include="Sources\App\Unique\Player\Player.h" />

@@ -9,8 +9,10 @@ class MissileStateUltimate : public IMissileLaunchState
 
 public:
 
-	bool FireMissile(const DirectX::XMFLOAT3 &launch_pos, const DirectX::XMFLOAT3 &dest_pos, MissileManager *ptr) override
+	bool FireMissile(LaunchedBy launcher, const DirectX::XMFLOAT3 &launch_pos, MissileManager *ptr) override
 	{
+		/* プレイヤーのみが使用する想定なのでlauncherは使用しない */
+
 		// 総ターゲット数
 		static uint32_t all_tgt_num_ = 0;
 		// ターゲット一体につくミサイルの数
@@ -50,9 +52,17 @@ public:
 			return false;
 		}
 
+		// ターゲットの参照を取得
+		auto itr = NcmUtill::MoveIterator(ptr->GetLockOnSys()->GetTgtList().begin(), tgt_location_ref_);
+
+		// ターゲットデータを取得
+		MissileParam param{};
+		param.tgt_pos = itr->pos;
+		param.tgt_id = itr->id;
+
 		// XMVECTORへ変換
 		DirectX::XMVECTOR launch = DirectX::XMLoadFloat3(&launch_pos);
-		DirectX::XMVECTOR dest = DirectX::XMLoadFloat3(&dest_pos);
+		DirectX::XMVECTOR dest = DirectX::XMLoadFloat3(&param.tgt_pos);
 
 		// 方向ベクトルを算出
 		DirectX::XMVECTOR direction_vec =
@@ -65,7 +75,6 @@ public:
 		direction_vec = DirectX::XMVector3Normalize(direction_vec);
 
 		// パラメータを設定
-		MissileParam param{};
 		param.pos = launch_pos;
 		DirectX::XMStoreFloat3(&param.vel, direction_vec);
 		// 加速度をランダムに設定
@@ -74,17 +83,11 @@ public:
 		// tgt_index は下で設定
 		param.detection_range = 1000.0f;
 		param.init_straight_time = 0;
-		param.life = 300;
+		param.life = NcmUtill::GenerateRandom(200, 300);
+		//param.life = 300;
 
 		// 最大ロックオン数を10に設定
 		ptr->GetLockOnSys()->SetMaxTgtNum(10);
-
-		// ターゲットの参照を取得
-		auto itr = NcmUtill::MoveIterator(ptr->GetLockOnSys()->GetTgtList().begin(), tgt_location_ref_);
-
-		// ターゲットデータを取得
-		param.tgt_pos = itr->pos;
-		param.tgt_id = itr->id;
 
 		// ミサイルを追加
 		ptr->AddMissile(param);

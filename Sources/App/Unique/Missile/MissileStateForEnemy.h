@@ -1,14 +1,12 @@
 #pragma once
 #include "IMissileLaunchState.h"
-#include <DirectXMath.h>
-#include "../../../Lib/NacamError/NacamError.h"
 
-class MissileStateMonoCircuse : public IMissileLaunchState
+class MissileStateForEnemy : public IMissileLaunchState
 {
 	bool FireMissile(LaunchedBy launcher, const DirectX::XMFLOAT3 &launch_pos, MissileManager *ptr) override
 	{
 		MissileParam param{};
-		param.type = MissileType::Mono;
+		param.type = MissileType::ForEnemy;
 
 		switch (launcher)
 		{
@@ -17,18 +15,8 @@ class MissileStateMonoCircuse : public IMissileLaunchState
 			// IDをプレイヤーのものとする
 			param.tgt_id = (int32_t)(TargetIs::Player);
 			param.tgt_pos = DirectX::XMFLOAT3();
+			param.life = 200;
 			break;
-
-		case LaunchedBy::Player:
-		{
-			// ターゲットの参照を取得
-			auto itr = NcmUtill::MoveIterator(ptr->GetLockOnSys()->GetTgtList().begin(), 0);
-
-			// ターゲットデータを取得
-			param.tgt_id = itr->id;
-			param.tgt_pos = itr->pos;
-		}
-		break;
 
 		default:
 			break;
@@ -40,8 +28,6 @@ class MissileStateMonoCircuse : public IMissileLaunchState
 		param.acc = NcmUtill::GenerateRandom(DirectX::XMFLOAT3(-1.5f, -1.5f, 0), DirectX::XMFLOAT3(1.5f, 1.5f, 0));
 		param.detection_range = 1000.0f;
 		param.init_straight_time = 0;
-		param.life = NcmUtill::GenerateRandom(100, 300);
-		//param.life = 300;
 
 		// 射出位置と目標位置をXMVECTORへ変換
 		DirectX::XMVECTOR launch = DirectX::XMLoadFloat3(&launch_pos);

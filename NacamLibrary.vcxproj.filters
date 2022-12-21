@@ -123,12 +123,6 @@
     <Filter Include="Application\Number">
       <UniqueIdentifier>{fe85f7ac-bb8a-4063-9fbb-bb4ff9b59558}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\NacamMath">
-      <UniqueIdentifier>{cb7ad0a6-a25c-4946-88c8-c2c944f7dc1b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\NacamMath\Easing">
-      <UniqueIdentifier>{951cf166-1a19-4d53-a518-5228e252c0be}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application\Scene\Demo\ExecuteIndirectDemo">
       <UniqueIdentifier>{0d11723b-fab3-488c-a8b9-6482732831eb}</UniqueIdentifier>
     </Filter>
@@ -200,6 +194,12 @@
     </Filter>
     <Filter Include="Application\LevelDataManager">
       <UniqueIdentifier>{02771ec3-9871-49a0-8224-63215fbc97f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\NcmMath">
+      <UniqueIdentifier>{cb7ad0a6-a25c-4946-88c8-c2c944f7dc1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\NcmMath\Easing">
+      <UniqueIdentifier>{951cf166-1a19-4d53-a518-5228e252c0be}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -402,7 +402,7 @@
       <Filter>Application\UI</Filter>
     </ClCompile>
     <ClCompile Include="Sources\App\Math\Easing\NcmEasing.cpp">
-      <Filter>Application\NacamMath\Easing</Filter>
+      <Filter>Application\NcmMath\Easing</Filter>
     </ClCompile>
     <ClCompile Include="Sources\App\main.cpp">
       <Filter>ソース ファイル</Filter>
@@ -641,10 +641,10 @@
       <Filter>Application\UI</Filter>
     </ClInclude>
     <ClInclude Include="Sources\App\Math\NcmMath.h">
-      <Filter>Application\NacamMath</Filter>
+      <Filter>Application\NcmMath</Filter>
     </ClInclude>
     <ClInclude Include="Sources\App\Math\Easing\NcmEasing.h">
-      <Filter>Application\NacamMath\Easing</Filter>
+      <Filter>Application\NcmMath\Easing</Filter>
     </ClInclude>
     <ClInclude Include="Sources\App\Unique\Missile\IMissileLaunchState.h">
       <Filter>Application\Unique\Missile</Filter>
@@ -692,6 +692,12 @@
       <Filter>Application\Unique\Missile</Filter>
     </ClInclude>
     <ClInclude Include="Sources\App\Unique\Missile\MissileStateMonoCircuse.h">
+      <Filter>Application\Unique\Missile</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Unique\Missile\MissileDescs.h">
+      <Filter>Application\Unique\Missile</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Unique\Missile\MissileStateForEnemy.h">
       <Filter>Application\Unique\Missile</Filter>
     </ClInclude>
   </ItemGroup>

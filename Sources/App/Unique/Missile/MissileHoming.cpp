@@ -3,7 +3,7 @@
 #include "MissileHomingStateMiddleAccuracy.h"
 #include "MissileHomingStateLowAccuracy.h"
 
-void MissileHoming::HomingEnemy(HomingAccuracy accuracy, XMFLOAT3 dest_pos)
+void MissileHoming::HomingTarget(HomingAccuracy accuracy, XMFLOAT3 &dest_pos)
 {
 	using enum HomingAccuracy;
 
@@ -28,5 +28,5 @@ void MissileHoming::HomingEnemy(HomingAccuracy accuracy, XMFLOAT3 dest_pos)
 		break;
 	}
 
-	homing_accuracy_->HomingEnemy(dest_pos);
+	homing_accuracy_->HomingTarget(dest_pos);
 }

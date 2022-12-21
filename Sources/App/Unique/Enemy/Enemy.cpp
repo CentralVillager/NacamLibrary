@@ -22,7 +22,7 @@ Enemy::Enemy() :
 	bullets_(std::make_shared<BulletList>()),
 	mi_launcher_(std::make_shared<MissileLauncher>()),
 	shot_interval_(0),
-	missile_launch_intervel_(0)
+	missile_launch_count_(LAUNCH_MISSILE_INTERVAL_)
 {
 	// 敵生成時にカウントを加算
 	id_counter_++;
@@ -72,9 +72,8 @@ void Enemy::Update()
 {
 	RotY();
 	MoveHorizontally(2.0f, 100.0f);
-	//AutoShot(200, player_->GetPos());
 	bullets_->Update();
-	//FireMissile(1000);
+	LaunchMissileSequence();
 
 	obj_->Update();
 	UpdateColl();
@@ -183,36 +182,26 @@ void Enemy::AutoShot(int interval, const XMFLOAT3 &dist)
 	}
 }
 
-void Enemy::FireMissile(uint32_t interval)
+void Enemy::FireMissile()
 {
-	// 発射可能なら
-	if (CheckCanFire(interval))
+	mi_launcher_->FireMissile(MissileType::ForEnemy, LaunchedBy::Enemy, GetPos());
+}
+
+void Enemy::LaunchMissileSequence()
+{
+	if (CheckCanFire())
 	{
-		// ミサイルを発射する
-		mi_launcher_->FireMissile(MissileType::Mono, GetPos(), GetFwdVec());
+		mi_launcher_->FireMissile(MissileType::ForEnemy, LaunchedBy::Enemy, GetPos());
 	}
 }
 
-bool Enemy::CheckCanFire(uint32_t interval)
+bool Enemy::CheckCanFire()
 {
-	// 発射されたか
-	static bool was_fired = true;
+	missile_launch_count_--;
 
-	// 発射されていたら
-	if (was_fired)
+	if (IsZeroOrLess(missile_launch_count_))
 	{
-		// 発射間隔を更新する
-		missile_launch_intervel_ = interval;
-		was_fired = false;
-	}
-
-	// カウントを減らす
-	missile_launch_intervel_--;
-
-	// カウントが0以下になったら
-	if (IsZeroOrLess(missile_launch_intervel_))
-	{
-		was_fired = true;
+		missile_launch_count_ = LAUNCH_MISSILE_INTERVAL_;
 		return true;
 	}
 

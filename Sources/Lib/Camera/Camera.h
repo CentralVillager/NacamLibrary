@@ -53,9 +53,12 @@ private:
 	// Ž‹–ìŠp
 	float fov_;
 
-	float differ_ = 22.0f;
+	/*float differ_ = 22.0f;
 	float differ_y_ = 12.0f;
-	float offset_y_ = 3.0f;
+	float offset_y_ = 3.0f;*/
+	float differ_ = 75.0f;
+	float differ_y_ = 30.0f;
+	float offset_y_ = 20.0f;
 
 public:
 

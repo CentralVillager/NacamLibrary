@@ -20,6 +20,7 @@ void Particle::Initialize(Model *model, const ParticleDesc &part_desc_)
 	particle_->s_scale_ = part_desc_.s_scale_;
 	particle_->e_scale_ = part_desc_.e_scale_;
 	particle_->is_dead_ = false;
+	particle_->color_ = part_desc_.color_;
 	particle_->alpha_ = part_desc_.alpha_;
 	particle_->tex_handle_ = part_desc_.tex_handle_;
 }

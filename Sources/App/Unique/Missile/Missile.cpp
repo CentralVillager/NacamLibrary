@@ -4,6 +4,7 @@
 #include "../../../Lib/NacamError/NacamError.h"
 #include "../Sources/App/Math/NcmMath.h"
 #include "../../../Lib/PreDraw/PreDraw.h"
+#include "../Player/Player.h"
 
 using namespace DirectX;
 using namespace NcmUtill;
@@ -42,6 +43,7 @@ void Missile::Initialize(const MissileParam &args)
 	// 値を入力より設定
 	mi_param_ = args;
 
+	// 描画データを初期化
 	InitObj3d(model_.get(), coll_model_.get());
 	obj_->SetPos(XMFLOAT3(mi_param_.pos));
 
@@ -61,7 +63,8 @@ void Missile::Initialize(const MissileParam &args)
 	temp.z -= temp.z;
 	emi.part_desc_.accel_ = temp;
 	emi.part_desc_.life_ = mi_param_.life;
-	emi.part_desc_.s_scale_ = 1.0f;
+	emi.part_desc_.s_scale_ = 1.5f;
+	emi.part_desc_.color_ = XMFLOAT3(0.7f, 0.7f, 0.7f);	// 白
 	emi.pos_rand_ = { 0.0f, 0.0f, 0.0f };
 	emi.vel_rand_ = { 0.01f, 0.01f, 0.01f };
 	emi.gene_num_ = 1;
@@ -82,12 +85,11 @@ void Missile::Update()
 	if (IsZeroOrLess(mi_param_.life))
 	{
 		// ミサイルを無効にする
-		//InvalidateMissile();
+		InvalidateMissile();
 
 		// エミッターの終了準備が出来たら
 		if (emitter_->NoticeCanTerminate() &&
 			explo_emi_->NoticeCanTerminate())
-			//if (emitter_->NoticeCanTerminate())
 		{
 			// 殺す
 			is_dead_ = true;
@@ -156,6 +158,11 @@ void Missile::Activate()
 
 void Missile::InvalidateMissile()
 {
+	if (!mi_param_.is_validity)
+	{
+		return;
+	}
+
 	// ミサイルを無効化
 	mi_param_.is_validity = false;
 
@@ -172,16 +179,17 @@ void Missile::ExplosionOnDeath()
 	EmitterDesc explo_emi{};
 	explo_emi.part_desc_.position_ = mi_param_.pos;
 	XMVECTOR norm_vec = XMVector3Normalize(XMLoadFloat3(&mi_param_.vel));
-	explo_emi.part_desc_.velocity_.x = -norm_vec.m128_f32[0] * 0.1f;
-	explo_emi.part_desc_.velocity_.y = -norm_vec.m128_f32[1] * 0.1f;
-	explo_emi.part_desc_.velocity_.z = -norm_vec.m128_f32[2] * 0.1f;
+	explo_emi.part_desc_.velocity_.x = norm_vec.m128_f32[0] * 0.1f;
+	explo_emi.part_desc_.velocity_.y = norm_vec.m128_f32[1] * 0.1f;
+	explo_emi.part_desc_.velocity_.z = norm_vec.m128_f32[2] * 0.1f;
 	explo_emi.part_desc_.accel_ = XMFLOAT3(0, 0, 0);
 	explo_emi.part_desc_.life_ = 50;
-	explo_emi.part_desc_.s_scale_ = 1.0f;
+	explo_emi.part_desc_.s_scale_ = 2.0f;
 	explo_emi.part_desc_.e_scale_ = 0;
+	explo_emi.part_desc_.color_ = XMFLOAT3(Convert256to01(0xe6), Convert256to01(0x5c), Convert256to01(0x00));
 	explo_emi.part_desc_.alpha_ = 1.0f;
-	explo_emi.pos_rand_ = XMFLOAT3(0, 0, 0);
-	explo_emi.vel_rand_ = XMFLOAT3(0.1f, 0.1f, 0.1f);
+	explo_emi.pos_rand_ = XMFLOAT3(1.0f, 1.0f, 1.0f);
+	explo_emi.vel_rand_ = XMFLOAT3(0.2f, 0.2f, 0.2f);
 	explo_emi.gene_num_ = EXPLO_PARTICLE_NUM_;
 	explo_emi.use_life_ = false;
 	explo_emi_->SetEmitterDesc(explo_emi);
@@ -197,27 +205,26 @@ void Missile::MoveZ(float speed)
 	obj_->SetPos(pos);
 }
 
-Missile::SearchResult Missile::CalcEnemyPos(EnemiesList &enemies)
+void Missile::UpdateTargetPos(EnemiesList &enemies)
 {
-	SearchResult result;
-
-	// 追尾したい敵のIDが入っている要素の添字を検索
-	int index = enemies.GetEnemyIndexWithID(mi_param_.tgt_id);
+	// 追尾したいターゲットのIDが入っている要素の添字を検索
+	int32_t index = enemies.GetEnemyIndexWithID(mi_param_.tgt_id);
 
 	// 居なかったら
-	if (index == (int)(NacamError::NonDetected))
+	if (index == (int32_t)(NacamError::NonDetected))
 	{
-		result.is_succes = false;
-		result.pos = XMFLOAT3();
-
-		return result;
+		InvalidateMissile();
+		return;
+	}
+	// ターゲットがプレイヤーなら
+	else if (index == (int32_t)(TargetIs::Player))
+	{
+		mi_param_.tgt_pos = p_player_->GetPos();
+		return;
 	}
 
-	result.is_succes = true;
-	result.pos = enemies.GetPos(index);
-
-	// 判明した添字をもとに敵の位置を特定
-	return result;
+	// 判明した添字をもとにターゲットの位置を特定
+	mi_param_.tgt_pos = enemies.GetPos(index);
 }
 
 void Missile::HomingEnemy(EnemiesList &enemies)
@@ -381,16 +388,14 @@ void Missile::TestHomingTarget(EnemiesList &enemies)
 	obj_->SetRot(LookAt(mi_param_.vel));
 }
 
-void Missile::HomingTarget(XMFLOAT3 &target)
+void Missile::HomingTarget()
 {
 	// ミサイルの現在位置を取得
 	mi_param_.pos = obj_->GetPos();
 
 	// XMVECTORに変換
 	XMVECTOR mi_vec = XMLoadFloat3(&mi_param_.pos);
-
-	// ローカルへ
-	XMVECTOR tgt_vec = XMLoadFloat3(&target);
+	XMVECTOR tgt_vec = XMLoadFloat3(&mi_param_.tgt_pos);
 
 	// ふたつの座標を結ぶベクトルを計算
 	XMVECTOR vec =
@@ -414,25 +419,30 @@ void Missile::HomingTarget(XMFLOAT3 &target)
 
 	// 正規化
 	XMVECTOR norm_vec = XMVector3Normalize(vec);
-	XMVECTOR mi_norm_vec = XMVector3Normalize(XMLoadFloat3(&mi_param_.vel));
+	XMVECTOR vel_vec = XMLoadFloat3(&mi_param_.vel);
+	XMVECTOR mi_norm_vec = XMVector3Normalize(vel_vec);
 
-	// 離れている距離
-	XMVECTOR differ =
-	{
-		norm_vec.m128_f32[0] - mi_norm_vec.m128_f32[0],
-		norm_vec.m128_f32[1] - mi_norm_vec.m128_f32[1],
-		norm_vec.m128_f32[2] - mi_norm_vec.m128_f32[2]
-	};
+	// 速度をセット
+	XMStoreFloat3(&mi_param_.vel, norm_vec);
 
 	// 加速度を加算
 	mi_param_.vel.x += mi_param_.acc.x;
 	mi_param_.vel.y += mi_param_.acc.y;
 	mi_param_.vel.z += mi_param_.acc.z;
 
+	if (IsPlus(mi_param_.acc.x)) { mi_param_.acc.x -= 0.01f; }
+	else if (IsMinus(mi_param_.acc.x)) { mi_param_.acc.x += 0.01f; }
+
+	if (IsPlus(mi_param_.acc.y)) { mi_param_.acc.y -= 0.01f; }
+	else if (IsMinus(mi_param_.acc.y)) { mi_param_.acc.y += 0.01f; }
+
+	if (IsPlus(mi_param_.acc.z)) { mi_param_.acc.z -= 0.01f; }
+	else if (IsMinus(mi_param_.acc.z)) { mi_param_.acc.z += 0.01f; }
+
 	// 速度を加算
-	mi_param_.vel.x += differ.m128_f32[0] * speed_;
-	mi_param_.vel.y += differ.m128_f32[1] * speed_;
-	mi_param_.vel.z += differ.m128_f32[2] * speed_;
+	mi_param_.vel.x *= speed_;
+	mi_param_.vel.y *= speed_;
+	mi_param_.vel.z *= speed_;
 
 	// 位置を更新
 	mi_param_.pos.x += mi_param_.vel.x;
@@ -442,8 +452,20 @@ void Missile::HomingTarget(XMFLOAT3 &target)
 	// 位置を反映
 	obj_->SetPos(mi_param_.pos);
 
-	obj_->SetRot(LookAt(XMFLOAT3(mi_norm_vec.m128_f32[0], mi_norm_vec.m128_f32[1], mi_norm_vec.m128_f32[2])));
-	//obj_->SetRot(LookAt(mi_param_.vel));
+	obj_->SetRot(LookAt(mi_param_.vel));
+
+	if (mi_param_.type == MissileType::ForEnemy)
+	{
+		if (len.m128_f32[0] <= GenerateRandom(5.0f, 50.0f))
+		{
+			// エミッターの終了準備
+			PrepareTermEmitter();
+			// ミサイルの寿命を強制的に0に
+			SetMissileLife(0);
+			// ミサイルを無効化(死亡フラグは建てない)
+			InvalidateMissile();
+		}
+	}
 }
 
 void Missile::PrepareTermEmitter()

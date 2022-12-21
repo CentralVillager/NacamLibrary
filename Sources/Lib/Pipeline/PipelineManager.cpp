@@ -335,12 +335,13 @@ void PipelineManager::SetTemplateConfigs()
 	configs_[(int)(p_name)].PS_name = L"Resources/shaders/ParticlePS.hlsl";
 	configs_[(int)(p_name)].GS_name = L"Resources/shaders/ParticleGS.hlsl";
 	configs_[(int)(p_name)].fill_mode = D3D12_FILL_MODE_SOLID;
-	configs_[(int)(p_name)].input_layout.resize(3);
+	configs_[(int)(p_name)].input_layout.resize(4);
 	configs_[(int)(p_name)].input_layout =
 	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
+		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 	};
 	configs_[(int)(p_name)].primitive_topology_type = D3D12_PRIMITIVE_TOPOLOGY_TYPE_POINT;
 	configs_[(int)(p_name)].primitive_topology = D3D_PRIMITIVE_TOPOLOGY_POINTLIST;

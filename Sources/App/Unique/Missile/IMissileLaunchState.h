@@ -2,7 +2,8 @@
 #include <DirectXMath.h>
 #include "../Missile/MissileManager.h"
 #include "../../../App/Utility/NcmUtil.h"
-#include "../../../App/Unique/Player/Player.h"
+#include "../../../Lib/NacamError/NacamError.h"
+#include "MissileDescs.h"
 
 /// <summary>
 /// ミサイル発射パターンの基底クラス
@@ -13,5 +14,5 @@ class IMissileLaunchState
 
 public:
 
-	virtual bool FireMissile(const XMFLOAT3 &launch_pos, const XMFLOAT3 &dest_pos, MissileManager *ptr) = 0;
+	virtual bool FireMissile(LaunchedBy launcher, const XMFLOAT3 &launch_pos, MissileManager *ptr) = 0;
 };

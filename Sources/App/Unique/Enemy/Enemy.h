@@ -17,6 +17,11 @@ class Enemy : public AbsUniqueObj
 
 private:
 
+	// ミサイル発射間隔
+	static constexpr uint32_t LAUNCH_MISSILE_INTERVAL_ = 100;
+
+private:
+
 	// モデルデータ
 	static std::unique_ptr<Model> model_;
 	static std::unique_ptr<Model> coll_model_;
@@ -47,7 +52,7 @@ private:
 	uint32_t shot_interval_;
 
 	// ミサイル発射間隔保存用
-	uint32_t missile_launch_intervel_;
+	uint32_t missile_launch_count_;
 
 	int32_t cycle = 100;
 	float length = 100.0f;
@@ -62,8 +67,12 @@ public:
 	static void LoadResources();
 	static void ImportPtr(Player *player);
 
+public:
+
 	const uint32_t &GetID() { return id_; }
 	const std::shared_ptr<BulletList> &GetBulletList() { return bullets_; }
+
+public:
 
 	void Initialize(const XMFLOAT3 &pos);
 	void Initialize() override;
@@ -98,12 +107,20 @@ public:
 	void AutoShot(int interval, const XMFLOAT3 &dist);
 
 	/// <summary>
-	/// ミサイルを発射する
+	/// ミサイルを単発発射する
 	/// </summary>
-	/// <param name="interval">発射間隔</param>
-	void FireMissile(uint32_t interval);
+	void FireMissile();
+
+	/// <summary>
+	/// ミサイル発射関連の動作
+	/// </summary>
+	void LaunchMissileSequence();
 
 private:
 
-	bool CheckCanFire(uint32_t interval);
+	/// <summary>
+	/// ミサイルを発射できるか
+	/// </summary>
+	/// <returns></returns>
+	bool CheckCanFire();
 };

@@ -11,7 +11,7 @@ std::unique_ptr<Model> LockOnSystem::model_ = nullptr;
 
 LockOnSystem::LockOnSystem() :
 	markers_(),
-	tgt_list_(),
+	near_tgt_list_(),
 	player_ptr_(),
 	enemies_ptr_(),
 	numbers_(std::make_unique<Numbers>())
@@ -44,7 +44,7 @@ void LockOnSystem::Update()
 	CalcNearestTargets(player_ptr_->GetPos(), *enemies_ptr_);
 
 	// ターゲットリストのイテレータを取得
-	auto itr = tgt_list_.begin();
+	auto itr = near_tgt_list_.begin();
 
 	// 全てのマーカーに対して
 	for (auto &i : markers_)
@@ -112,30 +112,30 @@ void LockOnSystem::AddTargetNum()
 void LockOnSystem::ResetTargetNum()
 {
 	markers_.clear();
-	tgt_list_.clear();
+	near_tgt_list_.clear();
 	current_tgt_num_ = 0;
 }
 
 void LockOnSystem::CalcNearestTargets(const XMFLOAT3 &player_pos, EnemiesList &enemies)
 {
 	// 初期化
-	tgt_list_.clear();
+	near_tgt_list_.clear();
 
 	// 全ての敵に対して
 	for (UINT i = 0; i < enemies.GetEnemies().size(); i++)
 	{
 		// 要素を構築
-		tgt_list_.emplace_back();
+		near_tgt_list_.emplace_back();
 		// プレイヤーと敵との距離を計算し、格納
-		tgt_list_.back().dist = CalcDistance(player_pos, enemies.GetPos(i));
+		near_tgt_list_.back().dist = CalcDistance(player_pos, enemies.GetPos(i));
 		// 位置を格納
-		tgt_list_.back().pos = enemies.GetPos(i);
+		near_tgt_list_.back().pos = enemies.GetPos(i);
 		// IDを格納
-		tgt_list_.back().id = enemies.GetID(i);
+		near_tgt_list_.back().id = enemies.GetID(i);
 	}
 
 	// 距離が近い順に要素をソート
-	tgt_list_.sort([](const TargetData &lhs, const TargetData &rhs) { return lhs.dist < rhs.dist; });
+	near_tgt_list_.sort([](const TargetData &lhs, const TargetData &rhs) { return lhs.dist < rhs.dist; });
 }
 
 float LockOnSystem::CalcDistance(const XMFLOAT3 &dist_pos, const XMFLOAT3 &src_pos)

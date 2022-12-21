@@ -44,7 +44,7 @@ private:
 	std::vector<Object3d> markers_;
 
 	// 距離に応じて昇順にソートされたターゲットのリスト
-	std::list<TargetData> tgt_list_;
+	std::list<TargetData> near_tgt_list_;
 
 	Player *player_ptr_;
 	EnemiesList *enemies_ptr_;
@@ -68,7 +68,7 @@ public:
 
 public:
 
-	inline const std::list<TargetData> &GetTgtList() { return tgt_list_; }
+	inline const std::list<TargetData> &GetTgtList() { return near_tgt_list_; }
 	inline static const uint32_t &GetCurrentTgtNum() { return current_tgt_num_; }
 	const uint32_t GetMaxTgtNum();
 
