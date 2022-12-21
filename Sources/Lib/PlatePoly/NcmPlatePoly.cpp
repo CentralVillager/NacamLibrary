@@ -192,7 +192,6 @@ void NcmPlatePoly::UpdateVertBuffer(std::forward_list<NcmParticleCommonArgs> &ar
 			vert_map->scale = itr->scale;
 			// F
 			vert_map->color = XMFLOAT4(itr->color.x, itr->color.y, itr->color.z, 1.0f);
-			//vert_map->color = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
 			// “§–¾“x
 			vert_map->alpha = XMFLOAT4(itr->alpha, itr->alpha, itr->alpha, itr->alpha);
 			// Ÿ‚ÌÀ•W‚Ö

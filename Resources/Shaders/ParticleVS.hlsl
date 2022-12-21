@@ -1,6 +1,7 @@
 #include "Particle.hlsli"
 
-VSOutput main(float4 pos : POSITION, float scale : TEXCOORD, float4 color : COLOR, float alpha : NORMAL)
+VSOutput main(float4 pos : POSITION, float scale : TEXCOORD, 
+float4 color : COLOR, float alpha : NORMAL)
 {
     VSOutput output;
     output.pos = pos;

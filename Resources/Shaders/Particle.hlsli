@@ -6,8 +6,8 @@ cbuffer cbuff0 : register(b0)
 
 struct VSOutput
 {
-    float4 pos : POSITION; // システム用頂点座標
-    float4 scale : TEXCOORD; // スケール
+    float4 pos : POSITION;
+    float4 scale : TEXCOORD;
     float4 color : COLOR;
     float4 alpha : NORMAL;
 };

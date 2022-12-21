@@ -723,9 +723,6 @@
     <None Include="Resources\Shaders\Line.hlsli">
       <Filter>シェーダファイル</Filter>
     </None>
-    <None Include="Resources\Shaders\PlatePoly.hlsli">
-      <Filter>シェーダファイル</Filter>
-    </None>
     <None Include="Resources\Shaders\Point.hlsli">
       <Filter>シェーダファイル</Filter>
     </None>
@@ -777,12 +774,6 @@
       <Filter>シェーダファイル</Filter>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\LinePS.hlsl">
-      <Filter>シェーダファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\PlatePolyPS.hlsl">
-      <Filter>シェーダファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\PlatePolyVS.hlsl">
       <Filter>シェーダファイル</Filter>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\PointGS.hlsl">
