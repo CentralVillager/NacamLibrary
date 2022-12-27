@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NacamLibrary", "NacamLibrary.vcxproj", "{E62E477C-0538-435E-9319-3B7AC7F8733A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SKY CIRCUSE", "SKY CIRCUSE.vcxproj", "{DB556310-116F-46D9-A52C-AB83436753D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E62E477C-0538-435E-9319-3B7AC7F8733A}.Debug|x64.ActiveCfg = Debug|x64
-		{E62E477C-0538-435E-9319-3B7AC7F8733A}.Debug|x64.Build.0 = Debug|x64
-		{E62E477C-0538-435E-9319-3B7AC7F8733A}.Release|x64.ActiveCfg = Release|x64
-		{E62E477C-0538-435E-9319-3B7AC7F8733A}.Release|x64.Build.0 = Release|x64
+		{DB556310-116F-46D9-A52C-AB83436753D9}.Debug|x64.ActiveCfg = Debug|x64
+		{DB556310-116F-46D9-A52C-AB83436753D9}.Debug|x64.Build.0 = Debug|x64
+		{DB556310-116F-46D9-A52C-AB83436753D9}.Release|x64.ActiveCfg = Release|x64
+		{DB556310-116F-46D9-A52C-AB83436753D9}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

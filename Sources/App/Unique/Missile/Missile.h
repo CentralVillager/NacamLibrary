@@ -4,6 +4,7 @@
 #include "../LockOnSystem/LockOnSystem.h"
 #include "../Abs/AbsUniqueObj.h"
 #include "MissileDescs.h"
+#include "MissileHoming.h"
 
 class Player;
 
@@ -26,6 +27,9 @@ private:
 	static std::unique_ptr<Model> coll_model_;
 
 private:
+
+	// 追尾精度
+	std::unique_ptr<MissileHoming> homing_sequence_;
 
 	std::unique_ptr<Emitter> emitter_;	// エミッター
 	std::unique_ptr<Emitter> explo_emi_;// 爆発エミッター

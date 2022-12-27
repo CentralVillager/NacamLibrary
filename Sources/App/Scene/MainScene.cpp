@@ -402,9 +402,6 @@ void MainScene::Draw()
 	NcmUi::DrawMissileNumSet(LockOnSystem::GetCurrentTgtNum());
 	NcmUi::DrawHp(player_->GetHp(), 30.0f);
 	ult_->DrawUi();
-
-	/*PreDraw::SetPipeline(PipelineName::PlatePoly);
-	NcmPlatePoly::Draw(space_);*/
 }
 
 void MainScene::DebugDraw()
@@ -475,7 +472,7 @@ void MainScene::CollisionProcess()
 				{
 					if (missile_mgr_->Death(j))
 					{
-						ene_list_->Death(i);
+						//ene_list_->Death(i);
 						ult_->AddUltValue(20);
 					}
 				}

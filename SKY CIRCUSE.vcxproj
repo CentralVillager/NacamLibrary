@@ -21,9 +21,10 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{e62e477c-0538-435e-9319-3b7ac7f8733a}</ProjectGuid>
+    <ProjectGuid>{DB556310-116F-46D9-A52C-AB83436753D9}</ProjectGuid>
     <RootNamespace>NacamLibrary</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>SKY CIRCUSE</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -205,7 +206,6 @@
     <ClCompile Include="Sources\App\Unique\Enemy\Enemy.cpp" />
     <ClCompile Include="Sources\App\Unique\LockOnSystem\LockOnSystem.cpp" />
     <ClCompile Include="Sources\App\Unique\Missile\Missile.cpp" />
-    <ClCompile Include="Sources\App\Unique\Missile\MissileHoming.cpp" />
     <ClCompile Include="Sources\App\Unique\Missile\MissileManager.cpp" />
     <ClCompile Include="Sources\App\Unique\Player\Player.cpp" />
     <ClCompile Include="Sources\App\Unique\Reticle\Reticle.cpp" />

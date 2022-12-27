@@ -15,6 +15,7 @@ std::unique_ptr<Model> Missile::coll_model_ = nullptr;
 
 Missile::Missile()
 	: AbsUniqueObj(3.0f, 1.0f),
+	homing_sequence_(std::make_unique<MissileHoming>()),
 	emitter_(std::make_unique<Emitter>()),
 	explo_emi_(std::make_unique<Emitter>()),
 	mi_param_()
@@ -390,6 +391,8 @@ void Missile::TestHomingTarget(EnemiesList &enemies)
 
 void Missile::HomingTarget()
 {
+	//homing_sequence_->HomingTarget(*this, HomingAccuracy::High);
+
 	// ミサイルの現在位置を取得
 	mi_param_.pos = obj_->GetPos();
 

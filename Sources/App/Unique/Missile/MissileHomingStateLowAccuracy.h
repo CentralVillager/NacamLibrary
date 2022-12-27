@@ -3,8 +3,8 @@
 
 class MissileHomingStateLowAccuracy : public IMissileHomingState
 {
-	void HomingTarget(XMFLOAT3 dest_pos) override
+	/*void HomingTarget(Missile &missile) override
 	{
 
-	}
+	}*/
 };

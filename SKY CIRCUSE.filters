@@ -39,6 +39,9 @@
     <Filter Include="Library\Model">
       <UniqueIdentifier>{5480a6d3-20a9-46ef-b4c0-86323d6b2f10}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NotUse">
+      <UniqueIdentifier>{7e06c4f2-375b-40b0-baa0-9dcfcebcae9e}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Application\Utility">
       <UniqueIdentifier>{946c89b9-c8f2-4503-a4a8-26b7a7a49119}</UniqueIdentifier>
     </Filter>
@@ -123,6 +126,12 @@
     <Filter Include="Application\Number">
       <UniqueIdentifier>{fe85f7ac-bb8a-4063-9fbb-bb4ff9b59558}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\NacamMath">
+      <UniqueIdentifier>{cb7ad0a6-a25c-4946-88c8-c2c944f7dc1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\NacamMath\Easing">
+      <UniqueIdentifier>{951cf166-1a19-4d53-a518-5228e252c0be}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Application\Scene\Demo\ExecuteIndirectDemo">
       <UniqueIdentifier>{0d11723b-fab3-488c-a8b9-6482732831eb}</UniqueIdentifier>
     </Filter>
@@ -177,32 +186,11 @@
     <Filter Include="Application\UI">
       <UniqueIdentifier>{04c28156-58fa-41fa-bb79-046763cf8775}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Unique\UltimateManager">
-      <UniqueIdentifier>{5d34942f-6775-45cc-9426-50d7e9261d7c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\Debug\NcmDebug">
-      <UniqueIdentifier>{67ee7b5e-9efb-4f0c-91d4-aee989315f32}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Library\Point">
-      <UniqueIdentifier>{aab71361-fd97-412f-96b7-b15187a550c9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Library\PlatePoly">
-      <UniqueIdentifier>{18b28dbf-63e4-48f2-b4f5-8239ae3afc19}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Library\Loader">
-      <UniqueIdentifier>{fc615cd1-a00f-4f33-bcd3-31dc349019b4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\LevelDataManager">
-      <UniqueIdentifier>{02771ec3-9871-49a0-8224-63215fbc97f0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\NcmMath">
-      <UniqueIdentifier>{cb7ad0a6-a25c-4946-88c8-c2c944f7dc1b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\NcmMath\Easing">
-      <UniqueIdentifier>{951cf166-1a19-4d53-a518-5228e252c0be}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
     <ClCompile Include="imgui\imgui.cpp">
       <Filter>Application\Debug\ImGui\Include</Filter>
     </ClCompile>
@@ -377,6 +365,9 @@
     <ClCompile Include="Sources\App\Unique\LockOnSystem\LockOnSystem.cpp">
       <Filter>Application\Unique\LockOnSystem</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\App\Math\Easing\NcmEasing.cpp">
+      <Filter>Application\NacamMath\Easing</Filter>
+    </ClCompile>
     <ClCompile Include="Sources\App\Unique\Bullet\Bullet.cpp">
       <Filter>Application\Unique\Bullet</Filter>
     </ClCompile>
@@ -386,44 +377,8 @@
     <ClCompile Include="Sources\App\Unique\Bullet\BulletList.cpp">
       <Filter>Application\Unique\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\App\Unique\Ultimate\UltimateManager.cpp">
-      <Filter>Application\Unique\UltimateManager</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\App\Debug\NcmDebug.cpp">
-      <Filter>Application\Debug\NcmDebug</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Lib\Point\Point.cpp">
-      <Filter>Library\Point</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Lib\PlatePoly\PlatePoly.cpp">
-      <Filter>Library\PlatePoly</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\App\Ui\NcmUi.cpp">
       <Filter>Application\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\App\Math\Easing\NcmEasing.cpp">
-      <Filter>Application\NcmMath\Easing</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\App\main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Lib\Input\NcmInput.cpp">
-      <Filter>Library\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Lib\Loader\JsonLoader.cpp">
-      <Filter>Library\Loader</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\App\Level\LevelDataManager.cpp">
-      <Filter>Application\LevelDataManager</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Lib\PlatePoly\NcmPlatePoly.cpp">
-      <Filter>Library\PlatePoly</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\App\Particle\NcmParticleManager.cpp">
-      <Filter>Application\Particle</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\App\Unique\Missile\MissileHoming.cpp">
-      <Filter>Application\Unique\Missile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -613,6 +568,10 @@
     <ClInclude Include="Sources\resource.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Sources\App\Math\Easing\NcmEasing.h">
+      <Filter>Application\NacamMath\Easing</Filter>
+    </ClInclude>
     <ClInclude Include="Sources\App\Unique\Bullet\Bullet.h">
       <Filter>Application\Unique\Bullet</Filter>
     </ClInclude>
@@ -625,80 +584,8 @@
     <ClInclude Include="Sources\Lib\NacamError\NacamError.h">
       <Filter>Library\NacamError</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Ultimate\UltimateManager.h">
-      <Filter>Application\Unique\UltimateManager</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Debug\NcmDebug.h">
-      <Filter>Application\Debug\NcmDebug</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\Point\Point.h">
-      <Filter>Library\Point</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\PlatePoly\PlatePoly.h">
-      <Filter>Library\PlatePoly</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\App\Ui\NcmUi.h">
       <Filter>Application\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Math\NcmMath.h">
-      <Filter>Application\NcmMath</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Math\Easing\NcmEasing.h">
-      <Filter>Application\NcmMath\Easing</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\IMissileLaunchState.h">
-      <Filter>Application\Unique\Missile</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\MissileStateUltimate.h">
-      <Filter>Application\Unique\Missile</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\MissileStateCharge.h">
-      <Filter>Application\Unique\Missile</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\MissileLauncher.h">
-      <Filter>Application\Unique\Missile</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\Input\NcmInput.h">
-      <Filter>Library\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\Loader\JsonLoader.h">
-      <Filter>Library\Loader</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Level\LevelDataManager.h">
-      <Filter>Application\LevelDataManager</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Particle\NcmParticleCommonArgs.h">
-      <Filter>Application\Particle</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\PlatePoly\NcmPlatePoly.h">
-      <Filter>Library\PlatePoly</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Particle\NcmParticleManager.h">
-      <Filter>Application\Particle</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\IMissileHomingState.h">
-      <Filter>Application\Unique\Missile</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\MissileHomingStateHighAccuracy.h">
-      <Filter>Application\Unique\Missile</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\MissileHomingStateLowAccuracy.h">
-      <Filter>Application\Unique\Missile</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\MissileHomingStateMiddleAccuracy.h">
-      <Filter>Application\Unique\Missile</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\MissileHoming.h">
-      <Filter>Application\Unique\Missile</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\MissileStateMonoCircuse.h">
-      <Filter>Application\Unique\Missile</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\MissileDescs.h">
-      <Filter>Application\Unique\Missile</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\MissileStateForEnemy.h">
-      <Filter>Application\Unique\Missile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -706,6 +593,9 @@
       <Filter>シェーダファイル</Filter>
     </None>
     <None Include="Resources\Shaders\Sprite.hlsli">
+      <Filter>シェーダファイル</Filter>
+    </None>
+    <None Include="Resources\Shaders\Particle.hlsli">
       <Filter>シェーダファイル</Filter>
     </None>
     <None Include="Resources\Shaders\FBX.hlsli">
@@ -723,9 +613,6 @@
     <None Include="Resources\Shaders\Line.hlsli">
       <Filter>シェーダファイル</Filter>
     </None>
-    <None Include="Resources\Shaders\Point.hlsli">
-      <Filter>シェーダファイル</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\BasicPS.hlsl">
@@ -738,6 +625,15 @@
       <Filter>シェーダファイル</Filter>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\SpriteVS.hlsl">
+      <Filter>シェーダファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ParticleGS.hlsl">
+      <Filter>シェーダファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ParticlePS.hlsl">
+      <Filter>シェーダファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ParticleVS.hlsl">
       <Filter>シェーダファイル</Filter>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\FBXVS.hlsl">
@@ -774,15 +670,6 @@
       <Filter>シェーダファイル</Filter>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\LinePS.hlsl">
-      <Filter>シェーダファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\PointGS.hlsl">
-      <Filter>シェーダファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\PointPS.hlsl">
-      <Filter>シェーダファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\PointVS.hlsl">
       <Filter>シェーダファイル</Filter>
     </FxCompile>
   </ItemGroup>

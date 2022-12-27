@@ -1,18 +1,21 @@
 #pragma once
 #include "IMissileHomingState.h"
+#include "Missile.h"
+
+class Missile;
 
 class MissileHomingStateHighAccuracy : public IMissileHomingState
 {
-	void HomingTarget(XMFLOAT3 dest_pos) override
+	void HomingTarget(Missile &missile) override
 	{
 		using namespace DirectX;
 		using namespace NcmUtill;
 		using namespace NcmMath;
 
-		MissileParam *mi_param = &missile_->GetMissileParam();
+		MissileParam *mi_param = &missile.GetMissileParam();
 
 		// ミサイルの現在位置を取得
-		mi_param->pos = missile_->GetPos();
+		mi_param->pos = missile.GetPos();
 
 		// XMVECTORに変換
 		XMVECTOR mi_vec = XMLoadFloat3(&mi_param->pos);
@@ -33,7 +36,7 @@ class MissileHomingStateHighAccuracy : public IMissileHomingState
 		if (len.m128_f32[0] >= mi_param->detection_range)
 		{
 			// 直進だけして
-			missile_->MoveZ(missile_->GetSpeed());
+			missile.MoveZ(missile.GetSpeed());
 
 			// その後の追尾処理をスキップ
 			return;
@@ -62,9 +65,9 @@ class MissileHomingStateHighAccuracy : public IMissileHomingState
 		else if (IsMinus(mi_param->acc.z)) { mi_param->acc.z += 0.01f; }
 
 		// 速度を加算
-		mi_param->vel.x *= missile_->GetSpeed();
-		mi_param->vel.y *= missile_->GetSpeed();
-		mi_param->vel.z *= missile_->GetSpeed();
+		mi_param->vel.x *= missile.GetSpeed();
+		mi_param->vel.y *= missile.GetSpeed();
+		mi_param->vel.z *= missile.GetSpeed();
 
 		// 位置を更新
 		mi_param->pos.x += mi_param->vel.x;
@@ -72,8 +75,21 @@ class MissileHomingStateHighAccuracy : public IMissileHomingState
 		mi_param->pos.z += mi_param->vel.z;
 
 		// 位置を反映
-		missile_->SetPos(mi_param->pos);
+		missile.SetPos(mi_param->pos);
 
-		missile_->SetRot(LookAt(mi_param->vel));
+		missile.SetRot(LookAt(mi_param->vel));
+
+		if (mi_param->type == MissileType::ForEnemy)
+		{
+			if (len.m128_f32[0] <= GenerateRandom(5.0f, 50.0f))
+			{
+				// エミッターの終了準備
+				missile.PrepareTermEmitter();
+				// ミサイルの寿命を強制的に0に
+				missile.SetMissileLife(0);
+				// ミサイルを無効化(死亡フラグは建てない)
+				missile.InvalidateMissile();
+			}
+		}
 	}
 };

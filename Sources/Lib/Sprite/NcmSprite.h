@@ -74,9 +74,8 @@ protected:
 	};
 
 protected:
-	//private:
 
-		// テクスチャの最大枚数
+	// テクスチャの最大枚数
 	static const int srv_count_ = 512;
 
 	// 頂点数
@@ -138,6 +137,10 @@ public:
 		return pos;
 	}
 	static inline const XMFLOAT2 &GetSize(const ncm_thandle handle) { return sprite_hub_[handle].size_; }
+	static inline const XMFLOAT4 &GetColor(const ncm_thandle handle)
+	{
+		return sprite_hub_[handle].color_;
+	}
 
 	static inline void SetPos(const ncm_thandle handle, const XMINT2 &pos)
 	{
@@ -177,6 +180,10 @@ public:
 	{
 		sprite_hub_[handle].anchorpoint_ = anchor_point;
 		TransferVertices(&sprite_hub_[handle]);
+	}
+	static inline void SetColor(const ncm_thandle handle, XMFLOAT4 color)
+	{
+		sprite_hub_[handle].color_ = color;
 	}
 
 protected:

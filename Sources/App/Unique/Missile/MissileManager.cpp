@@ -53,7 +53,7 @@ void MissileManager::DebugDraw()
 {
 	for (auto &i : missile_list_)
 	{
-		i.DebugDraw();
+		//i.DebugDraw();
 	}
 }
 
