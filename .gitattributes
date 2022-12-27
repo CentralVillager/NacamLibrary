@@ -17,3 +17,4 @@ lib/fbx_sdk/lib/* filter=lfs diff=lfs merge=lfs -text
 Resources filter=lfs diff=lfs merge=lfs -text
 *.lib filter=lfs diff=lfs merge=lfs -text
 Lib/DirectXTex/Lib* filter=lfs diff=lfs merge=lfs -text
+lib/* filter=lfs diff=lfs merge=lfs -text
