@@ -439,8 +439,8 @@ FodyWeavers.xsd
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio,c++
 
 x64
-NotUseArchive
 .vs
 !/Resources/
+!/Sources/
 bin
 imgui.ini
