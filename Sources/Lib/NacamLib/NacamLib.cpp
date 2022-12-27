@@ -12,7 +12,7 @@
 #include "../Fbx/FbxLoader.h"
 #include "../Fbx/FbxObject3d.h"
 #include "../DrawProc/DrawProc.h"
-#include "../../App/Debug/NcmImGui.h"
+#include "../../App/DebugUtill/NcmImGui.h"
 #include "../../App/Scene/SceneManager/SceneManager.h"
 #include "../../App/FpsManager/FPSManager.h"
 #include "../../App/Scene/AbsScene.h"

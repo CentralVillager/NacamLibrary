@@ -3,7 +3,7 @@
 #include "../Win32App/Win32App.h"
 #include "../Input/KeyboardInput.h"
 #include "../DirectXBase/DirectXBase.h"
-#include "../../App/Debug/NcmImGui.h"
+#include "../../App/DebugUtill/NcmImGui.h"
 #include "../../App/Unique/Player/Player.h"
 
 using namespace DirectX;

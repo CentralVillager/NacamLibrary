@@ -3,7 +3,7 @@
 #include <d3dcompiler.h>
 #include "../Input/KeyboardInput.h"
 #include "../../App/Utility/NcmUtil.h"
-#include "../../App/Debug/NcmImGui.h"
+#include "../../App/DebugUtill/NcmImGui.h"
 #include "../../Lib/PreDraw/PreDraw.h"
 #include "../DirectXBase/DirectXBase.h"
 

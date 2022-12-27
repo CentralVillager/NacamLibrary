@@ -4,7 +4,7 @@
 #include "../../../Lib/Object3d/Object3d.h"
 #include "../../../Lib/Model/Model.h"
 #include "../../../App/Collision/CollisionPrimitive.h"
-#include "../../Debug/NcmImGui.h"
+#include "../../DebugUtill/NcmImGui.h"
 
 /// <summary>
 /// 移動 || 生死判定のあるゲーム内オブジェクトのインターフェース

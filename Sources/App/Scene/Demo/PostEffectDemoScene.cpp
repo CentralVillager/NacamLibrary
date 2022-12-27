@@ -1,7 +1,7 @@
 #include "PostEffectDemoScene.h"
 #include "../../../Lib/DrawProc/DrawProc.h"
 #include "../../../Lib/Input/KeyboardInput.h"
-#include "../../Debug/NcmImGui.h"
+#include "../../DebugUtill/NcmImGui.h"
 
 PostEffectDemoScene::PostEffectDemoScene()
 {

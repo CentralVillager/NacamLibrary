@@ -173,8 +173,8 @@
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="Sources\App\Collision\Collision.cpp" />
     <ClCompile Include="Sources\App\Collision\CollisionPrimitive.cpp" />
-    <ClCompile Include="Sources\App\Debug\NcmDebug.cpp" />
-    <ClCompile Include="Sources\App\Debug\NcmImGui.cpp" />
+    <ClCompile Include="Sources\App\DebugUtill\NcmDebug.cpp" />
+    <ClCompile Include="Sources\App\DebugUtill\NcmImGui.cpp" />
     <ClCompile Include="Sources\App\FpsManager\FPSManager.cpp" />
     <ClCompile Include="Sources\App\Grid\GridRender.cpp" />
     <ClCompile Include="Sources\App\Level\LevelDataManager.cpp" />
@@ -249,8 +249,8 @@
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="Sources\App\Collision\Collision.h" />
     <ClInclude Include="Sources\App\Collision\CollisionPrimitive.h" />
-    <ClInclude Include="Sources\App\Debug\NcmDebug.h" />
-    <ClInclude Include="Sources\App\Debug\NcmImGui.h" />
+    <ClInclude Include="Sources\App\DebugUtill\NcmDebug.h" />
+    <ClInclude Include="Sources\App\DebugUtill\NcmImGui.h" />
     <ClInclude Include="Sources\App\FpsManager\FPSManager.h" />
     <ClInclude Include="Sources\App\Grid\GridRender.h" />
     <ClInclude Include="Sources\App\Level\LevelDataManager.h" />

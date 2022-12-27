@@ -11,7 +11,7 @@
 #include "../Demo/RepulsionDemoScene.h"
 #include "../Demo/ExecuteIndirectDemoScene.h"
 #include "../Demo/MathDemoScene.h"
-#include "../../Debug/NcmImGui.h"
+#include "../../DebugUtill/NcmImGui.h"
 #include "../../../Lib/PostEffect/PostEffect.h"
 
 stack<shared_ptr<AbsScene>> SceneManager::scene_stack_;

@@ -1,5 +1,5 @@
 #include "Particle.h"
-#include "../Debug/NcmImGui.h"
+#include "../DebugUtill/NcmImGui.h"
 #include "../../Lib/PreDraw/PreDraw.h"
 #include "../../Lib/Sprite/NcmSprite.h"
 

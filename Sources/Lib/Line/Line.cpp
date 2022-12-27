@@ -1,6 +1,6 @@
 #include "../Line/Line.h"
 #include "../DirectXBase/DirectXBase.h"
-#include "../../App/Debug/NcmImGui.h"
+#include "../../App/DebugUtill/NcmImGui.h"
 
 using namespace DirectX;
 using namespace Microsoft::WRL;

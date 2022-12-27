@@ -6,7 +6,7 @@
 #include "../Sources/App/Collision/Collision.h"
 #include "../Sources/App/Math/Easing/NcmEasing.h"
 #include "../Utility/NcmUtil.h"
-#include "../Debug/NcmDebug.h"
+#include "../DebugUtill/NcmDebug.h"
 #include "../../Lib/PostEffect/PostEffect.h"
 #include "../../Lib/Input/NcmInput.h"
 #include "../../App/Unique/Missile/MissileLauncher.h"

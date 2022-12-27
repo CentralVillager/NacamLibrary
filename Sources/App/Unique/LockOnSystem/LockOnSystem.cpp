@@ -1,6 +1,6 @@
 #include "LockOnSystem.h"
 #include "../Player/Player.h"
-#include "../../Debug/NcmImGui.h"
+#include "../../DebugUtill/NcmImGui.h"
 #include "../../../Lib/PreDraw/PreDraw.h"
 
 using namespace DirectX;

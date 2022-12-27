@@ -1,5 +1,5 @@
 #include "UltimateManager.h"
-#include "../../Debug/NcmImGui.h"
+#include "../../DebugUtill/NcmImGui.h"
 #include "../../Utility/NcmUtil.h"
 #include "../../../Lib/Win32App/Win32App.h"
 

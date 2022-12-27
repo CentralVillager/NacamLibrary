@@ -1,5 +1,5 @@
 #include "NcmInput.h"
-#include "../../App/Debug/NcmImGui.h"
+#include "../../App/DebugUtill/NcmImGui.h"
 #include "../../App/Utility/NcmUtil.h"
 
 using namespace NcmUtill;

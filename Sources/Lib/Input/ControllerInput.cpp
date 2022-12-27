@@ -1,6 +1,6 @@
 #include "../Input/ControllerInput.h"
 #include "../Input/InputManager.h"
-#include "../../App/Debug/NcmImGui.h"
+#include "../../App/DebugUtill/NcmImGui.h"
 
 Microsoft::WRL::ComPtr<IDirectInput8> ControllerInput::dinput_;
 Microsoft::WRL::ComPtr<IDirectInputDevice8> ControllerInput::dev_controller_;

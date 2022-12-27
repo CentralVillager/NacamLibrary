@@ -5,7 +5,7 @@
 #include "../Scene/AbsScene.h"
 #include "../Collision/CollisionPrimitive.h"
 #include "../Collision/Collision.h"
-#include "../Debug/DebugText.h"
+#include "../DebugUtill/DebugText.h"
 #include "../../Lib/Camera/Camera.h"
 #include "../../Lib/Fbx/FbxLoader.h"
 #include "../../Lib/Fbx/FbxObject3d.h"
