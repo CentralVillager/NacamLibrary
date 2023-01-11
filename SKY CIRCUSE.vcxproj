@@ -206,6 +206,9 @@
     <ClCompile Include="Sources\App\Unique\Enemy\Enemy.cpp" />
     <ClCompile Include="Sources\App\Unique\LockOnSystem\LockOnSystem.cpp" />
     <ClCompile Include="Sources\App\Unique\Missile\Missile.cpp" />
+    <ClCompile Include="Sources\App\Unique\Missile\MissileHomingStateHighAccuracy.cpp" />
+    <ClCompile Include="Sources\App\Unique\Missile\MissileHomingStateLowAccuracy.cpp" />
+    <ClCompile Include="Sources\App\Unique\Missile\MissileHomingStateMiddleAccuracy.cpp" />
     <ClCompile Include="Sources\App\Unique\Missile\MissileManager.cpp" />
     <ClCompile Include="Sources\App\Unique\Player\Player.cpp" />
     <ClCompile Include="Sources\App\Unique\Reticle\Reticle.cpp" />
@@ -302,6 +305,7 @@
     <ClInclude Include="Sources\App\Unique\Reticle\Reticle.h" />
     <ClInclude Include="Sources\App\Unique\Ultimate\UltimateManager.h" />
     <ClInclude Include="Sources\App\Unique\WaveManager\WaveManager.h" />
+    <ClInclude Include="Sources\App\Utility\NcmColor.h" />
     <ClInclude Include="Sources\App\Utility\NcmUtil.h" />
     <ClInclude Include="Sources\Lib\Audio\AudioManager.h" />
     <ClInclude Include="Sources\Lib\Camera\Camera.h" />

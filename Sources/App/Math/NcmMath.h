@@ -114,7 +114,7 @@ namespace NcmMath
 		float cos_theta = dot / (mi_len * dest_len);
 
 		// ƒ¦‚ğ‹‚ß‚é
-		float theta = acos(cos_theta);
+		float theta = (float)(acos(cos_theta));
 
 		// “x”‚É•ÏŠ·
 		ToDegree(&theta);

@@ -69,6 +69,12 @@ const Sphere &MissileManager::GetCollData(UINT n)
 	return itr->GetCollData();
 }
 
+int32_t MissileManager::GetTgtID(int32_t n)
+{
+	auto itr = MoveIterator(missile_list_.begin(), n);
+	return itr->GetMissileParam().tgt_id;
+}
+
 void MissileManager::HomingEnemy(EnemiesList &enemies)
 {
 	for (auto &i : missile_list_)
@@ -103,11 +109,6 @@ bool MissileManager::Death(UINT n)
 {
 	// 死んだミサイルを特定
 	auto itr = MoveIterator(missile_list_.begin(), n);
-
-	if (itr->GetMissileParam().type == MissileType::ForEnemy)
-	{
-		return false;
-	}
 
 	// エミッターの終了準備
 	itr->PrepareTermEmitter();

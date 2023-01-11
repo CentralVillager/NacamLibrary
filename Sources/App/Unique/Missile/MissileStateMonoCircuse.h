@@ -2,6 +2,7 @@
 #include "IMissileLaunchState.h"
 #include <DirectXMath.h>
 #include "../../../Lib/NacamError/NacamError.h"
+#include "../../Utility/NcmColor.h"
 
 class MissileStateMonoCircuse : public IMissileLaunchState
 {
@@ -35,12 +36,15 @@ class MissileStateMonoCircuse : public IMissileLaunchState
 		}
 
 		// パラメータを設定
+		param.speed = 3.0f;
 		param.pos = launch_pos;
 		// 加速度をランダムに設定
 		param.acc = NcmUtill::GenerateRandom(DirectX::XMFLOAT3(-1.5f, -1.5f, 0), DirectX::XMFLOAT3(1.5f, 1.5f, 0));
 		param.detection_range = 1000.0f;
+		param.use_homing_time = false;
 		param.init_straight_time = 0;
 		param.life = NcmUtill::GenerateRandom(100, 300);
+		param.trail_color = NcmColor::TRAIL_WHITE;
 		//param.life = 300;
 
 		// 射出位置と目標位置をXMVECTORへ変換

@@ -198,11 +198,6 @@ void Emitter::UpdateParticle()
 		temp.front().scale = i.GetScale();
 		temp.front().color = i.GetColor();
 		temp.front().alpha = i.GetAlpha();
-
-		if (i.GetIsDead())
-		{
-			int a = 0;
-		}
 	}
 
 	// マネージャへ値を渡す

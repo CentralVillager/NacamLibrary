@@ -47,6 +47,7 @@ public:
 	const Sphere &GetCollData(UINT n);
 	Player *GetPlayerPtr() { return p_player_; }
 	LockOnSystem *GetLockOnSys() { return p_lockon_sys_; }
+	int32_t GetTgtID(int32_t n);
 
 public:
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "IMissileLaunchState.h"
+#include "../../Utility/NcmColor.h"
 
 class MissileStateForEnemy : public IMissileLaunchState
 {
@@ -23,11 +24,15 @@ class MissileStateForEnemy : public IMissileLaunchState
 		}
 
 		// パラメータを設定
+		param.speed = NcmUtill::GenerateRandom(0.5f, 3.0f);
 		param.pos = launch_pos;
 		// 加速度をランダムに設定
 		param.acc = NcmUtill::GenerateRandom(DirectX::XMFLOAT3(-1.5f, -1.5f, 0), DirectX::XMFLOAT3(1.5f, 1.5f, 0));
 		param.detection_range = 1000.0f;
+		param.use_homing_time = true;
+		param.homing_time = NcmUtill::GenerateRandom(50, 100);
 		param.init_straight_time = 0;
+		param.trail_color = NcmColor::TRAIL_RED;
 
 		// 射出位置と目標位置をXMVECTORへ変換
 		DirectX::XMVECTOR launch = DirectX::XMLoadFloat3(&launch_pos);

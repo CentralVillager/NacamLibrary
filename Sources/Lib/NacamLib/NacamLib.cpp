@@ -96,7 +96,7 @@ void NacamLib::NacamLib_Draw()
 	post_effect_scene_->Draw();
 
 	// デバッグ時描画
-//#ifdef _DEBUG
+#ifdef _DEBUG
 
 	/*-- ImGuiの描画前処理 --*/
 	NcmImGui::PreDraw();
@@ -109,7 +109,7 @@ void NacamLib::NacamLib_Draw()
 	/*-- ImGuiの描画 --*/
 	NcmImGui::Draw(cmd_list_.Get());
 
-//#endif
+#endif
 
 	/*-- 描画後処理 --*/
 	DrawProc::PostDraw(dx_base_);

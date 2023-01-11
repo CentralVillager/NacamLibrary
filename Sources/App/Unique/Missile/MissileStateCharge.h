@@ -1,5 +1,6 @@
 #pragma once
 #include "IMissileLaunchState.h"
+#include "../../Utility/NcmColor.h"
 
 class MissileStateCharge : public IMissileLaunchState
 {
@@ -64,13 +65,16 @@ public:
 		// ê≥ãKâª
 		direction_vec = DirectX::XMVector3Normalize(direction_vec);
 
+		param.speed = 3.0f;
 		param.pos = launch_pos;
 		DirectX::XMStoreFloat3(&param.vel, direction_vec);
 		// tgt_pos ÇÕâ∫Ç≈ê›íË
 		// tgt_id ÇÕâ∫Ç≈ê›íË
 		param.detection_range = 1000.0f;
+		param.use_homing_time = false;
 		param.init_straight_time = 0;
 		param.life = 300;
+		param.trail_color = NcmColor::TRAIL_WHITE;
 
 		// ÉçÉbÉNè„å¿êîÇ‹Ç≈
 		for (UINT i = 0; i < ptr->GetLockOnSys()->GetCurrentTgtNum(); i++)

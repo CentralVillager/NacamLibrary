@@ -1,6 +1,7 @@
 #pragma once
-#include "IMissileLaunchState.h"
 #include <DirectXMath.h>
+#include "IMissileLaunchState.h"
+#include "../../Utility/NcmColor.h"
 
 class MissileStateUltimate : public IMissileLaunchState
 {
@@ -75,15 +76,18 @@ public:
 		direction_vec = DirectX::XMVector3Normalize(direction_vec);
 
 		// パラメータを設定
+		param.speed = 3.0f;
 		param.pos = launch_pos;
 		DirectX::XMStoreFloat3(&param.vel, direction_vec);
 		// 加速度をランダムに設定
 		param.acc = NcmUtill::GenerateRandom(DirectX::XMFLOAT3(-1.5f, -1.5f, 0), DirectX::XMFLOAT3(1.5f, 1.5f, 0));
 		// tgt_pos	 は下で設定
 		// tgt_index は下で設定
+		param.use_homing_time = false;
 		param.detection_range = 1000.0f;
 		param.init_straight_time = 0;
 		param.life = NcmUtill::GenerateRandom(200, 300);
+		param.trail_color = NcmColor::TRAIL_WHITE;
 		//param.life = 300;
 
 		// 最大ロックオン数を10に設定

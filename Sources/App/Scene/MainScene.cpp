@@ -96,7 +96,7 @@ void MainScene::Initialize()
 	lockon_sys_->Initialize(player_.get(), ene_list_.get());
 	player_->Initialize(lockon_sys_.get(), ult_.get(), INIT_POS_);
 	missile_mgr_->Initialize(player_.get(), lockon_sys_.get());
-	grid_->Initialize(200, 10, XMFLOAT3(0, -20.0f, 0));
+	grid_->Initialize(200, 20, XMFLOAT3(0, -20.0f, 0));
 	reticle_->Initialize();
 	numbers_->Initialize();
 	ult_->Initialize();
@@ -104,7 +104,6 @@ void MainScene::Initialize()
 	Missile::SetPtr(player_.get());
 
 	// enemyの生成
-	//ene_list_->Add(XMFLOAT3(0, 0, -400.0f));
 	ene_list_->AddTemplateSet();
 
 	// 塵エミッターの生成
@@ -323,7 +322,6 @@ void MainScene::Update()
 	particle_mgr_->Update();
 
 	// ミサイル追尾処理
-	//missile_mgr_->HomingEnemy(*ene_list_);
 	missile_mgr_->UpdateTargetPos(*ene_list_);
 	missile_mgr_->HomingTarget();
 
@@ -468,11 +466,11 @@ void MainScene::CollisionProcess()
 			if (Collision::CheckSphere2Sphere(ene_list_->GetCollData(i), missile_mgr_->GetCollData(j)))
 			{
 				// ミサイルが有効なら
-				if (missile_mgr_->GetIsValidity(j))
+				if (missile_mgr_->GetIsValidity(j) && missile_mgr_->GetTgtID(j) != (int32_t)(TargetIs::Player))
 				{
 					if (missile_mgr_->Death(j))
 					{
-						//ene_list_->Death(i);
+						ene_list_->Death(i);
 						ult_->AddUltValue(20);
 					}
 				}
@@ -480,19 +478,16 @@ void MainScene::CollisionProcess()
 		}
 	}
 
-	// 自機と敵弾
-	for (UINT i = 0; i < ene_list_->GetEnemies().size(); i++)
+	// 敵ミサイルと自機
+	for (UINT i = 0; i < missile_mgr_->GetMissileList().size(); i++)
 	{
-		std::vector<Bullet> *bullets = &ene_list_->GetEnemies()[i].GetBulletList()->GetBullets();
-
-		for (UINT j = 0; j < bullets->size(); j++)
+		// そのミサイルのターゲットがプレイヤーなら
+		if (missile_mgr_->GetTgtID(i) == (int32_t)(TargetIs::Player))
 		{
-			if (Collision::CheckSphere2Sphere(player_->GetCollData(),
-				MoveIterator(bullets->begin(), j)->GetCollData()))
+			if (Collision::CheckSphere2Sphere(player_->GetCollData(), missile_mgr_->GetCollData(i)))
 			{
 				player_->TakeDamage();
-				MoveIterator(bullets->begin(), j)->Death();
-				ult_->AddUltValue(30);
+				missile_mgr_->Death(i);
 			}
 		}
 	}

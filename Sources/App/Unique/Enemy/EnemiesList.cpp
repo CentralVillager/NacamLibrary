@@ -78,7 +78,7 @@ void EnemiesList::AddTemplateSet()
 {
 	float offset = 10.0f;
 	float z_offset = 50.0f;
-	UINT ene_num = 10;
+	UINT ene_num = 20;
 
 	Add(XMFLOAT3(0, 0, z_offset));
 	for (UINT i = 0; i < ene_num / 2; i++)

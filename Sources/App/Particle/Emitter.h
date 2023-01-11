@@ -55,6 +55,8 @@ private:
 	// 使用されたパーティクルの数
 	static uint32_t particle_num_;
 
+private:
+
 	// パーティクル管理コンテナ
 	std::forward_list<Particle> particles_;
 

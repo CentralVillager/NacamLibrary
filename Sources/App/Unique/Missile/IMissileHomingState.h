@@ -1,7 +1,5 @@
 #pragma once
 #include <DirectXMath.h>
-#include "Missile.h"
-#include "MissileDescs.h"
 #include "../../../App/Math/NcmMath.h"
 #include "../../../App/Utility/NcmUtil.h"
 #include "../../../Lib/NacamError/NacamError.h"
