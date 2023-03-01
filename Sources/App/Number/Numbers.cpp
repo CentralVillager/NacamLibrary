@@ -20,27 +20,27 @@ Numbers::~Numbers()
 
 void Numbers::LoadResources()
 {
-	numbers_[0] = NcmSprite::LoadTex(L"Resources/Textures/numbers/0.png");
-	numbers_[1] = NcmSprite::LoadTex(L"Resources/Textures/numbers/1.png");
-	numbers_[2] = NcmSprite::LoadTex(L"Resources/Textures/numbers/2.png");
-	numbers_[3] = NcmSprite::LoadTex(L"Resources/Textures/numbers/3.png");
-	numbers_[4] = NcmSprite::LoadTex(L"Resources/Textures/numbers/4.png");
-	numbers_[5] = NcmSprite::LoadTex(L"Resources/Textures/numbers/5.png");
-	numbers_[6] = NcmSprite::LoadTex(L"Resources/Textures/numbers/6.png");
-	numbers_[7] = NcmSprite::LoadTex(L"Resources/Textures/numbers/7.png");
-	numbers_[8] = NcmSprite::LoadTex(L"Resources/Textures/numbers/8.png");
-	numbers_[9] = NcmSprite::LoadTex(L"Resources/Textures/numbers/9.png");
+	numbers_[0] = NcmSprite::LoadTex("Resources/Textures/numbers/0.png");
+	numbers_[1] = NcmSprite::LoadTex("Resources/Textures/numbers/1.png");
+	numbers_[2] = NcmSprite::LoadTex("Resources/Textures/numbers/2.png");
+	numbers_[3] = NcmSprite::LoadTex("Resources/Textures/numbers/3.png");
+	numbers_[4] = NcmSprite::LoadTex("Resources/Textures/numbers/4.png");
+	numbers_[5] = NcmSprite::LoadTex("Resources/Textures/numbers/5.png");
+	numbers_[6] = NcmSprite::LoadTex("Resources/Textures/numbers/6.png");
+	numbers_[7] = NcmSprite::LoadTex("Resources/Textures/numbers/7.png");
+	numbers_[8] = NcmSprite::LoadTex("Resources/Textures/numbers/8.png");
+	numbers_[9] = NcmSprite::LoadTex("Resources/Textures/numbers/9.png");
 
-	dupli_numbers_[0] = NcmSprite::LoadTex(L"Resources/Textures/numbers/0.png");
-	dupli_numbers_[1] = NcmSprite::LoadTex(L"Resources/Textures/numbers/1.png");
-	dupli_numbers_[2] = NcmSprite::LoadTex(L"Resources/Textures/numbers/2.png");
-	dupli_numbers_[3] = NcmSprite::LoadTex(L"Resources/Textures/numbers/3.png");
-	dupli_numbers_[4] = NcmSprite::LoadTex(L"Resources/Textures/numbers/4.png");
-	dupli_numbers_[5] = NcmSprite::LoadTex(L"Resources/Textures/numbers/5.png");
-	dupli_numbers_[6] = NcmSprite::LoadTex(L"Resources/Textures/numbers/6.png");
-	dupli_numbers_[7] = NcmSprite::LoadTex(L"Resources/Textures/numbers/7.png");
-	dupli_numbers_[8] = NcmSprite::LoadTex(L"Resources/Textures/numbers/8.png");
-	dupli_numbers_[9] = NcmSprite::LoadTex(L"Resources/Textures/numbers/9.png");
+	dupli_numbers_[0] = NcmSprite::LoadTex("Resources/Textures/numbers/0.png");
+	dupli_numbers_[1] = NcmSprite::LoadTex("Resources/Textures/numbers/1.png");
+	dupli_numbers_[2] = NcmSprite::LoadTex("Resources/Textures/numbers/2.png");
+	dupli_numbers_[3] = NcmSprite::LoadTex("Resources/Textures/numbers/3.png");
+	dupli_numbers_[4] = NcmSprite::LoadTex("Resources/Textures/numbers/4.png");
+	dupli_numbers_[5] = NcmSprite::LoadTex("Resources/Textures/numbers/5.png");
+	dupli_numbers_[6] = NcmSprite::LoadTex("Resources/Textures/numbers/6.png");
+	dupli_numbers_[7] = NcmSprite::LoadTex("Resources/Textures/numbers/7.png");
+	dupli_numbers_[8] = NcmSprite::LoadTex("Resources/Textures/numbers/8.png");
+	dupli_numbers_[9] = NcmSprite::LoadTex("Resources/Textures/numbers/9.png");
 }
 
 void Numbers::LoadNumbers()
@@ -73,7 +73,7 @@ void Numbers::LoadNumbers()
 
 		DWORD r = GetLastError();
 
-		numbers_[i] = NcmSprite::LoadTex(w_path);
+		//numbers_[i] = NcmSprite::LoadTex(w_path);
 	}
 }
 
@@ -95,7 +95,7 @@ void Numbers::DebugDraw()
 	ImGui::DragFloat("Tracking", &tracking_, 0.1f, -100.0f, 100.0f);
 }
 
-void Numbers::DrawNumber(int number, float scale, HorizontalAlignment h_align, VerticalAlignment v_align)
+void Numbers::DrawNumber(int number, float scale, float alpha, HorizontalAlignment h_align, VerticalAlignment v_align)
 {
 	using enum HorizontalAlignment;
 	using enum VerticalAlignment;
@@ -170,6 +170,10 @@ void Numbers::DrawNumber(int number, float scale, HorizontalAlignment h_align, V
 			final_pos.x = size_stack;
 			final_pos.y = Win32App::SIZE_.y - dead_line_size_;
 
+			// 透明度を変更
+			NcmSprite::SetAlpha(numbers_[digit[i]], alpha);
+
+			// 描画
 			NcmSprite::DrawTex(numbers_[digit[i]],
 				{ (final_pos.x + (i * tracking_)), final_pos.y });
 
@@ -180,6 +184,9 @@ void Numbers::DrawNumber(int number, float scale, HorizontalAlignment h_align, V
 			{
 				if (!is_hundred)
 				{
+					// 透明度を変更
+					NcmSprite::SetAlpha(dupli_numbers_[digit[i]], alpha);
+
 					NcmSprite::DrawTex(dupli_numbers_[digit[i]],
 						{ (final_pos.x + (i * tracking_)), final_pos.y });
 					is_done = true;

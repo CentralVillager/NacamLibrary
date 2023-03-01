@@ -50,6 +50,11 @@ private:
 
 	std::unique_ptr<NcmPlatePoly> particle_;
 
+	std::unique_ptr<Object3d> tex_obj_;
+	std::unique_ptr<Model> tex_model_;
+
+	ncm_thandle dds_;
+
 public:
 
 	DemoScene();

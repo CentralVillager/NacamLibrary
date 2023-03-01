@@ -22,7 +22,8 @@ enum class HomingAccuracy
 {
 	High,
 	Middle,
-	Low
+	Low,
+	NoHoming
 };
 
 /// <summary>

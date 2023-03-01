@@ -53,12 +53,12 @@ private:
 	// 視野角
 	float fov_;
 
-	/*float differ_ = 22.0f;
+	float differ_ = 22.0f;
 	float differ_y_ = 12.0f;
-	float offset_y_ = 3.0f;*/
-	float differ_ = 75.0f;
+	float offset_y_ = 3.0f;
+	/*float differ_ = 75.0f;
 	float differ_y_ = 30.0f;
-	float offset_y_ = 20.0f;
+	float offset_y_ = 20.0f;*/
 
 public:
 
@@ -103,9 +103,15 @@ public:
 	void BasicCameraMove(float speed);
 
 	/// <summary>
-	/// 追従カメラ
+	/// 完全追従カメラ
 	/// </summary>
 	void FollowCameraMove(float speed, Player &player);
+
+	/// <summary>
+	/// z軸のみ追従カメラ
+	/// </summary>
+	/// <param name="player"></param>
+	void FollowZCameraMove(Player &player);
 
 	/// <summary>
 	/// カメラ位置のリセット

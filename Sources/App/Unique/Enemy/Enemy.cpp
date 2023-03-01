@@ -15,11 +15,10 @@ int Enemy::id_counter_ = -1;
 Player *Enemy::player_ = nullptr;
 
 Enemy::Enemy() :
-	AbsUniqueObj(0.5f, 2.0f),
+	AbsUniqueObj(3.0f, 2.0f),
 	id_(0),
 	count_(100),
 	circular_angle_(0.0f),
-	bullets_(std::make_shared<BulletList>()),
 	mi_launcher_(std::make_shared<MissileLauncher>()),
 	shot_interval_(0),
 	missile_launch_count_(LAUNCH_MISSILE_INTERVAL_)
@@ -43,8 +42,6 @@ void Enemy::LoadResources()
 		coll_model_ = std::make_unique<Model>();
 		coll_model_->LoadObjModel("Resources/Ball/", "smooth_ball.obj", "smooth_ball.mtl");
 	}
-
-	Bullet::LoadResources();
 }
 
 void Enemy::ImportPtr(Player *player)
@@ -60,6 +57,8 @@ void Enemy::Initialize(const XMFLOAT3 &pos)
 	is_dead_ = false;
 
 	circular_angle_ = 0.0f;
+
+	speed_ = player_->GetSpeed();
 }
 
 void Enemy::Initialize()
@@ -71,9 +70,9 @@ void Enemy::Finalize()
 void Enemy::Update()
 {
 	RotY();
-	MoveHorizontally(2.0f, 100.0f);
-	bullets_->Update();
+	//MoveHorizontally(2.0f, 100.0f);
 	LaunchMissileSequence();
+	MoveZ(player_->GetSpeed());
 
 	obj_->Update();
 	UpdateColl();
@@ -83,17 +82,11 @@ void Enemy::Draw()
 {
 	PreDraw::SetPipeline(PipelineName::Object3d_WireFrame);
 	obj_->Draw();
-
-	PreDraw::SetPipeline(PipelineName::Object3d);
-	bullets_->Draw();
-
-	PreDraw::SetPipeline(PipelineName::Object3d_WireFrame);
 }
 
 void Enemy::DrawColl()
 {
 	coll_obj_->Draw();
-	bullets_->DrawColl();
 }
 
 void Enemy::DebugDraw()
@@ -103,7 +96,6 @@ void Enemy::DebugDraw()
 	ImGui::DragInt("cycle", &cycle, 1, 1, 10000);
 	ImGui::DragFloat("length", &length, 1.0f, 0.0f, 100.0f);
 	ImGui::Separator();
-	bullets_->DebugDraw();
 }
 
 void Enemy::RotY()
@@ -113,7 +105,7 @@ void Enemy::RotY()
 	obj_->SetRot(rot);
 }
 
-void Enemy::MoveHorizontally(const float &speed, const float &range)
+void Enemy::MoveHorizontally(const float speed, const float range)
 {
 	count_--;
 
@@ -130,6 +122,13 @@ void Enemy::MoveHorizontally(const float &speed, const float &range)
 		speed_ *= -1.0f;
 		count_ = 100 * 2;
 	}
+}
+
+void Enemy::MoveZ(const float speed)
+{
+	XMFLOAT3 pos = obj_->GetPos();
+	pos.z += speed;
+	obj_->SetPos(pos);
 }
 
 void Enemy::MoveCircular()
@@ -156,29 +155,6 @@ void Enemy::MoveCircular()
 	{
 		circular_angle_ += 0.1f;
 		count = 10;
-	}
-}
-
-void Enemy::AutoShot(int interval, const XMFLOAT3 &dist)
-{
-	// 間隔が変更されていたら
-	if (shot_interval_ != interval)
-	{
-		// 間隔を更新する
-		shot_interval_ = interval;
-	}
-
-	static int count = shot_interval_;
-
-	count--;
-
-	// カウントが0以下になったら
-	if (IsZeroOrLess(count))
-	{
-		// 弾を発射する
-		bullets_->Fire(obj_->GetPos(), dist);
-		// カウントをリセットする
-		count = shot_interval_;
 	}
 }
 

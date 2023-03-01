@@ -2,7 +2,8 @@
 #include <wrl.h>
 #include <memory>
 #include <DirectXMath.h>
-#include "../Grid/GridRender.h"
+#include "../Grid/GridFloorManager.h"
+#include "../Grid/NcmGridFloor.h"
 #include "../Unique/Player/Player.h"
 #include "../Unique/Enemy/Enemy.h"
 #include "../Unique/Missile/MissileManager.h"
@@ -50,7 +51,7 @@ public:
 private:
 
 	static constexpr float SPEED_ = 1.5f;
-	static constexpr XMFLOAT3 INIT_POS_ = XMFLOAT3(0, 0, -500.0f);
+	static constexpr XMFLOAT3 INIT_POS_ = XMFLOAT3(0, 0, -100.0f);
 	static constexpr XMFLOAT3 CAM_INIT_POS_ = XMFLOAT3(0, 10.0f, INIT_POS_.z);
 
 	static constexpr float NORMAL_FOV_ = 60.0f;
@@ -64,7 +65,7 @@ private:
 	std::unique_ptr<Player> player_;
 	std::unique_ptr<Enemy> enemy_;
 	std::unique_ptr<EnemiesList> ene_list_;
-	std::unique_ptr<GridRender> grid_;
+	std::unique_ptr<NcmGridFloor> grid_floor_;
 	std::unique_ptr<MissileManager> missile_mgr_;
 	std::unique_ptr<Emitter> dust_;
 	std::unique_ptr<Object3d> sky_dome_;

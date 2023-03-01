@@ -18,7 +18,6 @@ class Line
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
-	using enum VertDesc;
 
 public:
 
@@ -38,7 +37,8 @@ private:
 	static ComPtr<ID3D12GraphicsCommandList> command_list_;
 	static ComPtr<ID3D12DescriptorHeap> desc_heap_;
 	static UINT desc_heap_size_;
-	static const UINT VERT_NUM_ = (UINT)(MaxVertNum);
+	static const UINT VERT_NUM_ = (UINT)(VertDesc::MaxVertNum);
+	static Camera *cam_ptr_;
 
 private:
 
@@ -49,28 +49,21 @@ private:
 
 private:
 
-	// ローカル座標
-	XMFLOAT3 position_ = { 0, 0, 0 };
-
-	// X,Y,Z軸回りのローカル回転角
-	XMFLOAT3 rotation_ = { 0, 0, 0 };
-
-	// ローカルスケール
-	XMFLOAT3 scale_ = { 1, 1, 1 };
-
-	// 色
-	XMFLOAT4 color_ = { 1, 1, 1, 1 };
-
-	// ローカルワールド変換行列
-	XMMATRIX mat_world_;
-
-	// カメラのポインタ
-	static Camera *cam_ptr_;
+	XMFLOAT3 pos_;			// ローカル座標
+	XMFLOAT3 rot_;			// X,Y,Z軸回りのローカル回転角
+	XMFLOAT3 scale_;		// ローカルスケール
+	XMFLOAT4 color_;		// 色
+	XMMATRIX mat_world_;	// ローカルワールド変換行列
 
 public:
 
 	static void StaticInitialize();
 	static void SetCamera(Camera *camera_) { cam_ptr_ = camera_; }
+
+public:
+
+	Line();
+	~Line();
 
 private:
 
@@ -79,11 +72,12 @@ private:
 
 public:
 
-	inline const XMFLOAT3 &GetPosition() { return position_; }
-	inline const XMFLOAT3 &GetRotation() { return rotation_; }
+	inline const XMFLOAT3 &GetPosition() { return pos_; }
+	inline const XMFLOAT3 &GetRotation() { return rot_; }
 	inline const XMFLOAT3 &GetScale() { return scale_; }
-	inline void SetPosition(XMFLOAT3 position) { position_ = position; }
-	inline void SetRotation(XMFLOAT3 rotation) { rotation_ = rotation; }
+	inline const std::array<Vertex, VERT_NUM_> &GetVertData() { return vertices_data_; }
+	inline void SetPosition(XMFLOAT3 position) { pos_ = position; }
+	inline void SetRotation(XMFLOAT3 rotation) { rot_ = rotation; }
 	inline void SetScale(XMFLOAT3 scale) { scale_ = scale; };
 	inline void SetScale(float scale) { scale_.x = scale_.y = scale_.z = scale; };
 	inline void SetVertPos(XMFLOAT3 position, UINT index) { vertices_data_[index].pos = position; }

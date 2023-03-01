@@ -30,6 +30,21 @@ void Line::StaticInitialize()
 	desc_heap_size_ = device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 }
 
+Line::Line() :
+	matrix_const_buffer_(),
+	vertex_buffer_(),
+	vertices_data_(),
+	vb_view_(),
+	pos_(),
+	rot_(),
+	scale_(),
+	color_(),
+	mat_world_()
+{}
+
+Line::~Line()
+{}
+
 void Line::CreateVertexBuffer()
 {
 	HRESULT result;
@@ -84,6 +99,8 @@ void Line::Initialize()
 {
 	CreateVertexBuffer();
 	CreateConstantBuffer();
+
+	scale_ = XMFLOAT3(1, 1, 1);
 }
 
 void Line::Finalize()
@@ -97,10 +114,10 @@ void Line::Update()
 	// スケール、回転、平行移動行列の計算
 	matScale = XMMatrixScaling(scale_.x, scale_.y, scale_.z);
 	matRot = XMMatrixIdentity();
-	matRot *= XMMatrixRotationZ(XMConvertToRadians(rotation_.z));
-	matRot *= XMMatrixRotationX(XMConvertToRadians(rotation_.x));
-	matRot *= XMMatrixRotationY(XMConvertToRadians(rotation_.y));
-	matTrans = XMMatrixTranslation(position_.x, position_.y, position_.z);
+	matRot *= XMMatrixRotationZ(XMConvertToRadians(rot_.z));
+	matRot *= XMMatrixRotationX(XMConvertToRadians(rot_.x));
+	matRot *= XMMatrixRotationY(XMConvertToRadians(rot_.y));
+	matTrans = XMMatrixTranslation(pos_.x, pos_.y, pos_.z);
 
 	// ワールド行列の合成
 	mat_world_ = XMMatrixIdentity();	// 変形をリセット
@@ -132,8 +149,8 @@ void Line::Draw()
 	command_list_->IASetVertexBuffers(0, 1, &vb_view_);
 
 	// デスクリプタヒープの配列
-	ID3D12DescriptorHeap *ppHeaps[] = { desc_heap_.Get() };
-	command_list_->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+	ID3D12DescriptorHeap *pp_heaps[] = { desc_heap_.Get() };
+	command_list_->SetDescriptorHeaps(_countof(pp_heaps), pp_heaps);
 
 	// 定数バッファビューをセット
 	command_list_->SetGraphicsRootConstantBufferView(0, matrix_const_buffer_->GetGPUVirtualAddress());

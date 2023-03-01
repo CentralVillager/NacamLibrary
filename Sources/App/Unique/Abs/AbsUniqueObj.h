@@ -43,6 +43,7 @@ public:
 
 	inline const XMMATRIX &GetRotMat() { return mat_rot_; }
 	inline const XMFLOAT3 &GetPos() { return obj_->GetPos(); }
+	inline const XMFLOAT3 &GetRot() { return obj_->GetRot(); }
 	inline const Sphere &GetCollData() { return coll_; }
 	inline const XMFLOAT3 &GetFwdVec() { return forward_vec_; }
 	inline const float &GetSpeed() { return speed_; }

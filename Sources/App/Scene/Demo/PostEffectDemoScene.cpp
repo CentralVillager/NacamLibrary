@@ -10,13 +10,13 @@ PostEffectDemoScene::PostEffectDemoScene()
 
 	// モデルデータの生成
 	model_ = make_unique<Model>();
-	model_->LoadObjModel("Resources/Enemy/", "Enemy.obj", "Enemy.mtl");
+	model_->LoadObjModel("Resources/Enemy/", "Enemy.obj", "Enemy.mt");
 
 	// オブジェクトデータの生成
 	object_ = make_unique<Object3d>();
 
 	// 背景の生成
-	back_ = NcmSprite::LoadTex(L"Resources/Textures/background.png");
+	back_ = NcmSprite::LoadTex("Resources/Textures/background.png");
 }
 
 PostEffectDemoScene::~PostEffectDemoScene()

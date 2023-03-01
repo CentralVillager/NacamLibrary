@@ -42,7 +42,7 @@ public:
 
 private:
 
-	static constexpr int VERTEX_COUNT_ = 65536;	// í∏ì_êî
+	static constexpr int VERTEX_COUNT_ = 65535;	// í∏ì_êî
 
 private:
 

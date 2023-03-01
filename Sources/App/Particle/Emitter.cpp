@@ -79,7 +79,7 @@ void Emitter::LoadResources()
 		model_ = make_unique<Model>();
 		model_->LoadObjModel("Resources/Ball/", "smooth_ball.obj", "smooth_ball.mtl");
 
-		tex_handle_ = NcmSprite::LoadTex(L"Resources/textures/particle/effect1.png");
+		tex_handle_ = NcmSprite::LoadTex("Resources/textures/particle/effect1.png");
 	}
 }
 

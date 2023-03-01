@@ -32,11 +32,15 @@ private:
 	// 最大ウルトテクスチャ数
 	static constexpr uint32_t MAX_ULT_TEX_NUM_ = 9;
 
+	static constexpr float MAX_ALPHA_VALUE_ = 1.0f;	// 最大α値
+	static constexpr float MIN_ALPHA_VALUE_ = 0.3f;	// 最小α値
+
 private:
 
 	// ウルトテクスチャのハンドル格納コンテナ
 	static std::array<ncm_thandle, MAX_ULT_TEX_NUM_> ult_tex_hub_;
 	static ncm_thandle percent_;
+	static ncm_thandle icon_q_;
 
 private:
 
@@ -44,8 +48,13 @@ private:
 	uint32_t max_ult_per_;		// 最大ウルト％
 	uint32_t value_dist_;		// イージング用目標値
 	bool is_triggering_;		// 発動したか
+	float num_alpha_;			// %のα値
 
 	ncm_ehandle ease_;			// イージングハンドル
+	ncm_ehandle num_alpha_to_max_;	// %表示用イージングハンドル
+	ncm_ehandle num_alpha_to_min_;	// %表示用イージングハンドル
+	bool to_max_;				// イージングの値がmaxの値に向けて遷移中か
+	bool to_min_;				// イージングの値がmaxの値に向けて遷移中か
 	bool is_change_;			// ウルトの値が更新されたら
 
 	std::unique_ptr<Numbers> nums_;	// 数字

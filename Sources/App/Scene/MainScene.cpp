@@ -18,7 +18,7 @@ MainScene::MainScene() :
 	player_(std::make_unique<Player>()),
 	enemy_(std::make_unique<Enemy>()),
 	ene_list_(std::make_unique<EnemiesList>()),
-	grid_(std::make_unique<GridRender>()),
+	grid_floor_(std::make_unique<NcmGridFloor>()),
 	missile_mgr_(std::make_unique<MissileManager>()),
 	dust_(make_unique<Emitter>()),
 	sky_dome_(make_unique<Object3d>()),
@@ -49,9 +49,9 @@ MainScene::MainScene() :
 	is_scene_change_()
 {
 	// テクスチャのロード
-	clear_ = NcmSprite::LoadTex(L"Resources/Textures/clear.png");
-	over_ = NcmSprite::LoadTex(L"Resources/Textures/SC/over.png");
-	space_ = NcmSprite::LoadTex(L"Resources/Textures/space.png");
+	clear_ = NcmSprite::LoadTex("Resources/Textures/clear.png");
+	over_ = NcmSprite::LoadTex("Resources/Textures/SC/over.png");
+	space_ = NcmSprite::LoadTex("Resources/Textures/space.png");
 
 	// 各リソースのロード
 	model_sky_dome_->LoadObjModel("Resources/SkyDome/", "skydome.obj", "skydome.mtl");
@@ -77,6 +77,7 @@ void MainScene::Initialize()
 	GridRender::SetCamera(camera_.get());
 	PlatePoly::SetCamera(camera_.get());
 	NcmPlatePoly::SetCamera(camera_.get());
+	NcmGridFloor::SetCamera(camera_.get());
 
 	// カメラの初期化
 	camera_->Initialize();
@@ -95,8 +96,9 @@ void MainScene::Initialize()
 	ene_list_->Initialize(player_.get());
 	lockon_sys_->Initialize(player_.get(), ene_list_.get());
 	player_->Initialize(lockon_sys_.get(), ult_.get(), INIT_POS_);
+	player_->SetCamPtr(camera_.get());
 	missile_mgr_->Initialize(player_.get(), lockon_sys_.get());
-	grid_->Initialize(200, 20, XMFLOAT3(0, -20.0f, 0));
+	grid_floor_->Initialize(XMFLOAT3(), 10);
 	reticle_->Initialize();
 	numbers_->Initialize();
 	ult_->Initialize();
@@ -237,42 +239,6 @@ void MainScene::Update()
 		}
 	}
 
-	// 加速
-	if (KeyboardInput::PushKey(DIK_W) ||
-		NcmInput::IsHold(NcmStickType::L_STICK, NcmStickDirection::UP))
-	{
-		NcmEasing::ResetTime(fov_dec_value_);
-		NcmEasing::ResetTime(player_dec_speed_);
-
-		// イージングの値を遷移
-		NcmEasing::UpdateValue(player_speed_);
-		NcmEasing::UpdateValue(fov_acc_value_);
-
-		float fov = camera_->GetFOV();
-		fov = NcmEasing::GetValue(fov_acc_value_);
-		camera_->SetFOV(fov);
-
-		player_->SetSpeed(NcmEasing::GetValue(player_speed_));
-	}
-	// 減速・通常
-	else
-	{
-		NcmEasing::ResetTime(player_speed_);
-		NcmEasing::ResetTime(fov_acc_value_);
-
-		// イージングの値を遷移
-		NcmEasing::UpdateValue(player_dec_speed_);
-		NcmEasing::UpdateValue(fov_dec_value_);
-
-		float fov = camera_->GetFOV();
-		fov = NcmEasing::GetValue(fov_dec_value_);
-		camera_->SetFOV(fov);
-
-		player_->SetSpeed(NcmEasing::GetValue(player_dec_speed_));
-	}
-
-	camera_->FollowCameraMove(1.0f, *player_);
-
 	// クリア遷移
 	if (ene_list_->NoticeEmpty())
 	{
@@ -312,10 +278,12 @@ void MainScene::Update()
 	}
 
 	// 各オブジェクト更新処理
+	camera_->FollowZCameraMove(*player_);
 	camera_->Update();
 	player_->Update();
 	ene_list_->Update();
-	grid_->Update();
+	grid_floor_->FollowVertLineForPlayer(player_->GetPos().z);
+	grid_floor_->Update();
 	missile_mgr_->Update();
 	lockon_sys_->Update();
 	ult_->Update();
@@ -335,6 +303,7 @@ void MainScene::Update()
 		dust_->UpdateParticle();
 	}
 
+	sky_dome_->SetPos(XMFLOAT3(0, 0, player_->GetPos().z));
 	sky_dome_->Update();
 
 	NcmUi::CalcBarSize(player_->GetChargeCount(), player_->GetMaxChargeTime());
@@ -353,9 +322,8 @@ void MainScene::Draw()
 	using enum PipelineName;
 
 	PreDraw::SetPipeline(Line);
-	grid_->Draw();
+	grid_floor_->Draw();
 
-	//PreDraw::SetPipeline(Object3d);
 	PreDraw::SetPipeline(Object3d_WireFrame);
 	player_->Draw();
 	ene_list_->Draw();
@@ -407,6 +375,8 @@ void MainScene::DebugDraw()
 	bool debug = NcmDebug::GetInstance()->IsDebugMode();
 	ImGui::Checkbox("DebugMode?", &debug);
 	NcmDebug::GetInstance()->SetDebugMode(debug);
+
+	grid_floor_->DebugDraw();
 
 	NcmParticleManager::StaticDebugDraw();
 	Emitter::StaticDebugDraw();

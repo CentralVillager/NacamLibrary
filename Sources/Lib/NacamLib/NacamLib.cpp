@@ -17,6 +17,7 @@
 #include "../../App/FpsManager/FPSManager.h"
 #include "../../App/Scene/AbsScene.h"
 #include "../../App/Scene/TemporaryScene.h"
+#include "../../App/Grid/GridRender.h"
 #include "../Sources/App/Math/Easing/NcmEasing.h"
 #include "../Point/Point.h"
 #include "../PlatePoly/PlatePoly.h"
@@ -168,6 +169,7 @@ void NacamLib::GameObjectInitialize()
 	Point::StaticInitialize(device_.Get(), cmd_list_.Get());
 	PlatePoly::StaticInitialize(device_.Get(), cmd_list_.Get());
 	NcmPlatePoly::StaticInitialize(device_.Get(), cmd_list_.Get());
+	GridRender::StaticInitialize(device_.Get(), cmd_list_.Get());
 
 	NcmEasing::StaticInit();
 

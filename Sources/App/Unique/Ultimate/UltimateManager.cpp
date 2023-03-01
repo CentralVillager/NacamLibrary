@@ -7,13 +7,19 @@ using namespace NcmUtill;
 
 std::array<ncm_thandle, UltimateManager::MAX_ULT_TEX_NUM_> UltimateManager::ult_tex_hub_;
 ncm_thandle UltimateManager::percent_;
+ncm_thandle UltimateManager::icon_q_;
 
 UltimateManager::UltimateManager() :
 	currect_ult_per_(0),
 	max_ult_per_(100),
 	value_dist_(0),
 	is_triggering_(false),
+	num_alpha_(0.0f),
 	ease_(),
+	num_alpha_to_max_(),
+	num_alpha_to_min_(),
+	to_max_(),
+	to_min_(),
 	is_change_(false),
 	nums_(std::make_unique<Numbers>()),
 	ult_tex_draw_intervel_(8),
@@ -32,19 +38,25 @@ void UltimateManager::LoadResources()
 {
 	using enum UltTex;
 
-	ult_tex_hub_[(int)(u)] = NcmSprite::LoadTex(L"Resources/Textures/ultimate/u.png");
-	ult_tex_hub_[(int)(l)] = NcmSprite::LoadTex(L"Resources/Textures/ultimate/l.png");
-	ult_tex_hub_[(int)(t)] = NcmSprite::LoadTex(L"Resources/Textures/ultimate/t.png");
-	ult_tex_hub_[(int)(i)] = NcmSprite::LoadTex(L"Resources/Textures/ultimate/i.png");
-	ult_tex_hub_[(int)(m)] = NcmSprite::LoadTex(L"Resources/Textures/ultimate/m.png");
-	ult_tex_hub_[(int)(a)] = NcmSprite::LoadTex(L"Resources/Textures/ultimate/a.png");
-	ult_tex_hub_[(int)(T)] = NcmSprite::LoadTex(L"Resources/Textures/ultimate/t.png");
-	ult_tex_hub_[(int)(e)] = NcmSprite::LoadTex(L"Resources/Textures/ultimate/e.png");
-	ult_tex_hub_[(int)(stanby)] = NcmSprite::LoadTex(L"Resources/Textures/ultimate/stanby.png");
+	ult_tex_hub_[(int)(u)] = NcmSprite::LoadTex("Resources/Textures/ultimate/u.png");
+	ult_tex_hub_[(int)(l)] = NcmSprite::LoadTex("Resources/Textures/ultimate/l.png");
+	ult_tex_hub_[(int)(t)] = NcmSprite::LoadTex("Resources/Textures/ultimate/t.png");
+	ult_tex_hub_[(int)(i)] = NcmSprite::LoadTex("Resources/Textures/ultimate/i.png");
+	ult_tex_hub_[(int)(m)] = NcmSprite::LoadTex("Resources/Textures/ultimate/m.png");
+	ult_tex_hub_[(int)(a)] = NcmSprite::LoadTex("Resources/Textures/ultimate/a.png");
+	ult_tex_hub_[(int)(T)] = NcmSprite::LoadTex("Resources/Textures/ultimate/t.png");
+	ult_tex_hub_[(int)(e)] = NcmSprite::LoadTex("Resources/Textures/ultimate/e.png");
+	ult_tex_hub_[(int)(stanby)] = NcmSprite::LoadTex("Resources/Textures/ultimate/stanby.png");
 
-	percent_ = NcmSprite::LoadTex(L"Resources/Textures/numbers/%.png");
+	percent_ = NcmSprite::LoadTex("Resources/Textures/numbers/%.png");
 	NcmSprite::SetScale(percent_, 0.25f);
 	NcmSprite::SetAnchorPoint(percent_, { 0, 1.0f });
+
+	icon_q_ = NcmSprite::LoadTex("Resources/Textures/ultimate/icon_q.png");
+	NcmSprite::SetScale(icon_q_, 0.1f);
+	NcmSprite::SetAnchorPoint(icon_q_, { 0.5f, 0.5f });
+	XMFLOAT2 pos = { Win32App::FCENTER_.x, Win32App::FCENTER_.y + 240.0f };
+	NcmSprite::SetPos(icon_q_, pos);
 }
 
 void UltimateManager::Initialize()
@@ -56,6 +68,18 @@ void UltimateManager::Initialize()
 	desc.total_move = (float)(value_dist_);
 	desc.t_rate = 0.03f;
 	ease_ = NcmEasing::RegisterEaseData(desc);
+
+	desc.ease_type = NcmEaseType::OutQuad;
+	desc.init_value = MIN_ALPHA_VALUE_;
+	desc.total_move = MAX_ALPHA_VALUE_ - MIN_ALPHA_VALUE_;
+	desc.t_rate = 0.03f;
+	num_alpha_to_max_ = NcmEasing::RegisterEaseData(desc);
+
+	desc.ease_type = NcmEaseType::OutQuad;
+	desc.init_value = MAX_ALPHA_VALUE_;
+	desc.total_move = MIN_ALPHA_VALUE_ - MAX_ALPHA_VALUE_;
+	desc.t_rate = 0.03f;
+	num_alpha_to_min_ = NcmEasing::RegisterEaseData(desc);
 }
 
 void UltimateManager::Update()
@@ -95,6 +119,53 @@ void UltimateManager::Update()
 			NcmEasing::ResetTime(ease_);
 		}
 	}
+
+	/* 以下%α遷移処理 */
+
+	if (currect_ult_per_ < max_ult_per_)
+	{
+		num_alpha_ = MAX_ALPHA_VALUE_;
+		return;
+	}
+	// パーセントが最大まで溜まったら
+
+	// α値が最大まで到達したら
+	if (num_alpha_ >= MAX_ALPHA_VALUE_)
+	{
+		to_max_ = false;
+		to_min_ = true;
+
+		NcmEasing::ResetTime(num_alpha_to_max_);
+	}
+
+	// α値が最小まで到達したら
+	if (num_alpha_ <= MIN_ALPHA_VALUE_)
+	{
+		to_max_ = true;
+		to_min_ = false;
+
+		NcmEasing::ResetTime(num_alpha_to_min_);
+	}
+
+	// α値を最大まで遷移中
+	if (to_max_)
+	{
+		// イージングの値を更新
+		NcmEasing::UpdateValue(num_alpha_to_max_);
+
+		// その値を取得
+		num_alpha_ = NcmEasing::GetValue(num_alpha_to_max_);
+	}
+
+	// α値を最小まで遷移中
+	if (to_min_)
+	{
+		// イージングの値を更新
+		NcmEasing::UpdateValue(num_alpha_to_min_);
+
+		// その値を取得
+		num_alpha_ = NcmEasing::GetValue(num_alpha_to_min_);
+	}
 }
 
 void UltimateManager::Draw()
@@ -105,7 +176,18 @@ void UltimateManager::DrawUi()
 	using enum HorizontalAlignment;
 	using enum VerticalAlignment;
 
-	nums_->DrawNumber(currect_ult_per_, ImGui_num_scale_, Center, Bottom);
+	// ULTパーセンテージの描画
+	nums_->DrawNumber(currect_ult_per_, ImGui_num_scale_, num_alpha_, Center, Bottom);
+
+	// Qアイコンの描画
+	if (currect_ult_per_ >= max_ult_per_)
+	{
+		NcmSprite::SetAlpha(icon_q_, num_alpha_);
+		NcmSprite::DrawTex(icon_q_);
+	}
+
+	// %テクスチャの描画
+	NcmSprite::SetAlpha(percent_, num_alpha_);
 	NcmSprite::DrawTex(percent_, { Win32App::FCENTER_.x + (nums_->GetDigitsWidth() / 2), Win32App::FSIZE_.y - nums_->GetDeadLineSize() });
 
 	// フルになったら

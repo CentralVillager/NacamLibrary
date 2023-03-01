@@ -98,6 +98,10 @@
     <ClCompile Include="Sources\Lib\PreDraw\PreDraw.cpp" />
     <ClCompile Include="Sources\Lib\Sprite\NcmSprite.cpp" />
     <ClCompile Include="Sources\Lib\Win32App\Win32App.cpp" />
+    <ClCompile Include="Sources\App\Grid\GridFloorManager.cpp" />
+    <ClCompile Include="Sources\App\Grid\NcmGridFloor.cpp" />
+    <ClCompile Include="Sources\App\Unique\Missile\MissileHomingStateNoHoming.cpp" />
+    <ClCompile Include="Sources\Lib\Converter\TextureConverter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\backends\imgui_impl_dx12.h" />
@@ -192,6 +196,10 @@
     <ClInclude Include="Sources\Lib\Sprite\NcmSprite.h" />
     <ClInclude Include="Sources\Lib\Win32App\Win32App.h" />
     <ClInclude Include="Sources\resource.h" />
+    <ClInclude Include="Sources\App\Grid\GridFloorManager.h" />
+    <ClInclude Include="Sources\App\Grid\NcmGridFloor.h" />
+    <ClInclude Include="Sources\App\Unique\Missile\MissileHomingStateNoHoming.h" />
+    <ClInclude Include="Sources\Lib\Converter\TextureConverter.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="NacamLibrary.rc" />

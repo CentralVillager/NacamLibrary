@@ -85,8 +85,6 @@ void Camera::BasicCameraMoveTrack(float speed)
 	if (KeyboardInput::PushKey(DIK_DOWN)) { MoveEye({ 0.0f, +speed, 0.0f }); }
 	if (KeyboardInput::PushKey(DIK_LEFT)) { MoveEye({ +speed, 0.0f, 0.0f }); }
 	if (KeyboardInput::PushKey(DIK_RIGHT)) { MoveEye({ -speed, 0.0f, 0.0f }); }
-
-	//Update();
 }
 
 void Camera::BasicCameraMove(float speed)
@@ -102,8 +100,6 @@ void Camera::BasicCameraMove(float speed)
 		if (KeyboardInput::PushKey(DIK_R)) { MoveCameraTrack({ 0.0f, 0.0f, +speed }); }
 		else if (KeyboardInput::PushKey(DIK_F)) { MoveCameraTrack({ 0.0f, 0.0f, -speed }); }
 	}
-
-	//Update();
 }
 
 void Camera::FollowCameraMove(float speed, Player &player)
@@ -123,6 +119,34 @@ void Camera::FollowCameraMove(float speed, Player &player)
 	XMFLOAT3 tgt_result{};
 	tgt_result.x = player.GetPos().x + player.GetFwdVec().x * differ_;
 	tgt_result.y = player.GetPos().y + player.GetFwdVec().y * differ_;
+	tgt_result.z = player.GetPos().z + player.GetFwdVec().z * differ_;
+
+	tgt_result.y -= offset_y_;
+
+	// 注視点を更新
+	target_ = tgt_result;
+
+	// 上ベクトルを更新
+	up_vec_ = up_vec;
+}
+
+void Camera::FollowZCameraMove(Player &player)
+{
+	// 上ベクトルを計算
+	XMFLOAT3 up_vec = { 0, 1, 0 };
+	XMVECTOR up_temp = XMVector3Transform(XMLoadFloat3(&up_vec), player.GetRotMat());
+	XMStoreFloat3(&up_vec, up_temp);
+
+	XMFLOAT3 eye_result{};
+	eye_result.x = player.GetFwdVec().x * differ_ + up_vec.x * differ_y_;
+	eye_result.y = player.GetFwdVec().y * differ_ + up_vec.y * differ_y_;
+	eye_result.z = player.GetPos().z - player.GetFwdVec().z * differ_ + up_vec.z * differ_y_;
+
+	eye_ = eye_result;
+
+	XMFLOAT3 tgt_result{};
+	tgt_result.x = player.GetFwdVec().x * differ_;
+	tgt_result.y = player.GetFwdVec().y * differ_;
 	tgt_result.z = player.GetPos().z + player.GetFwdVec().z * differ_;
 
 	tgt_result.y -= offset_y_;
@@ -233,7 +257,7 @@ void Camera::UpdateViewProjection()
 	mat_projection_ = XMMatrixPerspectiveFovLH(
 		XMConvertToRadians(fov_),
 		aspect_ratio_,
-		0.1f, 10000.0f
+		0.1f, 6000.0f
 	);
 }
 

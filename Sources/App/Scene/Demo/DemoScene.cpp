@@ -13,8 +13,7 @@ DemoScene::DemoScene()
 	// ÉJÉÅÉâÇÃê∂ê¨
 	camera_ = make_unique<Camera>();
 
-	texture_ = NcmSprite::LoadTex(L"Resources/Textures/effect1.png");
-	test_ = NcmSprite::LoadTex(L"Resources/Textures/Temp/orenge_texture.png");
+	texture_ = NcmSprite::LoadTex("Resources/Textures/orange_circle.png");
 
 	point_ = make_unique<Point>();
 	poly_ = make_unique<PlatePoly>();
@@ -34,6 +33,12 @@ DemoScene::DemoScene()
 	model_->LoadObjModel("Resources/ball/", "smooth_ball.obj", "smooth_ball.mtl");
 
 	particle_ = make_unique<NcmPlatePoly>();
+
+	tex_obj_ = make_unique<Object3d>();
+	tex_model_ = make_unique<Model>();
+	tex_model_->LoadObjModel("Resources/ball/", "smooth_ball.obj", "tex_ball.mtl");
+
+	dds_ = NcmSprite::LoadTex("Resources/Ball/background.dds");
 }
 
 DemoScene::~DemoScene()
@@ -67,23 +72,17 @@ void DemoScene::Initialize()
 	NcmSprite::SetAnchorPoint(texture_, { 0.0f, 0.5f });
 	NcmSprite::SetPos(texture_, XMFLOAT2(0.0f, (float)(Win32App::CENTER_.y)));
 
-	NcmSprite::SetAnchorPoint(test_, { 0.5f, 0.5f });
-	NcmSprite::SetPos(test_, Win32App::FCENTER_);
-
 	PlatePoly::SetCamera(camera_.get());
 	poly_->Initialize(texture_);
-	//poly_->SetTexSRVs(texture_);
 
 	GridRender::SetCamera(camera_.get());
 	grid_->Initialize(200, 10, XMFLOAT3(0, 0, 0));
-	//grid_->Initialize(200, 10, XMFLOAT3(0, -20.0f, 0));
-	//ugrid_->Initialize(200, 10, XMFLOAT3(0, +50.0f, 0));
 
 	Object3d::SetCamera(camera_.get());
 	player_->Initialize();
 
-	NcmPlatePoly::SetCamera(camera_.get());
-	particle_->Initialize();
+	tex_obj_->SetModel(tex_model_.get());
+	tex_obj_->Initialize();
 }
 
 void DemoScene::Finalize()
@@ -114,23 +113,17 @@ void DemoScene::Update()
 
 	float speed = 0.5f;
 
-	//player_->RotationY(1.0f);
-	//player_->MoveXZ(1.0f);
-
-	//camera_->FollowCameraMove(1.0f, *player_);
 	camera_->BasicCameraMoveTrack(1.0f);
 	camera_->Update();
 	poly_->Update();
-	grid_->Update();
-	//ugrid_->Update();
-	//player_->Update();
+	grid_->Update(0.0f);
 
 	for (auto &i : objs_)
 	{
 		i.Update();
 	}
 
-	//particle_->Update();
+	tex_obj_->Update();
 }
 
 void DemoScene::Draw()
@@ -138,29 +131,26 @@ void DemoScene::Draw()
 	using enum PipelineName;
 
 	PreDraw::SetPipeline(Object3d_WireFrame);
-	//player_->Draw();
 
 	for (auto &i : objs_)
 	{
-		i.Draw();
+		//i.Draw();
 	}
+
+	PreDraw::SetPipeline(Object3d);
+	tex_obj_->Draw();
 
 	PreDraw::SetPipeline(Line);
 	grid_->Draw();
-	//ugrid_->Draw();
 
 	PreDraw::SetPipeline(Sprite);
-	/*NcmSprite::DrawTex(texture_);
-	NcmSprite::DrawTex(test_, Win32App::FCENTER_);*/
+	NcmSprite::DrawTex(dds_);
 
 	PreDraw::SetPipeline(PlatePoly);
 	poly_->Draw();
-
-	particle_->Draw();
 }
 
 void DemoScene::DebugDraw()
 {
 	camera_->DebugDraw();
 }
-;

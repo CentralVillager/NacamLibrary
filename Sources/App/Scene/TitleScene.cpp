@@ -17,12 +17,12 @@ TitleScene::TitleScene()
 
 	model_sky_dome_->LoadObjModel("Resources/SkyDome/", "skydome.obj", "skydome.mtl");
 
-	title_ = NcmSprite::LoadTex(L"Resources/Textures/SkyCircuse.png");
-	play_b_ = NcmSprite::LoadTex(L"Resources/Textures/play_b.png");
-	play_w_ = NcmSprite::LoadTex(L"Resources/Textures/play_w.png");
-	exit_b_ = NcmSprite::LoadTex(L"Resources/Textures/exit_b.png");
-	exit_w_ = NcmSprite::LoadTex(L"Resources/Textures/exit_w.png");
-	space_ = NcmSprite::LoadTex(L"Resources/Textures/space.png");
+	title_ = NcmSprite::LoadTex("Resources/Textures/SkyCircuse.png");
+	play_b_ = NcmSprite::LoadTex("Resources/Textures/play_b.png");
+	play_w_ = NcmSprite::LoadTex("Resources/Textures/play_w.png");
+	exit_b_ = NcmSprite::LoadTex("Resources/Textures/exit_b.png");
+	exit_w_ = NcmSprite::LoadTex("Resources/Textures/exit_w.png");
+	space_ = NcmSprite::LoadTex("Resources/Textures/space.png");
 
 	NcmSprite::SetSize(title_, { 1280, 720 });
 

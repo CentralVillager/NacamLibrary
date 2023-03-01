@@ -217,7 +217,6 @@ void NcmPlatePoly::UpdateConstBuffer(std::forward_list<NcmParticleCommonArgs> &a
 void NcmPlatePoly::Draw()
 {
 	// nullptrチェック
-	assert(device_);
 	assert(cmd_list_);
 
 	// 頂点バッファの設定

@@ -110,32 +110,32 @@ public:
 	/// <summary>
 	/// 値を更新します。
 	/// </summary>
-	static void UpdateValue(int handle);
+	static void UpdateValue(ncm_ehandle handle);
 
 	/// <summary>
 	/// 値をリセットします。
 	/// </summary>
-	static void ResetTime(int handle);
+	static void ResetTime(ncm_ehandle handle);
 
 	/// <summary>
 	/// 現在の値を取得します。
 	/// </summary>
 	/// <returns>現在の値</returns>
-	static float GetValue(int handle);
+	static float GetValue(ncm_ehandle handle);
 
 	/// <summary>
 	/// 新しく初期値を設定します。
 	/// </summary>
 	/// <param name="handle">目的のハンドル</param>
 	/// <param name="v">設定したい値</param>
-	static void SetInitValue(int handle, float v);
+	static void SetInitValue(ncm_ehandle handle, float v);
 
 	/// <summary>
 	/// 新しく総移動量を設定します。
 	/// </summary>
 	/// <param name="handle">目的のハンドル</param>
 	/// <param name="t">設定したい値</param>
-	static void SetTotalMove(int handle, float v);
+	static void SetTotalMove(ncm_ehandle handle, float v);
 
 private:
 
@@ -146,6 +146,8 @@ private:
 	static void ConvertRate(float *t, float rate = 0.1f, float max = 1.0f);
 
 private:
+
+	/* 以下遷移率集 */
 
 	static float Lerp(const float t);
 

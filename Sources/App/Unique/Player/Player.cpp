@@ -6,6 +6,7 @@
 #include "../../../Lib/Input/KeyboardInput.h"
 #include "../Sources/App/Math/NcmMath.h"
 #include "../../../Lib/Input/NcmInput.h"
+#include "../../../Lib/Camera/Camera.h"
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
@@ -14,9 +15,11 @@ using namespace NcmMath;
 
 std::unique_ptr<Model> Player::model_ = nullptr;
 std::unique_ptr<Model> Player::coll_model_ = nullptr;
+Camera *Player::cam_ptr_ = nullptr;
 
 Player::Player()
-	: AbsUniqueObj(0.5f, 2.0f),
+	: AbsUniqueObj(3.0f, 2.0f),
+	normal_speed_(),
 	is_invincible_(false),
 	taking_damage_trigger_(false),
 	is_triggering_ult_(false),
@@ -29,6 +32,13 @@ Player::Player()
 	ease_rot_right_(),
 	ease_rot_left_(),
 	ease_reset_rot_(),
+	ease_move_left_(),
+	ease_move_right_(),
+	ease_move_reset_(),
+	acc_speed_(),
+	dec_speed_(),
+	fov_acc_value_(),
+	fov_dec_value_(),
 	is_already_(false),
 	is_released(false),
 	rot_angle_(5.0f)
@@ -97,25 +107,60 @@ void Player::Initialize(LockOnSystem *lockon_sys, UltimateManager *ult, const XM
 	// コリジョンの更新
 	UpdateColl();
 
+	// 通常速度を保存
+	normal_speed_ = speed_;
+
 	// イージング関連の初期化
+	float rate = 0.05f;
+
+	// 右移動時の画面傾倒イージング
 	NcmEaseDesc args;
 	args.init_value = 0.0f;
 	args.total_move = -rot_angle_;
 	args.ease_type = NcmEaseType::OutCubic;
-	args.t_rate = 0.05f;
+	args.t_rate = rate;
 	ease_rot_right_ = NcmEasing::RegisterEaseData(args);
 
+	// 左移動時の画面傾倒イージング
 	args.init_value = 0.0f;
 	args.total_move = rot_angle_;
 	args.ease_type = NcmEaseType::OutCubic;
-	args.t_rate = 0.05f;
+	args.t_rate = rate;
 	ease_rot_left_ = NcmEasing::RegisterEaseData(args);
 
+	// 傾倒リセットイージング
 	args.init_value = 0.0f;
 	args.total_move = rot_angle_;
 	args.ease_type = NcmEaseType::OutCubic;
-	args.t_rate = 0.05f;
+	args.t_rate = rate;
 	ease_reset_rot_ = NcmEasing::RegisterEaseData(args);
+
+	// 加速イージング
+	args.ease_type = NcmEaseType::OutCirc;
+	args.init_value = 0.5f;
+	args.total_move = normal_speed_;
+	//ease.total_move = SPEED_;
+	args.t_rate = rate;
+	acc_speed_ = NcmEasing::RegisterEaseData(args);
+
+	// 減速イージング
+	args.ease_type = NcmEaseType::OutCirc;
+	args.init_value = normal_speed_;
+	args.total_move = -0.5f;
+	args.t_rate = rate;
+	dec_speed_ = NcmEasing::RegisterEaseData(args);
+
+	args.ease_type = NcmEaseType::OutCubic;
+	args.init_value = NORMAL_FOV_;
+	args.total_move = ACCEL_FOV_ - NORMAL_FOV_;
+	args.t_rate = rate;
+	fov_acc_value_ = NcmEasing::RegisterEaseData(args);
+
+	args.ease_type = NcmEaseType::OutCubic;
+	args.init_value = ACCEL_FOV_;
+	args.total_move = NORMAL_FOV_ - ACCEL_FOV_;
+	args.t_rate = rate;
+	fov_dec_value_ = NcmEasing::RegisterEaseData(args);
 }
 
 void Player::Finalize()
@@ -169,10 +214,14 @@ void Player::Update()
 		is_triggering_ult_ = true;
 	}
 
+	// ミサイル挙動確認用
 	if (KeyboardInput::TriggerKey(DIK_E))
 	{
 		mi_launcher_->FireMissile(MissileType::Mono, LaunchedBy::Player, GetPos());
 	}
+
+	// 加速処理
+	Accelerate();
 
 	// ULTの発動を検知したら
 	if (is_triggering_ult_)
@@ -206,14 +255,11 @@ void Player::Update()
 		CountInvincibleTime();
 	}
 
-	// デバッグ用
-	//MoveXZ(3.0f);
-
-	// 入力により回頭させる
-	RotationY(2.0f);
+	// 上下左右移動
+	MoveXY(1.0f);
 
 	// 自動で前に進む
-	MoveForwardAuto();
+	MoveZ(speed_);
 
 	obj_->Update();
 	UpdateColl();
@@ -341,6 +387,50 @@ void Player::MoveXZ(float speed)
 	}
 }
 
+void Player::MoveXY(float speed)
+{
+	// 現在の位置を取得
+	XMFLOAT3 pos = obj_->GetPos();
+	XMFLOAT3 rot = obj_->GetRot();
+
+	// 上下移動
+	if (KeyboardInput::PushKey(DIK_W) && pos.y <= MOVABLE_RANGE_.y) { pos.y += speed; }
+	else if (KeyboardInput::PushKey(DIK_S) && pos.y >= 0.0f) { pos.y -= speed; }
+
+	// 左右移動
+	if (KeyboardInput::PushKey(DIK_D) && pos.x <= MOVABLE_RANGE_.x)
+	{
+		pos.x += speed;
+		RotPoseRight(rot);
+		is_released = false;
+	}
+	else if (KeyboardInput::PushKey(DIK_A) && pos.x >= -MOVABLE_RANGE_.x)
+	{
+		pos.x -= speed;
+		RotPoseLeft(rot);
+		is_released = false;
+	}
+
+	// 位置を更新
+	obj_->SetPos(pos);
+
+	if (KeyboardInput::ReleaseKey(DIK_A) || KeyboardInput::ReleaseKey(DIK_D))
+	{
+		is_released = true;
+		NcmEasing::ResetTime(ease_rot_right_);
+		NcmEasing::ResetTime(ease_rot_left_);
+	}
+
+	if (is_released)
+	{
+		ResetRotPose(rot);
+	}
+	else
+	{
+		NcmEasing::ResetTime(ease_reset_rot_);
+	}
+}
+
 void Player::RotationY(float speed)
 {
 	using enum NcmStickType;
@@ -382,13 +472,56 @@ void Player::RotationY(float speed)
 	obj_->SetRot(rot);
 }
 
-volatile void Player::MoveForwardAuto()
+volatile void Player::MoveForwardAuto(float speed)
 {
 	XMFLOAT3 pos = obj_->GetPos();
-	pos.x += speed_ * forward_vec_.x;
-	pos.y += speed_ * forward_vec_.y;
-	pos.z += speed_ * forward_vec_.z;
+	pos.x += speed * forward_vec_.x;
+	pos.y += speed * forward_vec_.y;
+	pos.z += speed * forward_vec_.z;
 	obj_->SetPos(pos);
+}
+
+void Player::MoveZ(float speed)
+{
+	XMFLOAT3 pos = obj_->GetPos();
+	pos.z += speed;
+	obj_->SetPos(pos);
+}
+
+void Player::Accelerate()
+{
+	// 加速
+	if (KeyboardInput::PushKey(DIK_LSHIFT))
+	{
+		NcmEasing::ResetTime(fov_dec_value_);
+		NcmEasing::ResetTime(dec_speed_);
+
+		// イージングの値を遷移
+		NcmEasing::UpdateValue(acc_speed_);
+		NcmEasing::UpdateValue(fov_acc_value_);
+
+		float fov = cam_ptr_->GetFOV();
+		fov = NcmEasing::GetValue(fov_acc_value_);
+		cam_ptr_->SetFOV(fov);
+
+		SetSpeed(NcmEasing::GetValue(acc_speed_));
+	}
+	// 減速・通常
+	else
+	{
+		NcmEasing::ResetTime(acc_speed_);
+		NcmEasing::ResetTime(fov_acc_value_);
+
+		// イージングの値を遷移
+		NcmEasing::UpdateValue(dec_speed_);
+		NcmEasing::UpdateValue(fov_dec_value_);
+
+		float fov = cam_ptr_->GetFOV();
+		fov = NcmEasing::GetValue(fov_dec_value_);
+		cam_ptr_->SetFOV(fov);
+
+		SetSpeed(NcmEasing::GetValue(dec_speed_));
+	}
 }
 
 void Player::RotPoseLeft(XMFLOAT3 &rot)

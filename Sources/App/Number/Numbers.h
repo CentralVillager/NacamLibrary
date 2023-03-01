@@ -51,7 +51,7 @@ public:
 
 public:
 
-	void DrawNumber(int number, float scale, HorizontalAlignment h_align, VerticalAlignment v_align);
+	void DrawNumber(int number, float scale, float alpha, HorizontalAlignment h_align, VerticalAlignment v_align);
 
 	float GetDigitsWidth() { return digit_width_; }
 	float GetDeadLineSize() { return dead_line_size_; }

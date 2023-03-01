@@ -8,7 +8,8 @@ using namespace NcmUtill;
 
 MissileManager::MissileManager() :
 	missile_list_(),
-	p_lockon_sys_(nullptr)
+	p_player_(),
+	p_lockon_sys_()
 {}
 
 MissileManager::~MissileManager()

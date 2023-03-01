@@ -70,7 +70,7 @@ void LockOnSystem::DrawNum()
 	using enum HorizontalAlignment;
 	using enum VerticalAlignment;
 
-	numbers_->DrawNumber(current_tgt_num_, 1.0f, Right, Bottom);
+	numbers_->DrawNumber(current_tgt_num_, 1.0f, 0.5f, Right, Bottom);
 }
 
 void LockOnSystem::DebugDraw()

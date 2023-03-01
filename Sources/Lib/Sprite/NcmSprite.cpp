@@ -1,9 +1,10 @@
 #include "NcmSprite.h"
 #include <cassert>
-#include <d3dx12.h>
 #include <DirectXTex.h>
 #include "../Win32App/Win32App.h"
+#include "../Converter/TextureConverter.h"
 
+using namespace std;
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
@@ -47,8 +48,11 @@ void NcmSprite::StaticInitialize(ID3D12Device *device, ID3D12GraphicsCommandList
 	assert(SUCCEEDED(result));
 }
 
-ncm_thandle NcmSprite::LoadTex(const wchar_t *filename)
+ncm_thandle NcmSprite::LoadTex(const string &path)
 {
+	// 文字形式を変更
+	wstring w_path = TextureConverter::ConvertMultiByteStringToWideString(path);
+
 	handle_counter_++;
 	int32_t count_for_array = handle_counter_ - 1;
 
@@ -60,10 +64,18 @@ ncm_thandle NcmSprite::LoadTex(const wchar_t *filename)
 	TexMetadata meta_data{};
 	ScratchImage scratch_img{};
 
-	// WICテクスチャのロード
-	result = LoadFromWICFile(
-		filename, WIC_FLAGS_NONE,
-		&meta_data, scratch_img);
+	wstring r = TextureConverter::ReturnFileExtention(w_path);
+
+	if (w_path.find(L"dds") != wstring::npos)
+	{
+		// DDSテクスチャのロード
+		result = LoadFromDDSFile(w_path.c_str(), DDS_FLAGS_NONE, &meta_data, scratch_img);
+	}
+	else
+	{
+		// WICテクスチャのロード
+		result = LoadFromWICFile(w_path.c_str(), WIC_FLAGS_NONE, &meta_data, scratch_img);
+	}
 	assert(SUCCEEDED(result));
 
 	const Image *img = scratch_img.GetImage(0, 0, 0); // 生データ抽出
@@ -106,12 +118,7 @@ ncm_thandle NcmSprite::LoadTex(const wchar_t *filename)
 	srv_desc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
 	srv_desc.Texture2D.MipLevels = 1;
 
-	//device_->CreateShaderResourceView(tex_buff_[count_for_array].Get(), //ビューと関連付けるバッファ
-	//	&srv_desc, //テクスチャ設定情報
-	//	CD3DX12_CPU_DESCRIPTOR_HANDLE(desc_heap_->GetCPUDescriptorHandleForHeapStart(), count_for_array, desc_handle_incre_size_)
-	//);
-
-	GenerateDrawData(count_for_array, filename);
+	GenerateDrawData(count_for_array, w_path.c_str());
 
 	device_->CreateShaderResourceView(tex_buff_[count_for_array].Get(), //ビューと関連付けるバッファ
 		&srv_desc, //テクスチャ設定情報

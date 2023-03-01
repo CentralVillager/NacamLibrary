@@ -176,7 +176,9 @@
     <ClCompile Include="Sources\App\DebugUtill\NcmDebug.cpp" />
     <ClCompile Include="Sources\App\DebugUtill\NcmImGui.cpp" />
     <ClCompile Include="Sources\App\FpsManager\FPSManager.cpp" />
+    <ClCompile Include="Sources\App\Grid\GridFloorManager.cpp" />
     <ClCompile Include="Sources\App\Grid\GridRender.cpp" />
+    <ClCompile Include="Sources\App\Grid\NcmGridFloor.cpp" />
     <ClCompile Include="Sources\App\Level\LevelDataManager.cpp" />
     <ClCompile Include="Sources\App\main.cpp" />
     <ClCompile Include="Sources\App\Math\Easing\NcmEasing.cpp" />
@@ -209,6 +211,7 @@
     <ClCompile Include="Sources\App\Unique\Missile\MissileHomingStateHighAccuracy.cpp" />
     <ClCompile Include="Sources\App\Unique\Missile\MissileHomingStateLowAccuracy.cpp" />
     <ClCompile Include="Sources\App\Unique\Missile\MissileHomingStateMiddleAccuracy.cpp" />
+    <ClCompile Include="Sources\App\Unique\Missile\MissileHomingStateNoHoming.cpp" />
     <ClCompile Include="Sources\App\Unique\Missile\MissileManager.cpp" />
     <ClCompile Include="Sources\App\Unique\Player\Player.cpp" />
     <ClCompile Include="Sources\App\Unique\Reticle\Reticle.cpp" />
@@ -217,6 +220,7 @@
     <ClCompile Include="Sources\App\Utility\NcmUtil.cpp" />
     <ClCompile Include="Sources\Lib\Audio\AudioManager.cpp" />
     <ClCompile Include="Sources\Lib\Camera\Camera.cpp" />
+    <ClCompile Include="Sources\Lib\Converter\TextureConverter.cpp" />
     <ClCompile Include="Sources\Lib\DirectXBase\DirectXBase.cpp" />
     <ClCompile Include="Sources\Lib\DrawProc\DrawProc.cpp" />
     <ClCompile Include="Sources\Lib\Fbx\FbxLoader.cpp" />
@@ -255,7 +259,9 @@
     <ClInclude Include="Sources\App\DebugUtill\NcmDebug.h" />
     <ClInclude Include="Sources\App\DebugUtill\NcmImGui.h" />
     <ClInclude Include="Sources\App\FpsManager\FPSManager.h" />
+    <ClInclude Include="Sources\App\Grid\GridFloorManager.h" />
     <ClInclude Include="Sources\App\Grid\GridRender.h" />
+    <ClInclude Include="Sources\App\Grid\NcmGridFloor.h" />
     <ClInclude Include="Sources\App\Level\LevelDataManager.h" />
     <ClInclude Include="Sources\App\Math\Easing\NcmEasing.h" />
     <ClInclude Include="Sources\App\Math\NcmMath.h" />
@@ -295,6 +301,7 @@
     <ClInclude Include="Sources\App\Unique\Missile\MissileHomingStateHighAccuracy.h" />
     <ClInclude Include="Sources\App\Unique\Missile\MissileHomingStateLowAccuracy.h" />
     <ClInclude Include="Sources\App\Unique\Missile\MissileHomingStateMiddleAccuracy.h" />
+    <ClInclude Include="Sources\App\Unique\Missile\MissileHomingStateNoHoming.h" />
     <ClInclude Include="Sources\App\Unique\Missile\MissileManager.h" />
     <ClInclude Include="Sources\App\Unique\Missile\MissileLauncher.h" />
     <ClInclude Include="Sources\App\Unique\Missile\MissileStateCharge.h" />
@@ -309,6 +316,7 @@
     <ClInclude Include="Sources\App\Utility\NcmUtil.h" />
     <ClInclude Include="Sources\Lib\Audio\AudioManager.h" />
     <ClInclude Include="Sources\Lib\Camera\Camera.h" />
+    <ClInclude Include="Sources\Lib\Converter\TextureConverter.h" />
     <ClInclude Include="Sources\Lib\DirectXBase\DirectXBase.h" />
     <ClInclude Include="Sources\Lib\DrawProc\DrawProc.h" />
     <ClInclude Include="Sources\Lib\Fbx\FbxLoader.h" />

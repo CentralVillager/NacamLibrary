@@ -4,6 +4,7 @@
 #include "MissileHomingStateHighAccuracy.h"
 #include "MissileHomingStateMiddleAccuracy.h"
 #include "MissileHomingStateLowAccuracy.h"
+#include "MissileHomingStateNoHoming.h"
 #include "MissileDescs.h"
 
 class MissileHoming
@@ -40,6 +41,11 @@ public:
 		case Low:
 
 			homing_accuracy_ = std::make_shared<MissileHomingStateLowAccuracy>();
+			break;
+
+		case NoHoming:
+
+			homing_accuracy_ = std::make_shared<MissileHomingStateNoHoming>();
 			break;
 
 		default:

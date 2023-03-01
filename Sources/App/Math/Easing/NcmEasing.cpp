@@ -80,7 +80,7 @@ void NcmEasing::DeleteEaseData(ncm_ehandle handle)
 	}
 }
 
-void NcmEasing::UpdateValue(int handle)
+void NcmEasing::UpdateValue(ncm_ehandle handle)
 {
 	// ƒnƒ“ƒhƒ‹‚É‘Î‰ž‚·‚éEaseArgs‚ðŽ‚Á‚Ä‚­‚é
 	auto args = SearchValue(handle);
@@ -93,25 +93,25 @@ void NcmEasing::UpdateValue(int handle)
 	args->ease_value = ease_func(args->t);
 }
 
-void NcmEasing::ResetTime(int handle)
+void NcmEasing::ResetTime(ncm_ehandle handle)
 {
 	auto args = SearchValue(handle);
 	args->t = 0.0f;
 }
 
-float NcmEasing::GetValue(int handle)
+float NcmEasing::GetValue(ncm_ehandle handle)
 {
 	auto args = SearchValue(handle);
 	return args->init_value + args->total_move * args->ease_value;
 }
 
-void NcmEasing::SetInitValue(int handle, float v)
+void NcmEasing::SetInitValue(ncm_ehandle handle, float v)
 {
 	auto args = SearchValue(handle);
 	args->init_value = v;
 }
 
-void NcmEasing::SetTotalMove(int handle, float v)
+void NcmEasing::SetTotalMove(ncm_ehandle handle, float v)
 {
 	auto args = SearchValue(handle);
 	args->total_move = v;

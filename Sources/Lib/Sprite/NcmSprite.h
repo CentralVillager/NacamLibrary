@@ -117,9 +117,9 @@ public:
 	/// <summary>
 	/// ‰æ‘œ‚Ì“Ç‚İ‚İ
 	/// </summary>
-	/// <param name="filename"></param>
+	/// <param name="path"></param>
 	/// <returns></returns>
-	static ncm_thandle LoadTex(const wchar_t *filename);
+	static ncm_thandle LoadTex(const std::string &path);
 
 	/// <summary>
 	/// ‰æ‘œ‚Ì•`‰æ
@@ -184,6 +184,10 @@ public:
 	static inline void SetColor(const ncm_thandle handle, XMFLOAT4 color)
 	{
 		sprite_hub_[handle].color_ = color;
+	}
+	static inline void SetAlpha(const ncm_thandle handle, float alpha)
+	{
+		sprite_hub_[handle].color_.w = alpha;
 	}
 
 protected:

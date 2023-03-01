@@ -38,21 +38,21 @@ void NcmUi::LoadResources()
 {
 	Numbers::LoadResources();
 
-	ui_hub_.emplace("slash", NcmSprite::LoadTex(L"Resources/Textures/SC/slash.png"));
-	ui_hub_.emplace("0", NcmSprite::LoadTex(L"Resources/Textures/SC/0.png"));
-	ui_hub_.emplace("1", NcmSprite::LoadTex(L"Resources/Textures/SC/1.png"));
-	ui_hub_.emplace("2", NcmSprite::LoadTex(L"Resources/Textures/SC/2.png"));
-	ui_hub_.emplace("3", NcmSprite::LoadTex(L"Resources/Textures/SC/3.png"));
-	ui_hub_.emplace("4", NcmSprite::LoadTex(L"Resources/Textures/SC/4.png"));
-	ui_hub_.emplace("/4", NcmSprite::LoadTex(L"Resources/Textures/SC/max_num.png"));
-	ui_hub_.emplace("bar", NcmSprite::LoadTex(L"Resources/Textures/SC/bar.png"));
-	ui_hub_.emplace("space", NcmSprite::LoadTex(L"Resources/Textures/SC/space.png"));
+	ui_hub_.emplace("slash", NcmSprite::LoadTex("Resources/Textures/SC/slash.png"));
+	ui_hub_.emplace("0", NcmSprite::LoadTex("Resources/Textures/SC/0.png"));
+	ui_hub_.emplace("1", NcmSprite::LoadTex("Resources/Textures/SC/1.png"));
+	ui_hub_.emplace("2", NcmSprite::LoadTex("Resources/Textures/SC/2.png"));
+	ui_hub_.emplace("3", NcmSprite::LoadTex("Resources/Textures/SC/3.png"));
+	ui_hub_.emplace("4", NcmSprite::LoadTex("Resources/Textures/SC/4.png"));
+	ui_hub_.emplace("/4", NcmSprite::LoadTex("Resources/Textures/SC/max_num.png"));
+	ui_hub_.emplace("bar", NcmSprite::LoadTex("Resources/Textures/SC/bar.png"));
+	ui_hub_.emplace("space", NcmSprite::LoadTex("Resources/Textures/SC/space.png"));
 	bar_size_ = NcmSprite::GetSize(ui_hub_["bar"]);
 	NcmSprite::SetAnchorPoint(ui_hub_["space"], { 0.5f, 1.0f });
 
 	for (auto &i : hp_)
 	{
-		i = NcmSprite::LoadTex(L"Resources/white1x1.png");
+		i = NcmSprite::LoadTex("Resources/white1x1.png");
 	}
 }
 

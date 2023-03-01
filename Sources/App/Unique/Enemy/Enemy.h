@@ -1,7 +1,5 @@
 #pragma once
 #include <memory>
-#include "../Sources/App/Unique/Bullet/Bullet.h"
-#include "../Bullet/BulletList.h"
 #include "../Abs/AbsUniqueObj.h"
 
 class Player;
@@ -32,9 +30,6 @@ private:
 	static Player *player_;
 
 private:
-
-	// 弾
-	std::shared_ptr<BulletList> bullets_;
 
 	// ミサイル
 	std::shared_ptr<MissileLauncher> mi_launcher_;
@@ -70,7 +65,6 @@ public:
 public:
 
 	const uint32_t &GetID() { return id_; }
-	const std::shared_ptr<BulletList> &GetBulletList() { return bullets_; }
 
 public:
 
@@ -92,19 +86,18 @@ public:
 	/// <summary>
 	/// 水平方向に移動
 	/// </summary>
-	void MoveHorizontally(const float &speed, const float &range);
+	void MoveHorizontally(const float speed, const float range);
+
+	/// <summary>
+	/// z軸方向へ移動
+	/// </summary>
+	/// <param name="speed"></param>
+	void MoveZ(const float speed);
 
 	/// <summary>
 	/// 円運動を行う
 	/// </summary>
 	void MoveCircular();
-
-	/// <summary>
-	/// 設定した間隔で弾を発射する
-	/// </summary>
-	/// <param name="interval">発射間隔</param>
-	/// <param name="dist">目標位置</param>
-	void AutoShot(int interval, const XMFLOAT3 &dist);
 
 	/// <summary>
 	/// ミサイルを単発発射する
