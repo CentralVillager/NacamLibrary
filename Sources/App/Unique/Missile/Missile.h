@@ -96,14 +96,6 @@ public:
 	void UpdateTargetPos(EnemiesList &enemies);
 
 	/// <summary>
-	/// 敵を追尾する
-	/// </summary>
-	/// <param name="enemies">敵のコンテナ</param>
-	void HomingEnemy(EnemiesList &enemies);
-
-	void TestHomingTarget(EnemiesList &enemies);
-
-	/// <summary>
 	/// 設定した位置に追尾する
 	/// </summary>
 	void HomingTarget();
