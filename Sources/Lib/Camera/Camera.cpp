@@ -26,7 +26,8 @@ Camera::Camera() :
 	distance_(),
 	aspect_ratio_(),
 	parent_mat_(),
-	fov_()
+	fov_(),
+	is_missile_camera_()
 {
 	device_ = DirectXBase::GetInstance()->GetDevice().Get();
 }
@@ -166,7 +167,23 @@ void Camera::ResetCamera()
 
 void Camera::DebugDraw()
 {
+	ImGui::Checkbox("MissileCamera", &is_missile_camera_);
+
 	ImGui::DragFloat("FOV", &fov_, 0.1f, 0.1f, 179.99f);
+
+	if (is_missile_camera_)
+	{
+		differ_ = CIRCUSE_DIFFER_;
+		differ_y_ = CIRCUSE_DIFFER_Y_;
+		offset_y_ = CIRCUSE_OFFSET_Y;
+	}
+	else
+	{
+		differ_ = NORMAL_DIFFER_;
+		differ_y_ = NORMAL_DIFFER_Y_;
+		offset_y_ = NORMAL_OFFSET_Y;
+	}
+
 	ImGui::DragFloat("Differ", &differ_, 0.1f, 0, 200.0f);
 	ImGui::DragFloat("DifferY", &differ_y_, 0.1f, 0, 200.0f);
 	ImGui::DragFloat("OffsetY", &offset_y_, 0.1f, -200.0f, 200.0f);

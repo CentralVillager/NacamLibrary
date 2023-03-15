@@ -75,4 +75,9 @@ void NcmParticleManager::StaticDebugDraw()
 {
 	ImGui::Text("particle_num : %d", particle_num);
 	ImGui::Text("max_particle_num : %d", max_particle_num);
+
+	/*for (auto &i : part_args_)
+	{
+		ImGui::Text("pos : (%f, %f, %f)", i.pos.x, i.pos.y, i.pos.z);
+	}*/
 }

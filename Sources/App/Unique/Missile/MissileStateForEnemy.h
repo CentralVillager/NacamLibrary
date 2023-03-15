@@ -8,6 +8,7 @@ class MissileStateForEnemy : public IMissileLaunchState
 	{
 		MissileParam param{};
 		param.type = MissileType::ForEnemy;
+		param.accuracy_type = HomingAccuracy::Low;
 
 		switch (launcher)
 		{

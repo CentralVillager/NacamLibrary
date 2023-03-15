@@ -5,6 +5,7 @@
 #include "../Abs/AbsUniqueObj.h"
 #include "MissileDescs.h"
 #include "MissileHoming.h"
+#include "../../Math/Easing/NcmEasing.h"
 
 class Player;
 
@@ -26,16 +27,24 @@ private:
 	static std::unique_ptr<Model> model_;
 	static std::unique_ptr<Model> coll_model_;
 
+	inline static Player *p_player_;
+
 private:
 
 	// 追尾精度
 	std::unique_ptr<MissileHoming> homing_sequence_;
 
-	std::unique_ptr<Emitter> emitter_;	// エミッター
-	std::unique_ptr<Emitter> explo_emi_;// 爆発エミッター
-	MissileParam mi_param_;				// パラメータ
+	std::unique_ptr<Emitter> emitter_;		// エミッター
+	std::unique_ptr<Emitter> explo_emi_;	// 爆発エミッター
+	MissileParam mi_param_;					// パラメータ
 
-	inline static Player *p_player_;
+	ncm_ehandle for_lerp_handle_x_;			// 補間用イージングハンドル
+	ncm_ehandle for_lerp_handle_y_;			// 補間用イージングハンドル
+	ncm_ehandle for_lerp_handle_z_;			// 補間用イージングハンドル
+
+	// パーティクル補間用
+	XMFLOAT3 before_particle_pos_;
+	XMFLOAT3 current_particle_pos_;
 
 public:
 
@@ -91,14 +100,13 @@ public:
 	/// <summary>
 	/// 敵の位置を算出する
 	/// </summary>
-	/// <param name="enemies"></param>
-	/// <returns></returns>
+	/// <param name="enemies"></param>emitter
 	void UpdateTargetPos(EnemiesList &enemies);
 
 	/// <summary>
 	/// 設定した位置に追尾する
 	/// </summary>
-	void HomingTarget();
+	void HomingTarget(HomingAccuracy accuracy);
 
 	/// <summary>
 	/// エミッターの終了準備をする
@@ -111,4 +119,24 @@ private:
 	/// エミッターに関する更新処理
 	/// </summary>
 	void UpdateEmitter();
+
+	/// <summary>
+	/// ミサイルパーティクルの補間処理
+	/// </summary>
+	void InterpolateParticle();
+
+	/// <summary>
+	/// XMFLOAT3型の全てのメンバが0かの判定
+	/// </summary>
+	/// <param name="src">判定素材</param>
+	/// <returns>全て0ならtrue</returns>
+	inline bool IsAllZero(XMFLOAT3 &src)
+	{
+		if (src.x == 0.0f && src.y == 0.0f && src.z == 0.0f)
+		{
+			return true;
+		}
+
+		return false;
+	}
 };

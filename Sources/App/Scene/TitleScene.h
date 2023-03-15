@@ -15,6 +15,8 @@ class TitleScene : public AbsScene
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 
+private:
+
 	std::unique_ptr<Camera> camera_;
 
 	int title_;

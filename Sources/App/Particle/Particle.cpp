@@ -35,6 +35,7 @@ void Particle::Update()
 	{
 		// 死亡フラグを立てる
 		particle_->is_dead_ = true;
+		return;
 	}
 
 	// 経過フレーム数をカウント

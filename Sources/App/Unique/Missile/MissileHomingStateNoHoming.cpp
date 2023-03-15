@@ -6,6 +6,7 @@
 void MissileHomingStateNoHoming::HomingTarget(Missile &missile)
 {
 	MissileParam *mi_param = &missile.GetMissileParam();
+	mi_param->accuracy_type = HomingAccuracy::NoHoming;
 
 	mi_param->vel.x *= mi_param->speed;
 	mi_param->vel.y *= mi_param->speed;

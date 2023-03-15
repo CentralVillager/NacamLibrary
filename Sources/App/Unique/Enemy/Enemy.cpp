@@ -71,7 +71,7 @@ void Enemy::Update()
 {
 	RotY();
 	//MoveHorizontally(2.0f, 100.0f);
-	LaunchMissileSequence();
+	//LaunchMissileSequence();
 	MoveZ(player_->GetSpeed());
 
 	obj_->Update();

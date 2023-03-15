@@ -20,7 +20,19 @@ class Camera
 
 private:
 
+	static constexpr float NORMAL_DIFFER_ = 22.0f;
+	static constexpr float NORMAL_DIFFER_Y_ = 12.0f;
+	static constexpr float NORMAL_OFFSET_Y = 3.0f;
+
+	static constexpr float CIRCUSE_DIFFER_ = 50.0f;
+	static constexpr float CIRCUSE_DIFFER_Y_ = 90.0f;
+	static constexpr float CIRCUSE_OFFSET_Y = -10.0f;
+
+private:
+
 	static ComPtr<ID3D12Device> device_;
+
+private:
 
 	// 定数バッファ
 	ComPtr<ID3D12Resource> matrix_const_buffer_;
@@ -52,6 +64,8 @@ private:
 	XMMATRIX *parent_mat_;
 	// 視野角
 	float fov_;
+
+	bool is_missile_camera_;
 
 	float differ_ = 22.0f;
 	float differ_y_ = 12.0f;

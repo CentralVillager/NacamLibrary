@@ -93,9 +93,15 @@ public:
 	void UseParticle(std::list<Particle>::iterator last_itr);
 
 	/// <summary>
-	/// パーティクルを生成する
+	/// パーティクルを生成し続ける
 	/// </summary>
 	void GenerateParticle();
+
+	/// <summary>
+	/// コンテナに粒を追加する
+	/// </summary>
+	/// <param name="p">パーティクルの設定</param>
+	void Add(const ParticleDesc &p);
 
 	/// <summary>
 	/// パーティクルを更新する
@@ -124,9 +130,6 @@ public:
 	static void StaticDebugDraw();
 
 private:
-
-	// コンテナに粒を追加
-	void Add(const ParticleDesc &p);
 
 	// 値を生成する
 	ParticleDesc GenerateValue(const EmitterDesc &emitter);

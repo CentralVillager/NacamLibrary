@@ -98,8 +98,8 @@ public:
 
 	static void SetPipeline(Pipeline p);
 
-	static float GetAplha() { return color_.w; }
-	static void SetAplha(float color) { color_.w = color; }
+	static float GetAlpha() { return color_.w; }
+	static void SetAlpha(float color) { color_.w = color; }
 
 	/// <summary>
 	/// ƒV[ƒ“•`‰æ‘Oˆ—

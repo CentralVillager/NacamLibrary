@@ -71,6 +71,8 @@ struct MissileParam
 
 	XMFLOAT3 trail_color;		// ‹OÕ‚ÌF
 
+	HomingAccuracy accuracy_type;	// ’Ç”ö¸“x
+
 	MissileParam() :
 		type(),
 		speed(),
@@ -86,6 +88,7 @@ struct MissileParam
 		life(),
 		is_validity(),
 		is_explode(),
-		trail_color()
+		trail_color(),
+		accuracy_type()
 	{}
 };

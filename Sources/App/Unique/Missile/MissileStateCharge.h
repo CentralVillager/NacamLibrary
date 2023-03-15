@@ -65,7 +65,7 @@ public:
 		// ê≥ãKâª
 		direction_vec = DirectX::XMVector3Normalize(direction_vec);
 
-		param.speed = 3.0f;
+		param.speed = 4.0f;
 		param.pos = launch_pos;
 		DirectX::XMStoreFloat3(&param.vel, direction_vec);
 		// tgt_pos ÇÕâ∫Ç≈ê›íË

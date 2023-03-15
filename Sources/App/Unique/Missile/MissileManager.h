@@ -52,12 +52,6 @@ public:
 public:
 
 	/// <summary>
-	/// 毎フレーム敵追尾計算
-	/// </summary>
-	/// <param name="enemies"></param>
-	void HomingEnemy(EnemiesList &enemies);
-
-	/// <summary>
 	/// 毎フレームターゲット追尾計算
 	/// </summary>
 	void HomingTarget();

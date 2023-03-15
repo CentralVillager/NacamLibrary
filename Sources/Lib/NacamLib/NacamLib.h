@@ -46,8 +46,7 @@ public:
 	/// <summary>
 	/// XVˆ—
 	/// </summary>
-	/// <param name="fps">fps§ŒÀ</param>
-	void NacamLib_Update(int fps);
+	void NacamLib_Update();
 
 	/// <summary>
 	/// •`‰æˆ—

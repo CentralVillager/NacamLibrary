@@ -76,21 +76,13 @@ int32_t MissileManager::GetTgtID(int32_t n)
 	return itr->GetMissileParam().tgt_id;
 }
 
-void MissileManager::HomingEnemy(EnemiesList &enemies)
-{
-	for (auto &i : missile_list_)
-	{
-		i.HomingEnemy(enemies);
-	}
-}
-
 void MissileManager::HomingTarget()
 {
 	for (auto &i : missile_list_)
 	{
 		if (i.GetIsValidity())
 		{
-			i.HomingTarget();
+			i.HomingTarget(i.GetMissileParam().accuracy_type);
 		}
 	}
 }

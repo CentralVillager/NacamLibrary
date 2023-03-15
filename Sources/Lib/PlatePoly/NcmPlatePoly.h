@@ -6,6 +6,7 @@
 #include <forward_list>
 #include <array>
 #include <list>
+#include <cmath>
 #include "../../Lib/Camera/Camera.h"
 #include "../../App/Particle/NcmParticleCommonArgs.h"
 
@@ -42,7 +43,7 @@ public:
 
 private:
 
-	static constexpr int VERTEX_COUNT_ = 65535;	// í∏ì_êî
+	static constexpr uint32_t VERTEX_COUNT_ = 0x7ffffff / sizeof(VertexPos);	// í∏ì_êî
 
 private:
 

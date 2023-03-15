@@ -46,7 +46,8 @@ MainScene::MainScene() :
 	player_dec_speed_(),
 	fov_acc_value_(),
 	fov_dec_value_(),
-	is_scene_change_()
+	is_scene_change_(),
+	result_alpha_(0.0f)
 {
 	// テクスチャのロード
 	clear_ = NcmSprite::LoadTex("Resources/Textures/clear.png");
@@ -346,8 +347,16 @@ void MainScene::Draw()
 	particle_mgr_->Draw();
 
 	PreDraw::SetPipeline(Sprite);
+	// クリアしたら
 	if (is_clear_)
 	{
+		AlphaTransition(0.05f);
+
+		// αをセット
+		NcmSprite::SetAlpha(space_, result_alpha_);
+		NcmSprite::SetAlpha(clear_, result_alpha_);
+
+		// 点滅表示
 		if (CheckDoDisplay())
 		{
 			NcmSprite::DrawTex(space_);
@@ -355,8 +364,16 @@ void MainScene::Draw()
 
 		NcmSprite::DrawTex(clear_);
 	}
+	// 失敗したら
 	else if (is_failed_)
 	{
+		AlphaTransition(0.05f);
+
+		// αをセット
+		NcmSprite::SetAlpha(space_, result_alpha_);
+		NcmSprite::SetAlpha(over_, result_alpha_);
+
+		// 点滅表示
 		if (CheckDoDisplay())
 		{
 			NcmSprite::DrawTex(space_);
@@ -376,7 +393,7 @@ void MainScene::DebugDraw()
 	ImGui::Checkbox("DebugMode?", &debug);
 	NcmDebug::GetInstance()->SetDebugMode(debug);
 
-	grid_floor_->DebugDraw();
+	//grid_floor_->DebugDraw();
 
 	NcmParticleManager::StaticDebugDraw();
 	Emitter::StaticDebugDraw();
@@ -440,7 +457,7 @@ void MainScene::CollisionProcess()
 				{
 					if (missile_mgr_->Death(j))
 					{
-						ene_list_->Death(i);
+						//ene_list_->Death(i);
 						ult_->AddUltValue(20);
 					}
 				}
@@ -486,5 +503,22 @@ bool MainScene::CheckDoDisplay()
 		}
 
 		return false;
+	}
+}
+
+void MainScene::AlphaTransition(float trans_speed)
+{
+	// α値が1以下なら
+	if (result_alpha_ <= 1.0f)
+	{
+		// αを1に近づけていく
+		result_alpha_ += trans_speed;
+	}
+
+	// α値が1以上なら
+	if (result_alpha_ >= 1.0f)
+	{
+		// 値を1に固定する
+		result_alpha_ = 1.0f;
 	}
 }

@@ -57,7 +57,7 @@ void TitleScene::Initialize()
 	p.part_desc_.velocity_ = { 0.0f, 0.0f, -10.0f };
 	p.part_desc_.accel_ = { 0.001f, 0.001f, 0 };
 	p.part_desc_.life_ = 100;
-	p.part_desc_.s_scale_ = 5.0f;
+	p.part_desc_.s_scale_ = 50.0f;
 	p.part_desc_.e_scale_ = 0;
 	p.pos_rand_ = { 500.0f, 500.0f, 0 };
 	p.vel_rand_ = { 0.1f, 0.1f, 0.1f };
@@ -116,7 +116,9 @@ void TitleScene::Draw()
 {
 	PreDraw::SetPipeline(PipelineName::Object3d);
 	sky_dome_->Draw();
-	//emitter_->Draw();
+
+	PreDraw::SetPipeline(PipelineName::PlatePoly);
+	part_mgr_->Draw();
 
 	PreDraw::SetPipeline(PipelineName::Sprite);
 
@@ -145,4 +147,6 @@ void TitleScene::Draw()
 }
 
 void TitleScene::DebugDraw()
-{}
+{
+	NcmParticleManager::StaticDebugDraw();
+}

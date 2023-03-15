@@ -8,7 +8,7 @@
 
 using namespace NcmMath;
 
-std::list<NcmEaseDesc> NcmEasing::easing_datas_;
+std::vector<NcmEaseDesc> NcmEasing::ease_datas_;
 std::array<NcmEasing::EaseFunc, (size_t)(NcmEaseType::MaxEaseNum)> NcmEasing::ease_types_;
 ncm_ehandle NcmEasing::handle_counter_ = 0;
 
@@ -17,7 +17,7 @@ NcmEasing::NcmEasing()
 
 NcmEasing::~NcmEasing()
 {
-	easing_datas_.clear();
+	ease_datas_.clear();
 }
 
 void NcmEasing::StaticInit()
@@ -47,37 +47,29 @@ void NcmEasing::StaticInit()
 
 NcmEaseDesc *NcmEasing::SearchValue(ncm_ehandle handle)
 {
-	for (auto &i : easing_datas_)
+	if (&ease_datas_[handle] == nullptr)
 	{
-		if (i.handle == handle)
-		{
-			return &i;
-		}
+		return nullptr;
 	}
 
-	return nullptr;
+	return &ease_datas_[handle];
 }
 
 ncm_ehandle NcmEasing::RegisterEaseData(const NcmEaseDesc &args)
 {
-	easing_datas_.emplace_back(NcmEaseDesc());
-	easing_datas_.back() = args;
-	easing_datas_.back().handle = handle_counter_;
+	ease_datas_.emplace_back(NcmEaseDesc());
+	ease_datas_.back() = args;
+	ease_datas_.back().handle = handle_counter_;
 
 	handle_counter_++;
 
-	return easing_datas_.back().handle;
+	return ease_datas_.back().handle;
 }
 
 void NcmEasing::DeleteEaseData(ncm_ehandle handle)
 {
-	for (auto i = easing_datas_.begin(); i != easing_datas_.end();)
-	{
-		if (i->handle == handle)
-		{
-			easing_datas_.erase(i);
-		}
-	}
+	auto args = SearchValue(handle);
+	ease_datas_.erase(ease_datas_.begin() + handle);
 }
 
 void NcmEasing::UpdateValue(ncm_ehandle handle)
@@ -86,7 +78,6 @@ void NcmEasing::UpdateValue(ncm_ehandle handle)
 	auto args = SearchValue(handle);
 	// tを計算
 	ConvertRate(&args->t, args->t_rate, args->t_max);
-	//ConvertRate(&args->t, 0.05f, 1.0f);
 	// 該当のイージング関数を適用
 	EaseFunc ease_func = ease_types_[(int)(args->ease_type)];
 	// イージング量を計算
@@ -103,6 +94,18 @@ float NcmEasing::GetValue(ncm_ehandle handle)
 {
 	auto args = SearchValue(handle);
 	return args->init_value + args->total_move * args->ease_value;
+}
+
+bool NcmEasing::IsFinished(ncm_ehandle handle)
+{
+	auto args = SearchValue(handle);
+
+	if (args->t >= 1.0f)
+	{
+		return true;
+	}
+
+	return false;
 }
 
 void NcmEasing::SetInitValue(ncm_ehandle handle, float v)

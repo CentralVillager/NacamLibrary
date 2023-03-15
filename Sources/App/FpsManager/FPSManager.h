@@ -4,7 +4,8 @@
 /// <summary>
 /// fpsを管理します。
 /// </summary>
-class FpsManager final : public Singleton<FpsManager> {
+class FpsManager final : public Singleton<FpsManager>
+{
 	friend Singleton<FpsManager>;
 
 	// フレーム数カウント
@@ -34,6 +35,7 @@ public:
 	static void ObserveFps();
 
 private:
+
 	/// <summary>
 	/// 現在時刻を取得する
 	/// </summary>

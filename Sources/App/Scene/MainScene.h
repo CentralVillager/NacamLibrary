@@ -105,6 +105,8 @@ private:
 
 	bool is_scene_change_;
 
+	float result_alpha_;
+
 public:
 
 	MainScene();
@@ -122,4 +124,5 @@ private:
 
 	void CollisionProcess();
 	bool CheckDoDisplay();
+	void AlphaTransition(float trans_speed);
 };

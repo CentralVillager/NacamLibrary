@@ -202,16 +202,19 @@ void Player::Update()
 			{
 				// 強制的に発動する
 				p_ult_->TriggeringUlt();
+				is_triggering_ult_ = true;
 			}
 			else
 			{
 				return;
 			}
 		}
-
-		// ウルトを発動する(UI)
-		p_ult_->TriggeringUlt();
-		is_triggering_ult_ = true;
+		else
+		{
+			// ウルトを発動する(UI)
+			p_ult_->TriggeringUlt();
+			is_triggering_ult_ = true;
+		}
 	}
 
 	// ミサイル挙動確認用
@@ -330,6 +333,7 @@ void Player::TakeDamage()
 
 	hp_--;
 	taking_damage_trigger_ = true;
+	p_ult_->AddUltValue(30);
 }
 
 void Player::CountInvincibleTime()

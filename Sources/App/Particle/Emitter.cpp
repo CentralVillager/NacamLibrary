@@ -168,8 +168,6 @@ void Emitter::GenerateParticle()
 		{
 			// 生成する
 			Add(GenerateValue(emitter_desc_));
-			XMFLOAT3 vel = GenerateValue(emitter_desc_).velocity_;
-			int a = 0;
 		}
 	}
 }
@@ -247,12 +245,6 @@ void Emitter::Draw()
 			// ループを抜ける
 			break;
 		}
-	}
-
-	// 全てのパーティクルを描画
-	for (auto &i : particles_)
-	{
-		i.Draw();
 	}
 }
 

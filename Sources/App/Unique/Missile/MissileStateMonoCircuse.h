@@ -36,7 +36,7 @@ class MissileStateMonoCircuse : public IMissileLaunchState
 		}
 
 		// パラメータを設定
-		param.speed = 3.0f;
+		param.speed = 10.0f;
 		param.pos = launch_pos;
 		// 加速度をランダムに設定
 		param.acc = NcmUtill::GenerateRandom(DirectX::XMFLOAT3(-1.5f, -1.5f, 0), DirectX::XMFLOAT3(1.5f, 1.5f, 0));

@@ -15,11 +15,11 @@ public:
 		/* プレイヤーのみが使用する想定なのでlauncherは使用しない */
 
 		// 総ターゲット数
-		static uint32_t all_tgt_num_ = 0;
+		static uint32_t all_tgt_num = 0;
 		// ターゲット一体につくミサイルの数
-		static uint32_t contract_per_tgt_ = 0;
+		static uint32_t contract_per_tgt = 0;
 		// 参照するターゲットの位置の記録
-		static uint32_t tgt_location_ref_ = 0;
+		static uint32_t tgt_location_ref = 0;
 		// 発射間隔
 		static const uint32_t DELAY = 3;
 		// カウント
@@ -34,13 +34,13 @@ public:
 		{
 			/* 初回発射時のデータを元にする */
 			// 総ターゲット数を取得
-			all_tgt_num_ = ptr->GetLockOnSys()->GetMaxTgtNum();
+			all_tgt_num = ptr->GetLockOnSys()->GetMaxTgtNum();
 			// ターゲット一体につくミサイルの数を算出(総発射予定数 / 総ターゲット数)
-			contract_per_tgt_ = ULT_LAUNCH_NUM_ / all_tgt_num_;
+			contract_per_tgt = ULT_LAUNCH_NUM_ / all_tgt_num;
 			// 初回フラグを降ろす
 			is_first_launch = false;
 			// 参照場所をリセット
-			tgt_location_ref_ = 0;
+			tgt_location_ref = 0;
 		}
 
 		// カウントを減らす
@@ -54,10 +54,11 @@ public:
 		}
 
 		// ターゲットの参照を取得
-		auto itr = NcmUtill::MoveIterator(ptr->GetLockOnSys()->GetTgtList().begin(), tgt_location_ref_);
+		auto itr = NcmUtill::MoveIterator(ptr->GetLockOnSys()->GetTgtList().begin(), tgt_location_ref);
 
 		// ターゲットデータを取得
 		MissileParam param{};
+		param.accuracy_type = HomingAccuracy::High;
 		param.tgt_pos = itr->pos;
 		param.tgt_id = itr->id;
 
@@ -76,7 +77,7 @@ public:
 		direction_vec = DirectX::XMVector3Normalize(direction_vec);
 
 		// パラメータを設定
-		param.speed = 3.0f;
+		param.speed = 10.0f;
 		param.pos = launch_pos;
 		DirectX::XMStoreFloat3(&param.vel, direction_vec);
 		// 加速度をランダムに設定
@@ -88,7 +89,6 @@ public:
 		param.init_straight_time = 0;
 		param.life = NcmUtill::GenerateRandom(200, 300);
 		param.trail_color = NcmColor::TRAIL_WHITE;
-		//param.life = 300;
 
 		// 最大ロックオン数を10に設定
 		ptr->GetLockOnSys()->SetMaxTgtNum(10);
@@ -100,13 +100,13 @@ public:
 		launched++;
 
 		// 参照場所を進ませる
-		tgt_location_ref_++;
+		tgt_location_ref++;
 
 		// 参照場所が総ターゲット数を越したら
-		if (tgt_location_ref_ > all_tgt_num_)
+		if (tgt_location_ref > all_tgt_num)
 		{
 			// 参照場所を最初からにする
-			tgt_location_ref_ = 0;
+			tgt_location_ref = 0;
 		}
 
 		// 最大ターゲット数をデフォルトに戻す

@@ -22,11 +22,10 @@ public:
 	static void TermSprite();
 
 protected:
-	//private:
 
-		/// <summary>
-		/// 頂点データ構造体
-		/// </summary>
+	/// <summary>
+	/// 頂点データ構造体
+	/// </summary>
 	struct VertexPosUv
 	{
 		XMFLOAT3 pos;
@@ -191,7 +190,6 @@ public:
 	}
 
 protected:
-	//private:
 
 	static void GenerateDrawData(const ncm_thandle handle, const wchar_t *filename);
 	static void TransferVertices(DrawData *itr);

@@ -9,6 +9,7 @@ using namespace NcmMath;
 void MissileHomingStateHighAccuracy::HomingTarget(Missile &missile)
 {
 	MissileParam *mi_param = &missile.GetMissileParam();
+	mi_param->accuracy_type = HomingAccuracy::High;
 
 	// ’Ç”öŽžŠÔ‚ªÝ’è‚³‚ê‚Ä‚¢‚é‚È‚ç
 	if (mi_param->use_homing_time)

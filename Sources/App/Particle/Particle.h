@@ -24,6 +24,7 @@ struct ParticleDesc
 	float alpha_;		// 透明度
 	bool is_used_;		// 使われているか
 	ncm_thandle tex_handle_;	// テクスチャハンドル
+	uint32_t id_;
 
 	ParticleDesc() :
 		position_(),
@@ -65,6 +66,7 @@ public:
 	inline const float GetAlpha() { return particle_->alpha_; }
 	inline const bool &GetIsDead() { return particle_->is_dead_; }
 	inline const bool &GetIsUsed() { return particle_->is_used_; }
+	inline const uint32_t GetId() { return particle_->id_; }
 	inline void SetIsUsed(const bool is_used) { particle_->is_used_ = is_used; }
 	inline void SetParticleValue(const ParticleDesc &p) { *particle_ = p; }
 

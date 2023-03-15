@@ -41,6 +41,7 @@ public:
 
 	/// <summary>
 	/// 格納されていた要素を全削除
+	/// ※必ずUpdateの最初に呼び出す
 	/// </summary>
 	static void ClearParticleArgsBeforeUpdate();
 

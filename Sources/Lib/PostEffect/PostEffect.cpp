@@ -308,7 +308,6 @@ void PostEffect::SetPipeline(Pipeline p)
 	}
 }
 
-
 void PostEffect::PreDrawScene()
 {
 	// リソースバリアを変更（シェーダーリソース->描画可能）

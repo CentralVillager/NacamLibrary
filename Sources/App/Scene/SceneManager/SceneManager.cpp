@@ -23,7 +23,7 @@ bool SceneManager::InChangeScene(float speed)
 	if (alpha_ >= 0.0f)
 	{
 		alpha_ -= speed;
-		PostEffect::SetAplha(alpha_);
+		PostEffect::SetAlpha(alpha_);
 	}
 
 	if (alpha_ <= 0.0f)
@@ -40,7 +40,7 @@ bool SceneManager::OutChangeScene(float speed)
 	if (alpha_ <= 1.0f)
 	{
 		alpha_ += speed;
-		PostEffect::SetAplha(alpha_);
+		PostEffect::SetAlpha(alpha_);
 	}
 
 	if (alpha_ >= 1.0f)

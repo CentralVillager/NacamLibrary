@@ -1,5 +1,6 @@
 #pragma once
 #include <list>
+#include <vector>
 #include <array>
 
 // イージング用ハンドル格納型
@@ -76,7 +77,7 @@ struct NcmEaseDesc
 class NcmEasing
 {
 	// イージングに必要なデータ
-	static std::list<NcmEaseDesc> easing_datas_;
+	static std::vector<NcmEaseDesc> ease_datas_;
 
 	// 関数ポインタ
 	typedef float (*EaseFunc)(const float v);
@@ -94,7 +95,7 @@ public:
 	static void StaticInit();
 
 public:
-	
+
 	/// <summary>
 	/// イージングの設定を登録します。
 	/// </summary>
@@ -122,6 +123,13 @@ public:
 	/// </summary>
 	/// <returns>現在の値</returns>
 	static float GetValue(ncm_ehandle handle);
+
+	/// <summary>
+	/// 遷移が終了したかを返します。
+	/// </summary>
+	/// <param name="handle"></param>
+	/// <returns>終了したか</returns>
+	static bool IsFinished(ncm_ehandle handle);
 
 	/// <summary>
 	/// 新しく初期値を設定します。
