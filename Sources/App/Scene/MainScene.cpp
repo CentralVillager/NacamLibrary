@@ -465,7 +465,7 @@ void MainScene::CollisionProcess()
 				{
 					if (missile_mgr_->Death(j))
 					{
-						//ene_list_->Death(i);
+						ene_list_->Death(i);
 						ult_->AddUltValue(20);
 					}
 				}
