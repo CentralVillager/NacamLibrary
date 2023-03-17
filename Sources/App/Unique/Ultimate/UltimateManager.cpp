@@ -28,7 +28,7 @@ UltimateManager::UltimateManager() :
 	ImGui_offset_x_(),
 	ImGui_offset_all_y_(70.0f),
 	ImGui_tex_scale_(2.0f),
-	ImGui_tex_alpha_(0.4f)
+	ImGui_tex_alpha_(0.2f)
 {}
 
 UltimateManager::~UltimateManager()

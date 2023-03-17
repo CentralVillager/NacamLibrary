@@ -40,6 +40,7 @@ public:
 	static void DrawMissileNumSet(int32_t num);
 	static void DrawHp(uint32_t hp, float size);
 	static void DrawSpace();
+	static void DrawCheatGuide();
 
 public:
 

@@ -47,6 +47,7 @@ void NcmUi::LoadResources()
 	ui_hub_.emplace("/4", NcmSprite::LoadTex("Resources/Textures/SC/max_num.png"));
 	ui_hub_.emplace("bar", NcmSprite::LoadTex("Resources/Textures/SC/bar.png"));
 	ui_hub_.emplace("space", NcmSprite::LoadTex("Resources/Textures/SC/space.png"));
+	ui_hub_.emplace("cheat_guide", NcmSprite::LoadTex("Resources/Textures/SC/cheat_guide.png"));
 	bar_size_ = NcmSprite::GetSize(ui_hub_["bar"]);
 	NcmSprite::SetAnchorPoint(ui_hub_["space"], { 0.5f, 1.0f });
 
@@ -145,6 +146,15 @@ void NcmUi::DrawHp(uint32_t hp, float size)
 void NcmUi::DrawSpace()
 {
 	NcmSprite::DrawTex(ui_hub_["space"], XMFLOAT2(Win32App::FCENTER_.x, bottom_pos_));
+}
+
+void NcmUi::DrawCheatGuide()
+{
+	NcmSprite::SetScale(ui_hub_["cheat_guide"], 0.4f);
+	NcmSprite::SetAnchorPoint(ui_hub_["cheat_guide"], XMFLOAT2(0.5f, 1.0f));
+	NcmSprite::SetAlpha(ui_hub_["cheat_guide"], 0.5f);
+
+	NcmSprite::DrawTex(ui_hub_["cheat_guide"], XMFLOAT2(Win32App::FCENTER_.x, bottom_pos_));
 }
 
 void NcmUi::CalcBarSize(int32_t count, int32_t max_charge_time)

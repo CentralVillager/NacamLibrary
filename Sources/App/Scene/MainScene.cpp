@@ -384,7 +384,15 @@ void MainScene::Draw()
 
 	NcmUi::DrawMissileNumSet(LockOnSystem::GetCurrentTgtNum());
 	NcmUi::DrawHp(player_->GetHp(), 30.0f);
-	ult_->DrawUi();
+
+	if (NcmDebug::GetInstance()->IsCheatMode())
+	{
+		NcmUi::DrawCheatGuide();
+	}
+	else
+	{
+		ult_->DrawUi();
+	}
 }
 
 void MainScene::DebugDraw()

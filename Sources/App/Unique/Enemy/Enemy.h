@@ -16,7 +16,7 @@ class Enemy : public AbsUniqueObj
 private:
 
 	// ƒ~ƒTƒCƒ‹”­ŽËŠÔŠu
-	static constexpr uint32_t LAUNCH_MISSILE_INTERVAL_ = 100;
+	static constexpr uint32_t LAUNCH_MISSILE_INTERVAL_ = 300;
 
 private:
 

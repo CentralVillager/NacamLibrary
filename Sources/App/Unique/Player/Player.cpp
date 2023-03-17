@@ -201,8 +201,7 @@ void Player::Update()
 			if (NcmDebug::GetInstance()->IsCheatMode())
 			{
 				// 強制的に発動する
-				p_ult_->TriggeringUlt();
-				is_triggering_ult_ = true;
+				UltSequence();
 			}
 			else
 			{
@@ -211,16 +210,18 @@ void Player::Update()
 		}
 		else
 		{
-			// ウルトを発動する(UI)
-			p_ult_->TriggeringUlt();
-			is_triggering_ult_ = true;
+			// ウルトを発動する
+			UltSequence();
 		}
 	}
 
 	// ミサイル挙動確認用
-	if (KeyboardInput::TriggerKey(DIK_E))
+	if (NcmDebug::GetInstance()->IsCheatMode())
 	{
-		mi_launcher_->FireMissile(MissileType::Mono, LaunchedBy::Player, GetPos());
+		if (KeyboardInput::TriggerKey(DIK_E))
+		{
+			mi_launcher_->FireMissile(MissileType::Mono, LaunchedBy::Player, GetPos());
+		}
 	}
 
 	// 加速処理
@@ -233,6 +234,7 @@ void Player::Update()
 		if (mi_launcher_->FireMissile(MissileType::Ultimate, LaunchedBy::Player, GetPos()))
 		{
 			is_triggering_ult_ = false;
+			//cam_ptr_->SetIsMissileCamera(false);
 		}
 	}
 
@@ -346,6 +348,13 @@ void Player::CountInvincibleTime()
 		is_invincible_ = false;
 		count = INVINCIBLE_TIME_;
 	}
+}
+
+void Player::UltSequence()
+{
+	p_ult_->TriggeringUlt();
+	is_triggering_ult_ = true;
+	//cam_ptr_->SetIsMissileCamera(true);
 }
 
 void Player::MoveXZ(float speed)

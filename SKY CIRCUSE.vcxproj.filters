@@ -20,6 +20,7 @@
     <FxCompile Include="Resources\Shaders\PrimitiveVS.hlsl" />
     <FxCompile Include="Resources\Shaders\SpritePS.hlsl" />
     <FxCompile Include="Resources\Shaders\SpriteVS.hlsl" />
+    <FxCompile Include="Resources\Shaders\RadialBlur.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\backends\imgui_impl_dx12.cpp" />

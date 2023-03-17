@@ -6,7 +6,7 @@
 class MissileStateUltimate : public IMissileLaunchState
 {
 	// ƒ~ƒTƒCƒ‹‚Ì‘”­Ë”
-	static constexpr uint32_t ULT_LAUNCH_NUM_ = 20;
+	static constexpr uint32_t ULT_LAUNCH_NUM_ = 30;
 
 public:
 

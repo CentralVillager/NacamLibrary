@@ -330,8 +330,14 @@ void Missile::InterpolateParticle()
 		part_desc.accel_ = temp;
 		part_desc.life_ = mi_param_.life;
 		part_desc.s_scale_ = GenerateRandom(1.0f, 2.0f);
+		part_desc.e_scale_ = GenerateRandom(2.5f, 3.0f);
 		part_desc.color_ = mi_param_.trail_color;
 
 		emitter_->Add(part_desc);
 	}
+}
+
+const XMFLOAT3 operator*(const DirectX::XMFLOAT3 &lhs, const float &rhs)
+{
+	return XMFLOAT3(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs);
 }

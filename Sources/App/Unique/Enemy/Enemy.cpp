@@ -5,6 +5,7 @@
 #include "../../../Lib/PreDraw/PreDraw.h"
 #include "../Sources/App/Math/NcmMath.h"
 #include "../Missile/MissileLauncher.h"
+#include "../../DebugUtill/NcmDebug.h"
 
 using namespace NcmUtill;
 using namespace NcmMath;
@@ -69,9 +70,20 @@ void Enemy::Finalize()
 
 void Enemy::Update()
 {
+	// Y軸回転
 	RotY();
-	//MoveHorizontally(2.0f, 100.0f);
-	//LaunchMissileSequence();
+
+	// 水平反復移動
+	MoveHorizontally(2.0f, 100.0f);
+
+	// チートモードでなければ
+	if (!NcmDebug::GetInstance()->IsCheatMode())
+	{
+		// ミサイルを一定間隔で発射する
+		LaunchMissileSequence();
+	}
+
+	// Z方向へプレイヤーと同じ速度で移動
 	MoveZ(player_->GetSpeed());
 
 	obj_->Update();

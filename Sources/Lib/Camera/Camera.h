@@ -3,6 +3,7 @@
 #include <memory>
 #include <wrl.h>
 #include <d3d12.h>
+#include "../../App/Math/Easing/NcmEasing.h"
 
 class Player;
 
@@ -65,14 +66,20 @@ private:
 	// 視野角
 	float fov_;
 
+	// ミサイル用視点にするか
 	bool is_missile_camera_;
 
-	float differ_ = 22.0f;
-	float differ_y_ = 12.0f;
-	float offset_y_ = 3.0f;
-	/*float differ_ = 75.0f;
-	float differ_y_ = 30.0f;
-	float offset_y_ = 20.0f;*/
+	float differ_;
+	float differ_y_;
+	float offset_y_;
+
+	ncm_ehandle ease_differ_to_circuse_;
+	ncm_ehandle ease_differ_y_to_circuse_;
+	ncm_ehandle ease_offset_y_to_circuse_;
+
+	ncm_ehandle ease_differ_to_normal_;
+	ncm_ehandle ease_differ_y_to_normal_;
+	ncm_ehandle ease_offset_y_to_normal_;
 
 public:
 
@@ -87,6 +94,7 @@ public:
 	const XMFLOAT3 &GetTarget() { return target_; }
 	const float &GetDistance() { return distance_; }
 	const float &GetFOV() { return fov_; }
+	const bool GetIsMissileCamera() { return is_missile_camera_; }
 	void SetMatView(const XMMATRIX &mat_view) { mat_view_ = mat_view; }
 	void SetMatProjection(const XMMATRIX &mat_projection) { mat_projection_ = mat_projection; }
 	void SetEye(const XMFLOAT3 &eye) { eye_ = eye; }
@@ -94,6 +102,10 @@ public:
 	void SetUp(const XMFLOAT3 &up) { up_vec_ = up; }
 	void SetDistance(const float &distence) { distance_ = distence; }
 	void SetFOV(float fov) { fov_ = fov; }
+	void SetDiffer(float differ) { differ_ = differ; }
+	void SetDifferY(float differ) { differ_y_ = differ; }
+	void SetOffsetY(float offset) { offset_y_ = offset; }
+	void SetIsMissileCamera(bool is_missile_cam) { is_missile_camera_ = is_missile_cam; }
 
 	/// <summary>
 	/// 初期化
@@ -156,6 +168,17 @@ public:
 	/// 視点の移動
 	/// </summary>
 	void MoveEye(const XMFLOAT3 &move);
+
+	/// <summary>
+	/// 視点の変更
+	/// </summary>
+	/// <param name="is_normal">通常視点か</param>
+	void ChangeView(bool is_normal);
+
+	/// <summary>
+	/// カメラ位置の遷移
+	/// </summary>
+	void TransitionCamera();
 
 private:
 

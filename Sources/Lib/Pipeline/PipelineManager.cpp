@@ -504,4 +504,38 @@ void PipelineManager::SetTemplateConfigs()
 	configs_[(int)(p_name)].root_parameter[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 	configs_[(int)(p_name)].root_parameter[1].InitAsDescriptorTable(1, &configs_[(int)(p_name)].desc_range[0], D3D12_SHADER_VISIBILITY_ALL);
 	configs_[(int)(p_name)].root_parameter[2].InitAsDescriptorTable(1, &configs_[(int)(p_name)].desc_range[1], D3D12_SHADER_VISIBILITY_ALL);
+
+	// RadialBlur
+	p_name = RadialBlur;
+	configs_[(int)(p_name)].pipeline_name = L"RadialBlur";
+	configs_[(int)(p_name)].VS_name = L"Resources/shaders/BlurVS.hlsl";
+	configs_[(int)(p_name)].PS_name = L"Resources/shaders/GaussianBlurPS.hlsl";
+	configs_[(int)(p_name)].fill_mode = D3D12_FILL_MODE_SOLID;
+	configs_[(int)(p_name)].input_layout.resize(2);
+	configs_[(int)(p_name)].input_layout =
+	{
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
+	};
+	configs_[(int)(p_name)].primitive_topology_type = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+	configs_[(int)(p_name)].primitive_topology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	configs_[(int)(p_name)].blend_desc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+	configs_[(int)(p_name)].blend_desc.BlendEnable = true;
+	configs_[(int)(p_name)].blend_desc.BlendOp = D3D12_BLEND_OP_ADD;
+	configs_[(int)(p_name)].blend_desc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
+	configs_[(int)(p_name)].blend_desc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+	configs_[(int)(p_name)].blend_desc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
+	configs_[(int)(p_name)].blend_desc.SrcBlendAlpha = D3D12_BLEND_ONE;
+	configs_[(int)(p_name)].blend_desc.DestBlendAlpha = D3D12_BLEND_ZERO;
+	configs_[(int)(p_name)].num_render_targets = 2;
+	configs_[(int)(p_name)].rtv_formats.resize(2);
+	configs_[(int)(p_name)].rtv_formats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+	configs_[(int)(p_name)].rtv_formats[1] = DXGI_FORMAT_R8G8B8A8_UNORM;
+	configs_[(int)(p_name)].desc_range.resize(2);
+	configs_[(int)(p_name)].desc_range[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
+	configs_[(int)(p_name)].desc_range[1].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1);
+	configs_[(int)(p_name)].root_parameter.resize(3);
+	configs_[(int)(p_name)].root_parameter[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
+	configs_[(int)(p_name)].root_parameter[1].InitAsDescriptorTable(1, &configs_[(int)(p_name)].desc_range[0], D3D12_SHADER_VISIBILITY_ALL);
+	configs_[(int)(p_name)].root_parameter[2].InitAsDescriptorTable(1, &configs_[(int)(p_name)].desc_range[1], D3D12_SHADER_VISIBILITY_ALL);
 }

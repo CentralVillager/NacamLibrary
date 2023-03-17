@@ -44,24 +44,24 @@ private:
 
 private:
 
-	uint32_t currect_ult_per_;	// 現ウルト％
-	uint32_t max_ult_per_;		// 最大ウルト％
-	uint32_t value_dist_;		// イージング用目標値
-	bool is_triggering_;		// 発動したか
-	float num_alpha_;			// %のα値
+	uint32_t currect_ult_per_;		// 現ウルト％
+	uint32_t max_ult_per_;			// 最大ウルト％
+	uint32_t value_dist_;			// イージング用目標値
+	bool is_triggering_;			// 発動したか
+	float num_alpha_;				// %のα値
 
-	ncm_ehandle ease_;			// イージングハンドル
+	ncm_ehandle ease_;				// イージングハンドル
 	ncm_ehandle num_alpha_to_max_;	// %表示用イージングハンドル
 	ncm_ehandle num_alpha_to_min_;	// %表示用イージングハンドル
-	bool to_max_;				// イージングの値がmaxの値に向けて遷移中か
-	bool to_min_;				// イージングの値がmaxの値に向けて遷移中か
-	bool is_change_;			// ウルトの値が更新されたら
+	bool to_max_;					// イージングの値がmaxの値に向けて遷移中か
+	bool to_min_;					// イージングの値がmaxの値に向けて遷移中か
+	bool is_change_;				// ウルトの値が更新されたら
 
 	std::unique_ptr<Numbers> nums_;	// 数字
 
 	uint32_t ult_tex_draw_intervel_;// ウルト演出の描画インターバル
 
-	bool is_finish_display_;	// ウルト演出が終了したか
+	bool is_finish_display_;		// ウルト演出が終了したか
 
 	float ImGui_num_scale_;
 	float ImGui_offset_x_;

@@ -27,7 +27,16 @@ Camera::Camera() :
 	aspect_ratio_(),
 	parent_mat_(),
 	fov_(),
-	is_missile_camera_()
+	is_missile_camera_(),
+	differ_(),
+	differ_y_(),
+	offset_y_(),
+	ease_differ_to_circuse_(),
+	ease_differ_y_to_circuse_(),
+	ease_offset_y_to_circuse_(),
+	ease_differ_to_normal_(),
+	ease_differ_y_to_normal_(),
+	ease_offset_y_to_normal_()
 {
 	device_ = DirectXBase::GetInstance()->GetDevice().Get();
 }
@@ -53,12 +62,45 @@ void Camera::Initialize()
 
 	// 透視投影
 	UpdateViewProjection();
+
+	using enum NcmEaseType;
+	NcmEaseType type = OutCubic;
+	float rate = 0.01f;
+
+	NcmEaseDesc desc{};
+	desc.init_value = NORMAL_DIFFER_;
+	desc.total_move = CIRCUSE_DIFFER_ - NORMAL_DIFFER_;
+	desc.ease_type = type;
+	desc.t_rate = rate;
+	ease_differ_to_circuse_ = NcmEasing::RegisterEaseData(desc);
+
+	desc.init_value = NORMAL_DIFFER_Y_;
+	desc.total_move = CIRCUSE_DIFFER_Y_ - NORMAL_DIFFER_Y_;
+	ease_differ_y_to_circuse_ = NcmEasing::RegisterEaseData(desc);
+
+	desc.init_value = NORMAL_OFFSET_Y;
+	desc.total_move = CIRCUSE_OFFSET_Y - NORMAL_OFFSET_Y;
+	ease_offset_y_to_circuse_ = NcmEasing::RegisterEaseData(desc);
+
+	desc.init_value = CIRCUSE_DIFFER_;
+	desc.total_move = NORMAL_DIFFER_ - CIRCUSE_DIFFER_;
+	ease_differ_to_normal_ = NcmEasing::RegisterEaseData(desc);
+
+	desc.init_value = CIRCUSE_DIFFER_Y_;
+	desc.total_move = NORMAL_DIFFER_Y_ - CIRCUSE_DIFFER_Y_;
+	ease_differ_y_to_normal_ = NcmEasing::RegisterEaseData(desc);
+
+	desc.init_value = CIRCUSE_OFFSET_Y;
+	desc.total_move = NORMAL_OFFSET_Y - CIRCUSE_OFFSET_Y;
+	ease_offset_y_to_normal_ = NcmEasing::RegisterEaseData(desc);
 }
 
 void Camera::Update()
 {
 	UpdateViewMatrix();		// ダーティーフラグを使いたい
 	UpdateViewProjection();
+
+	TransitionCamera();
 
 	HRESULT result = S_FALSE;
 
@@ -171,19 +213,6 @@ void Camera::DebugDraw()
 
 	ImGui::DragFloat("FOV", &fov_, 0.1f, 0.1f, 179.99f);
 
-	if (is_missile_camera_)
-	{
-		differ_ = CIRCUSE_DIFFER_;
-		differ_y_ = CIRCUSE_DIFFER_Y_;
-		offset_y_ = CIRCUSE_OFFSET_Y;
-	}
-	else
-	{
-		differ_ = NORMAL_DIFFER_;
-		differ_y_ = NORMAL_DIFFER_Y_;
-		offset_y_ = NORMAL_OFFSET_Y;
-	}
-
 	ImGui::DragFloat("Differ", &differ_, 0.1f, 0, 200.0f);
 	ImGui::DragFloat("DifferY", &differ_y_, 0.1f, 0, 200.0f);
 	ImGui::DragFloat("OffsetY", &offset_y_, 0.1f, -200.0f, 200.0f);
@@ -294,6 +323,54 @@ void Camera::MoveEye(const XMFLOAT3 &move)
 	eye_.x += move.x;
 	eye_.y += move.y;
 	eye_.z += move.z;
+}
+
+void Camera::ChangeView(bool is_normal)
+{
+	if (is_normal)
+	{
+		differ_ = NORMAL_DIFFER_;
+		differ_y_ = NORMAL_DIFFER_Y_;
+		offset_y_ = NORMAL_OFFSET_Y;
+	}
+	else
+	{
+		differ_ = CIRCUSE_DIFFER_;
+		differ_y_ = CIRCUSE_DIFFER_Y_;
+		offset_y_ = CIRCUSE_OFFSET_Y;
+	}
+}
+
+void Camera::TransitionCamera()
+{
+	if (is_missile_camera_)
+	{
+		NcmEasing::UpdateValue(ease_differ_to_circuse_);
+		NcmEasing::UpdateValue(ease_differ_y_to_circuse_);
+		NcmEasing::UpdateValue(ease_offset_y_to_circuse_);
+
+		differ_ = NcmEasing::GetValue(ease_differ_to_circuse_);
+		differ_y_ = NcmEasing::GetValue(ease_differ_y_to_circuse_);
+		offset_y_ = NcmEasing::GetValue(ease_offset_y_to_circuse_);
+
+		NcmEasing::ResetTime(ease_differ_to_normal_);
+		NcmEasing::ResetTime(ease_differ_y_to_normal_);
+		NcmEasing::ResetTime(ease_offset_y_to_normal_);
+	}
+	else
+	{
+		NcmEasing::UpdateValue(ease_differ_to_normal_);
+		NcmEasing::UpdateValue(ease_differ_y_to_normal_);
+		NcmEasing::UpdateValue(ease_offset_y_to_normal_);
+
+		differ_ = NcmEasing::GetValue(ease_differ_to_normal_);
+		differ_y_ = NcmEasing::GetValue(ease_differ_y_to_normal_);
+		offset_y_ = NcmEasing::GetValue(ease_offset_y_to_normal_);
+
+		NcmEasing::ResetTime(ease_differ_to_circuse_);
+		NcmEasing::ResetTime(ease_differ_y_to_circuse_);
+		NcmEasing::ResetTime(ease_offset_y_to_circuse_);
+	}
 }
 
 void Camera::CreateConstBuffer()

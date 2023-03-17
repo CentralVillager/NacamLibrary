@@ -24,6 +24,7 @@ enum class PipelineName
 	PostEffect,
 	AverageBlur,
 	GaussianBlur,
+	RadialBlur,
 
 	MaxPipelineNum
 };

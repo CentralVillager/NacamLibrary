@@ -113,6 +113,11 @@ public:
 	void CountInvincibleTime();
 
 	/// <summary>
+	/// ULT処理
+	/// </summary>
+	void UltSequence();
+
+	/// <summary>
 	/// 横・奥方向へのコントロール
 	/// </summary>
 	/// <param name="speed">速度</param>

@@ -10,8 +10,8 @@ class NcmDebug : public Singleton<NcmDebug>
 
 public:
 
-	bool &IsDebugMode() { return debug_mode_; }
-	bool &IsCheatMode() { return cheat_mode_; }
+	bool IsDebugMode() { return debug_mode_; }
+	bool IsCheatMode() { return cheat_mode_; }
 	const void SetDebugMode(bool mode) { debug_mode_ = mode; }
 	const void SetCheatMode(bool mode) { cheat_mode_ = mode; }
 };

@@ -132,19 +132,16 @@ void NacamLib::DirectXInitialize()
 
 void NacamLib::PipelineInitialize()
 {
+	using enum PipelineName;
+
 	pipeline_mgr_ = std::make_unique<PipelineManager>();
 	pipeline_mgr_->SetTemplateConfigs();
-	pipeline_mgr_->GeneratePipeline(PipelineName::Object3d);
-	pipeline_mgr_->GeneratePipeline(PipelineName::Object3d_WireFrame);
-	pipeline_mgr_->GeneratePipeline(PipelineName::IndirectObject3d);
-	pipeline_mgr_->GeneratePipeline(PipelineName::IndirectObject3d_WireFrame);
-	pipeline_mgr_->GeneratePipeline(PipelineName::Line);
-	pipeline_mgr_->GeneratePipeline(PipelineName::Point);
-	pipeline_mgr_->GeneratePipeline(PipelineName::PlatePoly);
-	pipeline_mgr_->GeneratePipeline(PipelineName::Sprite);
-	pipeline_mgr_->GeneratePipeline(PipelineName::PostEffect);
-	pipeline_mgr_->GeneratePipeline(PipelineName::AverageBlur);
-	pipeline_mgr_->GeneratePipeline(PipelineName::GaussianBlur);
+
+	// 設定が存在する全てのパイプラインを生成
+	for (int i = 0; i < (int)(MaxPipelineNum); i++)
+	{
+		pipeline_mgr_->GeneratePipeline(static_cast<PipelineName>(i));
+	}
 
 	PreDraw::StaticInitialize(*pipeline_mgr_);
 }
