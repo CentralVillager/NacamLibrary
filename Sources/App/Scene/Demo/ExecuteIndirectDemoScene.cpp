@@ -1,9 +1,9 @@
 #include <d3dcompiler.h>
 #include "ExecuteIndirectDemoScene.h"
 #include "../../DebugUtill/NcmImGui.h"
-#include "../../../Lib/PreDraw/PreDraw.h"
+#include "../../../Lib/DirectX/PreDraw.h"
 #include "../../../Lib/Input/KeyboardInput.h"
-#include "../../../Lib/DirectXBase/DirectXBase.h"
+#include "../../../Lib/DirectX/DirectXBase.h"
 
 #pragma comment(lib, "d3dcompiler.lib")
 

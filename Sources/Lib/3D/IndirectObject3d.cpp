@@ -1,6 +1,6 @@
 ﻿#include <d3dcompiler.h>
-#include "../IndirectObject3d/IndirectObject3d.h"
-#include "../DirectXBase/DirectXBase.h"
+#include "../3D/IndirectObject3d.h"
+#include "../DirectX/DirectXBase.h"
 #include "../Input/KeyboardInput.h"
 #include "../../App/Utility/NcmUtil.h"
 #include "../../App/DebugUtill/NcmImGui.h"

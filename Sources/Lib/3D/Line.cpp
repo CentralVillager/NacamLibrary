@@ -1,5 +1,5 @@
-#include "../Line/Line.h"
-#include "../DirectXBase/DirectXBase.h"
+#include "../3D/Line.h"
+#include "../DirectX/DirectXBase.h"
 #include "../../App/DebugUtill/NcmImGui.h"
 
 using namespace DirectX;

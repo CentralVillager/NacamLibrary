@@ -3,8 +3,8 @@
 #include <wrl.h>
 #include "../AbsScene.h"
 #include "../../../Lib/Camera/Camera.h"
-#include "../../../Lib/Model/Model.h"
-#include "../../../Lib/Object3d/Object3d.h"
+#include "../../../Lib/3D/Model.h"
+#include "../../../Lib/3D/Object3d.h"
 
 class GravityDemoScene : public AbsScene {
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;

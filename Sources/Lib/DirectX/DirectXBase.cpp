@@ -1,4 +1,4 @@
-#include "../DirectXBase/DirectXBase.h"
+#include "../DirectX/DirectXBase.h"
 #include "../Win32App/Win32App.h"
 #include <dxgi.h>
 #include <string>

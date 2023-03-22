@@ -7,9 +7,9 @@
 #include "../AbsScene.h"
 #include "../../Particle/Emitter.h"
 #include "../../../Lib/Camera/Camera.h"
-#include "../../../Lib/Model/Model.h"
-#include "../../../Lib/Object3d/Object3d.h"
-#include "../../../Lib/IndirectObject3d/IndirectObject3d.h"
+#include "../../../Lib/3D/Model.h"
+#include "../../../Lib/3D/Object3d.h"
+#include "../../../Lib/3D/IndirectObject3d.h"
 
 class ExecuteIndirectDemoScene : public AbsScene
 {

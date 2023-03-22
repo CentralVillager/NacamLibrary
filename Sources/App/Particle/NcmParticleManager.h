@@ -3,7 +3,7 @@
 #include <forward_list>
 #include <array>
 #include "../../App/Particle/Emitter.h"
-#include "../../Lib/PlatePoly/NcmPlatePoly.h"
+#include "../../Lib/3D/NcmPlatePoly.h"
 #include "NcmParticleCommonArgs.h"
 
 enum class ParticleType

@@ -6,8 +6,8 @@
 #include <vector>
 #include "../../App/Scene/AbsScene.h"
 #include "../Camera/Camera.h"
-#include "../Sources/Lib/Model/Model.h"
-#include "../Pipeline/PipelineManager.h"
+#include "../../Lib/3D/Model.h"
+#include "../DirectX/PipelineManager.h"
 
 class IndirectObject3d
 {

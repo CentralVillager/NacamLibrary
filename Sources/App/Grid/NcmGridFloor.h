@@ -3,7 +3,7 @@
 #include <array>
 #include <list>
 #include <DirectXMath.h>
-#include "../../Lib/Line/Line.h"
+#include "../../Lib/3D/Line.h"
 #include "../../Lib/Camera/Camera.h"
 
 class NcmGridFloor

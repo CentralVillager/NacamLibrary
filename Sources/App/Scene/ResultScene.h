@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include "AbsScene.h"
-#include "../../Lib/Sprite/NcmSprite.h"
+#include "../../Lib/2D/NcmSprite.h"
 
 class ResultScene : public AbsScene
 {

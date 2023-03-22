@@ -1,5 +1,5 @@
-﻿#include "../Object3d/Object3d.h"
-#include "../PreDraw/PreDraw.h"
+﻿#include "../3D/Object3d.h"
+#include "../DirectX/PreDraw.h"
 
 using namespace DirectX;
 using namespace Microsoft::WRL;

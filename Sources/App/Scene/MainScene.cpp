@@ -1,15 +1,15 @@
 #include "MainScene.h"
 #include <vector>
-#include "../../Lib/PreDraw/PreDraw.h"
+#include "../../App/Collision/Collision.h"
+#include "../../App/Math/Easing/NcmEasing.h"
+#include "../../App/Unique/Missile/MissileLauncher.h"
+#include "../../Lib/Input/NcmInput.h"
+#include "../../Lib/DirectX/PreDraw.h"
 #include "../../Lib/Input/KeyboardInput.h"
-#include "../Scene/SceneManager/SceneManager.h"
-#include "../Sources/App/Collision/Collision.h"
-#include "../Sources/App/Math/Easing/NcmEasing.h"
+#include "../../Lib/PostEffect/PostEffect.h"
 #include "../Utility/NcmUtil.h"
 #include "../DebugUtill/NcmDebug.h"
-#include "../../Lib/PostEffect/PostEffect.h"
-#include "../../Lib/Input/NcmInput.h"
-#include "../../App/Unique/Missile/MissileLauncher.h"
+#include "../Scene/SceneManager/SceneManager.h"
 
 using namespace NcmUtill;
 
@@ -465,7 +465,7 @@ void MainScene::CollisionProcess()
 				{
 					if (missile_mgr_->Death(j))
 					{
-						//ene_list_->Death(i);
+						ene_list_->Death(i);
 						ult_->AddUltValue(20);
 					}
 				}

@@ -1,8 +1,7 @@
 #pragma once
 #include <memory>
 #include <DirectXMath.h>
-#include "../Sources/Lib/Sprite/NcmSprite.h"
-//#include "../../Lib/NcmSprite/NcmSprite.h"
+#include "../../../Lib/2D/NcmSprite.h"
 
 class Reticle
 {

@@ -2,7 +2,7 @@
 #include <array>
 #include <vector>
 #include <DirectXMath.h>
-#include "../../Lib/Sprite/NcmSprite.h"
+#include "../../Lib/2D/NcmSprite.h"
 
 enum class HorizontalAlignment
 {

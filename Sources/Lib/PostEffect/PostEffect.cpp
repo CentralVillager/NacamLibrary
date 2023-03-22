@@ -4,8 +4,8 @@
 #include "../Input/KeyboardInput.h"
 #include "../../App/Utility/NcmUtil.h"
 #include "../../App/DebugUtill/NcmImGui.h"
-#include "../../Lib/PreDraw/PreDraw.h"
-#include "../DirectXBase/DirectXBase.h"
+#include "../../Lib/DirectX/PreDraw.h"
+#include "../DirectX/DirectXBase.h"
 
 #pragma comment(lib, "d3dcompiler.lib")
 

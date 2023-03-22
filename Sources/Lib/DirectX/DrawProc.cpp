@@ -1,5 +1,5 @@
-#include "../DrawProc/DrawProc.h"
-#include "../DirectXBase/DirectXBase.h"
+#include "../DirectX/DrawProc.h"
+#include "../DirectX/DirectXBase.h"
 #include "../Win32App/Win32App.h"
 
 template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;

@@ -234,7 +234,7 @@ void Player::Update()
 		if (mi_launcher_->FireMissile(MissileType::Ultimate, LaunchedBy::Player, GetPos()))
 		{
 			is_triggering_ult_ = false;
-			//cam_ptr_->SetIsMissileCamera(false);
+			cam_ptr_->SetIsMissileCamera(false);
 		}
 	}
 
@@ -354,7 +354,7 @@ void Player::UltSequence()
 {
 	p_ult_->TriggeringUlt();
 	is_triggering_ult_ = true;
-	//cam_ptr_->SetIsMissileCamera(true);
+	cam_ptr_->SetIsMissileCamera(true);
 }
 
 void Player::MoveXZ(float speed)

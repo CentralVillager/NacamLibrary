@@ -1,7 +1,7 @@
 #include "Particle.h"
 #include "../DebugUtill/NcmImGui.h"
-#include "../../Lib/PreDraw/PreDraw.h"
-#include "../../Lib/Sprite/NcmSprite.h"
+#include "../../Lib/DirectX/PreDraw.h"
+#include "../../Lib/2D/NcmSprite.h"
 
 Particle::Particle() :
 	particle_(std::make_shared<ParticleDesc>())

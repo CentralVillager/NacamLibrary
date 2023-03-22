@@ -1,7 +1,7 @@
 #pragma once
 #include <d3dx12.h>
 #include <wrl.h>
-#include "../Pipeline/PipelineManager.h"
+#include "../DirectX/PipelineManager.h"
 #include <memory>
 
 class PreDraw

@@ -5,7 +5,7 @@
 #include <DirectXMath.h>
 #include <array>
 #include "../Number/Numbers.h"
-#include "../../Lib/Sprite/NcmSprite.h"
+#include "../../Lib/2D/NcmSprite.h"
 #include "../../App/Math/Easing/NcmEasing.h"
 
 class NcmUi

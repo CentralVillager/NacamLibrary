@@ -4,8 +4,8 @@
 #include <vector>
 #include <list>
 #include <algorithm>
-#include "../Sources/Lib/Model/Model.h"
-#include "../Sources/Lib/Object3d/Object3d.h"
+#include "../../../Lib/3D/Model.h"
+#include "../../../Lib/3D/Object3d.h"
 #include "../Enemy/EnemiesList.h"
 #include "../Sources/App/Number/Numbers.h"
 #include "../../Utility/NcmUtil.h"

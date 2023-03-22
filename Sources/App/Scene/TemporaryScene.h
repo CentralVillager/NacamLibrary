@@ -7,10 +7,10 @@
 #include "../Collision/Collision.h"
 #include "../DebugUtill/DebugText.h"
 #include "../../Lib/Camera/Camera.h"
-#include "../../Lib/Fbx/FbxLoader.h"
-#include "../../Lib/Fbx/FbxObject3d.h"
-#include "../../Lib/Model/Model.h"
-#include "../../Lib/Object3d/Object3d.h"
+#include "../../Lib/3D/FbxLoader.h"
+#include "../../Lib/3D/FbxObject3d.h"
+#include "../../Lib/3D/Model.h"
+#include "../../Lib/3D/Object3d.h"
 #include "../../Lib/Audio/AudioManager.h"
 
 class TemporaryScene : public AbsScene {

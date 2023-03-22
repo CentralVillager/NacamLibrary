@@ -1,7 +1,7 @@
 #include "FbxObject3d.h"
 #include <d3dcompiler.h>
 #include <cassert>
-#include "../Fbx/FbxLoader.h"
+#include "../3D/FbxLoader.h"
 
 #pragma comment(lib, "d3dcompiler.lib")
 

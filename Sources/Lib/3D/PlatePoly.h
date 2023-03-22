@@ -5,7 +5,7 @@
 #include <d3d12.h>
 #include <d3dx12.h>
 #include "../Camera/Camera.h"
-#include "../Sprite/NcmSprite.h"
+#include "../2D/NcmSprite.h"
 
 class PlatePoly
 {

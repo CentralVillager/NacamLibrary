@@ -124,9 +124,6 @@
     <ClCompile Include="Sources\App\Unique\Abs\AbsUniqueObj.cpp">
       <Filter>App\AbsUniqueObj</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Lib\Audio\AudioManager.cpp">
-      <Filter>Lib\AudioManager</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\App\Unique\Bullet\Bullet.cpp">
       <Filter>App\Unique\Bullet</Filter>
     </ClCompile>
@@ -147,12 +144,6 @@
     </ClCompile>
     <ClCompile Include="Sources\App\FpsManager\FPSManager.cpp">
       <Filter>App\FpsManager</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\App\Grid\GridFloorManager.cpp">
-      <Filter>App\Grid\GridFloorManager</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Lib\Loader\JsonLoader.cpp">
-      <Filter>Lib\JsonLoader</Filter>
     </ClCompile>
     <ClCompile Include="Sources\App\Level\LevelDataManager.cpp">
       <Filter>App\LevelDataManager</Filter>
@@ -180,9 +171,6 @@
     </ClCompile>
     <ClCompile Include="Sources\App\Math\Easing\NcmEasing.cpp">
       <Filter>App\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\App\Grid\NcmGridFloor.cpp">
-      <Filter>App\Grid</Filter>
     </ClCompile>
     <ClCompile Include="Sources\App\DebugUtill\NcmImGui.cpp">
       <Filter>App\Debug\ImGui</Filter>
@@ -217,38 +205,65 @@
     <ClCompile Include="Sources\App\Unique\WaveManager\WaveManager.cpp">
       <Filter>App\WaveManager</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\App\Unique\Missile\MissileManager.cpp">
+      <Filter>App\Missile\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\2D\NcmSprite.cpp">
+      <Filter>Lib\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\3D\FbxLoader.cpp">
+      <Filter>Lib\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\3D\FbxModel.cpp">
+      <Filter>Lib\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\3D\FbxObject3d.cpp">
+      <Filter>Lib\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\3D\IndirectObject3d.cpp">
+      <Filter>Lib\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\3D\Line.cpp">
+      <Filter>Lib\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\3D\Model.cpp">
+      <Filter>Lib\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\3D\NcmPlatePoly.cpp">
+      <Filter>Lib\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\3D\Object3d.cpp">
+      <Filter>Lib\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\3D\PlatePoly.cpp">
+      <Filter>Lib\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\3D\Point.cpp">
+      <Filter>Lib\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\Audio\AudioManager.cpp">
+      <Filter>Lib\Audio</Filter>
+    </ClCompile>
     <ClCompile Include="Sources\Lib\Camera\Camera.cpp">
       <Filter>Lib\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\App\Collision\Collision.cpp">
-      <Filter>Lib\Collision</Filter>
+    <ClCompile Include="Sources\Lib\Converter\TextureConverter.cpp">
+      <Filter>Lib\Converter</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\App\Collision\CollisionPrimitive.cpp">
-      <Filter>Lib\Collision</Filter>
+    <ClCompile Include="Sources\Lib\DirectX\DirectXBase.cpp">
+      <Filter>Lib\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\DirectX\DrawProc.cpp">
+      <Filter>Lib\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\DirectX\PipelineManager.cpp">
+      <Filter>Lib\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\DirectX\PreDraw.cpp">
+      <Filter>Lib\DirectX</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Lib\Input\ControllerInput.cpp">
       <Filter>Lib\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Lib\DirectXBase\DirectXBase.cpp">
-      <Filter>Lib\DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Lib\DrawProc\DrawProc.cpp">
-      <Filter>Lib\DrawProc</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Lib\Fbx\FbxLoader.cpp">
-      <Filter>Lib\Fbx</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Lib\Fbx\FbxObject3d.cpp">
-      <Filter>Lib\Fbx</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Lib\Fbx\FbxModel.cpp">
-      <Filter>Lib\Fbx</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\App\Grid\GridRender.cpp">
-      <Filter>Lib\Grid</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Lib\IndirectObject3d\IndirectObject3d.cpp">
-      <Filter>Lib\IndirectObject</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Lib\Input\InputManager.cpp">
       <Filter>Lib\Input</Filter>
@@ -256,50 +271,35 @@
     <ClCompile Include="Sources\Lib\Input\KeyboardInput.cpp">
       <Filter>Lib\Input</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Lib\Line\Line.cpp">
-      <Filter>Lib\Line</Filter>
+    <ClCompile Include="Sources\Lib\Input\NcmInput.cpp">
+      <Filter>Lib\Input</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Lib\Model\Model.cpp">
-      <Filter>Lib\Object3d</Filter>
+    <ClCompile Include="Sources\Lib\Loader\JsonLoader.cpp">
+      <Filter>Lib\Loader</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Lib\NacamLib\NacamLib.cpp">
       <Filter>Lib\NacamLib</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Lib\Input\NcmInput.cpp">
-      <Filter>Lib\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Lib\PlatePoly\NcmPlatePoly.cpp">
-      <Filter>Lib\PlatePoly</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Lib\Sprite\NcmSprite.cpp">
-      <Filter>Lib\Sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Lib\Object3d\Object3d.cpp">
-      <Filter>Lib\Object3d</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Lib\Pipeline\PipelineManager.cpp">
-      <Filter>Lib\Pipeline</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Lib\PlatePoly\PlatePoly.cpp">
-      <Filter>Lib\PlatePoly</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Lib\Point\Point.cpp">
-      <Filter>Lib\Point</Filter>
+    <ClCompile Include="Sources\Lib\Win32App\Win32App.cpp">
+      <Filter>Lib\Win32</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Lib\PostEffect\PostEffect.cpp">
       <Filter>Lib\PostEffect</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Lib\PreDraw\PreDraw.cpp">
-      <Filter>Lib\PreDraw</Filter>
+    <ClCompile Include="Sources\App\Grid\GridFloorManager.cpp">
+      <Filter>App\Grid</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Lib\Converter\TextureConverter.cpp">
-      <Filter>Lib\Converter</Filter>
+    <ClCompile Include="Sources\App\Grid\NcmGridFloor.cpp">
+      <Filter>App\Grid</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Lib\Win32App\Win32App.cpp">
-      <Filter>Lib\Win32</Filter>
+    <ClCompile Include="Sources\App\Grid\GridRender.cpp">
+      <Filter>App\Grid</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\App\Unique\Missile\MissileManager.cpp">
-      <Filter>App\Missile\Manager</Filter>
+    <ClCompile Include="Sources\App\Collision\Collision.cpp">
+      <Filter>App\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Collision\CollisionPrimitive.cpp">
+      <Filter>App\Collision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -369,9 +369,6 @@
     <ClInclude Include="Sources\App\Unique\Abs\AbsUniqueObj.h">
       <Filter>App\AbsUniqueObj</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Lib\Audio\AudioManager.h">
-      <Filter>Lib\AudioManager</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\App\Unique\Bullet\Bullet.h">
       <Filter>App\Unique\Bullet</Filter>
     </ClInclude>
@@ -393,17 +390,11 @@
     <ClInclude Include="Sources\App\FpsManager\FPSManager.h">
       <Filter>App\FpsManager</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\App\Grid\GridFloorManager.h">
-      <Filter>App\Grid\GridFloorManager</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\App\Unique\Missile\IMissileHomingState.h">
       <Filter>App\Missile\Interface</Filter>
     </ClInclude>
     <ClInclude Include="Sources\App\Unique\Missile\IMissileLaunchState.h">
       <Filter>App\Missile\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\Loader\JsonLoader.h">
-      <Filter>Lib\JsonLoader</Filter>
     </ClInclude>
     <ClInclude Include="Sources\App\Level\LevelDataManager.h">
       <Filter>App\LevelDataManager</Filter>
@@ -456,9 +447,6 @@
     <ClInclude Include="Sources\App\Math\Easing\NcmEasing.h">
       <Filter>App\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\App\Grid\NcmGridFloor.h">
-      <Filter>App\Grid</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\App\DebugUtill\NcmImGui.h">
       <Filter>App\Debug\ImGui</Filter>
     </ClInclude>
@@ -501,87 +489,6 @@
     <ClInclude Include="Sources\App\Unique\WaveManager\WaveManager.h">
       <Filter>App\WaveManager</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Lib\Camera\Camera.h">
-      <Filter>Lib\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Collision\Collision.h">
-      <Filter>Lib\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Collision\CollisionPrimitive.h">
-      <Filter>Lib\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\Input\ControllerInput.h">
-      <Filter>Lib\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\DirectXBase\DirectXBase.h">
-      <Filter>Lib\DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\DrawProc\DrawProc.h">
-      <Filter>Lib\DrawProc</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\Fbx\FbxLoader.h">
-      <Filter>Lib\Fbx</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\Fbx\FbxModel.h">
-      <Filter>Lib\Fbx</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\Fbx\FbxObject3d.h">
-      <Filter>Lib\Fbx</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Grid\GridRender.h">
-      <Filter>Lib\Grid</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\IndirectObject3d\IndirectObject3d.h">
-      <Filter>Lib\IndirectObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\Input\InputManager.h">
-      <Filter>Lib\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\Input\KeyboardInput.h">
-      <Filter>Lib\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\Line\Line.h">
-      <Filter>Lib\Line</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\Model\Model.h">
-      <Filter>Lib\Object3d</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\NacamLib\NacamLib.h">
-      <Filter>Lib\NacamLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\Input\NcmInput.h">
-      <Filter>Lib\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\PlatePoly\NcmPlatePoly.h">
-      <Filter>Lib\PlatePoly</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\Sprite\NcmSprite.h">
-      <Filter>Lib\Sprite</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\Object3d\Object3d.h">
-      <Filter>Lib\Object3d</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\Pipeline\PipelineManager.h">
-      <Filter>Lib\Pipeline</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\PlatePoly\PlatePoly.h">
-      <Filter>Lib\PlatePoly</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\Point\Point.h">
-      <Filter>Lib\Point</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\PostEffect\PostEffect.h">
-      <Filter>Lib\PostEffect</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\PreDraw\PreDraw.h">
-      <Filter>Lib\PreDraw</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\Converter\TextureConverter.h">
-      <Filter>Lib\Converter</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Lib\Win32App\Win32App.h">
-      <Filter>Lib\Win32</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\App\Unique\Missile\MissileManager.h">
       <Filter>App\Missile\Manager</Filter>
     </ClInclude>
@@ -590,6 +497,99 @@
     </ClInclude>
     <ClInclude Include="imgui\imconfig.h">
       <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\2D\NcmSprite.h">
+      <Filter>Lib\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\3D\FbxLoader.h">
+      <Filter>Lib\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\3D\FbxModel.h">
+      <Filter>Lib\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\3D\FbxObject3d.h">
+      <Filter>Lib\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\3D\IndirectObject3d.h">
+      <Filter>Lib\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\3D\Line.h">
+      <Filter>Lib\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\3D\Model.h">
+      <Filter>Lib\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\3D\NcmPlatePoly.h">
+      <Filter>Lib\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\3D\Object3d.h">
+      <Filter>Lib\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\3D\PlatePoly.h">
+      <Filter>Lib\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\3D\Point.h">
+      <Filter>Lib\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Audio\AudioManager.h">
+      <Filter>Lib\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Camera\Camera.h">
+      <Filter>Lib\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Converter\TextureConverter.h">
+      <Filter>Lib\Converter</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\DirectX\DirectXBase.h">
+      <Filter>Lib\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\DirectX\DrawProc.h">
+      <Filter>Lib\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\DirectX\PipelineManager.h">
+      <Filter>Lib\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\DirectX\PreDraw.h">
+      <Filter>Lib\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Input\ControllerInput.h">
+      <Filter>Lib\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Input\InputManager.h">
+      <Filter>Lib\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Input\KeyboardInput.h">
+      <Filter>Lib\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Input\NcmInput.h">
+      <Filter>Lib\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Loader\JsonLoader.h">
+      <Filter>Lib\Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\NacamLib\NacamLib.h">
+      <Filter>Lib\NacamLib</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Win32App\Win32App.h">
+      <Filter>Lib\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\PostEffect\PostEffect.h">
+      <Filter>Lib\PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Grid\GridFloorManager.h">
+      <Filter>App\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Grid\NcmGridFloor.h">
+      <Filter>App\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Grid\GridRender.h">
+      <Filter>App\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Collision\Collision.h">
+      <Filter>App\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Collision\CollisionPrimitive.h">
+      <Filter>App\Collision</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -630,9 +630,6 @@
     <Filter Include="App">
       <UniqueIdentifier>{5fc5c6f2-8836-4935-ab58-bd82a37e6497}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Lib">
-      <UniqueIdentifier>{2833affb-856e-4348-a08a-f24c17fcac17}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{9dc65e96-3ae2-4098-9069-a4c865895edf}</UniqueIdentifier>
     </Filter>
@@ -653,9 +650,6 @@
     </Filter>
     <Filter Include="App\AbsUniqueObj">
       <UniqueIdentifier>{431c84eb-ba52-4949-b813-e5d4a5be5cfa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Lib\AudioManager">
-      <UniqueIdentifier>{eabac463-6598-4579-99e4-118abfba9129}</UniqueIdentifier>
     </Filter>
     <Filter Include="App\Unique">
       <UniqueIdentifier>{1c8ca9fd-d6b8-44fe-af20-03cc89587ba7}</UniqueIdentifier>
@@ -678,9 +672,6 @@
     <Filter Include="App\Missile\Interface">
       <UniqueIdentifier>{7c2c3389-322d-4a2c-80ac-930516596a14}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Lib\JsonLoader">
-      <UniqueIdentifier>{5bc0b64f-1379-4581-b126-23405982b814}</UniqueIdentifier>
-    </Filter>
     <Filter Include="App\LevelDataManager">
       <UniqueIdentifier>{bdca0631-a401-4b68-b858-b6b5c98a9a03}</UniqueIdentifier>
     </Filter>
@@ -701,9 +692,6 @@
     </Filter>
     <Filter Include="App\Grid">
       <UniqueIdentifier>{4a63749b-2bc5-486d-bfde-f8cc5f2b6533}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\Grid\GridFloorManager">
-      <UniqueIdentifier>{f3bca6a7-50fa-4543-b3e4-f6eea7634c90}</UniqueIdentifier>
     </Filter>
     <Filter Include="App\Debug\ImGui">
       <UniqueIdentifier>{ddf946c2-5df5-4bb2-addf-a9a238c910c5}</UniqueIdentifier>
@@ -732,68 +720,53 @@
     <Filter Include="App\WaveManager">
       <UniqueIdentifier>{383a168c-edca-4863-af55-73b46f130e26}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Lib\Camera">
-      <UniqueIdentifier>{38f2bb92-bfe8-4790-b87d-0d98b85e0546}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Lib\Collision">
-      <UniqueIdentifier>{55cdf22c-2fe1-4c1c-b922-cbec9f6e5e7f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Lib\Input">
-      <UniqueIdentifier>{5efa2f9e-baa5-4280-b930-08853d6f65be}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Lib\DirectX">
-      <UniqueIdentifier>{a49f7fb1-4d4d-4edf-b52c-8014377496ed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Lib\DrawProc">
-      <UniqueIdentifier>{d538e40e-46bb-41cb-bc44-339932efa55d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Lib\Fbx">
-      <UniqueIdentifier>{a73a11e4-da09-49d9-aa65-baa296b7c07a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Lib\Grid">
-      <UniqueIdentifier>{60cdcfcd-4810-45e7-9c8f-5db6582e1f76}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Lib\IndirectObject">
-      <UniqueIdentifier>{06060545-0b87-4fd3-a334-f296a40296d2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Lib\Line">
-      <UniqueIdentifier>{afc1671b-8255-4024-a389-914be8351e28}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Lib\Object3d">
-      <UniqueIdentifier>{f368ad7a-b171-46f0-a41f-19704dfe50a9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Lib\NacamLib">
-      <UniqueIdentifier>{f2933ea0-e297-4ddb-bbac-da283cabe5a8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Lib\PlatePoly">
-      <UniqueIdentifier>{919129fa-68a6-44ce-a33b-132f45d5bc68}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Lib\Sprite">
-      <UniqueIdentifier>{52e64451-315b-4cae-95d1-a68052c2e5dc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Lib\Pipeline">
-      <UniqueIdentifier>{63b52a74-5244-4219-bc49-44216a38a103}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Lib\Point">
-      <UniqueIdentifier>{132ff944-bb8a-4578-88ce-1b9bf7dfb47e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Lib\PostEffect">
-      <UniqueIdentifier>{b53b912e-604e-4de1-b9f2-67cfddfdc552}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Lib\PreDraw">
-      <UniqueIdentifier>{75d5d8fd-f738-4cda-bd97-abe09600245a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Lib\Converter">
-      <UniqueIdentifier>{c42a4ffa-3e47-4e10-be33-e64e783bb6a9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Lib\Win32">
-      <UniqueIdentifier>{e6b2f90d-64ec-47ac-887d-fc47ec94deb9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="App\Missile\Manager">
       <UniqueIdentifier>{e8be4389-99cb-452a-8d83-c34da5eb5e6a}</UniqueIdentifier>
     </Filter>
     <Filter Include="App\Missile\DescHeader">
       <UniqueIdentifier>{48114802-16a8-4bfd-93b3-a8bed33a64ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lib">
+      <UniqueIdentifier>{13fb843a-4f56-4360-a778-8411cf1101ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lib\2D">
+      <UniqueIdentifier>{3af0f599-3c87-463f-b6d2-40c35943c687}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lib\3D">
+      <UniqueIdentifier>{65e4cbae-3f6f-4552-b785-9c77db03cf54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lib\Audio">
+      <UniqueIdentifier>{30acc218-e26b-46bc-97b8-325ff8030a9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lib\Camera">
+      <UniqueIdentifier>{b15ce691-05cb-46d4-a807-e8bb8564fed9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lib\Converter">
+      <UniqueIdentifier>{8fcb4c82-bbd8-4772-a6be-9373f30269c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lib\DirectX">
+      <UniqueIdentifier>{9ce0def1-9a0c-47fd-8d05-e147cd45ffdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lib\Input">
+      <UniqueIdentifier>{e6db3ac6-354d-40ac-b29f-d94b93096809}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lib\Loader">
+      <UniqueIdentifier>{30544dcd-6fc3-4896-92f6-b1ebcf3de71e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lib\NacamError">
+      <UniqueIdentifier>{fea19fb4-92f3-4e28-96bd-5515c1ab6d31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lib\NacamLib">
+      <UniqueIdentifier>{28d5c0c3-0e3a-4142-8be4-21180dddb172}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lib\PostEffect">
+      <UniqueIdentifier>{80487a88-3f42-4487-b723-4e85ad4f078a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lib\Win32">
+      <UniqueIdentifier>{c637241c-70d2-47b0-ab4d-d7b403856d29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Collision">
+      <UniqueIdentifier>{467de34b-f344-45db-8501-f484a1d08b1e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

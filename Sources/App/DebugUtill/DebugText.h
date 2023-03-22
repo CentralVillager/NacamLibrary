@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "../../Lib/Sprite/NcmSprite.h"
+#include "../../Lib/2D/NcmSprite.h"
 
 class DebugText
 {

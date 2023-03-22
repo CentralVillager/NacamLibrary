@@ -3,10 +3,10 @@
 #include <wrl.h>
 #include "../AbsScene.h"
 #include "../../../Lib/Camera/Camera.h"
-#include "../../../Lib/Model/Model.h"
-#include "../../../Lib/Object3d/Object3d.h"
+#include "../../../Lib/3D/Model.h"
+#include "../../../Lib/3D/Object3d.h"
 #include "../../../Lib/PostEffect/PostEffect.h"
-#include "../../../Lib/Sprite/NcmSprite.h"
+#include "../../../Lib/2D/NcmSprite.h"
 
 class PostEffectDemoScene : public AbsScene
 {

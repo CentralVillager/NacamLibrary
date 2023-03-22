@@ -2,7 +2,7 @@
 #include <Windows.h>
 #include <wrl.h>
 #include <d3d12.h>
-#include "../DirectXBase/DirectXBase.h"
+#include "../DirectX/DirectXBase.h"
 #include "../../App/Singleton/Singleton.h"
 
 class DrawProc : public Singleton<DrawProc>

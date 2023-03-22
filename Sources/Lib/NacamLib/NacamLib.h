@@ -1,8 +1,8 @@
 #pragma once
 #include <memory>
-#include "../DirectXBase/DirectXBase.h"
-#include "../Pipeline/PipelineManager.h"
-#include "../PreDraw/PreDraw.h"
+#include "../DirectX/DirectXBase.h"
+#include "../DirectX/PipelineManager.h"
+#include "../DirectX/PreDraw.h"
 #include "../PostEffect/PostEffect.h"
 #include "../../App/Scene/SceneManager/SceneManager.h"
 #include "../../App/Singleton/Singleton.h"

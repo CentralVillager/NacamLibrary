@@ -1,4 +1,4 @@
-#include "../Pipeline/PipelineManager.h"
+#include "../DirectX/PipelineManager.h"
 #include <Windows.h>
 #include <d3dx12.h>
 #include <dxgi1_6.h>
@@ -6,7 +6,7 @@
 #include <DirectXMath.h>
 #include <d3dcompiler.h>
 #include <DirectXTex.h>
-#include "../DirectXBase/DirectXBase.h"
+#include "../DirectX/DirectXBase.h"
 
 #pragma comment(lib, "d3dcompiler.lib")
 

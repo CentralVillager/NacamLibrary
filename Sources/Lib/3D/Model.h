@@ -7,7 +7,7 @@
 #include <vector>
 #include <DirectXTex.h>
 #include <unordered_map>
-#include "../DirectXBase/DirectXBase.h"
+#include "../DirectX/DirectXBase.h"
 
 class Model
 {

@@ -4,8 +4,8 @@
 #include <list>
 #include <memory>
 #include <DirectXMath.h>
-#include "../Sources/Lib/Model/Model.h"
-#include "../../Lib/Sprite/NcmSprite.h"
+#include "../../Lib/3D/Model.h"
+#include "../../Lib/2D/NcmSprite.h"
 #include "NcmParticleCommonArgs.h"
 
 // エミッターの設定構造体

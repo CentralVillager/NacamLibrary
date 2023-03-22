@@ -3,7 +3,7 @@
 #include "TemporaryScene.h"
 #include "../Sources/App/Collision/Collision.h"
 #include "../Scene/SceneManager/SceneManager.h"
-#include "../../Lib/Fbx/FbxLoader.h"
+#include "../../Lib/3D/FbxLoader.h"
 #include "../../Lib/Input/KeyboardInput.h"
 #include "../../Lib/Input/ControllerInput.h"
 

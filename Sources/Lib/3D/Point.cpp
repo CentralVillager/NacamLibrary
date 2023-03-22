@@ -1,5 +1,5 @@
 #include "Point.h"
-#include "../PreDraw/PreDraw.h"
+#include "../DirectX/PreDraw.h"
 #include <cassert>
 
 using namespace DirectX;

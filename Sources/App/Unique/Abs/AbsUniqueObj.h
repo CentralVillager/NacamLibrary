@@ -1,8 +1,8 @@
 #pragma once
 #include <memory>
 #include <DirectXMath.h>
-#include "../../../Lib/Object3d/Object3d.h"
-#include "../../../Lib/Model/Model.h"
+#include "../../../Lib/3D/Object3d.h"
+#include "../../../Lib/3D/Model.h"
 #include "../../../App/Collision/CollisionPrimitive.h"
 #include "../../DebugUtill/NcmImGui.h"
 

@@ -3,7 +3,7 @@
 #include <array>
 #include <memory>
 #include <DirectXMath.h>
-#include "../../../Lib/Sprite/NcmSprite.h"
+#include "../../../Lib/2D/NcmSprite.h"
 #include "../../Number/Numbers.h"
 #include "../Sources/App/Math/Easing/NcmEasing.h"
 

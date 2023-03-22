@@ -3,7 +3,7 @@
 #include "../Sources/Lib/NacamLib/NacamLib.h"
 #include "../../../Lib/NacamError/NacamError.h"
 #include "../Sources/App/Math/NcmMath.h"
-#include "../../../Lib/PreDraw/PreDraw.h"
+#include "../../../Lib/DirectX/PreDraw.h"
 #include "../Player/Player.h"
 #include "../../Utility/NcmColor.h"
 

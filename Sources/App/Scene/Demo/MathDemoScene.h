@@ -5,9 +5,9 @@
 #include "../AbsScene.h"
 #include "../../Collision/CollisionPrimitive.h"
 #include "../../../Lib/Camera/Camera.h"
-#include "../../../Lib/Model/Model.h"
-#include "../../../Lib/Object3d/Object3d.h"
-#include "../../../Lib/Line/Line.h"
+#include "../../../Lib/3D/Model.h"
+#include "../../../Lib/3D/Object3d.h"
+#include "../../../Lib/3D/Line.h"
 
 //struct Vec2 {
 //	float x;

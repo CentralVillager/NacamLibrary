@@ -16,11 +16,11 @@
 #include "../../App/Scene/AbsScene.h"
 #include "../../App/Unique/Ultimate/UltimateManager.h"
 #include "../../App/Particle/NcmParticleManager.h"
-#include "../../Lib/DirectXBase/DirectXBase.h"
+#include "../../Lib/DirectX/DirectXBase.h"
 #include "../../Lib/Camera/Camera.h"
-#include "../../Lib/Sprite/NcmSprite.h"
-#include "../../Lib/PlatePoly/PlatePoly.h"
-#include "../../Lib/PlatePoly/NcmPlatePoly.h"
+#include "../../Lib/2D/NcmSprite.h"
+#include "../../Lib/3D/PlatePoly.h"
+#include "../../Lib/3D/NcmPlatePoly.h"
 #include "../../Lib/Input/NcmInput.h"
 
 class MainScene : public AbsScene

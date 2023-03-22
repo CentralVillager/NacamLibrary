@@ -1,9 +1,9 @@
 #include "DemoScene.h"
-#include "../../../Lib/Fbx/FbxLoader.h"
-#include "../Sources/Lib/Sprite/NcmSprite.h"
-#include "../Sources/Lib/Win32App/Win32App.h"
-#include "../Sources/Lib/PreDraw/PreDraw.h"
-#include "../Sources/Lib/Input/KeyboardInput.h"
+#include "../../../Lib/3D/FbxLoader.h"
+#include "../../../Lib/2D/NcmSprite.h"
+#include "../../../Lib/Win32App/Win32App.h"
+#include "../../../Lib/DirectX/PreDraw.h"
+#include "../../../Lib/Input/KeyboardInput.h"
 
 using namespace std;
 using namespace DirectX;

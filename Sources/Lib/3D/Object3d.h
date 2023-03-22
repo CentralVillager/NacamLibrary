@@ -8,7 +8,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include "../Model/Model.h"
+#include "../3D/Model.h"
 #include "../Camera/Camera.h"
 
 /// <summary>

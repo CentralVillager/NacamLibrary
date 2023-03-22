@@ -4,9 +4,9 @@
 #include "AbsScene.h"
 #include "../Particle/Emitter.h"
 #include "../../Lib/Camera/Camera.h"
-#include "../../Lib/Sprite/NcmSprite.h"
-#include "../../Lib/Model/Model.h"
-#include "../../Lib/Object3d/Object3d.h"
+#include "../../Lib/2D/NcmSprite.h"
+#include "../../Lib/3D/Model.h"
+#include "../../Lib/3D/Object3d.h"
 #include "../../App/Particle/NcmParticleManager.h"
 
 class TitleScene : public AbsScene

@@ -1,10 +1,11 @@
 #pragma once
 #include <DirectXMath.h>
-#include "../../Lib/Object3d/Object3d.h"
-#include "../../Lib/Model/Model.h"
-#include "../../Lib/IndirectObject3d/IndirectObject3d.h"
-#include "../../Lib/PlatePoly/PlatePoly.h"
-#include "../../Lib/Sprite/NcmSprite.h"
+#include "../../Lib/3D/Object3d.h"
+#include "../../Lib/3D/Object3d.h"
+#include "../../Lib/3D/Model.h"
+#include "../../Lib/3D/IndirectObject3d.h"
+#include "../../Lib/3D/PlatePoly.h"
+#include "../../Lib/2D/NcmSprite.h"
 
 // パーティクル一粒の構成要素
 struct ParticleDesc
