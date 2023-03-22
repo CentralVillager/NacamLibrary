@@ -18,7 +18,9 @@ ComPtr<ID3D12GraphicsCommandList> PostEffect::command_list_;
 const float PostEffect::clear_color_[4] = { Convert256to01(25), Convert256to01(25), Convert256to01(25), 0.0f };
 XMFLOAT4 PostEffect::color_ = { 1, 1, 1, 1 };
 
-PostEffect::PostEffect()
+PostEffect::PostEffect():
+	pipeline_(),
+	vb_view_()
 {
 	device_ = DirectXBase::GetInstance()->GetDevice().Get();
 	command_list_ = DirectXBase::GetInstance()->GetCommandList().Get();
@@ -100,29 +102,6 @@ void PostEffect::Initialize()
 	}
 
 	assert(SUCCEEDED(result));
-
-	// テクスチャを赤クリア
-	//{
-	//	// 画素数(1280 x 720 = 9216000 pix)
-	//	const UINT pixel_count = Win32App::window_width_ * Win32App::window_height_;
-
-	//	// 画像1行分のデータサイズ
-	//	const UINT row_pitch = sizeof(UINT) * Win32App::window_width_;
-
-	//	// 画像全体のデータサイズ
-	//	const UINT depth_pitch = row_pitch * Win32App::window_height_;
-
-	//	// 画像イメージ
-	//	UINT *img = new UINT[pixel_count];
-	//	for (int i = 0; i < pixel_count; i++) { img[i] = 0xff0000ff; }
-
-	//	// テクスチャバッファにデータ転送
-	//	result = tex_buff_->WriteToSubresource(0, nullptr, img, row_pitch, depth_pitch);
-
-	//	assert(SUCCEEDED(result));
-
-	//	delete[] img;
-	//}
 
 	// SRV用デスクリプタヒープ設定
 	D3D12_DESCRIPTOR_HEAP_DESC srv_desc_heap_desc = {};
@@ -287,6 +266,10 @@ void PostEffect::DebugDraw()
 	{
 		pipeline_ = Pipeline::GaussianBlur;
 	}
+	else if (ImGui::RadioButton("RadialBlur", &button, 3))
+	{
+		pipeline_ = Pipeline::RadialBlur;
+	}
 	ImGui::End();
 }
 
@@ -295,16 +278,18 @@ void PostEffect::SetPipeline(Pipeline p)
 	if (p == Pipeline::Basic)
 	{
 		PreDraw::SetPipeline(PipelineName::PostEffect);
-
 	}
 	else if (p == Pipeline::AverageBlur)
 	{
 		PreDraw::SetPipeline(PipelineName::AverageBlur);
-
 	}
 	else if (p == Pipeline::GaussianBlur)
 	{
 		PreDraw::SetPipeline(PipelineName::GaussianBlur);
+	}
+	else if (p == Pipeline::RadialBlur)
+	{
+		PreDraw::SetPipeline(PipelineName::RadialBlur);
 	}
 }
 

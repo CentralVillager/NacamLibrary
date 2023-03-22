@@ -509,7 +509,7 @@ void PipelineManager::SetTemplateConfigs()
 	p_name = RadialBlur;
 	configs_[(int)(p_name)].pipeline_name = L"RadialBlur";
 	configs_[(int)(p_name)].VS_name = L"Resources/shaders/BlurVS.hlsl";
-	configs_[(int)(p_name)].PS_name = L"Resources/shaders/GaussianBlurPS.hlsl";
+	configs_[(int)(p_name)].PS_name = L"Resources/shaders/RadialBlurPS.hlsl";
 	configs_[(int)(p_name)].fill_mode = D3D12_FILL_MODE_SOLID;
 	configs_[(int)(p_name)].input_layout.resize(2);
 	configs_[(int)(p_name)].input_layout =

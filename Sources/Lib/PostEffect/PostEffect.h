@@ -16,7 +16,8 @@ class PostEffect
 	{
 		Basic,
 		AverageBlur,
-		GaussianBlur
+		GaussianBlur,
+		RadialBlur
 	};
 
 	struct Vertex
