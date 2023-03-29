@@ -13,37 +13,27 @@ float4 main(VSOutput input) : SV_TARGET0
  {
     float4 color = float4(0, 0, 0, 0);
     float total_weight = 0;
-	float sigma = 0.005;
-	float step_width = 0.005;
 
-	float power = 20.0f;
+	float power = 10.0f;
 
+	float4 color_array[10];
 	float2 center = float2(0.5f, 0.5f);
 	float2 dir = center - input.uv;
 	float len = length(dir);
 	float offset = normalize(dir) * center / float2(1280, 720);	
 	offset *= (power * len);
 
+	float weight = 0.19f;
 	for(int i = 1; i <= 10; i++)
 	{
 		float2 pick_uv = offset * i;
-		float weight = Gaussian(input.uv, pick_uv, sigma);
+		pick_uv += input.uv;
 
 		color += tex.Sample(smp, pick_uv) * weight;
 
 		total_weight += weight;
+		weight -= 0.02f;
 	}
-
-	// for (float py = -sigma * 2; py <= sigma * 2; py += step_width) 
-	// {
-	// 	for (float px = -sigma * 2; px <= sigma * 2; px += step_width) 
-	// 	{
-	// 		float2 pick_uv = input.uv + float2(px, py);
-	// 		float weight = Gaussian(input.uv, pick_uv, sigma);
-	// 		color += tex.Sample(smp, pick_uv) * weight;
-	// 		total_weight += weight;
-	// 	}
-	// }
 
     return color /= total_weight;
 }

@@ -387,12 +387,6 @@ void PipelineManager::SetTemplateConfigs()
 	configs_[(int)(p_name)].blend_desc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
 	configs_[(int)(p_name)].blend_desc.SrcBlendAlpha = D3D12_BLEND_ONE;
 	configs_[(int)(p_name)].blend_desc.DestBlendAlpha = D3D12_BLEND_ZERO;
-	/*configs_[(int)(p_name)].blend_desc.BlendOp = D3D12_BLEND_OP_ADD;
-	configs_[(int)(p_name)].blend_desc.SrcBlend = D3D12_BLEND_ONE;
-	configs_[(int)(p_name)].blend_desc.DestBlend = D3D12_BLEND_ONE;
-	configs_[(int)(p_name)].blend_desc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
-	configs_[(int)(p_name)].blend_desc.SrcBlendAlpha = D3D12_BLEND_ONE;
-	configs_[(int)(p_name)].blend_desc.DestBlendAlpha = D3D12_BLEND_ZERO;*/
 	configs_[(int)(p_name)].num_render_targets = 2;
 	configs_[(int)(p_name)].rtv_formats.resize(2);
 	configs_[(int)(p_name)].rtv_formats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
