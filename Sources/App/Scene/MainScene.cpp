@@ -460,15 +460,7 @@ void MainScene::CollisionProcess()
 		{
 			if (Collision::CheckSphere2Sphere(ene_list_->GetCollData(i), missile_mgr_->GetCollData(j)))
 			{
-				// ミサイルが有効なら
-				if (missile_mgr_->GetIsValidity(j) && missile_mgr_->GetTgtID(j) != (int32_t)(TargetIs::Player))
-				{
-					if (missile_mgr_->Death(j))
-					{
-						ene_list_->Death(i);
-						ult_->AddUltValue(20);
-					}
-				}
+				HitSequence(i, j);
 			}
 		}
 	}
@@ -528,5 +520,23 @@ void MainScene::AlphaTransition(float trans_speed)
 	{
 		// 値を1に固定する
 		result_alpha_ = 1.0f;
+	}
+}
+
+void MainScene::HitSequence(int i, int j)
+{
+	// ミサイルが有効なら
+	if (missile_mgr_->GetIsValidity(j) && missile_mgr_->GetTgtID(j) != (int32_t)(TargetIs::Player))
+	{
+		if (missile_mgr_->Death(j))
+		{
+			if (NcmDebug::GetInstance()->IsCheatMode())
+			{
+				return;
+			}
+
+			ene_list_->Death(i);
+			ult_->AddUltValue(20);
+		}
 	}
 }

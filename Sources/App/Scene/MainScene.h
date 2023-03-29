@@ -125,4 +125,5 @@ private:
 	void CollisionProcess();
 	bool CheckDoDisplay();
 	void AlphaTransition(float trans_speed);
+	void HitSequence(int i, int j);
 };
