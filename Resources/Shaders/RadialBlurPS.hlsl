@@ -16,7 +16,6 @@ float4 main(VSOutput input) : SV_TARGET0
 
 	float power = 10.0f;
 
-	float4 color_array[10];
 	float2 center = float2(0.5f, 0.5f);
 	float2 dir = center - input.uv;
 	float len = length(dir);
