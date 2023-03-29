@@ -2,7 +2,7 @@
 #include <string>
 #include <cstring>
 #include <algorithm>
-#include "../DebugUtill/NcmImGui.h"
+#include "../../Lib/DebugUtill/NcmImGui.h"
 #include "../../Lib/Win32App/Win32App.h"
 
 std::array<int, Numbers::MAX_NUM_> Numbers::numbers_;

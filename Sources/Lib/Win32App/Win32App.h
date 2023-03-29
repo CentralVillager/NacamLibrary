@@ -1,7 +1,7 @@
 #pragma once
 #include <Windows.h>
 #include <DirectXMath.h>
-#include "../../App/Singleton/Singleton.h"
+#include "../../Lib/Singleton/Singleton.h"
 
 class Win32App final : public Singleton<Win32App>
 {

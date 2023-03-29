@@ -1,5 +1,5 @@
 #include "NcmGridFloor.h"
-#include "../DebugUtill/NcmImGui.h"
+#include "../../Lib/DebugUtill/NcmImGui.h"
 
 Camera *NcmGridFloor::cam_ptr_ = nullptr;
 

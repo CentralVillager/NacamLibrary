@@ -1,9 +1,10 @@
+#include <string>
+#include <d3dcompiler.h>
 #include "../PostEffect/PostEffect.h"
 #include "../Win32App/Win32App.h"
-#include <d3dcompiler.h>
 #include "../Input/KeyboardInput.h"
-#include "../../App/Utility/NcmUtil.h"
-#include "../../App/DebugUtill/NcmImGui.h"
+#include "../../Lib/Utility/NcmUtil.h"
+#include "../../Lib/DebugUtill/NcmImGui.h"
 #include "../../Lib/DirectX/PreDraw.h"
 #include "../DirectX/DirectXBase.h"
 
@@ -18,7 +19,7 @@ ComPtr<ID3D12GraphicsCommandList> PostEffect::command_list_;
 const float PostEffect::clear_color_[4] = { Convert256to01(25), Convert256to01(25), Convert256to01(25), 0.0f };
 XMFLOAT4 PostEffect::color_ = { 1, 1, 1, 1 };
 
-PostEffect::PostEffect():
+PostEffect::PostEffect() :
 	pipeline_(),
 	vb_view_()
 {
@@ -196,7 +197,7 @@ void PostEffect::Initialize()
 
 void PostEffect::Draw()
 {
-	if (KeyboardInput::TriggerKey(DIK_1))
+	/*if (KeyboardInput::TriggerKey(DIK_1))
 	{
 		static int tex = 0;
 
@@ -211,7 +212,7 @@ void PostEffect::Draw()
 			&srv_desc,
 			desc_heap_SRV_->GetCPUDescriptorHandleForHeapStart()
 		);
-	}
+	}*/
 
 	// 定数バッファにデータ転送
 	ConstBufferData *constMap = nullptr;

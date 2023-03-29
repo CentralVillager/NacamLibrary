@@ -5,7 +5,7 @@
 #include "../DirectX/PreDraw.h"
 #include "../PostEffect/PostEffect.h"
 #include "../../App/Scene/SceneManager/SceneManager.h"
-#include "../../App/Singleton/Singleton.h"
+#include "../../Lib/Singleton/Singleton.h"
 
 class NacamLib  final : public Singleton<NacamLib>
 {

@@ -1,6 +1,6 @@
 #include "NcmPlatePoly.h"
 #include <DirectXTex.h>
-#include "../../App/Utility/NcmUtil.h"
+#include "../../Lib/Utility/NcmUtil.h"
 
 using namespace DirectX;
 using namespace Microsoft::WRL;

@@ -121,65 +121,17 @@
     <ClCompile Include="Sources\App\Scene\MainScene.cpp">
       <Filter>App\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\App\Unique\Abs\AbsUniqueObj.cpp">
-      <Filter>App\AbsUniqueObj</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\App\Unique\Bullet\Bullet.cpp">
-      <Filter>App\Unique\Bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\App\Unique\Bullet\BulletList.cpp">
-      <Filter>App\Unique\Bullet</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\App\Particle\Emitter.cpp">
       <Filter>App\Emitter</Filter>
     </ClCompile>
     <ClCompile Include="Sources\App\Particle\EmittersList.cpp">
       <Filter>App\Emitter</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\App\Unique\Enemy\EnemiesList.cpp">
-      <Filter>App\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\App\Unique\Enemy\Enemy.cpp">
-      <Filter>App\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\App\FpsManager\FPSManager.cpp">
-      <Filter>App\FpsManager</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\App\Level\LevelDataManager.cpp">
       <Filter>App\LevelDataManager</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\App\Unique\LockOnSystem\LockOnSystem.cpp">
-      <Filter>App\LockOnSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\App\Unique\Missile\Missile.cpp">
-      <Filter>App\Missile</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\App\Unique\Missile\MissileHomingStateHighAccuracy.cpp">
-      <Filter>App\Missile\MissileState</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\App\Unique\Missile\MissileHomingStateLowAccuracy.cpp">
-      <Filter>App\Missile\MissileState</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\App\Unique\Missile\MissileHomingStateMiddleAccuracy.cpp">
-      <Filter>App\Missile\MissileState</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\App\Unique\Missile\MissileHomingStateNoHoming.cpp">
-      <Filter>App\Missile\MissileState</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\App\DebugUtill\NcmDebug.cpp">
-      <Filter>App\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\App\Math\Easing\NcmEasing.cpp">
-      <Filter>App\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\App\DebugUtill\NcmImGui.cpp">
-      <Filter>App\Debug\ImGui</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\App\Particle\NcmParticleManager.cpp">
       <Filter>App\Particle</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\App\Utility\NcmUtil.cpp">
-      <Filter>App\Utill</Filter>
     </ClCompile>
     <ClCompile Include="Sources\App\Ui\NcmUi.cpp">
       <Filter>App\Ui</Filter>
@@ -190,23 +142,8 @@
     <ClCompile Include="Sources\App\Particle\Particle.cpp">
       <Filter>App\Particle</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\App\Unique\Player\Player.cpp">
-      <Filter>App\Player</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\App\Scene\ResultScene.cpp">
       <Filter>App\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\App\Unique\Reticle\Reticle.cpp">
-      <Filter>App\Reticle</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\App\Unique\Ultimate\UltimateManager.cpp">
-      <Filter>App\UltimateManager</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\App\Unique\WaveManager\WaveManager.cpp">
-      <Filter>App\WaveManager</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\App\Unique\Missile\MissileManager.cpp">
-      <Filter>App\Missile\Manager</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Lib\2D\NcmSprite.cpp">
       <Filter>Lib\2D</Filter>
@@ -295,11 +232,74 @@
     <ClCompile Include="Sources\App\Grid\GridRender.cpp">
       <Filter>App\Grid</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\App\Collision\Collision.cpp">
-      <Filter>App\Collision</Filter>
+    <ClCompile Include="Sources\Lib\Collision\Collision.cpp">
+      <Filter>Lib\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\App\Collision\CollisionPrimitive.cpp">
-      <Filter>App\Collision</Filter>
+    <ClCompile Include="Sources\Lib\Collision\CollisionPrimitive.cpp">
+      <Filter>Lib\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\Math\Easing\NcmEasing.cpp">
+      <Filter>Lib\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\Utility\NcmUtil.cpp">
+      <Filter>Lib\Utill</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\DebugUtill\NcmImGui.cpp">
+      <Filter>Lib\Debug\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\DebugUtill\NcmDebug.cpp">
+      <Filter>Lib\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lib\FpsManager\FPSManager.cpp">
+      <Filter>Lib\FpsManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Abs\AbsUniqueObj.cpp">
+      <Filter>App\AbsUniqueObj</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Bullet\Bullet.cpp">
+      <Filter>App\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Bullet\BulletList.cpp">
+      <Filter>App\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Enemy\EnemiesList.cpp">
+      <Filter>App\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Enemy\Enemy.cpp">
+      <Filter>App\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\LockOnSystem\LockOnSystem.cpp">
+      <Filter>App\LockOnSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Missile\Missile.cpp">
+      <Filter>App\Missile</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Missile\MissileHomingStateHighAccuracy.cpp">
+      <Filter>App\Missile\MissileState</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Missile\MissileHomingStateLowAccuracy.cpp">
+      <Filter>App\Missile\MissileState</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Missile\MissileHomingStateMiddleAccuracy.cpp">
+      <Filter>App\Missile\MissileState</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Missile\MissileHomingStateNoHoming.cpp">
+      <Filter>App\Missile\MissileState</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Missile\MissileManager.cpp">
+      <Filter>App\Missile\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Player\Player.cpp">
+      <Filter>App\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Reticle\Reticle.cpp">
+      <Filter>App\Reticle</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\Ultimate\UltimateManager.cpp">
+      <Filter>App\UltimateManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\App\WaveManager\WaveManager.cpp">
+      <Filter>App\WaveManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -366,101 +366,23 @@
     <ClInclude Include="Sources\App\Scene\MainScene.h">
       <Filter>App\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Abs\AbsUniqueObj.h">
-      <Filter>App\AbsUniqueObj</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Bullet\Bullet.h">
-      <Filter>App\Unique\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Bullet\BulletList.h">
-      <Filter>App\Unique\Bullet</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\App\Particle\Emitter.h">
       <Filter>App\Emitter</Filter>
     </ClInclude>
     <ClInclude Include="Sources\App\Particle\EmittersList.h">
       <Filter>App\Emitter</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Enemy\EnemiesList.h">
-      <Filter>App\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Enemy\Enemy.h">
-      <Filter>App\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\FpsManager\FPSManager.h">
-      <Filter>App\FpsManager</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\IMissileHomingState.h">
-      <Filter>App\Missile\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\IMissileLaunchState.h">
-      <Filter>App\Missile\Interface</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\App\Level\LevelDataManager.h">
       <Filter>App\LevelDataManager</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\App\Unique\LockOnSystem\LockOnSystem.h">
-      <Filter>App\LockOnSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\Missile.h">
-      <Filter>App\Missile</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\MissileHoming.h">
-      <Filter>App\Missile</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\MissileHomingStateHighAccuracy.h">
-      <Filter>App\Missile\MissileState</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\MissileHomingStateLowAccuracy.h">
-      <Filter>App\Missile\MissileState</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\MissileHomingStateMiddleAccuracy.h">
-      <Filter>App\Missile\MissileState</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\MissileHomingStateNoHoming.h">
-      <Filter>App\Missile\MissileState</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\MissileLauncher.h">
-      <Filter>App\Missile</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\MissileStateCharge.h">
-      <Filter>App\Missile\MissileState</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\MissileStateForEnemy.h">
-      <Filter>App\Missile\MissileState</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\MissileStateMonoCircuse.h">
-      <Filter>App\Missile\MissileState</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\MissileStateUltimate.h">
-      <Filter>App\Missile\MissileState</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Lib\NacamError\NacamError.h">
-      <Filter>App\Debug</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\DebugUtill\NcmDebug.h">
-      <Filter>App\Debug</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Utility\NcmColor.h">
-      <Filter>App\Utill</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Math\Easing\NcmEasing.h">
-      <Filter>App\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\DebugUtill\NcmImGui.h">
-      <Filter>App\Debug\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Math\NcmMath.h">
-      <Filter>App\Math</Filter>
+      <Filter>Lib\Debug</Filter>
     </ClInclude>
     <ClInclude Include="Sources\App\Particle\NcmParticleCommonArgs.h">
       <Filter>App\Particle</Filter>
     </ClInclude>
     <ClInclude Include="Sources\App\Particle\NcmParticleManager.h">
       <Filter>App\Particle</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Utility\NcmUtil.h">
-      <Filter>App\Utill</Filter>
     </ClInclude>
     <ClInclude Include="Sources\App\Ui\NcmUi.h">
       <Filter>App\Ui</Filter>
@@ -471,29 +393,8 @@
     <ClInclude Include="Sources\App\Particle\Particle.h">
       <Filter>App\Particle</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Player\Player.h">
-      <Filter>App\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\App\Scene\ResultScene.h">
       <Filter>App\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Reticle\Reticle.h">
-      <Filter>App\Reticle</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Singleton\Singleton.h">
-      <Filter>App\Singleton</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Ultimate\UltimateManager.h">
-      <Filter>App\UltimateManager</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\WaveManager\WaveManager.h">
-      <Filter>App\WaveManager</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\MissileManager.h">
-      <Filter>App\Missile\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\App\Unique\Missile\MissileDescs.h">
-      <Filter>App\Missile\DescHeader</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imconfig.h">
       <Filter>ImGui</Filter>
@@ -585,11 +486,110 @@
     <ClInclude Include="Sources\App\Grid\GridRender.h">
       <Filter>App\Grid</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\App\Collision\Collision.h">
-      <Filter>App\Collision</Filter>
+    <ClInclude Include="Sources\Lib\Collision\Collision.h">
+      <Filter>Lib\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\App\Collision\CollisionPrimitive.h">
-      <Filter>App\Collision</Filter>
+    <ClInclude Include="Sources\Lib\Collision\CollisionPrimitive.h">
+      <Filter>Lib\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Math\Easing\NcmEasing.h">
+      <Filter>Lib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Math\NcmMath.h">
+      <Filter>Lib\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Singleton\Singleton.h">
+      <Filter>Lib\Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Utility\NcmColor.h">
+      <Filter>Lib\Utill</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\Utility\NcmUtil.h">
+      <Filter>Lib\Utill</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\DebugUtill\NcmImGui.h">
+      <Filter>Lib\Debug\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\DebugUtill\NcmDebug.h">
+      <Filter>Lib\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Lib\FpsManager\FPSManager.h">
+      <Filter>Lib\FpsManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Abs\AbsUniqueObj.h">
+      <Filter>App\AbsUniqueObj</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Bullet\Bullet.h">
+      <Filter>App\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Bullet\BulletList.h">
+      <Filter>App\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Enemy\EnemiesList.h">
+      <Filter>App\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Enemy\Enemy.h">
+      <Filter>App\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\LockOnSystem\LockOnSystem.h">
+      <Filter>App\LockOnSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Missile\Missile.h">
+      <Filter>App\Missile</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Missile\IMissileHomingState.h">
+      <Filter>App\Missile\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Missile\IMissileLaunchState.h">
+      <Filter>App\Missile\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Missile\MissileDescs.h">
+      <Filter>App\Missile\DescHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Missile\MissileHomingStateHighAccuracy.h">
+      <Filter>App\Missile\MissileState</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Missile\MissileHomingStateLowAccuracy.h">
+      <Filter>App\Missile\MissileState</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Missile\MissileHomingStateMiddleAccuracy.h">
+      <Filter>App\Missile\MissileState</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Missile\MissileHomingStateNoHoming.h">
+      <Filter>App\Missile\MissileState</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Missile\MissileHoming.h">
+      <Filter>App\Missile\MissileState</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Missile\MissileStateCharge.h">
+      <Filter>App\Missile\MissileState</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Missile\MissileStateForEnemy.h">
+      <Filter>App\Missile\MissileState</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Missile\MissileStateMonoCircuse.h">
+      <Filter>App\Missile\MissileState</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Missile\MissileStateUltimate.h">
+      <Filter>App\Missile\MissileState</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Missile\MissileLauncher.h">
+      <Filter>App\Missile\MissileState</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Missile\MissileManager.h">
+      <Filter>App\Missile\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Player\Player.h">
+      <Filter>App\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Reticle\Reticle.h">
+      <Filter>App\Reticle</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\Ultimate\UltimateManager.h">
+      <Filter>App\UltimateManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\App\WaveManager\WaveManager.h">
+      <Filter>App\WaveManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -651,20 +651,11 @@
     <Filter Include="App\AbsUniqueObj">
       <UniqueIdentifier>{431c84eb-ba52-4949-b813-e5d4a5be5cfa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App\Unique">
-      <UniqueIdentifier>{1c8ca9fd-d6b8-44fe-af20-03cc89587ba7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\Unique\Bullet">
-      <UniqueIdentifier>{e2a5956a-d079-4322-847b-76a76e67744d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="App\Emitter">
       <UniqueIdentifier>{6c816d26-50c9-40fd-934f-80ab7aaa1de3}</UniqueIdentifier>
     </Filter>
     <Filter Include="App\Enemy">
       <UniqueIdentifier>{977afe1a-31c5-458a-b595-5d05ed35cd01}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\FpsManager">
-      <UniqueIdentifier>{bb09f93d-5abc-44b3-966f-dc59c8338ed3}</UniqueIdentifier>
     </Filter>
     <Filter Include="App\Missile">
       <UniqueIdentifier>{721af6cf-b775-47d6-8d9e-9df847fe63dc}</UniqueIdentifier>
@@ -681,20 +672,8 @@
     <Filter Include="App\Missile\MissileState">
       <UniqueIdentifier>{35216586-25c9-4060-adb1-706fb232dd91}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App\Debug">
-      <UniqueIdentifier>{67bf65fa-d5f6-40d2-863a-75a59dafcb60}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\Utill">
-      <UniqueIdentifier>{fcc7c3bd-a43e-42d7-9435-ab1af744b2c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\Math">
-      <UniqueIdentifier>{acceec53-68a3-4c86-8706-72a43d80458c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="App\Grid">
       <UniqueIdentifier>{4a63749b-2bc5-486d-bfde-f8cc5f2b6533}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\Debug\ImGui">
-      <UniqueIdentifier>{ddf946c2-5df5-4bb2-addf-a9a238c910c5}</UniqueIdentifier>
     </Filter>
     <Filter Include="App\Particle">
       <UniqueIdentifier>{74d05f4b-1bdf-489d-9bad-a38e432defd2}</UniqueIdentifier>
@@ -710,9 +689,6 @@
     </Filter>
     <Filter Include="App\Reticle">
       <UniqueIdentifier>{a7cab52a-485c-4a3a-afe4-e7892397d3fa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\Singleton">
-      <UniqueIdentifier>{c302a470-f82b-447f-b183-9b9d50f9d5de}</UniqueIdentifier>
     </Filter>
     <Filter Include="App\UltimateManager">
       <UniqueIdentifier>{9067be5c-8c14-4189-bc8f-e9a22071a44c}</UniqueIdentifier>
@@ -765,8 +741,29 @@
     <Filter Include="Lib\Win32">
       <UniqueIdentifier>{c637241c-70d2-47b0-ab4d-d7b403856d29}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App\Collision">
+    <Filter Include="Lib\Collision">
       <UniqueIdentifier>{467de34b-f344-45db-8501-f484a1d08b1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lib\Debug">
+      <UniqueIdentifier>{67bf65fa-d5f6-40d2-863a-75a59dafcb60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lib\Debug\ImGui">
+      <UniqueIdentifier>{ddf946c2-5df5-4bb2-addf-a9a238c910c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lib\Math">
+      <UniqueIdentifier>{acceec53-68a3-4c86-8706-72a43d80458c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lib\Utill">
+      <UniqueIdentifier>{fcc7c3bd-a43e-42d7-9435-ab1af744b2c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lib\Singleton">
+      <UniqueIdentifier>{c302a470-f82b-447f-b183-9b9d50f9d5de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Bullet">
+      <UniqueIdentifier>{e2a5956a-d079-4322-847b-76a76e67744d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lib\FpsManager">
+      <UniqueIdentifier>{bb09f93d-5abc-44b3-966f-dc59c8338ed3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

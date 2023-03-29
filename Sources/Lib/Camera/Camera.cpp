@@ -3,8 +3,8 @@
 #include "../Win32App/Win32App.h"
 #include "../Input/KeyboardInput.h"
 #include "../DirectX/DirectXBase.h"
-#include "../../App/DebugUtill/NcmImGui.h"
-#include "../../App/Unique/Player/Player.h"
+#include "../../Lib/DebugUtill/NcmImGui.h"
+#include "../../App/Player/Player.h"
 
 using namespace DirectX;
 using namespace Microsoft::WRL;

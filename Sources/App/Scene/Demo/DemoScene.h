@@ -10,10 +10,10 @@
 #include "../../../Lib/3D/PlatePoly.h"
 #include "../../../Lib/3D/NcmPlatePoly.h"
 #include "../../Grid/GridRender.h"
-#include "../Sources/App/Math/Easing/NcmEasing.h"
-#include "../../Unique/Player/Player.h"
+#include "../../../Lib/Math/Easing/NcmEasing.h"
+#include "../../Player/Player.h"
 #include "../../../Lib/Loader/JsonLoader.h"
-#include "../../../App/Level/LevelDataManager.h"
+#include "../../Level/LevelDataManager.h"
 
 class DemoScene : public AbsScene
 {

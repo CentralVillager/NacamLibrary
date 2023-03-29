@@ -1,14 +1,14 @@
 #include "MainScene.h"
 #include <vector>
-#include "../../App/Collision/Collision.h"
-#include "../../App/Math/Easing/NcmEasing.h"
-#include "../../App/Unique/Missile/MissileLauncher.h"
+#include "../../Lib/Collision/Collision.h"
+#include "../../Lib/Math/Easing/NcmEasing.h"
+#include "../../App/Missile/MissileLauncher.h"
 #include "../../Lib/Input/NcmInput.h"
 #include "../../Lib/DirectX/PreDraw.h"
 #include "../../Lib/Input/KeyboardInput.h"
 #include "../../Lib/PostEffect/PostEffect.h"
-#include "../Utility/NcmUtil.h"
-#include "../DebugUtill/NcmDebug.h"
+#include "../../Lib/Utility/NcmUtil.h"
+#include "../../Lib/DebugUtill/NcmDebug.h"
 #include "../Scene/SceneManager/SceneManager.h"
 
 using namespace NcmUtill;

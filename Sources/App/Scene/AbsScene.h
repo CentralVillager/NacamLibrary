@@ -1,5 +1,5 @@
 #pragma once
-#include "../DebugUtill/NcmImGui.h"
+#include "../../Lib/DebugUtill/NcmImGui.h"
 
 class AbsScene
 {

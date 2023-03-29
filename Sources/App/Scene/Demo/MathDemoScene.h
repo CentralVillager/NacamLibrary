@@ -3,7 +3,7 @@
 #include <wrl.h>
 #include <array>
 #include "../AbsScene.h"
-#include "../../Collision/CollisionPrimitive.h"
+#include "../../../Lib/Collision/CollisionPrimitive.h"
 #include "../../../Lib/Camera/Camera.h"
 #include "../../../Lib/3D/Model.h"
 #include "../../../Lib/3D/Object3d.h"

@@ -1,7 +1,7 @@
 #include "Emitter.h"
 #include <cmath>
-#include "../Utility/NcmUtil.h"
-#include "../DebugUtill/NcmImGui.h"
+#include "../../Lib/Utility/NcmUtil.h"
+#include "../../Lib/DebugUtill/NcmImGui.h"
 #include "../../Lib/DirectX/PreDraw.h"
 #include "../../App/Particle/NcmParticleManager.h"
 

@@ -3,7 +3,7 @@
 #include <wrl.h>
 #include <d3d12.h>
 #include "../DirectX/DirectXBase.h"
-#include "../../App/Singleton/Singleton.h"
+#include "../../Lib/Singleton/Singleton.h"
 
 class DrawProc : public Singleton<DrawProc>
 {

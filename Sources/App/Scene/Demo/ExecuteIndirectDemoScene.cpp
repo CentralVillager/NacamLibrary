@@ -1,6 +1,6 @@
 #include <d3dcompiler.h>
 #include "ExecuteIndirectDemoScene.h"
-#include "../../DebugUtill/NcmImGui.h"
+#include "../../../Lib/DebugUtill/NcmImGui.h"
 #include "../../../Lib/DirectX/PreDraw.h"
 #include "../../../Lib/Input/KeyboardInput.h"
 #include "../../../Lib/DirectX/DirectXBase.h"

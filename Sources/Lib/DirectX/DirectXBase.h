@@ -4,7 +4,7 @@
 #include <vector>
 #include <wrl.h>
 #include "../Win32App/Win32App.h"
-#include "../../App/Singleton/Singleton.h"
+#include "../../Lib/Singleton/Singleton.h"
 
 using namespace std;
 

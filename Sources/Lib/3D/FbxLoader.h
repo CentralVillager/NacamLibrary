@@ -5,7 +5,7 @@
 #include <string>
 #include "fbxsdk.h"
 #include "FbxModel.h"
-#include "../Sources/App/Singleton/Singleton.h"
+#include "../Singleton/Singleton.h"
 
 class FbxLoader : public Singleton<FbxLoader> {
 	friend Singleton<FbxLoader>;

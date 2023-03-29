@@ -3,7 +3,7 @@
 #include <memory>
 #include <wrl.h>
 #include <d3d12.h>
-#include "../../App/Math/Easing/NcmEasing.h"
+#include "../../Lib/Math/Easing/NcmEasing.h"
 
 class Player;
 

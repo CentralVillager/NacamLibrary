@@ -1,6 +1,6 @@
 #include "TitleScene.h"
 #include "../Scene/SceneManager/SceneManager.h"
-#include "../DebugUtill/NcmImGui.h"
+#include "../../Lib/DebugUtill/NcmImGui.h"
 #include "../../Lib/Win32App/Win32App.h"
 #include "../../Lib/DirectX/PreDraw.h"
 #include "../../Lib/Input/KeyboardInput.h"

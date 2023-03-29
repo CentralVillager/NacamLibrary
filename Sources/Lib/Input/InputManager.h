@@ -4,7 +4,7 @@
 #include <dinput.h>
 #include <wrl.h>
 #include "../Win32App/Win32App.h"
-#include "../../App/Singleton/Singleton.h"
+#include "../../Lib/Singleton/Singleton.h"
 
 #pragma comment(lib, "dinput8.lib")
 #pragma comment(lib, "dxguid.lib")

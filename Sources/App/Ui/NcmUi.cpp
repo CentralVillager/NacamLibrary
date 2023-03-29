@@ -1,6 +1,6 @@
 #include "NcmUi.h"
 #include "../../Lib/Win32App/Win32App.h"
-#include "../Utility/NcmUtil.h"
+#include "../../Lib/Utility/NcmUtil.h"
 
 using namespace DirectX;
 using namespace NcmUtill;

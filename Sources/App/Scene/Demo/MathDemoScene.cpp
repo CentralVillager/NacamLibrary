@@ -1,6 +1,6 @@
 #include "MathDemoScene.h"
-#include "../../Math/Easing/NcmEasing.h"
-#include "../../Collision/CollisionPrimitive.h"
+#include "../../../Lib/Math/Easing/NcmEasing.h"
+#include "../../../Lib/Collision/CollisionPrimitive.h"
 #include "../../../Lib/DirectX/PreDraw.h"
 #include "../../../Lib/Win32App/Win32App.h"
 #include "../../../Lib/Input/KeyboardInput.h"

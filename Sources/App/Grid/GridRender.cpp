@@ -1,5 +1,5 @@
 #include "../Grid/GridRender.h"
-#include "../Utility/NcmUtil.h"
+#include "../../Lib/Utility/NcmUtil.h"
 
 using namespace Microsoft::WRL;
 
