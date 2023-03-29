@@ -1,7 +1,7 @@
 #include "NcmEasing.h"
 #include <cmath>
-#include "../Sources/App/Utility/NcmUtil.h"
-#include "../Sources/App/Math/NcmMath.h"
+#include "../../../Lib/Utility/NcmUtil.h"
+#include "../../../Lib/Math/NcmMath.h"
 
 // 参考サイト
 // https://easings.net/ja

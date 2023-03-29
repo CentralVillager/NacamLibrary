@@ -18,9 +18,9 @@ ComPtr<ID3D12Device> PostEffect::device_ = nullptr;
 ComPtr<ID3D12GraphicsCommandList> PostEffect::command_list_;
 const float PostEffect::clear_color_[4] = { Convert256to01(25), Convert256to01(25), Convert256to01(25), 0.0f };
 XMFLOAT4 PostEffect::color_ = { 1, 1, 1, 1 };
+Pipeline PostEffect::pipeline_;
 
 PostEffect::PostEffect() :
-	pipeline_(),
 	vb_view_()
 {
 	device_ = DirectXBase::GetInstance()->GetDevice().Get();
@@ -193,6 +193,8 @@ void PostEffect::Initialize()
 	device_->CreateDepthStencilView(depth_buff_.Get(),
 		&dsv_desc,
 		desc_heap_DSV_->GetCPUDescriptorHandleForHeapStart());
+
+	SetPipeline(Pipeline::Basic);
 }
 
 void PostEffect::Draw()
@@ -224,7 +226,7 @@ void PostEffect::Draw()
 		this->const_buffer_->Unmap(0, nullptr);
 	}
 
-	// ImGuiで指定したパイプラインを設定
+	// 指定したパイプラインを設定
 	SetPipeline(pipeline_);
 
 	// プリミティブ形状を設定
@@ -272,6 +274,11 @@ void PostEffect::DebugDraw()
 		pipeline_ = Pipeline::RadialBlur;
 	}
 	ImGui::End();
+}
+
+void PostEffect::ChangePipeline(Pipeline p)
+{
+	pipeline_ = p;
 }
 
 void PostEffect::SetPipeline(Pipeline p)

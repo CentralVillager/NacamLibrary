@@ -13,13 +13,13 @@ float4 main(VSOutput input) : SV_TARGET0
  {
     float4 color = float4(0, 0, 0, 0);
     float total_weight = 0;
-
-	float power = 10.0f;
+	
+	float power = 30.0f;
 
 	float2 center = float2(0.5f, 0.5f);
 	float2 dir = center - input.uv;
 	float len = length(dir);
-	float offset = normalize(dir) * center / float2(1280, 720);	
+	float2 offset = normalize(dir) * center / float2(1280, 720);	
 	offset *= (power * len);
 
 	float weight = 0.19f;

@@ -76,7 +76,7 @@ private:
 
 private:
 
-	Pipeline pipeline_;
+	static Pipeline pipeline_;
 
 public:
 
@@ -97,6 +97,7 @@ public:
 
 public:
 
+	static void ChangePipeline(Pipeline p);
 	static void SetPipeline(Pipeline p);
 
 	static float GetAlpha() { return color_.w; }

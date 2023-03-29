@@ -169,11 +169,6 @@ void Player::Finalize()
 
 void Player::Update()
 {
-	if (KeyboardInput::HoldKey(DIK_1))
-	{
-		PostEffect::SetPipeline(Pipeline::RadialBlur);
-	}
-
 	// éÄÇÒÇæÇÁ
 	if (is_dead_)
 	{
@@ -525,7 +520,7 @@ void Player::Accelerate()
 
 		SetSpeed(NcmEasing::GetValue(acc_speed_));
 
-		PostEffect::SetPipeline(Pipeline::RadialBlur);
+		PostEffect::ChangePipeline(Pipeline::RadialBlur);
 	}
 	// å∏ë¨ÅEí èÌ
 	else
@@ -543,7 +538,7 @@ void Player::Accelerate()
 
 		SetSpeed(NcmEasing::GetValue(dec_speed_));
 
-		PostEffect::SetPipeline(Pipeline::Basic);
+		PostEffect::ChangePipeline(Pipeline::Basic);
 	}
 }
 
