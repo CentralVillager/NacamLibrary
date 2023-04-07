@@ -409,7 +409,7 @@ void Player::MoveXY(float speed)
 
 	// è„â∫à⁄ìÆ
 	if (KeyboardInput::PushKey(DIK_W) && pos.y <= MOVABLE_RANGE_.y) { pos.y += speed; }
-	else if (KeyboardInput::PushKey(DIK_S) && pos.y >= 0.0f) { pos.y -= speed; }
+	if (KeyboardInput::PushKey(DIK_S) && pos.y >= 0.0f) { pos.y -= speed; }
 
 	// ç∂âEà⁄ìÆ
 	if (KeyboardInput::PushKey(DIK_D) && pos.x <= MOVABLE_RANGE_.x)
@@ -418,7 +418,7 @@ void Player::MoveXY(float speed)
 		RotPoseRight(rot);
 		is_released = false;
 	}
-	else if (KeyboardInput::PushKey(DIK_A) && pos.x >= -MOVABLE_RANGE_.x)
+	if (KeyboardInput::PushKey(DIK_A) && pos.x >= -MOVABLE_RANGE_.x)
 	{
 		pos.x -= speed;
 		RotPoseLeft(rot);
@@ -459,7 +459,7 @@ void Player::RotationY(float speed)
 		RotPoseRight(rot);
 		is_released = false;
 	}
-	else if (KeyboardInput::PushKey(DIK_D) || NcmInput::IsHold(L_STICK, RIGHT))
+	if (KeyboardInput::PushKey(DIK_D) || NcmInput::IsHold(L_STICK, RIGHT))
 	{
 		rot.y += speed;
 		RotPoseLeft(rot);

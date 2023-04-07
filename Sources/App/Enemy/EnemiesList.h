@@ -3,11 +3,13 @@
 #include <DirectXMath.h>
 #include "Enemy.h"
 #include "../../Lib/Collision/CollisionPrimitive.h"
+#include "../Number/Numbers.h"
 
 class Player;
 
 class EnemiesList
 {
+	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 
 private:
@@ -18,6 +20,8 @@ private:
 
 	std::vector<Enemy> enemies_;
 	Player *player_;
+
+	std::unique_ptr<Numbers> nums_;
 
 public:
 
@@ -36,6 +40,7 @@ public:
 	void Initialize(Player *player);
 	void Update();
 	void Draw();
+	void DrawRemainEnemyNum();
 	void DebugDraw();
 	void DrawColl();
 

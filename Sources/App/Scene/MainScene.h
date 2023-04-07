@@ -1,4 +1,5 @@
 #pragma once
+#pragma once
 #include <wrl.h>
 #include <memory>
 #include <DirectXMath.h>

@@ -6,7 +6,7 @@
 class MissileStateUltimate : public IMissileLaunchState
 {
 	// ミサイルの総発射数
-	static constexpr uint32_t ULT_LAUNCH_NUM_ = 30;
+	static constexpr uint32_t ULT_LAUNCH_NUM_ = 40;
 
 public:
 
@@ -21,7 +21,7 @@ public:
 		// 参照するターゲットの位置の記録
 		static uint32_t tgt_location_ref = 0;
 		// 発射間隔
-		static const uint32_t DELAY = 3;
+		static const uint32_t DELAY = 2;
 		// カウント
 		static uint32_t count = 1;
 		// 既発射数

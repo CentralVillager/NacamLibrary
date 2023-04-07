@@ -29,8 +29,11 @@ public:
 private:
 
 	static constexpr UINT MAX_NUM_ = 10;
+
 	static std::array<int, MAX_NUM_> numbers_;
 	static std::array<int, MAX_NUM_> dupli_numbers_;
+
+private:
 
 	float dead_line_size_;
 	XMFLOAT2 offset_;
@@ -52,6 +55,7 @@ public:
 public:
 
 	void DrawNumber(int number, float scale, float alpha, HorizontalAlignment h_align, VerticalAlignment v_align);
+	void DrawNumber(int number, float scale, float alpha, XMFLOAT2 pos, HorizontalAlignment h_align);
 
 	float GetDigitsWidth() { return digit_width_; }
 	float GetDeadLineSize() { return dead_line_size_; }
@@ -59,5 +63,6 @@ public:
 private:
 
 	bool DivDigit(std::vector<int> *dist, const int num);
+	void SortDigit(std::vector<int> *dist);
 	void SortDigitWithAlign(std::vector<int> *dist, const HorizontalAlignment &align);
 };

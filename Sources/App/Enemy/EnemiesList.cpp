@@ -4,11 +4,10 @@
 #include "../Player/Player.h"
 #include "../Missile/MissileDescs.h"
 
-using namespace std;
-
 EnemiesList::EnemiesList() :
 	enemies_(),
-	player_(nullptr)
+	player_(nullptr),
+	nums_(std::make_unique<Numbers>())
 {}
 
 EnemiesList::~EnemiesList()
@@ -41,13 +40,13 @@ void EnemiesList::Draw()
 	}
 }
 
+void EnemiesList::DrawRemainEnemyNum()
+{
+	nums_->DrawNumber((int)(enemies_.size()), 0.5f, 1.0f, XMFLOAT2(0.0f, 0.0f), HorizontalAlignment::Left);
+}
+
 void EnemiesList::DebugDraw()
 {
-	/*for (auto &i : enemies_)
-	{
-		i.DebugDraw();
-	}*/
-
 	if (ImGui::Button("Launch Missile"))
 	{
 		for (auto &i : enemies_)

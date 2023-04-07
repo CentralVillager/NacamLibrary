@@ -224,6 +224,135 @@ void Numbers::DrawNumber(int number, float scale, float alpha, HorizontalAlignme
 	}
 }
 
+void Numbers::DrawNumber(int number, float scale, float alpha, XMFLOAT2 pos, HorizontalAlignment h_align)
+{
+	using enum HorizontalAlignment;
+	using enum VerticalAlignment;
+
+	// 数字を桁ごとに格納するためのコンテナ
+	std::vector<int> digit;
+
+	bool is_done = false;
+	bool is_hundred = false;
+
+	// 桁ごとに分割
+	bool is_unique = DivDigit(&digit, number);
+
+	// 揃え場所によって配列内順序を変更
+	SortDigitWithAlign(&digit, h_align);
+
+	if (digit.size() == 3) { is_hundred = true; }
+
+	if (h_align == Left)
+	{
+		float size_stack = 0.0f;
+
+		for (UINT i = 0; i < digit.size(); i++)
+		{
+			NcmSprite::SetScale(numbers_[digit[i]], scale);
+
+			// 数字テクスチャのサイズを取得
+			XMFLOAT2 size = NcmSprite::GetSize(numbers_[digit[i]]);
+
+			XMFLOAT2 final_pos{};
+			final_pos.x = size_stack;
+			final_pos.y = pos.y;
+
+			NcmSprite::DrawTex(numbers_[digit[i]],
+				{ (final_pos.x + (i * tracking_)) + dead_line_size_, final_pos.y + dead_line_size_ });
+
+			size_stack += size.x;
+
+			if (!is_unique && !is_done)
+			{
+				NcmSprite::DrawTex(dupli_numbers_[digit[i]],
+					{ (final_pos.x + (i * tracking_)) + dead_line_size_, final_pos.y + dead_line_size_ });
+				is_done = true;
+			}
+		}
+	}
+
+	if (h_align == Center)
+	{
+		digit_width_ = 0;
+
+		// 描画したい数の合計サイズを取得
+		for (UINT i = 0; i < digit.size(); i++)
+		{
+			NcmSprite::SetScale(numbers_[digit[i]], scale);
+			NcmSprite::SetScale(dupli_numbers_[digit[i]], scale);
+			digit_width_ += NcmSprite::GetSize(numbers_[digit[i]]).x;
+		}
+
+		// 描画開始位置を算出
+		float start_draw_point = Win32App::FCENTER_.x - (digit_width_ / 2);
+		float size_stack = start_draw_point;
+
+		for (UINT i = 0; i < digit.size(); i++)
+		{
+			// 数字テクスチャのサイズを取得
+			XMFLOAT2 size = NcmSprite::GetSize(numbers_[digit[i]]);
+			NcmSprite::SetAnchorPoint(numbers_[digit[i]], { 0, 1.0f });
+			NcmSprite::SetAnchorPoint(dupli_numbers_[digit[i]], { 0, 1.0f });
+
+			XMFLOAT2 final_pos{};
+			final_pos.x = size_stack;
+			final_pos.y = pos.y;
+
+			// 透明度を変更
+			NcmSprite::SetAlpha(numbers_[digit[i]], alpha);
+
+			// 描画
+			NcmSprite::DrawTex(numbers_[digit[i]],
+				{ (final_pos.x + (i * tracking_)), final_pos.y });
+
+			size_stack += size.x;
+
+			// 重複時の応急処置
+			if (!is_unique && !is_done)
+			{
+				if (!is_hundred)
+				{
+					// 透明度を変更
+					NcmSprite::SetAlpha(dupli_numbers_[digit[i]], alpha);
+
+					NcmSprite::DrawTex(dupli_numbers_[digit[i]],
+						{ (final_pos.x + (i * tracking_)), final_pos.y });
+					is_done = true;
+					is_hundred = true;
+				}
+
+				if (is_hundred)
+				{
+					is_hundred = false;
+				}
+			}
+		}
+	}
+
+	if (h_align == Right)
+	{
+		float size_stack = (float)(Win32App::SIZE_.x);
+
+		for (UINT i = 0; i < digit.size(); i++)
+		{
+			NcmSprite::SetScale(numbers_[digit[i]], scale);
+
+			// 数字テクスチャのサイズを取得
+			XMFLOAT2 size = NcmSprite::GetSize(numbers_[digit[i]]);
+
+			size_stack -= size.x;
+
+			XMFLOAT2 final_pos{};
+			final_pos.x = size_stack;
+			final_pos.y = pos.y;
+
+			NcmSprite::DrawTex(numbers_[digit[i]],
+				{ (final_pos.x - (i * tracking_)) - dead_line_size_, final_pos.y - dead_line_size_ });
+		}
+	}
+}
+
 bool Numbers::DivDigit(std::vector<int> *dist, const int num)
 {
 	for (int tmp = num; tmp > 0;)
@@ -253,6 +382,11 @@ bool Numbers::DivDigit(std::vector<int> *dist, const int num)
 	return std::equal(dist->begin(), dist->end(), temp.begin(), temp.end());
 }
 
+void Numbers::SortDigit(std::vector<int> *dist)
+{
+	std::reverse(dist->begin(), dist->end());
+}
+
 void Numbers::SortDigitWithAlign(std::vector<int> *dist, const HorizontalAlignment &align)
 {
 	using enum HorizontalAlignment;
@@ -261,7 +395,7 @@ void Numbers::SortDigitWithAlign(std::vector<int> *dist, const HorizontalAlignme
 	if (align == Left || align == Center)
 	{
 		// 並びが自然になるように変換
-		std::reverse(dist->begin(), dist->end());
+		SortDigit(dist);
 	}
 	// それ以外なら
 	else
