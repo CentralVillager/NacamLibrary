@@ -301,6 +301,7 @@
     <ClCompile Include="Sources\App\WaveManager\WaveManager.cpp">
       <Filter>App\WaveManager</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\App\Missile\MissileHomingStateLinearAccracy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imgui.h">
@@ -591,6 +592,7 @@
     <ClInclude Include="Sources\App\WaveManager\WaveManager.h">
       <Filter>App\WaveManager</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\App\Missile\MissileHomingStateLinearAccracy.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\icon.ico">

@@ -23,6 +23,7 @@ enum class HomingAccuracy
 	High,
 	Middle,
 	Low,
+	Linear,
 	NoHoming
 };
 

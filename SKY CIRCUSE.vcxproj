@@ -184,6 +184,7 @@
     <ClCompile Include="Sources\App\main.cpp" />
     <ClCompile Include="Sources\App\Missile\Missile.cpp" />
     <ClCompile Include="Sources\App\Missile\MissileHomingStateHighAccuracy.cpp" />
+    <ClCompile Include="Sources\App\Missile\MissileHomingStateLinearAccracy.cpp" />
     <ClCompile Include="Sources\App\Missile\MissileHomingStateLowAccuracy.cpp" />
     <ClCompile Include="Sources\App\Missile\MissileHomingStateMiddleAccuracy.cpp" />
     <ClCompile Include="Sources\App\Missile\MissileHomingStateNoHoming.cpp" />
@@ -270,6 +271,7 @@
     <ClInclude Include="Sources\App\Missile\MissileDescs.h" />
     <ClInclude Include="Sources\App\Missile\MissileHoming.h" />
     <ClInclude Include="Sources\App\Missile\MissileHomingStateHighAccuracy.h" />
+    <ClInclude Include="Sources\App\Missile\MissileHomingStateLinearAccracy.h" />
     <ClInclude Include="Sources\App\Missile\MissileHomingStateLowAccuracy.h" />
     <ClInclude Include="Sources\App\Missile\MissileHomingStateMiddleAccuracy.h" />
     <ClInclude Include="Sources\App\Missile\MissileHomingStateNoHoming.h" />

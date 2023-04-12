@@ -345,7 +345,7 @@ void Camera::TransitionCamera()
 {
 	if (is_missile_camera_)
 	{
-		NcmEasing::UpdateValue(ease_differ_to_circuse_);
+		/*NcmEasing::UpdateValue(ease_differ_to_circuse_);
 		NcmEasing::UpdateValue(ease_differ_y_to_circuse_);
 		NcmEasing::UpdateValue(ease_offset_y_to_circuse_);
 
@@ -355,7 +355,7 @@ void Camera::TransitionCamera()
 
 		NcmEasing::ResetTime(ease_differ_to_normal_);
 		NcmEasing::ResetTime(ease_differ_y_to_normal_);
-		NcmEasing::ResetTime(ease_offset_y_to_normal_);
+		NcmEasing::ResetTime(ease_offset_y_to_normal_);*/
 	}
 	else
 	{

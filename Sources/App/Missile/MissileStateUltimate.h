@@ -6,7 +6,7 @@
 class MissileStateUltimate : public IMissileLaunchState
 {
 	// ミサイルの総発射数
-	static constexpr uint32_t ULT_LAUNCH_NUM_ = 40;
+	static constexpr uint32_t ULT_LAUNCH_NUM_ = 30;
 
 public:
 
@@ -58,7 +58,17 @@ public:
 
 		// ターゲットデータを取得
 		MissileParam param{};
-		param.accuracy_type = HomingAccuracy::High;
+
+		if (launched % 2 == 0)
+		{
+			param.accuracy_type = HomingAccuracy::Linear;
+			param.acc = NcmUtill::GenerateRandom(DirectX::XMFLOAT3(-0.2f, -0.2f, 0), DirectX::XMFLOAT3(0.2f, 0.2f, 0));
+		}
+		else
+		{
+			param.accuracy_type = HomingAccuracy::High;
+			param.acc = NcmUtill::GenerateRandom(DirectX::XMFLOAT3(-1.5f, -1.5f, 0), DirectX::XMFLOAT3(1.5f, 1.5f, 0));
+		}
 		param.tgt_pos = itr->pos;
 		param.tgt_id = itr->id;
 
@@ -80,8 +90,6 @@ public:
 		param.speed = 10.0f;
 		param.pos = launch_pos;
 		DirectX::XMStoreFloat3(&param.vel, direction_vec);
-		// 加速度をランダムに設定
-		param.acc = NcmUtill::GenerateRandom(DirectX::XMFLOAT3(-1.5f, -1.5f, 0), DirectX::XMFLOAT3(1.5f, 1.5f, 0));
 		// tgt_pos	 は下で設定
 		// tgt_index は下で設定
 		param.use_homing_time = false;
