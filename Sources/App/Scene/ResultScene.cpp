@@ -29,5 +29,8 @@ void ResultScene::Update()
 void ResultScene::Draw()
 {}
 
+void ResultScene::AfterPostEffectDraw()
+{}
+
 void ResultScene::DebugDraw()
 {}

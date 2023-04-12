@@ -268,6 +268,9 @@ void ParticleDemoScene::Draw()
 	particle_mgr_->Draw();
 }
 
+void ParticleDemoScene::AfterPostEffectDraw()
+{}
+
 void ParticleDemoScene::DebugDraw()
 {
 	ImGui::Checkbox("WireFrame", &is_wire_);

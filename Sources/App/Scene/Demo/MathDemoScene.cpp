@@ -380,6 +380,9 @@ void MathDemoScene::Draw() {
 	}
 }
 
+void MathDemoScene::AfterPostEffectDraw()
+{}
+
 void MathDemoScene::DebugDraw() {
 
 	//NcmImGui::DragFloat3("pos", object_[0].GetPos(),)

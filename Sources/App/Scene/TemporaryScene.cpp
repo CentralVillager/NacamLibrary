@@ -50,6 +50,9 @@ void TemporaryScene::Draw()
 
 }
 
+void TemporaryScene::AfterPostEffectDraw()
+{}
+
 void TemporaryScene::DebugDraw()
 {
 

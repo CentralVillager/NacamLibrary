@@ -96,6 +96,9 @@ void NacamLib::NacamLib_Draw()
 	/*-- •`‰æ --*/
 	post_effect_scene_->Draw();
 
+	DrawProc::ClearDepthBuffer();
+	SceneManager::GetSceneStack().top()->AfterPostEffectDraw();
+
 	// ƒfƒoƒbƒO•`‰æ
 //#ifdef _DEBUG
 
@@ -110,9 +113,9 @@ void NacamLib::NacamLib_Draw()
 	/*-- ImGui‚Ì•`‰æ --*/
 	NcmImGui::Draw(cmd_list_.Get());
 
-//#endif
+	//#endif
 
-	/*-- •`‰æŒãˆ— --*/
+		/*-- •`‰æŒãˆ— --*/
 	DrawProc::PostDraw(dx_base_);
 }
 

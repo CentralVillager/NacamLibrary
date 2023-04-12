@@ -146,6 +146,9 @@ void TitleScene::Draw()
 	NcmSprite::DrawTex(title_);
 }
 
+void TitleScene::AfterPostEffectDraw()
+{}
+
 void TitleScene::DebugDraw()
 {
 	NcmParticleManager::StaticDebugDraw();

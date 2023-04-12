@@ -35,5 +35,6 @@ public:
 	void Finalize() override;
 	void Update() override;
 	void Draw() override;
+	void AfterPostEffectDraw() override;
 	void DebugDraw() override;
 };

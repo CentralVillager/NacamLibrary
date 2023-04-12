@@ -66,6 +66,9 @@ void ExecuteIndirectDemoScene::Draw()
 	indirect_obj_->Draw();
 }
 
+void ExecuteIndirectDemoScene::AfterPostEffectDraw()
+{}
+
 void ExecuteIndirectDemoScene::DebugDraw()
 {
 	indirect_obj_->DebugDraw();

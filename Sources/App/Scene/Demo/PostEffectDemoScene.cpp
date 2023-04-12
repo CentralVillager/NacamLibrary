@@ -71,6 +71,9 @@ void PostEffectDemoScene::Draw()
 	object_->Draw();
 }
 
+void PostEffectDemoScene::AfterPostEffectDraw()
+{}
+
 void PostEffectDemoScene::DebugDraw()
 {
 	ImGui::Checkbox("Pushed", &is_push_);

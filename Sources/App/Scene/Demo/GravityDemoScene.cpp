@@ -61,6 +61,9 @@ void GravityDemoScene::Draw() {
 	object_->Draw();
 }
 
+void GravityDemoScene::AfterPostEffectDraw()
+{}
+
 void GravityDemoScene::DebugDraw() {
 
 	ImGui::Text("pos.y = %f", object_->GetPos().y);

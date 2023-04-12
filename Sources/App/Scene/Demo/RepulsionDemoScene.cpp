@@ -121,6 +121,9 @@ void RepulsionDemoScene::Draw() {
 	ball2_->Draw();
 }
 
+void RepulsionDemoScene::AfterPostEffectDraw()
+{}
+
 void RepulsionDemoScene::DebugDraw() {
 
 	ImGui::Text("ball1");

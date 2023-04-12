@@ -344,7 +344,12 @@ void MainScene::Draw()
 	}
 
 	PreDraw::SetPipeline(PlatePoly);
-	particle_mgr_->Draw();
+	particle_mgr_->Draw();	
+}
+
+void MainScene::AfterPostEffectDraw()
+{
+	using enum PipelineName;
 
 	PreDraw::SetPipeline(Sprite);
 	// ƒNƒŠƒA‚µ‚½‚ç

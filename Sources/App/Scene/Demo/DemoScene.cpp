@@ -150,6 +150,9 @@ void DemoScene::Draw()
 	poly_->Draw();
 }
 
+void DemoScene::AfterPostEffectDraw()
+{}
+
 void DemoScene::DebugDraw()
 {
 	camera_->DebugDraw();

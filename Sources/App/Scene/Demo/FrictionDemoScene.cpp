@@ -47,5 +47,8 @@ void FrictionDemoScene::Draw() {
 	object_->Draw();
 }
 
+void FrictionDemoScene::AfterPostEffectDraw()
+{}
+
 void FrictionDemoScene::DebugDraw() {
 }
